@@ -1,0 +1,85 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Models\Achievement;
+use App\Models\Mission;
+use App\Models\Reward;
+use App\Models\Leaderboard;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+
+class GamificationController extends Controller
+{
+    /**
+     * Display the Gamification Dashboard.
+     */
+    public function index()
+    {
+        $user = Auth::user();
+
+        // Fetch data for the gamification hub
+        $achievements = Achievement::where('user_id', $user->id)->get();
+        $missions = Mission::where('user_id', $user->id)->get();
+        $leaderboard = Leaderboard::orderBy('points', 'desc')->take(10)->get();
+        $rewards = Reward::all();
+
+        // Fetch progress overview data
+        $progress = DB::table('missions')
+            ->where('user_id', $user->id)
+            ->select(DB::raw('SUM(progress) as progress, SUM(goal) as goal'))
+            ->first();
+
+        return view('gamification.dashboard', [
+            'achievements' => $achievements,
+            'missions' => $missions,
+            'leaderboard' => $leaderboard,
+            'rewards' => $rewards,
+            'progress' => $progress,
+        ]);
+    }
+
+    /**
+     * Mark a mission as completed.
+     */
+    public function completeMission($id)
+    {
+        $mission = Mission::findOrFail($id);
+
+        if ($mission->user_id !== Auth::id()) {
+            return redirect()->back()->with('error', 'Unauthorized action.');
+        }
+
+        $mission->completed = true;
+        $mission->save();
+
+        // Add points to leaderboard
+        $leaderboard = Leaderboard::firstOrCreate(
+            ['user_id' => Auth::id()],
+            ['points' => 0]
+        );
+        $leaderboard->points += $mission->reward_points;
+        $leaderboard->save();
+
+        return redirect()->route('gamification.dashboard')->with('success', 'Mission completed!');
+    }
+
+    /**
+     * Redeem a reward.
+     */
+    public function redeemReward($id)
+    {
+        $reward = Reward::findOrFail($id);
+        $leaderboard = Leaderboard::where('user_id', Auth::id())->first();
+
+        if (!$leaderboard || $leaderboard->points < $reward->cost) {
+            return redirect()->back()->with('error', 'Not enough points to redeem this reward.');
+        }
+
+        $leaderboard->points -= $reward->cost;
+        $leaderboard->save();
+
+        return redirect()->route('gamification.dashboard')->with('success', 'Reward redeemed successfully!');
+    }
+}
