@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FinAssistController;
 use App\http\Controllers\DebtsController;
+use App\Http\Controllers\GamificationController;
 //use App\Http\Controllers\dashboard\DashboardController;
 
 /*
@@ -138,6 +139,13 @@ Route::post('/finassist/query', [FinAssistController::class, 'handleQuery'])->na
     
 //Route Debts
 Route::resource('/Debts', DebtsController::class);
+ 
+//Routes for RsmPlay
+Route::prefix('gamification')->middleware(['auth'])->group(function () {
+    Route::get('/RsmPlay', [GamificationController::class, 'index'])->name('gamification.board');
+    Route::post('/missions/{id}/complete', [GamificationController::class, 'completeMission'])->name('gamification.mission.complete');
+    Route::post('/rewards/{id}/redeem', [GamificationController::class, 'redeemReward'])->name('gamification.reward.redeem');
+});
 
 
 

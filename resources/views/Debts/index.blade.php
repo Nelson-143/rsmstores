@@ -19,18 +19,76 @@
     <div class="card">
         <div class="card-header d-flex justify-content-between">
             <h3 class="card-title">Customer Debts</h3>
-            <button class="btn btn-secondary">
-                Add Debters
-                <div class="mx-2 d-inline-block">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-user-plus">
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                        <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" />
-                        <path d="M16 19h6" />
-                        <path d="M19 16v6" />
-                        <path d="M6 21v-2a4 4 0 0 1 4 -4h4" />
-                    </svg>
+            
+          <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modal-report">
+    Add Debters
+    <div class="mx-2 d-inline-block">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-user-plus">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" />
+            <path d="M16 19h6" />
+            <path d="M19 16v6" />
+            <path d="M6 21v-2a4 4 0 0 1 4 -4h4" />
+        </svg>
+    </div>
+</button>
+
+<div class="modal modal-blur fade" id="modal-report" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Create A Debter</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label class="form-label">Customer Name</label>
+                    <input type="text" class="form-control" name="example-text-input" placeholder="Name of Customer in Debt">
                 </div>
-            </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="mb-3">
+                            <label class="form-label">Customer Set</label>
+                            <input type="text" class="form-control" name="example-text-input" placeholder="What do you owe?">
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="mb-3">
+                            <label class="form-label">Reporting period</label>
+                            <input type="date" class="form-control">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Amount in Debt</label>
+                        <input type="number" class="form-control" name="example-text-input" placeholder="Tsh.00/=">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Amount Received</label>
+                        <input type="number" class="form-control" name="example-text-input" placeholder="Leave empty if not Received">
+                    </div>
+                    <div class="col-lg-12">
+                        <div>
+                            <label class="form-label">Additional information</label>
+                            <textarea class="form-control" rows="3"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal">
+                    Cancel
+                </a>
+                <a href="#" class="btn btn-primary ms-auto" data-bs-dismiss="modal">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                    Create new Debter
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
         </div>
         <div class="card-body border-bottom py-3">
            

@@ -55,5 +55,27 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(Order::class);
     }
+// for the the gamification feature
+public function leaderboard()
+{
+    return $this->hasOne(Leaderboard::class);
+}
+
+public function missions()
+{
+    return $this->hasMany(UserMission::class);
+}
+
+public function rewards()
+{
+    return $this->hasMany(UserReward::class);
+}
+
+public function achievements()
+{
+    return $this->belongsToMany(Achievement::class, 'user_achievements')
+                ->withTimestamps();
+}
+
 
 }

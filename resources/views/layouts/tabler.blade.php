@@ -6,7 +6,58 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <style>
+                                                    /* Loader-specific CSS */
+                                                    .page-loader {
+                                                        display: flex;
+                                                        align-items: center;
+                                                        justify-content: center;
+                                                        position: fixed;
+                                                        top: 0;
+                                                        left: 0;
+                                                        width: 100%;
+                                                        height: 100%;
+                                                        background-color: white;
+                                                        z-index: 9999;
+                                                    }
+                                                    .hidden {
+                                                        display: none;
+                                                    }
+                                                </style>
+                                                <!-- Page Loader -->
+                                                <div id="page-loader" class="page-loader">
+                                                <div class="text-center">
+                                                    <div class="mb-3">
+                                                        
+                                                    </div>
+                                                    <div class="text-secondary mb-3">Creating Environment.....</div>
+                                                    <div class="progress progress-sm">
+                                                    <div class="progress-bar progress-bar-indeterminate"></div>
+                                                    </div>
+                                                </div>
+                                                </div>
+                                                <!-- Scripts -->
+                                               
+                                                <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const loader = document.getElementById("page-loader");
+        const content = document.getElementById("main-content");
 
+        // Simulate loading delay
+        setTimeout(() => {
+            loader.classList.add("hidden"); // Hide loader
+            content.classList.remove("hidden"); // Show main content
+
+            // Reinitialize Tabler components
+            if (window.Tabler) {
+                Tabler.init();
+            }
+        }, 2000); // Adjust delay as needed
+    });
+</script>
+
+                                              
+                                                
     <title>@yield('title')</title>
 
     <!-- CSS files -->
@@ -16,7 +67,8 @@
     <link href="{{ asset('dist/css/tabler-vendors.min.css') }}" rel="stylesheet" />
     <link href="{{ asset('dist/css/demo.min.css') }}" rel="stylesheet" />
     <link href="{{ asset('static/icon.png') }}" rel="icon" />
-
+        
+                                            
     <!--Lord icons ---->
     <script src="https://cdn.lordicon.com/lordicon.js"></script>
     <style>
@@ -103,8 +155,9 @@
                         <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown"
                             aria-label="Open user menu">
                             <span class="avatar avatar-rounded shadow-none "
-                                style="background-image: url({{ Auth::user()->photo ? asset('storage/profile/' . Auth::user()->photo) : asset('assets/img/illustrations/profiles/admin.jpg') }})"> 
-                            </span>
+                    style="background-image: url('{{ Auth::user()->photo ? asset('storage/profile/' . Auth::user()->photo) : asset('assets/img/illustrations/profiles/admin.jpg') }}')">
+                </span> 
+              
 
                             <div class="d-none d-xl-block ps-2">
                                 <div>{{ Auth::user()->name }}</div>
@@ -366,14 +419,7 @@
                                                          </lord-icon>
                                                           {{ __('Debts') }}
                                                      </a>
-                                            <a class="dropdown-item" href="{{ route('customers.index') }}">
-                                            <lord-icon
-                                                      src="https://cdn.lordicon.com/eaegfqtv.json"
-                                                        trigger="hover"
-                                                      style="width:20px;height:20px">
-                                                         </lord-icon>
-                                                          {{ __('Budget') }}
-                                                     </a>
+                                           
                                                     <a class="dropdown-item" href="{{ route('customers.index') }}">
                                                     <lord-icon
                                                       src="https://cdn.lordicon.com/bsdkzyjd.json"
@@ -391,6 +437,16 @@
                                                       style="width:20px;height:20px">
                                                          </lord-icon>
                                                           {{ __('Stock Transfer') }}
+                                                     </a>
+
+                                                     <a class="dropdown-item" href="{{ route('gamification.board') }}">
+                                            <lord-icon
+                                            src="https://cdn.lordicon.com/ncmnezgk.json"
+                                                        trigger="morph"
+                                                          state="morph-detach"
+                                                          style="width:20px;height:20px">
+                                                         </lord-icon>
+                                                          {{ __('RsmPlay') }}
                                                      </a>
                                         </div>
                                     </div>
@@ -514,6 +570,7 @@
                 @yield('content')
                 @yield('finassist')
                 @yield('Debts')
+                @yield('rsmplay')
             </div>
 
             <footer class="footer footer-transparent d-print-none">
@@ -563,7 +620,11 @@
             </footer>
         </div>
     </div>
+<!--page loader starts --->
+                                             
+                                               
 
+                                            <!--end of loader snip---
     <!-- Libs JS -->
     @stack('page-libraries')
     <!-- Tabler Core -->

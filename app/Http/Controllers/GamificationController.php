@@ -20,23 +20,23 @@ class GamificationController extends Controller
         $user = Auth::user();
 
         // Fetch data for the gamification hub
-        $achievements = Achievement::where('user_id', $user->id)->get();
-        $missions = Mission::where('user_id', $user->id)->get();
-        $leaderboard = Leaderboard::orderBy('points', 'desc')->take(10)->get();
-        $rewards = Reward::all();
+      //  $achievements = Achievement::where('user_id', $user->id)->get();
+       // $missions = Mission::where('user_id', $user->id)->get();
+       // $leaderboard = Leaderboard::orderBy('points', 'desc')->take(10)->get();
+        //$rewards = Reward::all();
 
         // Fetch progress overview data
-        $progress = DB::table('missions')
-            ->where('user_id', $user->id)
-            ->select(DB::raw('SUM(progress) as progress, SUM(goal) as goal'))
-            ->first();
+      //  $progress = DB::table('missions')
+        //    ->where('user_id', $user->id)
+         //   ->select(DB::raw('SUM(progress) as progress, SUM(goal) as goal'))
+         //   ->first();
 
-        return view('gamification.dashboard', [
-            'achievements' => $achievements,
-            'missions' => $missions,
-            'leaderboard' => $leaderboard,
-            'rewards' => $rewards,
-            'progress' => $progress,
+        return view('gamification.board', [
+          //  'achievement' => $achievements,
+           // 'missions' => $missions,
+           // 'leaderboard' => $leaderboard,
+           // 'rewards' => $rewards,
+           // 'progress' => $progress,
         ]);
     }
 
@@ -62,7 +62,7 @@ class GamificationController extends Controller
         $leaderboard->points += $mission->reward_points;
         $leaderboard->save();
 
-        return redirect()->route('gamification.dashboard')->with('success', 'Mission completed!');
+        return redirect()->route('gamification.board')->with('success', 'Mission completed!');
     }
 
     /**
@@ -80,6 +80,6 @@ class GamificationController extends Controller
         $leaderboard->points -= $reward->cost;
         $leaderboard->save();
 
-        return redirect()->route('gamification.dashboard')->with('success', 'Reward redeemed successfully!');
+        return redirect()->route('gamification.board')->with('success', 'Reward redeemed successfully!');
     }
 }
