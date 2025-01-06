@@ -38,4 +38,11 @@ class Category extends Model
         }
         return $query;
     }
+
+      // for the branches 
+      public function branch()
+      {
+          return $this->belongsTo(Branch::class);
+      }
+      
 }

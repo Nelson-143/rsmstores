@@ -12,7 +12,7 @@
                     aria-expanded="false">
                     <x-icon.vertical-dots />
                 </a>
-                <div class="dropdown-menu dropdown-menu-end" style="">
+                <div class="dropdown-menu dropdown-menu-end" >
                     <a href="{{ route('products.create') }}" class="dropdown-item">
                         <x-icon.plus />
                         {{ __('Create Product') }}

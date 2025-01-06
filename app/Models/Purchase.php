@@ -50,4 +50,10 @@ class Purchase extends Model
     {
         return $this->belongsTo(User::class);
     }
+      // for the branches 
+      public function branch()
+      {
+          return $this->belongsTo(Branch::class);
+      }
+      
 }

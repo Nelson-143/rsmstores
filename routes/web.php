@@ -23,6 +23,11 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FinAssistController;
 use App\http\Controllers\DebtsController;
 use App\Http\Controllers\GamificationController;
+use App\Http\Controllers\StockController;
+use App\Http\Controllers\ExpenseController;
+use App\Http\Controllers\BudgetController;
+use App\Http\Controllers\ReportController;
+use App\Http\Controllers\BranchController;
 //use App\Http\Controllers\dashboard\DashboardController;
 
 /*
@@ -145,6 +150,30 @@ Route::prefix('gamification')->middleware(['auth'])->group(function () {
     Route::get('/RsmPlay', [GamificationController::class, 'index'])->name('gamification.board');
     Route::post('/missions/{id}/complete', [GamificationController::class, 'completeMission'])->name('gamification.mission.complete');
     Route::post('/rewards/{id}/redeem', [GamificationController::class, 'redeemReward'])->name('gamification.reward.redeem');
+});
+
+// Stock Transfer
+Route::get('/stock/transfer', [StockController::class, 'transfer'])->name('stock.transfer');Route::post('/stock/transfer', [StockController::class, 'transferStock'])->name('stock.transfer.post');
+Route::delete('/stock-transfers/{id}', [StockController::class, 'destroy'])->name('stock.transfer.delete');
+// Damaged Products
+Route::get('/stock/damaged', [StockController::class, 'showDamagedForm'])->name('stock.damaged');
+Route::post('/stock/damaged', [StockController::class, 'recordDamaged'])->name('stock.damaged.post');
+
+//  Route for Expense and Budget
+Route::middleware(['auth'])->group(function () {
+    Route::resource('expenses', ExpenseController::class);
+    Route::resource('budgets', BudgetController::class);
+});
+
+// Routes to report
+Route::middleware(['auth'])->group(function () {
+    Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
+    Route::post('/reports/generate', [ReportController::class, 'generate'])->name('reports.generate');
+    Route::patch('/recommendations/{id}/read', [ReportController::class, 'markRecommendationRead'])->name('recommendations.read');
+});
+//routes for branch
+Route::middleware(['auth'])->group(function () {
+    Route::resource('branches', BranchController::class);
 });
 
 

@@ -61,4 +61,21 @@ class Product extends Model
     public function details(){
         return $this->hasMany(OrderDetails::class);
     }
+
+    public function stockTransfers()
+    {
+        return $this->hasMany(StockTransfer::class);
+    }
+
+    public function damagedProducts()
+    {
+        return $this->hasMany(DamagedProduct::class);
+    }
+
+      // for the branches 
+      public function branch()
+      {
+          return $this->belongsTo(Branch::class);
+      }
+      
 }

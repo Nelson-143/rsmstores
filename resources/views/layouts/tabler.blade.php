@@ -52,7 +52,7 @@
             if (window.Tabler) {
                 Tabler.init();
             }
-        }, 2000); // Adjust delay as needed
+        }, 1000); // Adjust delay as needed
     });
 </script>
 
@@ -81,11 +81,13 @@
 
         /* Color for dark mode */
         @media (prefers-color-scheme: dark) {
-            lord-icon {
-                filter: invert(1); /* White in dark mode */
-            }
+        lord-icon {
+            filter: invert(0); /* Black in dark mode */
         }
+    }
     </style>
+
+
 
     <style>
         @import url('https://rsms.me/inter/inter.css');
@@ -120,9 +122,8 @@
                 </button>
                 <h1 class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3">
                     <a href="{{ url('/') }}">
-                        <img src="{{ asset('static/logo2.png') }}" width="1500" height="1500" alt="Alpha"
-                            class="navbar-brand-image">
-                    </a>
+    <img src="{{ asset('static/logo2.png') }}" alt="Alpha" class="navbar-brand-image" style="width: 50px; height: 50px; object-fit: cover;">
+</a>
                 </h1>
                 <div class="navbar-nav flex-row order-md-last">
                     <div class="d-none d-md-flex">
@@ -150,6 +151,96 @@
                             </div>
                         </div>
                     </div>
+                    <!-- the notification panel -->
+                    <div class="nav-item dropdown d-none d-md-flex me-3">
+                <a href="#" class="nav-link px-0" data-bs-toggle="dropdown" tabindex="-1" aria-label="Show notifications">
+                  <!-- Download SVG icon from http://tabler-icons.io/i/bell -->
+                     <lord-icon
+                    src="https://cdn.lordicon.com/lznlxwtc.json"
+                    trigger="hover"
+                    colors="primary:black"
+                     style="width:20px;height:20px">
+                    </lord-icon>
+                  <span class="badge bg-red"></span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-arrow dropdown-menu-end dropdown-menu-card">
+                  <div class="card">
+                    <div class="card-header">
+                      <h3 class="card-title">Last updates</h3>
+                    </div>
+                    <div class="list-group list-group-flush list-group-hoverable">
+                      <div class="list-group-item">
+                        <div class="row align-items-center">
+                          <div class="col-auto"><span class="status-dot status-dot-animated bg-red d-block"></span></div>
+                          <div class="col text-truncate">
+                            <a href="#" class="text-body d-block">Example 1</a>
+                            <div class="d-block text-secondary text-truncate mt-n1">
+                              Change deprecated html tags to text decoration classes (#29604)
+                            </div>
+                          </div>
+                          <div class="col-auto">
+                            <a href="#" class="list-group-item-actions">
+                              <!-- Download SVG icon from http://tabler-icons.io/i/star -->
+                              <svg xmlns="http://www.w3.org/2000/svg" class="icon text-muted" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" /></svg>
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="list-group-item">
+                        <div class="row align-items-center">
+                          <div class="col-auto"><span class="status-dot d-block"></span></div>
+                          <div class="col text-truncate">
+                            <a href="#" class="text-body d-block">Example 2</a>
+                            <div class="d-block text-secondary text-truncate mt-n1">
+                              justify-content:between ⇒ justify-content:space-between (#29734)
+                            </div>
+                          </div>
+                          <div class="col-auto">
+                            <a href="#" class="list-group-item-actions show">
+                              <!-- Download SVG icon from http://tabler-icons.io/i/star -->
+                              <svg xmlns="http://www.w3.org/2000/svg" class="icon text-yellow" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" /></svg>
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="list-group-item">
+                        <div class="row align-items-center">
+                          <div class="col-auto"><span class="status-dot d-block"></span></div>
+                          <div class="col text-truncate">
+                            <a href="#" class="text-body d-block">Example 3</a>
+                            <div class="d-block text-secondary text-truncate mt-n1">
+                              Update change-version.js (#29736)
+                            </div>
+                          </div>
+                          <div class="col-auto">
+                            <a href="#" class="list-group-item-actions">
+                              <!-- Download SVG icon from http://tabler-icons.io/i/star -->
+                              <svg xmlns="http://www.w3.org/2000/svg" class="icon text-muted" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" /></svg>
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="list-group-item">
+                        <div class="row align-items-center">
+                          <div class="col-auto"><span class="status-dot status-dot-animated bg-green d-block"></span></div>
+                          <div class="col text-truncate">
+                            <a href="#" class="text-body d-block">Example 4</a>
+                            <div class="d-block text-secondary text-truncate mt-n1">
+                              Regenerate package-lock.json (#29730)
+                            </div>
+                          </div>
+                          <div class="col-auto">
+                            <a href="#" class="list-group-item-actions">
+                              <!-- Download SVG icon from http://tabler-icons.io/i/star -->
+                              <svg xmlns="http://www.w3.org/2000/svg" class="icon text-muted" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" /></svg>
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown"
@@ -396,44 +487,57 @@
                                         <div class="dropdown-menu-column">
                                             <a class="dropdown-item" href="{{ route('suppliers.index') }}">
                                             <lord-icon
-                                                      src="https://cdn.lordicon.com/zamuzpvp.json"
+                                                      src="https://cdn.lordicon.com/pbrgppbb.json"
                                                         trigger="hover"
+                                                        colors="primary:black"
                                                       style="width:20px;height:20px">
                                                          </lord-icon>
                                                           {{ __('Suppliers') }}
                                                      </a>
                                             <a class="dropdown-item" href="{{ route('customers.index') }}">
                                             <lord-icon
-                                                      src="https://cdn.lordicon.com/shcfcebj.json"
+                                                      src="https://cdn.lordicon.com/iazmohzf.json"
                                                         trigger="hover"
-                                                        state="hover-wave"
+                                                            colors="primary:black"
                                                       style="width:20px;height:20px">
                                                          </lord-icon>
                                                           {{ __('Customers') }}
                                                      </a>
                                             <a class="dropdown-item" href="{{ route('Debts.index') }}">
                                             <lord-icon
-                                                      src="https://cdn.lordicon.com/fqbvgezn.json"
-                                                        trigger="hover"
+                                                src="https://cdn.lordicon.com/xuyycdjx.json"
+                                                trigger="morph"
+                                                colors="primary:black"
+                                                state="morph-card"
                                                       style="width:20px;height:20px">
                                                          </lord-icon>
                                                           {{ __('Debts') }}
                                                      </a>
                                            
-                                                    <a class="dropdown-item" href="{{ route('customers.index') }}">
+                                                    <a class="dropdown-item" href="{{ route('expenses.index') }}">
                                                     <lord-icon
-                                                      src="https://cdn.lordicon.com/bsdkzyjd.json"
-                                                        trigger="hover"
-                                                        state="hover-spending"
+                                                      src="https://cdn.lordicon.com/gjjvytyq.json"
+                                                    trigger="hover"
+                                                    colors="primary:black"
                                                       style="width:20px;height:20px">
                                                          </lord-icon>
                                                           {{ __('Expences') }}
                                                      </a>
+                                                     <a class="dropdown-item" href="{{ route('budgets.index') }}">
+                                                    <lord-icon
+                                                    src="https://cdn.lordicon.com/ncitidvz.json"
+                                                    trigger="hover"
+                                                    colors="primary:black"
+                                                      style="width:20px;height:20px">
+                                                         </lord-icon>
+                                                          {{ __('Budgets') }}
+                                                     </a>
                                                      
-                                                   <a class="dropdown-item" href="{{ route('customers.index') }}">
+                                                   <a class="dropdown-item" href="{{ route('stock.transfer') }}">
                                                   <lord-icon
-                                                      src="https://cdn.lordicon.com/zzjjvkam.json"
+                                                       src="https://cdn.lordicon.com/qnpnzlkk.json"
                                                         trigger="hover"
+                                                        colors="primary:black"
                                                       style="width:20px;height:20px">
                                                          </lord-icon>
                                                           {{ __('Stock Transfer') }}
@@ -441,9 +545,10 @@
 
                                                      <a class="dropdown-item" href="{{ route('gamification.board') }}">
                                             <lord-icon
-                                            src="https://cdn.lordicon.com/ncmnezgk.json"
-                                                        trigger="morph"
-                                                          state="morph-detach"
+                                            src="https://cdn.lordicon.com/jyjslctx.json"
+                                            trigger="morph"
+                                            state="morph-pie-chart"
+                                            colors="primary:black"
                                                           style="width:20px;height:20px">
                                                          </lord-icon>
                                                           {{ __('RsmPlay') }}
@@ -455,7 +560,7 @@
 
                             <!----reports------>
                             <li class="nav-item {{ request()->is('Reports*') ? 'active' : null }}">
-                                <a class="nav-link" href="{{ route('products.index') }}">
+                                <a class="nav-link" href="{{ route('reports.index') }}">
                                     <span
                                         class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/home -->
                                         <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24" 
@@ -510,28 +615,40 @@
 {{--                                                </a> --}}
                                             <a class="dropdown-item" href="{{ route('categories.index') }}">
                                             <lord-icon
-                                                      src="https://cdn.lordicon.com/jprtoagx.json"
+                                                      src="https://cdn.lordicon.com/jnikqyih.json"
                                                         trigger="hover"
+                                                        colors="primary:black"
                                                       style="width:20px;height:20px">
                                                          </lord-icon>
                                                           {{ __('Categories') }}
                                                      </a>
                                             <a class="dropdown-item" href="{{ route('units.index') }}">
                                             <lord-icon
-                                                      src="https://cdn.lordicon.com/pmjabgka.json"
+                                                      src="https://cdn.lordicon.com/jgnvfzqg.json"
                                                         trigger="hover"
+                                                        colors="primary:black"
                                                       style="width:20px;height:20px">
                                                          </lord-icon>
                                                           {{ __('Units') }}
                                                      </a>
 
-                                            <a class="dropdown-item" href="{{ route('units.index') }}">
+                                            <a class="dropdown-item" href="{{ route('admin.team.index') }}">
                                             <lord-icon
-                                                      src="https://cdn.lordicon.com/fqbvgezn.json"
+                                                      src="https://cdn.lordicon.com/hrjifpbq.json"
                                                         trigger="hover"
+                                                        colors="primary:black"
                                                       style="width:20px;height:20px">
                                                          </lord-icon>
                                                           {{ __('Your Team') }}
+                                                     </a>
+                                                     <a class="dropdown-item" href="{{ route('branches.index') }}">
+                                            <lord-icon
+                                                      src="https://cdn.lordicon.com/mjcariee.json"
+                                                        trigger="hover"
+                                                        colors="primary:black"
+                                                      style="width:20px;height:20px">
+                                                         </lord-icon>
+                                                          {{ __('Set Rstores') }}
                                                      </a>
                                         </div>
                                     </div>
@@ -571,6 +688,11 @@
                 @yield('finassist')
                 @yield('Debts')
                 @yield('rsmplay')
+                @yield('stocktrans')
+                @yield('Damage')
+                @yield('matumizi')
+                @yield('budget')
+                @yield('report')
             </div>
 
             <footer class="footer footer-transparent d-print-none">

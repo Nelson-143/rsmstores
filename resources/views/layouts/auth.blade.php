@@ -45,11 +45,11 @@
 
         <div class="page page-center">
             <div class="container container-tight py-4">
-                <div class="text-center mb-4">
-                    <a href="{{ url('/') }}" class="navbar-brand navbar-brand-autodark">
-                        <img src="{{ asset('static/logo2.png') }}" width="1000" height="1000" alt="Tabler" class="navbar-brand-image">
-                    </a>
-                </div>
+              <div class="text-center mb-4">
+    <a href="{{ url('/') }}" class="navbar-brand navbar-brand-autodark">
+        <img src="{{ asset('static/logo2.png') }}" style="width: 200px; height: auto;" alt="Tabler" class="navbar-brand-image">
+    </a>
+</div>
 
                 @include('components.alert')
 

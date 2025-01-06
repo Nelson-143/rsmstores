@@ -1,0 +1,66 @@
+<?php
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+
+class Branch extends Model
+{
+    use HasFactory;
+
+    // Specify the fillable attributes
+    protected $fillable = [
+        'name',
+        'created_by',
+        'status',
+    ];
+
+    // Define relationships to other models
+    public function users()
+    {
+        return $this->hasMany(User::class);
+    }
+
+    public function reports()
+    {
+        return $this->hasMany(Report::class);
+    }
+
+    public function recommendations()
+    {
+        return $this->hasMany(Recommendation::class);
+    }
+
+    public function incomeStatements()
+    {
+        return $this->hasMany(IncomeStatement::class);
+    }
+
+    public function balanceSheets()
+    {
+        return $this->hasMany(BalanceSheet::class);
+    }
+
+    public function cashFlows()
+    {
+        return $this->hasMany(CashFlow::class);
+    }
+
+    public function taxReports()
+    {
+        return $this->hasMany(TaxReport::class);
+    }
+
+    public function roles()
+    {
+        return $this->hasMany(Role::class);
+    }
+
+    public function permissions()
+    {
+        return $this->hasMany(Permission::class);
+    }
+
+  
+    // Add any additional methods or relationships as needed
+}

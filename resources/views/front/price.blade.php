@@ -99,7 +99,7 @@
                 <div class="stg-row">
                     <div class="stg-col-6 stg-offset-3 align-center stg-tp-col-10 stg-tp-offset-1">
                         <h1 class="bringer-page-title" data-appear="fade-up" data-unload="fade-up">Pricing</h1>
-                        <p class="bringer-large-text" data-appear="fade-up" data-delay="100" data-unload="fade-up">We help businesses of all sizes achieve their goals 🏆. We believe every brand, big or small, deserves to shine.</p>
+                        <p class="bringer-large-text" data-appear="fade-up" data-delay="100" data-unload="fade-up">We help businesses of all sizes achieve their goals 🏆. We believe every business, big or small, deserves to shine ✨.</p>
                     </div>
                 </div>
             </section>
@@ -142,7 +142,7 @@
                 <!-- Section Title -->
                 <div class="stg-row stg-bottom-gap-l">
                     <div class="stg-col-6 stg-offset-3 align-center">
-                        <h2 data-split-appear="fade-up" data-unload="fade-up">Here's how we make brand magic accessible</h2>
+                        <h2 data-split-appear="fade-up" data-unload="fade-up">How we make your Business a Blaze 🔥</h2>
                     </div>
                 </div>
                 <!-- Services Grid -->
@@ -154,7 +154,7 @@
                     </div>
                     <!-- Item 02 -->
                     <div class="bringer-block stg-aspect-square stg-vertical-space-between">
-                        <h5>User-Friendly Interface 🖥️✨<span class="bringer-accent" ></span></h5>
+                        <h5>User-Friendly Interface ✨<span class="bringer-accent" ></span></h5>
                         <p class="bringer-large-text bringer-tp-normal-text" >Roman Stock Manager provides extensive & Intuitive design for easy navigation and quick mastery, suitable for all skill levels.</p>
                     </div>
                     <!-- Item 03 -->
@@ -193,7 +193,7 @@
                             <h6>Logical Plan 📦 <span class="bringer-accent">.</span></h6>
                             <p> #JoinLogicalPlan 🌟</p>
                             <div class="bringer-price-wrapper">
-                                <div class="bringer-label">Starting at,per month</div>
+                                <div class="bringer-label">Per month</div>
                                 <h2>Tsh.25,000/=</h2>
                             </div>
                             <div class="bringer-label bringer-highlight">What is included</div>
@@ -214,7 +214,7 @@
                             <h6>Beta Plan 📦<span class="bringer-accent">.</span></h6>
                             <p>#JoinBetaProPlan 🚀</p>
                             <div class="bringer-price-wrapper">
-                                <div class="bringer-label">Starting at,per month</div>
+                                <div class="bringer-label">Per month</div>
                                 <h2>Tsh.35,000/=</h2>
                             </div>
                             <div class="bringer-label bringer-highlight">What is included</div>
@@ -236,7 +236,7 @@
                             <h6>Advanced Plan 🌍<span class="bringer-accent">.</span></h6>
                             <p>#JoinAdvanceWeb</p>
                             <div class="bringer-price-wrapper">
-                                <div class="bringer-label">Starting at,Per month</div>
+                                <div class="bringer-label">Per month</div>
                                 <h2>Tsh.45,000/=</h2>
                             </div>
                             <div class="bringer-label bringer-highlight">What is included</div>
@@ -262,7 +262,7 @@
                             <h6>Simple Plan📦<span class="bringer-accent">.</span></h6>
                             <p>#JoinSimplePlan 🎉</p>
                             <div class="bringer-price-wrapper">
-                                <div class="bringer-label">Starting at, per month</div>
+                                <div class="bringer-label">per month</div>
                                 <h2>FREE</h2>
                             </div>
                             <div class="bringer-label bringer-highlight">What is included</div>

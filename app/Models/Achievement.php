@@ -21,4 +21,9 @@ class Achievement extends Model
     {
         return $this->belongsToMany(User::class, 'user_achievements')->withTimestamps();
     }
+    public function branch()
+{
+    return $this->belongsTo(Branch::class);
+}
+
 }

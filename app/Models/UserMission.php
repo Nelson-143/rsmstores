@@ -26,4 +26,10 @@ class UserMission extends Model
     {
         return $this->belongsTo(Mission::class);
     }
+      // for the branches 
+      public function branch()
+      {
+          return $this->belongsTo(Branch::class);
+      }
+      
 }

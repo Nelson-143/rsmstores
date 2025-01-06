@@ -43,5 +43,11 @@ class Supplier extends Model
         return 'uuid'; // This ensures that the model is resolved using the UUID
     }
 
+      // for the branches 
+      public function branch()
+      {
+          return $this->belongsTo(Branch::class);
+      }
+      
 
 }

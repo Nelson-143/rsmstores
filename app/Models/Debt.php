@@ -17,6 +17,12 @@ class Debt extends Model
 {
     return $this->belongsTo(Customer::class, 'customer_id');
 }
+  // for the branches 
+  public function branch()
+  {
+      return $this->belongsTo(Branch::class);
+  }
+  
 
 
 

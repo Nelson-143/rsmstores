@@ -59,4 +59,11 @@ class Order extends Model
             ->orWhere('order_status', 'like', "%{$value}%")
             ->orWhere('payment_type', 'like', "%{$value}%");
     }
+
+      // for the branches 
+      public function branch()
+      {
+          return $this->belongsTo(Branch::class);
+      }
+      
 }

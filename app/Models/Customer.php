@@ -41,7 +41,12 @@ class Customer extends Model
     {
         return $this->hasMany(Debt::class, 'customer_id');
     }
-    
+      // for the branches 
+      public function branch()
+      {
+          return $this->belongsTo(Branch::class);
+      }
+      
 
 
 }

@@ -10,7 +10,8 @@ use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\TeamController;
 Route::middleware('guest')->group(function () {
     Route::get('register', [RegisteredUserController::class, 'create'])->name('register');
     Route::post('register', [RegisteredUserController::class, 'store']);
@@ -42,3 +43,15 @@ Route::middleware('auth')->group(function () {
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
         ->name('logout');
 });
+
+
+
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/admin/team', [TeamController::class, 'index'])->name('admin.team.index');
+    Route::post('/admin/team/assign-role/{user}', [RoleController::class, 'assignRole'])->name('admin.team.assignRole');
+    Route::post('/admin/team/revoke-role/{user}', [RoleController::class, 'revokeRole'])->name('admin.team.revokeRole');
+    Route::post('/admin/team/assign-permission/{role}', [RoleController::class, 'assignPermission'])->name('admin.team.assignPermission');
+    Route::post('/admin/team/revoke-permission/{role}', [RoleController::class, 'revokePermission'])->name('admin.team.revokePermission');
+});
+
+

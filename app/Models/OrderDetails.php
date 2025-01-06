@@ -35,4 +35,11 @@ class OrderDetails extends Model
     public function order(){
         return $this->belongsTo(Order::class);
     }
+
+      // for the branches 
+      public function branch()
+      {
+          return $this->belongsTo(Branch::class);
+      }
+      
 }

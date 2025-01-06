@@ -83,4 +83,11 @@ class QuotationDetails extends Model
             set: fn ($value) => $value * 100,
         );
     }
+
+      // for the branches 
+      public function branch()
+      {
+          return $this->belongsTo(Branch::class);
+      }
+      
 }

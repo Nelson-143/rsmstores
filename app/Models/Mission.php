@@ -21,4 +21,10 @@ class Mission extends Model
     {
         return $this->hasMany(UserMission::class);
     }
+      // for the branches 
+      public function branch()
+      {
+          return $this->belongsTo(Branch::class);
+      }
+      
 }
