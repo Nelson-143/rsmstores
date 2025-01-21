@@ -2,8 +2,8 @@
 
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\ConfirmablePasswordController;
-use App\Http\Controllers\Auth\EmailVerificationNotificationController;
-use App\Http\Controllers\Auth\EmailVerificationPromptController;
+
+
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
@@ -12,6 +12,7 @@ use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TeamController;
+use App\Http\Controllers\TeamLogsController;
 Route::middleware('guest')->group(function () {
     Route::get('register', [RegisteredUserController::class, 'create'])->name('register');
     Route::post('register', [RegisteredUserController::class, 'store']);
@@ -24,14 +25,9 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
-    Route::get('verify-email', EmailVerificationPromptController::class)->name('verification.notice');
-    Route::get('verify-email/{id}/{hash}', VerifyEmailController::class)
-        ->middleware(['signed', 'throttle:6,1'])
-        ->name('verification.verify');
+  
 
-    Route::post('email/verification-notification', [EmailVerificationNotificationController::class, 'store'])
-        ->middleware('throttle:6,1')
-        ->name('verification.send');
+
 
     Route::get('confirm-password', [ConfirmablePasswordController::class, 'show'])
         ->name('password.confirm');
@@ -46,12 +42,24 @@ Route::middleware('auth')->group(function () {
 
 
 
-Route::middleware(['auth', 'admin'])->group(function () {
+Route::middleware(['auth',])->group(function () {
     Route::get('/admin/team', [TeamController::class, 'index'])->name('admin.team.index');
+    Route::get('/admin/team/create', [TeamController::class, 'create'])->name('admin.team.create');
+    Route::post('/admin/team', [TeamController::class, 'store'])->name('admin.team.store');
+
+
+    Route::get('/admin/team/Logs', [TeamLogsController::class, 'showTeamLogs'])->name('admin.team.logs.show');    
+    Route::put('/admin/team/{user}', [TeamController::class, 'update'])->name('admin.team.update');
     Route::post('/admin/team/assign-role/{user}', [RoleController::class, 'assignRole'])->name('admin.team.assignRole');
     Route::post('/admin/team/revoke-role/{user}', [RoleController::class, 'revokeRole'])->name('admin.team.revokeRole');
     Route::post('/admin/team/assign-permission/{role}', [RoleController::class, 'assignPermission'])->name('admin.team.assignPermission');
     Route::post('/admin/team/revoke-permission/{role}', [RoleController::class, 'revokePermission'])->name('admin.team.revokePermission');
 });
+
+/*
+Route::group(['middleware' => ['role:SuperAdmin']], function () {
+    Route::get('/admin', [AdminController::class, 'index']);
+});
+*/
 
 

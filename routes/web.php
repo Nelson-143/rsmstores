@@ -28,6 +28,8 @@ use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\BudgetController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\BranchController;
+use App\Http\Controllers\OnboardingController;
+use App\Http\Controllers\Auth\EmailVerificationController;
 //use App\Http\Controllers\dashboard\DashboardController;
 
 /*
@@ -83,14 +85,16 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/pos', [PosController::class, 'index'])->name('pos.index');
     Route::post('/pos/cart/add', [PosController::class, 'addCartItem'])->name('pos.addCartItem');
     Route::post('/pos/cart/update/{rowId}', [PosController::class, 'updateCartItem'])->name('pos.updateCartItem');
-    Route::delete('/pos/cart/delete/{rowId}', [PosController::class, 'deleteCartItem'])->name('pos.deleteCartItem');
-
+    Route::post('/pos/cart/delete', [PosController::class, 'deleteCartItem'])->name('pos.deleteCartItem');
+    
     //Route::post('/pos/invoice', [PosController::class, 'createInvoice'])->name('pos.createInvoice');
     Route::post('/invoice/create', [InvoiceController::class, 'create'])->name('invoice.create');
     // Route Orders
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
     Route::get('/orders/pending', OrderPendingController::class)->name('orders.pending');
     Route::get('/orders/complete', OrderCompleteController::class)->name('orders.complete');
+    // web.php
+    Route::post('/set-active-customer', [OrderController::class, 'setActiveCustomer'])->name('setActiveCustomer');
 
     Route::get('/orders/create', [OrderController::class, 'create'])->name('orders.create');
     Route::post('/orders/store', [OrderController::class, 'store'])->name('orders.store');
@@ -176,6 +180,41 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('branches', BranchController::class);
 });
 
+//route for terms&policy
+Route::get('Terms&Policy', function () {
+    return view('terms&policy.index');   // The  team   page
+})->name('index.route');
+
+// route to Onboarding
+Route::get('/onboarding', [OnboardingController::class, 'showOnboarding'])->name('auth.onboarding');
+
+//route  to verify email
+// Group routes with shared middleware
+Route::middleware(['auth', 'throttle:6,1'])->group(function () {
+    // Verification notice page
+    Route::get('auth/email/verify', [EmailVerificationController::class, 'showVerificationForm'])
+        ->name('verification.notice');
+
+    // Resend verification email
+    Route::post('auth/email/verification-notification', [EmailVerificationController::class, 'sendVerification'])
+        ->name('verification.send');
+});
+
+// Route for token-based email verification (no authentication required)
+Route::get('auth/email/verify/{token}', [EmailVerificationController::class, 'verify'])
+    ->middleware(['guest', 'throttle:6,1']) // Ensure unauthenticated users only
+    ->name('verification.verify');
+// see the supplier in the dashboard
+Route::get('/purchases-by-supplier', [PurchaseController::class, 'getPurchasesBySupplier'])->name('purchases.bySupplier');
+Route::get('/purchases-by-category', [PurchaseController::class, 'getPurchasesByCategory'])->name('purchases.byCategory');
+//for notifications 
+use App\Http\Controllers\NotificationController;
+Route::middleware(['auth'])->group(function () {
+    Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
+    Route::post('/notifications/{id}/read', [NotificationController::class, 'markRead'])->name('notifications.markRead');
+    Route::post('/notifications/mark-all-read', [NotificationController::class, 'markAllRead'])->name('notifications.markAllRead');
+});
+
 
 
 //-------------THE ROUTES TO THE Roman Website place ,WELCOMES ----------------
@@ -206,9 +245,10 @@ Route::get('/Our Team', function () {
 
 
 // the payments portal
+/*
 Route::get('/Payments', function () {
     return view('paymentsportal.payments');   // The  payments page
-})->name('payments.route');
+})->name('payments.route'); */
 
 
 require __DIR__.'/auth.php';

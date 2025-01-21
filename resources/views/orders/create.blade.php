@@ -17,6 +17,22 @@
                             <x-action.close route="{{ route('orders.index') }}"/>
                         </div>
                     </div>
+                    <!-- Customer Switcher -->
+                    
+                        
+                            <div class="card-body">
+                                <iv class="d-flex justify-content-between">
+                                    @for ($i = 1; $i <= 5; $i++)
+                                        <button 
+                                            class="btn btn-{{ $i === 1 ? 'success' : 'secondary' }} customer-switcher" 
+                                            data-customer-id="customer{{ $i }}"
+                                            id="customer-tab-{{ $i }}">
+                                            Customer {{ $i }}
+                                        </button>
+                                    @endfor
+                                </div>
+                           
+                       
                     <form action="{{ route('invoice.create') }}" method="POST">
                     @csrf
                         <div class="card-body">
@@ -48,7 +64,8 @@
                                     </label>
 
                                     <select class="form-select form-control-solid @error('customer_id') is-invalid @enderror" id="customer_id" name="customer_id">
-                                        <option selected="" disabled="">
+                                    <option value="pass_by" selected>PASS BY</option>
+                                    <option selected="" disabled="">
                                             Select a customer:
                                         </option>
 
@@ -213,12 +230,14 @@
                 <div class="card mb-4 mb-xl-0">
                     <div class="card-header">
                         List Product
+                        <input type="text" class="form-control float-end" id="product-search" placeholder="Search for products...">
                     </div>
                     <div class="card-body">
                         <div class="col-lg-12">
                             <div class="table-responsive">
                                 <table class="table table-striped table-bordered align-middle">
                                     <thead class="thead-light">
+                                        
                                         <tr>
                                             {{--- <th scope="col">No.</th> ---}}
                                             <th scope="col">Name</th>
@@ -229,6 +248,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                    <tbody id="product-list">
                                         @forelse ($products as $product)
                                         <tr>
 {{--                                            --}}{{-----}}
@@ -288,4 +308,19 @@
 
 @pushonce('page-scripts')
     <script src="{{ asset('assets/js/img-preview.js') }}"></script>
+    <script>
+    document.querySelectorAll('.customer-switcher').forEach(button => {
+        button.addEventListener('click', function () {
+            document.querySelectorAll('.customer-switcher').forEach(btn => btn.classList.remove('btn-success'));
+            this.classList.add('btn-success');
+        });
+    });
+
+    document.getElementById('product-search').addEventListener('input', function () {
+        const query = this.value.toLowerCase();
+        document.querySelectorAll('#product-list tr').forEach(row => {
+            row.style.display = row.textContent.toLowerCase().includes(query) ? '' : 'none';
+        });
+    });
+</script>
 @endpushonce

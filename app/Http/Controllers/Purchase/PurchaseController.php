@@ -349,4 +349,27 @@ class PurchaseController extends Controller
             $writer->save('php://output');
         }, $filename);
     }
+// for pie chart in dashboard
+    public function getPurchasesBySupplier()
+{
+    $userId = auth()->id(); // Get the logged-in user ID
+
+    // Fetch total purchase amounts grouped by supplier
+    $data = Purchase::select('supplier_id', DB::raw('SUM(total_amount) as total_amount'))
+        ->where('user_id', $userId)
+        ->groupBy('supplier_id')
+        ->with('supplier:name,id') // Eager load supplier name
+        ->get();
+
+    // Format the data for the pie chart
+    $chartData = $data->map(function ($purchase) {
+        return [
+            'label' => $purchase->supplier->name,
+            'value' => $purchase->total_amount,
+        ];
+    });
+
+    return response()->json($chartData); // Return data in JSON format
+}
+
 }

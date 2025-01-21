@@ -24,6 +24,22 @@
                         <i class="ti ti-plus"></i> Add New Member
                     </button>
                 </div>
+                <div class="card-actions btn-group">
+            <div class="dropdown">
+                <a href="#" class="btn-action dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true"
+                    aria-expanded="false">
+                    <x-icon.vertical-dots />
+                </a>
+                <div class="dropdown-menu dropdown-menu-end" >
+                
+                    <a href="{{ route('admin.team.logs.show') }}" class="dropdown-item">
+                        <x-icon.plus />
+                        {{ __('View Team`s Logs') }}
+                    </a>
+                   
+                </div>
+            </div>
+        </div>
             </div>
         </div>
 
@@ -92,7 +108,7 @@
                 <h5 class="modal-title" id="addMemberModalLabel">Add New Member</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form method="POST" action="{{ route('team.add') }}">
+            <form method="POST" action="{{ route('admin.team.create') }}">
                 @csrf
                 <div class="modal-body">
                     <div class="mb-3">
@@ -125,7 +141,7 @@
                 <h5 class="modal-title" id="editMemberModalLabel">Edit Member</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form method="POST" action="{{ route('team.edit') }}">
+            <form method="POST" action="#">
                 @csrf
                 <div class="modal-body">
                     <div class="mb-3">
@@ -149,3 +165,4 @@
         </div>
     </div>
 </div>
+@endsection

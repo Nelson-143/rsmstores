@@ -235,4 +235,28 @@ class OrderController extends Controller
             ])
             ->with('success', 'Order has been canceled!');
     }
+    public function setActiveCustomer(Request $request)
+{
+    $request->validate([
+        'active_customer' => 'required|integer|min:0|max:4'
+    ]);
+
+    session(['active_customer' => $request->active_customer]);
+
+    return response()->json(['success' => true]);
+}
+public function updateCartItem(Request $request, $rowId)
+{
+    $qty = $request->input('qty');
+    // Update cart logic
+    return response()->json(['cartContent' => view('partials.cart-content', compact('cart'))->render()]);
+}
+
+public function deleteCartItem(Request $request)
+{
+    $rowId = $request->input('rowId');
+    // Delete cart item logic
+    return response()->json(['success' => true, 'cartContent' => view('partials.cart-content', compact('cart'))->render()]);
+}
+
 }

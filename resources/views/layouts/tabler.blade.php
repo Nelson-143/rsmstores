@@ -2,6 +2,8 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#2196f3">
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
@@ -52,7 +54,7 @@
             if (window.Tabler) {
                 Tabler.init();
             }
-        }, 1000); // Adjust delay as needed
+        }, 100); // Adjust delay as needed
     });
 </script>
 
@@ -243,18 +245,14 @@
               </div>
 
                     <div class="nav-item dropdown">
-                        <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown"
-                            aria-label="Open user menu">
-                            <span class="avatar avatar-rounded shadow-none "
-                    style="background-image: url('{{ Auth::user()->photo ? asset('storage/profile/' . Auth::user()->photo) : asset('assets/img/illustrations/profiles/admin.jpg') }}')">
-                </span> 
-              
-
-                            <div class="d-none d-xl-block ps-2">
-                                <div>{{ Auth::user()->name }}</div>
-                                <div class="mt-1 small text-muted">Admin</div>
-                            </div>
-                        </a>
+                    <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown" aria-label="Open user menu">
+    <span class="avatar avatar-rounded shadow-none" style="background-image: url('{{ Auth::user()->photo ? asset('storage/profile/' . Auth::user()->photo) : asset('assets/img/illustrations/profiles/admin.jpg') }}'); background-size: cover; background-position: center; border-radius: 50%; width: 40px; height: 40px; display: inline-block;">
+    </span>
+    <div class="d-none d-xl-block ps-2">
+        <div>{{ Auth::user()->name }}</div>
+        <div class="mt-1 small text-muted">Admin</div>
+    </div>
+</a>
                         <div class="dropdown-menu">
                             <a href="{{ route('profile.edit') }}" class="dropdown-item">
                                 <svg xmlns="http://www.w3.org/2000/svg"
@@ -463,7 +461,7 @@
                                 </a>
                             </li>
                             <li
-                                class="nav-item dropdown {{ request()->is('suppliers*', 'customers*') ? 'active' : null }}">
+                                class="nav-item dropdown {{ request()->is('suppliers*', 'customers*','Debts*','expences*','stock*','budgets*','gamification*') ? 'active' : null }}">
                                 <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown"
                                     data-bs-auto-close="outside" role="button" aria-expanded="false">
                                     <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -558,20 +556,25 @@
                                 </div>
                             </li>
 
-                            <!----reports------>
-                            <li class="nav-item {{ request()->is('Reports*') ? 'active' : null }}">
-                                <a class="nav-link" href="{{ route('reports.index') }}">
-                                    <span
-                                        class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/home -->
-                                        <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24" 
-                                         fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round" 
-                                          stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-chart-pie"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 3.2a9 9 0 1 0 10.8 10.8a1 1 0 0 0 -1 -1h-6.8a2 2 0 0 1 -2 -2v-7a.9 .9 0 0 0 -1 -.8" /><path d="M15 3.5a9 9 0 0 1 5.5 5.5h-4.5a1 1 0 0 1 -1 -1v-4.5" /></svg>
-                                    </span>
-                                    <span class="nav-link-title">
-                                        {{ __('Reports') }}
-                                    </span>
-                                </a>
-                            </li>
+                                            <!-- Reports -->
+                    <!--@canany(['superadmin', 'admin'], auth()->user())--->
+                    <!--@endcanany--->
+                    <li class="nav-item {{ request()->is('reports*') ? 'active' : null }}">
+                        <a class="nav-link" href="{{ route('reports.index') }}">
+                            <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-chart-pie">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                    <path d="M10 3.2a9 9 0 1 0 10.8 10.8a1 1 0 0 0 -1 -1h-6.8a2 2 0 0 1 -2 -2v-7a.9 .9 0 0 0 -1 -.8" />
+                                    <path d="M15 3.5a9 9 0 0 1 5.5 5.5h-4.5a1 1 0 0 1 -1 -1v-4.5" />
+                                </svg>
+                            </span>
+                            <span class="nav-link-title">
+                                {{ __('Reports') }}
+                            </span>
+                        </a>
+                    </li>
+                  
+
                      <!----FinAssist---->
                     <li class="nav-item {{ request()->is('finassist*') ? 'active' : null }}">
                                 <a class="nav-link" href="{{ route('finassist') }}">
@@ -648,9 +651,10 @@
                                                         colors="primary:black"
                                                       style="width:20px;height:20px">
                                                          </lord-icon>
-                                                          {{ __('Set Rstores') }}
+                                                          {{ __('Set Branch') }}
                                                      </a>
                                         </div>
+                                    
                                     </div>
                                 </div>
                             </li>

@@ -21,6 +21,8 @@ class Kernel extends HttpKernel
         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
+        \BeyondCode\QueryDetector\QueryDetectorMiddleware::class,
+    
     ];
 
     /**
@@ -68,6 +70,11 @@ class Kernel extends HttpKernel
     protected $routeMiddleware = [
         // other middlewares
         'admin' => \App\Http\Middleware\AdminMiddleware::class,
+        'superadmin' => \App\Http\Middleware\SuperAdmin::class,
+        'role' => \App\Http\Middleware\RoleMiddleware::class,
+        'chief.auth' => \App\Http\Middleware\ChiefAuthMiddleware::class,
     ];
+
+    
     
 }

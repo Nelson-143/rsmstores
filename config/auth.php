@@ -40,6 +40,11 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+
+        'filament' => [
+            'driver' => 'session',
+            'provider' => 'users',
+        ],
     ],
 
     /*
@@ -111,5 +116,11 @@ return [
     */
 
     'password_timeout' => 10800,
+
+    'chief' => [
+    'email' => env('CHIEF_ADMIN_EMAIL'),
+    'password' => env('CHIEF_ADMIN_PASSWORD_HASH'), // Store the hashed password
+    'user_id' => env('CHIEF_ADMIN_USER_ID', 1),
+],
 
 ];

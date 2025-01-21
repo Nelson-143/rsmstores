@@ -98,6 +98,13 @@ public function getIsAdminAttribute()
   {
       return $this->belongsTo(Branch::class);
   }
-  
-
+  public function emailVerification()
+  {
+      return $this->hasOne(EmailVerification::class);
+  }
+  public function notifications()
+  {
+      return $this->hasMany(Notification::class, 'notifiable_id')->where('notifiable_type', self::class);
+  }
+ 
 }

@@ -16,7 +16,7 @@ class StockTransfer extends Model
         'quantity', 
         'status'
     ];
-
+    
     public function product()
     {
         return $this->belongsTo(Product::class);
@@ -28,7 +28,6 @@ class StockTransfer extends Model
           return $this->belongsTo(Branch::class);
       }
       
-
 
 
 }

@@ -86,7 +86,7 @@
                        class="form-check-input @error('terms-of-service') is-invalid @enderror"
                 >
                 <span class="form-check-label">
-                    Agree the <a href="./terms-of-service.html" tabindex="-1">
+                    Agree the <a href="{{ route('index.route') }}" tabindex="-1">
                         terms and policy</a>.
                 </span>
             </label>

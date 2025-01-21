@@ -1,7 +1,7 @@
 @extends('layouts.tabler')
 
 @section('title')
-    RsmPlay
+    RsmPlay⚡
 @endsection
 
 @section('me')
@@ -10,9 +10,23 @@
 
 @section('rsmplay')
 
-<div style="text-align: center;">
-<svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-directions"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 21v-4" /><path d="M12 13v-4" /><path d="M12 5v-2" /><path d="M10 21h4" /><path d="M8 5v4h11l2 -2l-2 -2z" /><path d="M14 13v4h-8l-2 -2l2 -2z" /></svg>
-    <h1>Sorry, This Site is still in Production.</h1>
-</div>
-
+<div class="page page-center">
+      <div class="container-tight py-4">
+        <div class="empty">
+          <div class="empty-img"><img src="https://tabler.io/_next/image?url=%2Fillustrations%2Fdark%2Fcomputer-fix.png&w=800&q=75"/>
+          </div>
+          <p class="empty-title">It's Not You, It's Us</p>
+          <p class="empty-subtitle text-secondary">
+              We apologize for the inconvenience. This site is still in production, and you will be notified when it is ready. Thank you for your understanding,Champ😎!
+          </p>
+          <div class="empty-action">
+            <a href="{{ route('dashboard') }}" class="btn btn-primary">
+              <!-- Download SVG icon from http://tabler-icons.io/i/arrow-left -->
+              <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l14 0" /><path d="M5 12l6 6" /><path d="M5 12l6 -6" /></svg>
+              Take me home
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
 @endsection

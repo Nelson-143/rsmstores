@@ -29,8 +29,9 @@
             @csrf
             <div class="row">
                 <div class="col-md-3">
-                    <label for="product_id" class="form-label">Product</label>
-     <select name="product_id" class="form-control" required>
+                <label for="product_id" class="form-label">Product</label>
+<select name="product_id" class="form-control" required>
+    <option value="">Select Product</option>
     @if(isset($products))
         @foreach ($products as $product)
             <option value="{{ $product->id }}">{{ $product->name }}</option>
@@ -75,14 +76,16 @@
                 @forelse ($stockTransfers ?? [] as $transfer)
     <tr>
     <td class="align-middle text-center">{{ $loop->iteration }}</td>
-                            <td class="align-middle text-center">{{ $transfer->product->name }}</td>
-                            <td class="align-middle text-center">{{ $transfer->from_location }}</td>
-                            <td class="align-middle text-center">{{ $transfer->to_location }}</td>
-                            <td class="align-middle text-center">{{ $transfer->quantity }}</td>
-                            <td class="align-middle text-center">{{ $transfer->created_at->format('Y-m-d') }}</td>
-                            <td class="align-middle text-center">
-            <x-button.delete class="btn-icon" 
-                route="{{ route('stock.transfer.delete', $transfer->id ?? '') }}" 
+    <td class="align-middle text-center">{{ $transfer->product->name ?? 'N/A' }}</td>
+<td class="align-middle text-center">{{ $transfer->from_location ?? 'N/A' }}</td>
+<td class="align-middle text-center">{{ $transfer->to_location ?? 'N/A' }}</td>
+<td class="align-middle text-center">{{ $transfer->quantity ?? 0 }}</td>
+<td class="align-middle text-center">{{ $transfer->created_at ? $transfer->created_at->format('Y-m-d') : 'N/A' }}</td>
+<td class="align-middle text-center">
+    @if($transfer && $transfer->id)
+        <x-button.delete class="btn-icon" 
+            route="{{ route('stock.transfer.delete', $transfer->id) }}"
+    @endif 
                 onclick="return confirm('Are you sure to delete this transfer?')" />
         </td>
     </tr>
