@@ -14,8 +14,8 @@ Pricing|Roman Stock Manager
             <section class="backlight-bottom">
                 <div class="stg-row">
                     <div class="stg-col-6 stg-offset-3 align-center stg-tp-col-10 stg-tp-offset-1">
-                        <h1 class="bringer-page-title" data-appear="fade-up" data-unload="fade-up">Pricing</h1>
-                        <p class="bringer-large-text" data-appear="fade-up" data-delay="100" data-unload="fade-up">We help businesses of all sizes achieve their goals 🏆. We believe every business, big or small, deserves to shine ✨.</p>
+                        <h1 class="bringer-page-title" data-appear="fade-up" data-unload="fade-up">Champion-Level Solutions 😎</h1>
+                        <p class="bringer-large-text" data-appear="fade-up" data-delay="100" data-unload="fade-up">Unlock your business potential with packages designed for winners. Choose your path to victory! 🚀</p>
                     </div>
                 </div>
             </section>
@@ -30,9 +30,9 @@ Pricing|Roman Stock Manager
                     </div>
                     <div class="stg-col-6 stg-vertical-space-between" data-appear="fade-left" data-unload="fade-right">
                         <div>
-                            <h2>Ignite Your Business Fire🔥</h2>
-                            <p class="bringer-large-text">Unleashing the full potential of your inventory management has never been more attainable. Forget one-size-fits-all solutions and opaque pricing models.</p>
-                            <p>At Roman Stock Manager, we believe in customizing solutions to fit your specific needs and budget. Your business is unique, and your pricing plan should reflect that. 📊✨.</p>
+                            <h2>Level Up Your Business Game 🔥</h2>
+                            <p class="bringer-large-text">Ready to dominate your market? Our champion-tested solutions are designed to transform your business operations into a well-oiled machine.</p>
+                            <p>Don't let outdated systems hold you back. Join thousands of successful businesses who've already claimed their competitive edge with Roman Stock Manager. Time to become unstoppable! 💪</p>
                         </div>
                         <div class="tp-align-right">
                             <a href="{{ route('contact.route') }}" class="bringer-icon-link">
@@ -58,25 +58,25 @@ Pricing|Roman Stock Manager
                 <!-- Section Title -->
                 <div class="stg-row stg-bottom-gap-l">
                     <div class="stg-col-6 stg-offset-3 align-center">
-                        <h2 data-split-appear="fade-up" data-unload="fade-up">How we make your Business a Blaze 🔥</h2>
+                        <h2 data-split-appear="fade-up" data-unload="fade-up">Transform Your Business Into a Champion 🏆</h2>
                     </div>
                 </div>
                 <!-- Services Grid -->
                 <div class="bringer-grid-3cols bringer-tp-grid-2cols bringer-tp-stretch-last-item" data-stagger-appear="fade-up" data-delay="100" data-stagger-unload="fade-up">
                     <!-- Item 01 -->
                     <div class="bringer-block stg-aspect-square stg-vertical-space-between">
-                        <h5>Transparent Pricing 💲<span class="bringer-accent">.</span></h5>
-                        <p class="bringer-large-text bringer-tp-normal-text" >Roman Stock Manager offers Clear, upfront pricing with no hidden fees, ensuring you know exactly what you're paying for.</p>
+                        <h5>Unbeatable Value 💎<span class="bringer-accent">.</span></h5>
+                        <p class="bringer-large-text bringer-tp-normal-text">Maximum ROI with our competitive pricing. Watch your investment turn into massive business gains!</p>
                     </div>
                     <!-- Item 02 -->
                     <div class="bringer-block stg-aspect-square stg-vertical-space-between">
-                        <h5>User-Friendly Interface ✨<span class="bringer-accent" ></span></h5>
-                        <p class="bringer-large-text bringer-tp-normal-text" >Roman Stock Manager provides extensive & Intuitive design for easy navigation and quick mastery, suitable for all skill levels.</p>
+                        <h5>Champion-Level Features 🏅<span class="bringer-accent"></span></h5>
+                        <p class="bringer-large-text bringer-tp-normal-text">Every tool you need to dominate your market, packaged for peak performance.</p>
                     </div>
                     <!-- Item 03 -->
                     <div class="bringer-block stg-aspect-square stg-vertical-space-between">
-                        <h5> Comprehensive Support and Training 📚💡<span class="bringer-accent">.</span></h5>
-                        <p class="bringer-large-text" >Roman Stock Manager offers an Extensive resources, including documentation, tutorials, and 24/7 support for optimal use</p>
+                        <h5>24/7 Victory Support 🎯<span class="bringer-accent">.</span></h5>
+                        <p class="bringer-large-text">Expert guidance whenever you need it. We're here to ensure your success!</p>
                     </div>
                 </div>
             </section>
@@ -106,68 +106,62 @@ Pricing|Roman Stock Manager
                     <div class="swiper-wrapper">
                         <!-- Carousel Item 01 -->
                         <div class="bringer-block bringer-price-table swiper-slide">
-                            <h6>Logical Plan 📦 <span class="bringer-accent">.</span></h6>
-                            <p> #JoinLogicalPlan 🌟</p>
+                            <h6>Starter Champion 🌟<span class="bringer-accent">.</span></h6>
+                            <p>#StartYourVictory</p>
                             <div class="bringer-price-wrapper">
-                                <div class="bringer-label">Per month</div>
+                                <div class="bringer-label">Start winning today</div>
                                 <h2>Tsh.25,000/=</h2>
                             </div>
-                            <div class="bringer-label bringer-highlight">What is included</div>
+                            <div class="bringer-label bringer-highlight">Begin Your Journey</div>
                             <ul class="bringer-marked-list">
-                                <li>Advanced Inventory Management 📦</li>
-                                <li>Enhanced Sales & Invoice Management 💸</li>
-                                <li>Comprehensive Budget Management 💰</li>
-                                <li>Enhanced Support and Maintenance 🔧</li>
-                                <li>Advanced Analytics and Reporting 📊</li> 
-                                <li>Minimal customer Dept contol 🧾</li>
-                                <li>1-2 Accounts</li>
+                                <li>Essential Victory Tools 🎯</li>
+                                <li>Basic Sales Command Center 💪</li>
+                                <li>Basic Support and Maintenance 🔧</li>
+                                <li>Starter Performance Analytics 📊</li>
+                                <li>Core Support System 🛡️</li>
+                                <li>Single Commander Access 👤</li>
                             </ul>
-                            <a href="{{ route('subscriptions.index') }}" class="bringer-button is-fullwidth">Order Now</a>
+                            <a href="{{ route('subscriptions.index') }}" class="bringer-button is-fullwidth">Start Winning Now!</a>
                         </div><!-- .bringer-carousel-card -->
                                                 
                         <!-- Carousel Item 02 -->
                         <div class="bringer-block bringer-price-table swiper-slide">
-                            <h6>Beta Plan 📦<span class="bringer-accent">.</span></h6>
-                            <p>#JoinBetaProPlan 🚀</p>
+                            <h6>Business Champion 🏆<span class="bringer-accent">.</span></h6>
+                            <p>#DominateYourMarket</p>
                             <div class="bringer-price-wrapper">
-                                <div class="bringer-label">Per month</div>
+                                <div class="bringer-label">Unleash your potential</div>
                                 <h2>Tsh.35,000/=</h2>
                             </div>
-                            <div class="bringer-label bringer-highlight">What is included</div>
+                            <div class="bringer-label bringer-highlight">Most Popular Choice!</div>
                             <ul class="bringer-marked-list">
-                                <li>Premium Inventory Management 📦</li>
-                                <li>Comprehensive Sales & Invoice Management 💸</li>
-                                <li>Premium CRM 🧑‍💼</li>
-                                <li>Advanced Budget Management 💰</li>
-                                <li>Premium Support and Maintenance 🔧</li>
-                                <li>Advanced Analytics and Reporting 📊</li>
-                                <li>Full customer Dept contol and reporting 🧾</li>
-                                <li>3-5 Accounts</li>
+                                <li>Advanced Victory Arsenal 🚀</li>
+                                <li>Premium Sales Command Center 💰</li>
+                                <li>Strategic Customer Management 🤝</li>
+                                <li>Champion-Level Analytics 📈</li>
+                                <li>Multi-Commander Access (3-5) 👥</li>
+                                <li>Priority Support Channel 🎯</li>
                             </ul>
-                            <a href="{{ route('subscriptions.index') }}" class="bringer-button is-fullwidth">Order Now</a>
+                            <a href="{{ route('subscriptions.index') }}" class="bringer-button is-fullwidth">Claim Your Victory!</a>
                         </div><!-- .bringer-carousel-card -->
                                                 
                         <!-- Carousel Item 03 -->
                         <div class="bringer-block bringer-price-table swiper-slide">
-                            <h6>Advanced Plan 🌍<span class="bringer-accent">.</span></h6>
-                            <p>#JoinAdvanceWeb</p>
+                            <h6>Digital Dominator 👑<span class="bringer-accent">.</span></h6>
+                            <p>#TotalMarketDomination</p>
                             <div class="bringer-price-wrapper">
-                                <div class="bringer-label">Per month</div>
+                                <div class="bringer-label">Complete digital dominance</div>
                                 <h2>Tsh.45,000/=</h2>
                             </div>
-                            <div class="bringer-label bringer-highlight">What is included</div>
+                            <div class="bringer-label bringer-highlight">Ultimate Power Package</div>
                             <ul class="bringer-marked-list">
-                                <li>Domain Registration 🌐</li>
-                                <li>Advanced Web Hosting 💻</li>
-                                <li>Custom Website Design and Development 🎨</li>
-                                <li>Enhanced SSL Certificate 🔒</li>
-                                <li>Comprehensive Maintenance and Updates 🔧</li>
-                                <li>E-commerce Functionality 🛒</li>
-                                <li>Marketing and Social Media Integration 📢</li>
-                                <li>Content Creation and Management 🖋️</li>
-                                
+                                <li>Complete Digital Empire Suite 🌐</li>
+                                <li>Custom Victory Website 🎨</li>
+                                <li>Advanced Market Domination Tools 🚀</li>
+                                <li>Ultimate Security Shield 🛡️</li>
+                                <li>Full E-commerce Arsenal 🛍️</li>
+                                <li>VIP Support Access 👑</li>
                             </ul>
-                            <a href="{{ route('subscriptions.index') }}" class="bringer-button is-fullwidth">Order Now</a>
+                            <a href="{{ route('subscriptions.index') }}" class="bringer-button is-fullwidth">Dominate Now!</a>
                         </div><!-- .bringer-carousel-card -->
                                                 
                         <!-- Carousel Item 04 -->
@@ -204,8 +198,8 @@ Pricing|Roman Stock Manager
                 <div class="stg-row stg-bottom-gap-l">
                     <div class="stg-col-8 stg-offset-2">
                         <div class="align-center">
-                            <h2 data-split-appear="fade-up" data-unload="fade-up">Do you still have questions?</h2>
-                            <p class="bringer-large-text" data-appear="fade-up" data-delay="100" data-unload="fade-up">Here are some of the burning questions we hear most:</p>
+                            <h2 data-split-appear="fade-up" data-unload="fade-up">Ready to Join the Champions? 🏆</h2>
+                            <p class="bringer-large-text" data-appear="fade-up" data-delay="100" data-unload="fade-up">Get answers to your victory path questions:</p>
                         </div>
                     </div>
                 </div>
@@ -299,7 +293,7 @@ Pricing|Roman Stock Manager
                     <div class="stg-col-6 stg-offset-1" data-unload="fade-right">
                         <div class="bringer-cta-form-content">
                             <div class="bringer-cta-form-title" data-split-appear="fade-up" data-split-delay="100" data-split-by="line">
-                            Let's strategize on advancing your business! 📈💼.
+                            Ready to Claim Your Market Victory? 🚀
                             </div>
                             <div class="bringer-cta-text">
                                 <div class="stg-row stg-valign-middle">

@@ -13,16 +13,7 @@ class BranchController extends Controller
     public function index()
     {
         $branches = Branch::all();
-        return view('branches.index', compact('branches')); // Load the index view
-        
-    }
-
-    /**
-     * Show the form for creating a new branch (optional for API).
-     */
-    public function create()
-    {
-        return view('branches.create'); // Load the create view
+        return view('branches.index', compact('branches')); // Load the UI
     }
 
     /**
@@ -36,24 +27,25 @@ class BranchController extends Controller
         ]);
 
         $branch = Branch::create($validated);
-        return response()->json(['message' => 'Branch created successfully', 'branch' => $branch], 201);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Branch created successfully!',
+            'branch' => $branch
+        ], 201);
     }
 
     /**
-     * Display the specified branch.
+     * Get the specified branch (AJAX request).
      */
-    public function show(Branch $branch)
+    public function show($id)
     {
-        return response()->json($branch, 200);
-    }
+        $branch = Branch::findOrFail($id);
 
-    /**
-     * Show the form for editing the specified branch (optional for API).
-     */
-    public function edit($id)
-    {
-        $branch = Branch::findOrFail($id); // Retrieve the branch by ID
-        return view('branches.edit', compact('branch')); // Load the edit view
+        return response()->json([
+            'success' => true,
+            'branch' => $branch
+        ]);
     }
 
     /**
@@ -67,15 +59,24 @@ class BranchController extends Controller
         ]);
 
         $branch->update($validated);
-        return response()->json(['message' => 'Branch updated successfully', 'branch' => $branch], 200);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Branch updated successfully!',
+            'branch' => $branch
+        ]);
     }
 
     /**
-     * Remove (disable) the specified branch from storage.
+     * Disable the specified branch.
      */
     public function destroy(Branch $branch)
     {
         $branch->update(['status' => 'disabled']);
-        return response()->json(['message' => 'Branch disabled successfully'], 200);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Branch disabled successfully!'
+        ]);
     }
 }

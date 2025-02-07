@@ -14,8 +14,8 @@ Team|Roman Stock Manager
             <section class="backlight-bottom">
                 <div class="stg-row">
                     <div class="stg-col-6 stg-offset-3 align-center stg-tp-col-10 stg-tp-offset-1">
-                        <h1 class="bringer-page-title" data-appear="fade-up" data-unload="fade-up">Meet Our Team</h1>
-                        <p class="bringer-large-text" data-split-appear="fade-up" data-delay="100" data-split-unload="fade-up">We offer a wide ↔ range of creative services to help businesses of all sizes achieve 🏆 their goals.</p>
+                        <h1 class="bringer-page-title" data-appear="fade-up" data-unload="fade-up">Meet Your Success Team 🏆</h1>
+                        <p class="bringer-large-text" data-split-appear="fade-up" data-delay="100" data-split-unload="fade-up">Behind every successful business is a powerful team. Meet the champions who will guide your business to victory! 🚀</p>
                     </div>
                 </div>
             </section>
@@ -24,13 +24,13 @@ Team|Roman Stock Manager
             <section>
                 <!-- Section Image -->
                 <div class="bringer-parallax-media stg-bottom-gap-l" data-appear="fade-up" data-unload="fade-up">
-                    <img class="bringer-lazy" src="img/null.png" data-src="{{ asset('frontend/assets/img/inner-pages/all.jpg') }}" alt="Bringer Services" width="1920" height="960">
+                    <img class="bringer-lazy" src="img/null.png" data-src="{{ asset('frontend/assets/img/inner-pages/team.png') }}" alt="Bringer Services" width="1920" height="960">
                 </div>
 
                 <!-- Section Title -->
                 <div class="stg-row stg-bottom-gap">
                     <div class="stg-col-6" data-unload="fade-left">
-                        <h2 class="stg-bottom-gap" data-split-appear="fade-up">Discover the spark ✨ with Bringer's Services.</h2>
+                        <h2 class="stg-bottom-gap" data-split-appear="fade-up">Champions of Business Excellence 💫</h2>
                     </div>
                     <div class="stg-col-6"></div>
                 </div>
@@ -55,7 +55,7 @@ Team|Roman Stock Manager
                         </div>
                     </div>
                     <div class="stg-col-6 stg-tp-col-9 stg-tp-bottom-gap" data-appear="fade-left" data-unload="fade-right">
-                        <p class="bringer-large-text">Unleash your brand's full potential. Your brand is a fire waiting to be ignited. We provide the fuel, the spark, and the expert guidance to watch your brand blaze a trail and captivate the world. Explore our services and discover how Bringer can help you achieve your goals.</p>
+                        <p class="bringer-large-text">Our elite team combines deep technical expertise with business acumen to deliver unmatched inventory management solutions. Each team member is dedicated to your success, bringing years of experience in transforming businesses into market leaders. 🎯</p>
                     </div>
                 </div>
             </section>
@@ -75,63 +75,58 @@ Team|Roman Stock Manager
                     <ul class="bringer-detailed-list">
                         <li>
                             <div class="bringer-detailed-list-title">
-                                <h4>Branding<span class="bringer-accent">.</span></h4>
+                                <h4>Technical Champions 💻<span class="bringer-accent">.</span></h4>
                             </div>
                             <div class="bringer-detailed-list-description">
-                                <p>We weave visual stories and craft strategic messaging that resonate at heartstrings, build unwavering trust, and turn customers into fervent brand champions. Imagine seeing your logo come alive, not just a symbol but a rallying cry, an unwavering beacon in a sea of sameness. That's the power of branding we unleash.</p>
+                                <p>Our development wizards craft powerful, user-friendly solutions that make complex inventory management feel effortless. With expertise in the latest technologies, they ensure Roman Stock Manager stays ahead of industry trends, providing you with cutting-edge tools for success.</p>
                             </div>
                             <div class="bringer-detailed-list-button">
                                 <span class="bringer-icon bringer-icon-explore"></span>
                             </div>
-                            <a href="service-details.html"></a>
                         </li>
                         <li>
                             <div class="bringer-detailed-list-title">
-                                <h4>Marketing<span class="bringer-accent">.</span></h4>
+                                <h4>Business Strategy Experts 📊<span class="bringer-accent">.</span></h4>
                             </div>
                             <div class="bringer-detailed-list-description">
-                                <p>We design data-driven campaigns that crackle with energy, ignite engagement like wildfire, and turn clicks into conversions. Picture social media abuzz with your brand, blog posts sparking curiosity, and targeted ads finding their perfect match. We're the storm that propels your brand to ever-higher heights.</p>
+                                <p>Our business analysts and strategists understand the challenges you face. They work tirelessly to ensure Roman Stock Manager not only meets but exceeds your business needs, helping you optimize operations and maximize profitability.</p>
                             </div>
                             <div class="bringer-detailed-list-button">
                                 <span class="bringer-icon bringer-icon-explore"></span>
                             </div>
-                            <a href="service-details.html"></a>
                         </li>
                         <li>
                             <div class="bringer-detailed-list-title">
-                                <h4>Graphic Design<span class="bringer-accent">.</span></h4>
+                                <h4>Customer Success Heroes 🦸‍♂️<span class="bringer-accent">.</span></h4>
                             </div>
                             <div class="bringer-detailed-list-description">
-                                <p>We craft visual masterpieces that sing your brand's story in vibrant colors and captivating shapes. From logos that lodge in minds to infographics that make complex ideas sing, we inject emotional punch and crystal-clear clarity into every pixel. Let your visuals become the unforgettable face of your brand.</p>
+                                <p>Our dedicated support team is available 24/7 to ensure your success. From implementation to ongoing operations, they're your partners in achieving business excellence, providing expert guidance and rapid solutions to any challenges.</p>
                             </div>
                             <div class="bringer-detailed-list-button">
                                 <span class="bringer-icon bringer-icon-explore"></span>
                             </div>
-                            <a href="service-details.html"></a>
                         </li>
                         <li>
                             <div class="bringer-detailed-list-title">
-                                <h4>Web Design<span class="bringer-accent">.</span></h4>
+                                <h4>Innovation Leaders 🚀<span class="bringer-accent">.</span></h4>
                             </div>
                             <div class="bringer-detailed-list-description">
-                                <p>We sculpt user-friendly websites that convert visitors into loyal devotees, seamlessly blending stunning aesthetics with intuitive navigation and flawless experiences for every screen. Imagine your website as a warm, inviting space where potential customers linger, explore, and ultimately succumb to its charms. We craft that digital haven.</p>
+                                <p>Our research and development team constantly pushes boundaries, introducing new features and improvements that keep your business ahead of the competition. They turn your feedback into powerful new capabilities.</p>
                             </div>
                             <div class="bringer-detailed-list-button">
                                 <span class="bringer-icon bringer-icon-explore"></span>
                             </div>
-                            <a href="service-details.html"></a>
                         </li>
                         <li>
                             <div class="bringer-detailed-list-title">
-                                <h4>Content Creation<span class="bringer-accent">.</span></h4>
+                                <h4>Training & Development Masters 🎓<span class="bringer-accent">.</span></h4>
                             </div>
                             <div class="bringer-detailed-list-description">
-                                <p>We weave compelling narratives into blog posts, website copy, and social media content that resonate with your audience like a well-loved symphony. Picture search engines whispering your brand's name, and customers sharing your story with eager ears. We craft the voice that makes your brand sing.</p>
+                                <p>Our training specialists ensure you and your team master every feature of Roman Stock Manager. Through personalized training sessions and comprehensive resources, they empower you to leverage the full potential of our solution.</p>
                             </div>
                             <div class="bringer-detailed-list-button">
                                 <span class="bringer-icon bringer-icon-explore"></span>
                             </div>
-                            <a href="service-details.html"></a>
                         </li>
                     </ul>
                 </div>
@@ -139,20 +134,20 @@ Team|Roman Stock Manager
 
             <!-- Section: Marquee -->
             <section class="is-fullwidth is-stretched" data-padding="none">
-                <div class="bringer-marquee" data-speed="5000">
+                <div class="bringer-marquee" data-speed="10000">
                     <div class="bringer-marquee-inner">
                         <ul class="bringer-marquee-list">
                             <li>
-                                <h2>Unleash Your Creativity</h2>
+                                <h2>Roman</h2>
                             </li>
                             <li>
-                                <h2>Spark Imagination</h2>
+                                <h2>Stock</h2>
                             </li>
                             <li>
-                                <h2>Creative Firestorms</h2>
+                                <h2>Manager</h2>
                             </li> 
                             <li>
-                                <h2>Ignite Results</h2>
+                                <h2>Being a Champion 😎</h2>
                             </li>
                         </ul>
                     </div><!-- .bringer-marquee-inner -->
@@ -174,24 +169,24 @@ Team|Roman Stock Manager
                 <div class="bringer-grid-2cols bringer-tp-grid-1col" data-stagger-appear="zoom-in" data-stagger-delay="100" data-delay="100" data-unload="fade-up">
                     <!-- Card Item 01 -->
                     <div class="bringer-block">
-                        <h4>We don't just design, we <span class="bringer-accent">unleash creative</span> firestorms<span class="bringer-accent">.</span></h4>
-                        <p>Tired of bland marketing and cookie-cutter websites? We infuse your brand with bold ideas and strategic brilliance, igniting campaigns that capture hearts and drive tangible results. Forget sparklers, we're here to light the fire.</p>
-                    </div><!-- .bringer-block -->
+                        <h4>Passionate About Your Success 🎯<span class="bringer-accent">.</span></h4>
+                        <p>Every team member is committed to your business growth. We celebrate your victories and work tirelessly to help you overcome challenges. Your success is our success!</p>
+                    </div>
                     <!-- Card Item 02 -->
                     <div class="bringer-block">
-                        <h4>We <span class="bringer-accent">fuel creativity</span> with data, guide passion with precision<span class="bringer-accent">.</span></h4>
-                        <p>We're not just artistic dreamers, we're strategic alchemists. We blend data-driven insights with unbridled passion, ensuring your campaigns reach the right audience, hit the right chords, and deliver measurable results. Because passion without direction is a beautiful mess.</p>
-                    </div><!-- .bringer-block -->
+                        <h4>Expertise That Drives Results 📈<span class="bringer-accent">.</span></h4>
+                        <p>With years of experience in inventory management and business optimization, our team brings proven strategies and solutions to help you achieve and exceed your goals.</p>
+                    </div>
                     <!-- Card Item 03 -->
                     <div class="bringer-block">
-                        <h4>We craft <span class="bringer-accent">emotional connections</span>, not just visuals and copy<span class="bringer-accent">.</span></h4>
-                        <p>We delve deeper than pixels and prose. We understand the human heart, the language of emotions. We weave stories that resonate, visuals that linger in minds, and content that sparks conversations. Because true connection is the foundation of brand loyalty.</p>
-                    </div><!-- .bringer-block -->
+                        <h4>Always By Your Side 🤝<span class="bringer-accent">.</span></h4>
+                        <p>From implementation to ongoing support, our team is your dedicated partner in business success. We're available 24/7 to ensure you get the most out of Roman Stock Manager.</p>
+                    </div>
                     <!-- Card Item 04 -->
                     <div class="bringer-block">
-                        <h4>We don't just work with you, we become your <span class="bringer-accent">creative champions.</span></h4>
-                        <p>We don't see clients, we see collaborators. We believe in building partnerships, in understanding your vision, and becoming an extension of your team. Your goals are our canvas, your success our masterpiece. We paint your dreams into reality, together.</p>
-                    </div><!-- .bringer-block -->
+                        <h4>Continuous Innovation 💡<span class="bringer-accent">.</span></h4>
+                        <p>Our team never stops innovating, constantly developing new features and improvements to keep you ahead in today's competitive business landscape.</p>
+                    </div>
                 </div>
             </section>
 
@@ -200,7 +195,7 @@ Team|Roman Stock Manager
                 <div class="bringer-bento-grid bringer-grid-cta">
                     <div class="is-large bringer-masked-block" data-appear="fade-right" data-unload="fade-left">
                         <div class="bringer-grid-cta-media bringer-masked-media" data-bg-src="img/cta/grid-cta-background.jpg">
-                            <div class="bringer-grid-cta-heading">Need to amplify your voice?</div>
+                            <div class="bringer-grid-cta-heading">Need to amplify your Bussiness?📢</div>
                         </div>
                         <div class="bringer-masked-content at-bottom-right">
                             <p class="bringer-large-text" data-appear="fade-right" data-delay="100">Let's chat about your goals &rarr;</p>

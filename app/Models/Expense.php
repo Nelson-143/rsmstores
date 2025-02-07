@@ -14,6 +14,7 @@ class Expense extends Model
      *
      * @var array
      */
+    protected $table = 'expense';
     protected $fillable = [
         'user_id',
         'category_id',
@@ -44,6 +45,9 @@ class Expense extends Model
       {
           return $this->belongsTo(Branch::class);
       }
-      
+      public function budget()
+      {
+        return $this->hasMany(Expense::class, 'budget_id');
+      }
 }
 

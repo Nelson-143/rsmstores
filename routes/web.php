@@ -30,8 +30,8 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\BranchController;
 use App\Http\Controllers\OnboardingController;
 use App\Http\Controllers\Auth\EmailVerificationController;
-//use App\Http\Controllers\dashboard\DashboardController;
-
+use App\Http\Controllers\ExpenseCategoryController;
+use App\Http\Controllers\BudgetCategoryController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -148,6 +148,7 @@ Route::post('/finassist/query', [FinAssistController::class, 'handleQuery'])->na
     
 //Route Debts
 Route::resource('/Debts', DebtsController::class);
+Route::post('/debts', [DebtsController::class, 'store'])->name('debts.store');
  
 //Routes for RsmPlay
 Route::prefix('gamification')->middleware(['auth'])->group(function () {
@@ -214,6 +215,11 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/notifications/{id}/read', [NotificationController::class, 'markRead'])->name('notifications.markRead');
     Route::post('/notifications/mark-all-read', [NotificationController::class, 'markAllRead'])->name('notifications.markAllRead');
 });
+//for expence cartegories
+Route::post('/expense-categories', [ExpenseCategoryController::class, 'store'])->name('expense-categories.store');
+
+//for expence cartegories
+Route::post('/budget-categories', [BudgetCategoryController::class, 'store'])->name('budget-categories.store');
 
 
 

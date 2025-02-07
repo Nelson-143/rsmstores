@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Models;
-
+use Spatie\Permission\Traits\HasRoles;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -10,6 +10,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
+    use HasRoles; // Add this trait
     use HasApiTokens, HasFactory, Notifiable;
 
     protected $fillable = [
@@ -48,15 +49,8 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     //for the roles manager
-    public function roles()
-    {
-        return $this->belongsToMany(Role::class, 'user_role');
-    }
+  
 
-    public function hasPermission($permissionName)
-    {
-        return $this->roles->pluck('permissions')->flatten()->contains('name', $permissionName);
-    }
 
     public function customers(){
         return $this->hasMany(Customer::class);

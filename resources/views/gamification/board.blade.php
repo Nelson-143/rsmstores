@@ -15,7 +15,7 @@
         <div class="empty">
           <div class="empty-img"><img src="https://tabler.io/_next/image?url=%2Fillustrations%2Fdark%2Fcomputer-fix.png&w=800&q=75"/>
           </div>
-          <p class="empty-title">It's Not You, It's Us</p>
+          <p class="empty-title">It's not You, It's Us</p>
           <p class="empty-subtitle text-secondary">
               We apologize for the inconvenience. This site is still in production, and you will be notified when it is ready. Thank you for your understanding,Champ😎!
           </p>

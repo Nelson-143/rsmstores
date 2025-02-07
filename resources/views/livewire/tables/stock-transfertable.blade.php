@@ -1,104 +1,108 @@
-<div class="card">
-    <div class="card-header">
-        <div>
-            <h3 class="card-title">
-                {{ __('Stock Transfer') }}
-            </h3>
-        </div>
-
-        <div class="card-actions btn-group">
+<div class="card shadow-sm">
+    <div class="card-header bg-white d-flex justify-content-between align-items-center">
+        <h4 class="mb-0">{{ __('Stock Transfer') }}</h4>
+        <div class="btn-group">
             <div class="dropdown">
-                <a href="#" class="btn-action dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true"
-                    aria-expanded="false">
+                <a href="#" class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <x-icon.vertical-dots />
                 </a>
-                <div class="dropdown-menu dropdown-menu-end" >
-                
+                <div class="dropdown-menu dropdown-menu-end">
                     <a href="{{ route('stock.damaged') }}" class="dropdown-item">
-                        <x-icon.plus />
-                        {{ __('Create Damage Product') }}
+                        <x-icon.plus /> {{ __('Create Damage Product') }}
                     </a>
-                   
                 </div>
             </div>
         </div>
     </div>
 
-        <!-- Stock Transfer Form -->
-        <form method="POST" action="{{ route('stock.transfer') }}" class="mb-4">
-            @csrf
-            <div class="row">
-                <div class="col-md-3">
-                <label for="product_id" class="form-label">Product</label>
-<select name="product_id" class="form-control" required>
-    <option value="">Select Product</option>
-    @if(isset($products))
+    <!-- Stock Transfer Form -->
+    <form method="POST" action="{{ route('stock.transfer') }}" class="card-body mb-0">
+        @csrf
+        <div class="row g-3">
+            <div class="col-md-3">
+                <label for="product_id" class="form-label">{{ __('Product') }}</label>
+                <select name="product_id" class="form-select" required>
+    <option value="" disabled {{ isset($products) && $products->isEmpty() ? 'selected' : '' }}>
+        {{ __('Select Product') }}
+    </option>
+
+    @if (isset($products) && $products->isNotEmpty())
         @foreach ($products as $product)
             <option value="{{ $product->id }}">{{ $product->name }}</option>
         @endforeach
+    @else
+        <option value="" disabled selected>{{ __('No products available') }}</option>
     @endif
 </select>
-
-                </div>
-                <div class="col-md-3">
-                    <label for="from_location" class="form-label">From Location</label>
-                    <input type="text" name="from_location" class="form-control" required>
-                </div>
-                <div class="col-md-3">
-                    <label for="to_location" class="form-label">To Location</label>
-                    <input type="text" name="to_location" class="form-control" required>
-                </div>
-                <div class="col-md-2">
-                    <label for="quantity" class="form-label">Quantity</label>
-                    <input type="number" name="quantity" class="form-control" min="1" required>
-                </div>
-                <div class="col-md-1 d-flex align-items-end">
-                    <button type="submit" class="btn btn-primary">Transfer</button>
-                </div>
             </div>
-        </form>
-
-        <!-- Stock Transfers Table -->
-        <div class="table-responsive">
-            <table class="table table-bordered card-table table-vcenter text-nowrap datatable">
-                <thead class="thead-light">
-                    <tr>
-                        <th class="align-middle text-center w-1">No.</th>
-                        <th class="align-middle text-center">Product</th>
-                        <th class="align-middle text-center">From Location</th>
-                        <th class="align-middle text-center">To Location</th>
-                        <th class="align-middle text-center">Quantity</th>
-                        <th class="align-middle text-center">Date</th>
-                        <th class="align-middle text-center">Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                @forelse ($stockTransfers ?? [] as $transfer)
-    <tr>
-    <td class="align-middle text-center">{{ $loop->iteration }}</td>
-    <td class="align-middle text-center">{{ $transfer->product->name ?? 'N/A' }}</td>
-<td class="align-middle text-center">{{ $transfer->from_location ?? 'N/A' }}</td>
-<td class="align-middle text-center">{{ $transfer->to_location ?? 'N/A' }}</td>
-<td class="align-middle text-center">{{ $transfer->quantity ?? 0 }}</td>
-<td class="align-middle text-center">{{ $transfer->created_at ? $transfer->created_at->format('Y-m-d') : 'N/A' }}</td>
-<td class="align-middle text-center">
-    @if($transfer && $transfer->id)
-        <x-button.delete class="btn-icon" 
-            route="{{ route('stock.transfer.delete', $transfer->id) }}"
-    @endif 
-                onclick="return confirm('Are you sure to delete this transfer?')" />
-        </td>
-    </tr>
-@empty
-    <tr>
-        <td class="align-middle text-center" colspan="7">
-        <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-mood-sad"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" /><path d="M9 10l.01 0" /><path d="M15 10l.01 0" /><path d="M9.5 15.25a3.5 3.5 0 0 1 5 0" /></svg>            <p class="mt-2">Sorry, no stock transfers found.</p>
-        </td>
-    </tr>
-@endforelse
-                </tbody>
-            </table>
+            <div class="col-md-3">
+                <label for="from_location" class="form-label">{{ __('From Location') }}</label>
+                <input type="text" name="from_location" class="form-control" required>
+            </div>
+            <div class="col-md-3">
+                <label for="to_location" class="form-label">{{ __('To Location') }}</label>
+                <input type="text" name="to_location" class="form-control" required>
+            </div>
+            <div class="col-md-2">
+                <label for="quantity" class="form-label">{{ __('Quantity') }}</label>
+                <input type="number" name="quantity" class="form-control" min="1" required>
+            </div>
+            <div class="col-md-1 d-flex align-items-end">
+                <button type="submit" class="btn btn-primary w-100">{{ __('Transfer') }}</button>
+            </div>
         </div>
+    </form>
+
+    <!-- Stock Transfers Table -->
+    <div class="table-responsive card-table-container">
+        <table class="table table-bordered table-hover datatable">
+            <thead class="table-light">
+                <tr>
+                    <th class="text-center">{{ __('No.') }}</th>
+                    <th class="text-center">{{ __('Product') }}</th>
+                    <th class="text-center">{{ __('From Location') }}</th>
+                    <th class="text-center">{{ __('To Location') }}</th>
+                    <th class="text-center">{{ __('Quantity') }}</th>
+                    <th class="text-center">{{ __('Date') }}</th>
+                    <th class="text-center">{{ __('Action') }}</th>
+                </tr>
+            </thead>
+            <tbody>
+    @forelse ($stockTransfers ?? [] as $transfer)
+        <tr>
+            <td class="align-middle text-center">{{ $loop->iteration }}</td>
+            <td class="align-middle text-center">
+                {{ optional($transfer->product)->name ?? 'N/A' }}
+            </td>
+            <td class="align-middle text-center">{{ $transfer->from_location ?? 'N/A' }}</td>
+            <td class="align-middle text-center">{{ $transfer->to_location ?? 'N/A' }}</td>
+            <td class="align-middle text-center">{{ $transfer->quantity ?? 0 }}</td>
+            <td class="align-middle text-center">
+                {{ $transfer->created_at ? $transfer->created_at->format('Y-m-d') : 'N/A' }}
+            </td>
+            <td class="align-middle text-center">
+                @if ($transfer && $transfer->id)
+                    <x-button.delete class="btn-icon" 
+                        route="{{ route('stock.transfer.delete', $transfer->id) }}"
+                        onclick="return confirm('{{ __('Are you sure to delete this transfer?') }}')" />
+                @endif
+            </td>
+        </tr>
+    @empty
+        <tr>
+            <td colspan="7" class="text-center py-5">
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icon-tabler-mood-sad">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+                    <path d="M9 10l.01 0" />
+                    <path d="M15 10l.01 0" />
+                    <path d="M9.5 15.25a3.5 3.5 0 0 1 5 0" />
+                </svg>
+                <p class="mt-2">{{ __('Sorry, no stock transfers found.') }}</p>
+            </td>
+        </tr>
+    @endforelse
+</tbody>
+        </table>
     </div>
-</div>
 </div>

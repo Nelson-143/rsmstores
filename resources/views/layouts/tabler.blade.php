@@ -576,6 +576,8 @@
                   
 
                      <!----FinAssist---->
+                     
+                    
                     <li class="nav-item {{ request()->is('finassist*') ? 'active' : null }}">
                                 <a class="nav-link" href="{{ route('finassist') }}">
                                     <span
@@ -589,9 +591,10 @@
                                     </span>
                                 </a>
                             </li>
+                    
                         <!---settings--->
                             <li
-                                class="nav-item dropdown {{ request()->is('users*', 'categories*', 'units*') ? 'active' : null }}">
+                                class="nav-item dropdown {{ request()->is('users*', 'categories*', 'units*' , 'team*') ? 'active' : null }}">
                                 <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown"
                                     data-bs-auto-close="outside" role="button" aria-expanded="false">
                                     <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -634,7 +637,7 @@
                                                          </lord-icon>
                                                           {{ __('Units') }}
                                                      </a>
-
+                                                    
                                             <a class="dropdown-item" href="{{ route('admin.team.index') }}">
                                             <lord-icon
                                                       src="https://cdn.lordicon.com/hrjifpbq.json"
@@ -644,6 +647,8 @@
                                                          </lord-icon>
                                                           {{ __('Your Team') }}
                                                      </a>
+                                                    
+
                                                      <a class="dropdown-item" href="{{ route('branches.index') }}">
                                             <lord-icon
                                                       src="https://cdn.lordicon.com/mjcariee.json"

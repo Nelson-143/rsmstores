@@ -16,7 +16,7 @@ class CreateBudgetsTable extends Migration
         Schema::create('budgets', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade'); // Links to users table
-            $table->foreignId('category_id')->constrained('expense_categories')->onDelete('cascade'); // Links to expense_categories table
+            $table->foreignId('budget_category_id')->constrained('budget_categories')->onDelete('cascade');
             $table->decimal('amount', 10, 2); // Allocated budget
             $table->date('start_date'); // Start date of the budget period
             $table->date('end_date'); // End date of the budget period

@@ -31,14 +31,15 @@
         </div>
     </div>
     <!--- TREND DASH--->
-   <div class="page-body">
+    <div class="page-body">
     <div class="container-xl">
         <div class="row row-deck row-cards">
+            <!-- Total Customers -->
             <div class="col-sm-6 col-lg-3">
                 <div class="card">
                     <div class="card-body">
                         <div class="d-flex align-items-center">
-                            <div class="subheader">Sales</div>
+                            <div class="subheader">Total Customers</div>
                             <div class="ms-auto lh-1">
                                 <div class="dropdown">
                                     <a class="dropdown-toggle text-muted" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Last 7 days</a>
@@ -50,29 +51,35 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="h1 mb-3">75%</div>
+                        <div class="h1 mb-3">{{ isset($customers) ? number_format($customers) : '0' }}</div>
                         <div class="d-flex mb-2">
-                            <div>Conversion rate</div>
+                            <div>Registered Users</div>
                             <div class="ms-auto">
                                 <span class="text-green d-inline-flex align-items-center lh-1">
-                                  7% 
-                                  <svg xmlns="http://www.w3.org/2000/svg" class="icon ms-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 17l6 -6l4 4l8 -8" /><path d="M14 7l7 0l0 7" /></svg>
+                                  {{ isset($customerGrowth) ? $customerGrowth . '%' : '0%' }} 
+                                  <svg xmlns="http://www.w3.org/2000/svg" class="icon ms-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                    <path d="M3 17l6 -6l4 4l8 -8" />
+                                    <path d="M14 7l7 0l0 7" />
+                                  </svg>
                                 </span>
                             </div>
                         </div>
                         <div class="progress progress-sm">
-                            <div class="progress-bar bg-primary" style="width: 75%" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" aria-label="75% Complete">
-                                <span class="visually-hidden">75% Complete</span>
+                            <div class="progress-bar bg-primary" style="width: {{ isset($customerGrowth) ? min($customerGrowth, 100) : 0 }}%" role="progressbar" aria-valuenow="{{ isset($customerGrowth) ? min($customerGrowth, 100) : 0 }}" aria-valuemin="0" aria-valuemax="100" aria-label="{{ isset($customerGrowth) ? $customerGrowth . '% Growth' : 'No Growth' }}">
+                                <span class="visually-hidden">{{ isset($customerGrowth) ? $customerGrowth . '% Growth' : 'No Growth' }}</span>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <!-- Total Debt -->
             <div class="col-sm-6 col-lg-3">
                 <div class="card">
                     <div class="card-body">
                         <div class="d-flex align-items-center">
-                            <div class="subheader">Revenue</div>
+                            <div class="subheader">Total Debt</div>
                             <div class="ms-auto lh-1">
                                 <div class="dropdown">
                                     <a class="dropdown-toggle text-muted" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Last 7 days</a>
@@ -85,23 +92,29 @@
                             </div>
                         </div>
                         <div class="d-flex align-items-baseline">
-                            <div class="h1 mb-0 me-2">Tsh4,300</div>
+                            <div class="h1 mb-0 me-2">Tsh {{ isset($debt) ? number_format($debt, 2) : '0.00' }}</div>
                             <div class="me-auto">
-                                <span class="text-green d-inline-flex align-items-center lh-1">
-                                  8% 
-                                  <svg xmlns="http://www.w3.org/2000/svg" class="icon ms-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 17l6 -6l4 4l8 -8" /><path d="M14 7l7 0l0 7" /></svg>
+                                <span class="text-red d-inline-flex align-items-center lh-1">
+                                  {{ isset($debtChange) ? $debtChange . '%' : '0%' }} 
+                                  <svg xmlns="http://www.w3.org/2000/svg" class="icon ms-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                    <path d="M17 7l-6 6l-4 -4l-8 8" />
+                                    <path d="M7 17l7 0l0 -7" />
+                                  </svg>
                                 </span>
                             </div>
                         </div>
                     </div>
-                    <div id="chart-revenue-bg" class="chart-sm"></div>
+                    <div id="chart-debt" class="chart-sm"></div>
                 </div>
             </div>
+
+            <!-- Total Branches -->
             <div class="col-sm-6 col-lg-3">
                 <div class="card">
                     <div class="card-body">
                         <div class="d-flex align-items-center">
-                            <div class="subheader">New clients</div>
+                            <div class="subheader">Total Branches</div>
                             <div class="ms-auto lh-1">
                                 <div class="dropdown">
                                     <a class="dropdown-toggle text-muted" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Last 7 days</a>
@@ -114,23 +127,28 @@
                             </div>
                         </div>
                         <div class="d-flex align-items-baseline">
-                            <div class="h1 mb-3 me-2">6,782</div>
+                            <div class="h1 mb-3 me-2">{{ isset($branch) ? number_format($branch) : '1' }}</div>
                             <div class="me-auto">
                                 <span class="text-yellow d-inline-flex align-items-center lh-1">
-                                  0% 
-                                  <svg xmlns="http://www.w3.org/2000/svg" class="icon ms-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l14 0" /></svg>
+                                  {{ isset($branchChange) ? $branchChange . '%' : '0%' }} 
+                                  <svg xmlns="http://www.w3.org/2000/svg" class="icon ms-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                    <path d="M5 12l14 0" />
+                                  </svg>
                                 </span>
                             </div>
                         </div>
-                        <div id="chart-new-clients" class="chart-sm"></div>
+                        <div id="chart-branches" class="chart-sm"></div>
                     </div>
                 </div>
             </div>
+
+            <!-- Total Sales -->
             <div class="col-sm-6 col-lg-3">
                 <div class="card">
                     <div class="card-body">
                         <div class="d-flex align-items-center">
-                            <div class="subheader">Active users</div>
+                            <div class="subheader">Total Sales</div>
                             <div class="ms-auto lh-1">
                                 <div class="dropdown">
                                     <a class="dropdown-toggle text-muted" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Last 7 days</a>
@@ -143,18 +161,23 @@
                             </div>
                         </div>
                         <div class="d-flex align-items-baseline">
-                            <div class="h1 mb-3 me-2">2,986</div>
+                            <div class="h1 mb-3 me-2">Tsh {{ isset($carts) ? number_format($carts, 2) : '0.00' }}</div>
                             <div class="me-auto">
                                 <span class="text-green d-inline-flex align-items-center lh-1">
-                                  4% 
-                                  <svg xmlns="http://www.w3.org/2000/svg" class="icon ms-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 17l6 -6l4 4l8 -8" /><path d="M14 7l7 0l0 7" /></svg>
+                                  {{ isset($salesGrowth) ? $salesGrowth . '%' : '0%' }} 
+                                  <svg xmlns="http://www.w3.org/2000/svg" class="icon ms-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                    <path d="M3 17l6 -6l4 4l8 -8" />
+                                    <path d="M14 7l7 0l0 7" />
+                                  </svg>
                                 </span>
                             </div>
                         </div>
-                        <div id="chart-active-users" class="chart-sm"></div>
                     </div>
+                    <div id="chart-sales" class="chart-sm"></div>
                 </div>
             </div>
+  
 <!--- STATIC DASH ---->
                 <div class="col-12">
                     <div class="row row-cards">

@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>Print Innovice</title>
+    <title>Print Invoice</title>
     <link href="{{ asset('static/icon.png') }}" rel="icon" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,7 +17,35 @@
         rel="stylesheet">
     <!-- Custom Stylesheet -->
     <link type="text/css" rel="stylesheet" href="{{ asset('assets/invoice/css/style.css') }}">
-    
+    <style>
+        /* Small print styles */
+        .small-print {
+            font-size: 12px !important;
+            padding: 10px !important;
+        }
+
+        .small-print .invoice-inner-9 {
+            width: 100% !important;
+            max-width: 400px !important; /* Adjust width for small print */
+            margin: 0 auto !important;
+        }
+
+        .small-print .invoice-top,
+        .small-print .invoice-info,
+        .small-print .order-summary {
+            padding: 5px !important;
+        }
+
+        .small-print .invoice-table th,
+        .small-print .invoice-table td {
+            padding: 5px !important;
+            font-size: 12px !important;
+        }
+
+        .small-print .invoice-btn-section {
+            display: none; /* Hide buttons in small print */
+        }
+    </style>
 </head>
 
 <body>
@@ -88,20 +116,19 @@
                                     </thead>
 
                                     <tbody>
-                                        {{--                                            @foreach ($orderDetails as $item) --}}
                                         @foreach ($order->details as $item)
                                             <tr>
                                                 <td class="align-middle">
                                                     {{ $item->product->name }}
                                                 </td>
                                                 <td class="align-middle text-center">
-                                                    {{ Number::currency($item->unitcost, 'EUR') }}
+                                                    {{ Number::currency($item->unitcost, 'TSH') }}
                                                 </td>
                                                 <td class="align-middle text-center">
                                                     {{ $item->quantity }}
                                                 </td>
                                                 <td class="align-middle text-center">
-                                                    {{ Number::currency($item->total, 'EUR') }}
+                                                    {{ Number::currency($item->total, 'TSH') }}
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -114,7 +141,7 @@
                                             </td>
                                             <td class="align-middle text-center">
                                                 <strong>
-                                                    {{ Number::currency($order->sub_total, 'EUR') }}
+                                                    {{ Number::currency($order->sub_total, 'TSH') }}
                                                 </strong>
                                             </td>
                                         </tr>
@@ -124,7 +151,7 @@
                                             </td>
                                             <td class="align-middle text-center">
                                                 <strong>
-                                                    {{ Number::currency($order->vat, 'EUR') }}
+                                                    {{ Number::currency($order->vat, 'TSH') }}
                                                 </strong>
                                             </td>
                                         </tr>
@@ -134,7 +161,7 @@
                                             </td>
                                             <td class="align-middle text-center">
                                                 <strong>
-                                                    {{ Number::currency($order->total, 'EUR') }}
+                                                    {{ Number::currency($order->total, 'TSH') }}
                                                 </strong>
                                             </td>
                                         </tr>
@@ -142,13 +169,6 @@
                                 </table>
                             </div>
                         </div>
-{{--                        --}}{{-- <div class="invoice-informeshon-footer">--}}
-{{--                                <ul>--}}
-{{--                                    <li><a href="#">www.website.com</a></li>--}}
-{{--                                    <li><a href="mailto:sales@hotelempire.com">info@example.com</a></li>--}}
-{{--                                    <li><a href="tel:+088-01737-133959">+62 123 123 123</a></li>--}}
-{{--                                </ul>--}}
-{{--                            </div> --}}
                     </div>
                     <div class="invoice-btn-section clearfix d-print-none">
                         <a href="javascript:window.print()" class="btn btn-lg btn-print">
@@ -158,6 +178,10 @@
                         <a id="invoice_download_btn" class="btn btn-lg btn-download">
                             <i class="fa fa-download"></i>
                             Download Invoice
+                        </a>
+                        <a id="small_print_btn" class="btn btn-lg btn-small-print">
+                            <i class="fa fa-print"></i>
+                            Small Print
                         </a>
                     </div>
 
@@ -176,6 +200,21 @@
     <script src="{{ asset('assets/invoice/js/jspdf.min.js') }}"></script>
     <script src="{{ asset('assets/invoice/js/html2canvas.js') }}"></script>
     <script src="{{ asset('assets/invoice/js/app.js') }}"></script>
+    <script>
+        // Add event listener for the "Small Print" button
+        document.getElementById('small_print_btn').addEventListener('click', function () {
+            const invoiceWrapper = document.getElementById('invoice_wrapper');
+            invoiceWrapper.classList.toggle('small-print');
+
+            // Print the invoice after applying small print styles
+            window.print();
+
+            // Remove the small print class after printing
+            setTimeout(() => {
+                invoiceWrapper.classList.remove('small-print');
+            }, 500);
+        });
+    </script>
 </body>
 
 </html>

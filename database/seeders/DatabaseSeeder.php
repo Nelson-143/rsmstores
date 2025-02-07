@@ -10,8 +10,10 @@ use App\Models\Product;
 use App\Models\Category;
 use App\Models\Customer;
 use App\Models\Supplier;
+use Database\Seeders\RolesAndPermissionsSeeder as SeedersRolesAndPermissionsSeeder;
 use Illuminate\Database\Seeder;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
+use RolesAndPermissionsSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -25,8 +27,8 @@ class DatabaseSeeder extends Seeder
             CategorySeeder::class,
             UnitSeeder::class,
             SupplierSeeder::class,
-
             ProductSeeder::class,
+            RolesAndPermissionsSeeder::class,
         ]);
 
         Customer::factory(15)->create();

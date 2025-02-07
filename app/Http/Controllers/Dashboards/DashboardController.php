@@ -37,6 +37,17 @@ class DashboardController extends Controller
             'todayOrders' => $todayOrders,
             'categories' => $categories,
             'quotations' => $quotations
+            
         ]);
     }
 }
+return view('dashboard', [
+    'customers' => $customers ?? 0,
+    'debt' => $debt ?? 0,
+    'branch' => $branch ?? 1,
+    'carts' => $carts ?? 0,
+    'customerGrowth' => $customerGrowth ?? 0,
+    'debtChange' => $debtChange ?? 0,
+    'branchChange' => $branchChange ?? 0,
+    'salesGrowth' => $salesGrowth ?? 0,
+]);

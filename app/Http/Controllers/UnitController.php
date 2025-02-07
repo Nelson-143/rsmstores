@@ -32,12 +32,12 @@ class UnitController extends Controller
 
     public function store(StoreUnitRequest $request)
     {
-        Unit::create([
-            'user_id' => 'auth()->id',
-            'name' => $request->name,
-            'slug' =>Str::slug($request->name),
-            'short_code' => $request->short_code
-        ]);
+    Unit::create([
+    'user_id' => auth()->id(),
+    'name' => $request->name,
+    'slug' => str()->slug($request->name),
+    'short_code' => $request->short_code
+]);
         return redirect()->route('units.index')->with('success' , 'The unit has been added successfully!');
     }
 

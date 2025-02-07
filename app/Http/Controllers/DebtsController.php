@@ -39,12 +39,12 @@ public function store(Request $request)
         'due_date' => 'required|date|after_or_equal:today',
     ]);
 
-    Debt::create([
-        'customer_id' => $validated['customer_id'],
-        'amount' => $validated['amount'],
-        'amount_paid' => 0,
-        'due_date' => $validated['due_date'],
-    ]);
+  Debt::create([
+    'customer_id' => $request->input('customer_id'),
+    'amount' => $request->input('amount'),
+    'amount_paid' => 0,
+    'due_date' => $request->input('due_date'),
+]);
 
     return redirect()->route('debts.index')->with('success', 'Debt added successfully.');
 }

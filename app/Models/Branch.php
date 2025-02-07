@@ -60,7 +60,10 @@ class Branch extends Model
     {
         return $this->hasMany(Permission::class);
     }
-
+    public function stockTransfers()
+    {
+        return $this->hasMany(StockTransfer::class);
+    }
   
     // Add any additional methods or relationships as needed
 }

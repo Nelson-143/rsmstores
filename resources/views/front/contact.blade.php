@@ -14,8 +14,8 @@ Contact Us|Roman Stock Manager
             <section class="backlight-bottom">
                 <div class="stg-row stg-bottom-gap-l">
                     <div class="stg-col-6 stg-offset-3 align-center">
-                        <h1 class="bringer-page-title" data-appear="fade-up" data-unload="fade-up">Get in Touch</h1>
-                        <p class="bringer-large-text" data-appear="fade-up" data-delay="100" data-unload="fade-up">We help businesses of all sizes achieve their goals. We believe every brand, big or small, deserves to shine.</p>
+                        <h1 class="bringer-page-title" data-appear="fade-up" data-unload="fade-up">Your Victory Starts Here 🏆</h1>
+                        <p class="bringer-large-text" data-appear="fade-up" data-delay="100" data-unload="fade-up">Don't let another day of inventory chaos hold you back. Our champion team is ready to transform your business today! ⚡</p>
                     </div>
                 </div>
                 <div class="bringer-parallax-media" data-parallax-speed="20" data-appear="fade-up" data-delay="200" data-unload="fade-up">
@@ -28,15 +28,14 @@ Contact Us|Roman Stock Manager
                 <!-- Section Title -->
                 <div class="stg-row stg-bottom-gap">
                     <div class="stg-col-8">
-                        <h2 data-split-appear="fade-up" data-unload="fade-up">Ready to supercharge your inventory with Roman? 📊✨ Let's join forces! 🤝</h2>
+                        <h2 data-split-appear="fade-up" data-unload="fade-up">Ready to Join the Business Champions? Time is Money! 💰</h2>
                     </div>
                     <div class="stg-col-4"></div>
                 </div>
                 <!-- Section Content -->
                 <div class="stg-row stg-bottom-gap-l">
                     <div class="stg-col-6 stg-offset-6" data-appear="fade-up" data-delay="200" data-unload="fade-up">
-                        <p>
-                        At Roman, we believe in the strength of collaboration and shared passion. We're not just inventory software; we're your partners in optimizing your stock management. Whether your inventory is vast or just starting to grow, reach out and let's connect! 📦🚀</p>
+                        <p>Every minute counts in business! While you're reading this, your competitors might be getting ahead. Don't wait - take the first step towards inventory mastery now. Our champion support team is standing by to rocket-launch your business success! 🚀</p>
                     </div>
                 </div>
                 <!-- Grid Galery -->
@@ -71,10 +70,10 @@ Contact Us|Roman Stock Manager
                         <div class="bringer-block stg-aspect-square stg-vertical-space-between">
                             <a href="tel:+255 738-020-528" class="bringer-grid-item-link"></a>
                             <div>
-                                <h5>Phone<span class="bringer-accent">.</span></h5>
+                                <h5>Instant Champion Support 📞<span class="bringer-accent">.</span></h5>
                                 <h6>+255 738-020-528</h6>
                             </div>
-                            <p>Give us a call and chat directly with our friendly team. We're always happy to answer any questions, feel at home.</p>
+                            <p>Get immediate answers! Our victory specialists are ready to guide you to business success. One call could change your business forever! ⚡</p>
                         </div>
                     </div>
                     <div class="stg-col-4 stg-tp-col-6 stg-tp-bottom-gap">
@@ -82,17 +81,17 @@ Contact Us|Roman Stock Manager
                         <div class="bringer-block stg-aspect-square stg-vertical-space-between">
                             <a href="mailto:romanstockmanager@outlook.com" class="bringer-grid-item-link"></a>
                             <div>
-                                <h5>Email<span class="bringer-accent">.</span></h5>
+                                <h5>Start Your Success Story 📧<span class="bringer-accent">.</span></h5>
                                 <h6>romanstockmanager@outlook.com</h6>
                             </div>
-                            <p>Send us a detailed message. We'll get back to you as soon as possible to discuss your business management needs further.</p>
+                            <p>Take the first step to victory! Share your business challenges with us now, and we'll show you the path to becoming a market champion! 🏆</p>
                         </div>
                     </div>
                     <div class="stg-col-4 stg-tp-col-12">
                         <!-- Social Media -->
                         <div class="bringer-block stg-aspect-square stg-tp-aspect-rectangle stg-vertical-space-between">
                             <div>
-                                <h5>Social Media<span class="bringer-accent">.</span></h5>
+                                <h5>Join Our Champions' Network 🌟<span class="bringer-accent">.</span></h5>
                                 <ul class="bringer-socials-list stg-small-gap" data-stagger-appear="fade-up" data-stagger-delay="75">
                                     <li>
                                         <a href="#" target="_blank" class="bringer-socials-facebook">
@@ -121,7 +120,7 @@ Contact Us|Roman Stock Manager
                                     </li>
                                 </ul>
                             </div>
-                            <p>Follow us on social media platforms for a glimpse into our innovative world, industry insights, and business management solutions.</p>
+                            <p>Connect with fellow business champions! See live success stories, get exclusive tips, and stay ahead of the game with our winning community! 🚀</p>
                         </div>
                     </div>
                 </div>
@@ -133,8 +132,8 @@ Contact Us|Roman Stock Manager
                 <div class="stg-row bringer-section-title">
                     <div class="stg-col-8 stg-offset-2">
                         <div class="align-center">
-                            <h2 data-appear="fade-up" data-unload="fade-up">Visit our Dynamic Hub</h2>
-                            <p class="bringer-large-text" data-appear="fade-up" data-delay="100" data-unload="fade-up">Step into our vibrant domain! We love welcoming potential collaborators into our lively space. Schedule a tour and get inspired by our creative energy! 🌟</p>
+                            <h2 data-appear="fade-up" data-unload="fade-up">Your Success Hub Awaits 🏢</h2>
+                            <p class="bringer-large-text" data-appear="fade-up" data-delay="100" data-unload="fade-up">Visit the headquarters where champions are made! Come experience the energy of success and see how we're transforming businesses every day! 💫</p>
                         </div>
                     </div>
                 </div>
@@ -145,10 +144,10 @@ Contact Us|Roman Stock Manager
                         <div class="bringer-block stg-aspect-square stg-vertical-space-between">
                             <a href="https://maps.app.goo.gl/WbTG6EKuF9dE1Xuy8" class="bringer-grid-item-link"></a>
                             <div>
-                                <h5>Address<span class="bringer-accent">.</span></h5>
-                                <h6>KARIAKOO,Gogo and Narun`gombe,<br>Bona redeast</h6>
+                                <h5>Victory Headquarters 📍<span class="bringer-accent">.</span></h5>
+                                <h6>KARIAKOO, Gogo and Narun`gombe,<br>Bona redeast</h6>
                             </div>
-                            <p>Drop by our dynamic hub. We'd love to welcome you and share our innovative energy. Let's fuel your vision!</p>
+                            <p>Step into the future of business success! Visit our command center and let's craft your victory strategy together! 🎯</p>
                         </div>
                     </div>
                     <div class="stg-col-8 stg-tp-col-6" data-appear="fade-left" data-delay="200" data-unload="fade-right">
@@ -183,16 +182,12 @@ Contact Us|Roman Stock Manager
                     <div class="stg-col-6 stg-offset-1" data-unload="fade-right">
                         <div class="bringer-cta-form-content">
                             <div class="bringer-cta-form-title" data-split-appear="fade-up" data-split-delay="100" data-split-by="line">
-                            Let's strategize on advancing your business! 📈💼.
+                            Don't Wait - Your Competition Isn't! 🏃‍♂️💨
                             </div>
                             <div class="bringer-cta-text">
                                 <div class="stg-row stg-valign-middle">
-                                    <div class="stg-col-2 stg-offset-2 stg-tp-col-1 stg-tp-offset-3 stg-m-col-1 stg-m-offset-2" data-appear="fade-right">
-                                        <i class="bringer-cta-icon"></i>
-                                    </div>
                                     <div class="stg-col-8 stg-tp-col-7 stg-m-col-8 stg-m-offset-1" data-appear="fade-left">
-                                        <p class="bringer-large-text">
-                                        We assist businesses, designers, and creative professionals in showcasing their exceptional work. 🖌️📦</p>
+                                        <p class="bringer-large-text">Every day without Roman Stock Manager is a day of missed opportunities. Let's turn your business into a success story today! 🌟</p>
                                     </div>
                                 </div>
                             </div>

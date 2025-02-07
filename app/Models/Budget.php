@@ -20,6 +20,7 @@ class Budget extends Model
         'amount',
         'start_date',
         'end_date',
+        'description',
     ];
 
     /**
@@ -33,7 +34,7 @@ class Budget extends Model
     /**
      * Get the expenses associated with this budget.
      */
-    public function expenses()
+    public function expense()
     {
         return $this->hasMany(Expense::class, 'budget_id');
     }

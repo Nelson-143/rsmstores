@@ -17,7 +17,7 @@
                     <div class="stg-row stg-bottom-gap-l stg-m-bottom-gap-l">
                         <div class="stg-col-9 stg-tp-col-8 stg-m-col-12">
                             <!-- Title -->
-                            <h1 class="bringer-page-title" data-split-appear="fade-up" data-split-unload="fade-up">#RomanStockManager<br>Ready to be a Champion😎,<br>Tune to Us now !!</h1>
+                            <h1 class="bringer-page-title" data-split-appear="fade-up" data-split-unload="fade-up">#RomanStockManager<br>Champion of Inventory Control 😎<br>Lead Your Business to Victory!</h1>
                         </div>
                         <div class="stg-col-3 stg-tp-col-4 stg-m-col-12">
                             <!-- Social Proof -->
@@ -51,18 +51,18 @@
                     <div class="stg-row stg-valign-bottom">
                         <div class="stg-col-3 stg-tp-col-3 stg-m-col-6" data-appear="fade-up" data-delay="200" data-unload="fade-up">
                             <div class="bringer-counter bringer-small-counter" data-delay="3000">
-                                <div class="bringer-counter-number">10</div>
-                                <div class="bringer-counter-label">Softwares in one Package 🎁</div>
+                                <div class="bringer-counter-number">7</div>
+                                <div class="bringer-counter-label">Champion Tools in One 🎯</div>
                             </div><!-- .bringer-counter -->
                         </div>
                         <div class="stg-col-3 stg-tp-col-3 stg-m-col-6" data-appear="fade-up" data-delay="300" data-unload="fade-up">
                             <div class="bringer-counter bringer-small-counter" data-delay="3000">
-                                <div class="bringer-counter-number" data-suffix="+">2</div>
-                                <div class="bringer-counter-label">Years in the 🚀Game. </div>
+                                <div class="bringer-counter-number" data-suffix="+">3</div>
+                                <div class="bringer-counter-label">Years of Creating Champions 👑</div>
                             </div><!-- .bringer-counter -->
                         </div>
                         <div class="stg-col-6 stg-tp-col-6 stg-m-col-12 stg-m-top-gap" data-appear="fade-up" data-delay="400" data-unload="fade-up">
-                            <p class="bringer-large-text">Don't let outdated inventory management hold your business back. Upgrade to Roman Stock Manager today and take control of your inventory with confidence with a free mind. </p>
+                            <p class="bringer-large-text">Be the champion your business deserves! With Roman Stock Manager, you'll have the winning edge in inventory control, leaving your competition behind. Time to claim your throne! 👑</p>
                         </div>
                     </div><!-- .stg-row -->
                 </div><!-- .bringer-hero-block -->
@@ -71,7 +71,7 @@
             <!-- Section: Steps -->
             <section class="backlight-top" id="page01">
                 <div class="stg-bottom-gap-l">
-                    <h2 data-appear="fade-up" data-unload="fade-up">Update your business with Us , Why??</h2>
+                    <h2 data-appear="fade-up" data-unload="fade-up">Your Path to Business Championship 😎</h2>
                 </div>
                 <!-- Step 01 Row -->
                 <div class="stg-row stg-bottom-gap stg-valign-middle stg-m-bottom-gap-l" data-unload="fade-left">
@@ -81,10 +81,10 @@
                         </div>
                     </div>
                     <div class="stg-col-6 stg-tp-col-6" data-appear="fade-right" data-delay="100">
-                        <span class="bringer-label">Why roman stock manager !</span>
-                        <h4> Real-Time Inventory Tracking</h4>
-                        <p><span class="bringer-highlight">01:</span> With Roman Stock Manager, you get real-time inventory tracking. This means you always know what's in stock, what needs reordering, and what products are moving slowly.</p>
-                        <p><span class="bringer-highlight">02:</span> Real-time updates reduce the risk of overstocking or running out of stock, ensuring optimal inventory levels at all times.</p>
+                        <span class="bringer-label">Champion Features</span>
+                        <h4>Master Your Inventory Game 💪</h4>
+                        <p><span class="bringer-highlight">01:</span> Like a champion athlete tracks their performance, track every item with precision. Never miss a beat in your inventory game!</p>
+                        <p><span class="bringer-highlight">02:</span> Stay ahead of the competition with real-time stock insights and smart predictions.</p>
                     </div>
                 </div>
                 <!-- Step 02 Row -->
@@ -95,10 +95,10 @@
                         </div>
                     </div>
                     <div class="stg-col-6 stg-tp-col-6" data-appear="fade-left" data-delay="100">
-                        <span class="bringer-label">why roman stock manager !</span>
-                        <h4> Enhance Accuracy , Reduced Costs &amp; manage debts easily</h4>
-                        <p><span class="bringer-highlight">01:</span> Accuracy is crucial in inventory management. Roman Stock Manager utilizes barcode scanning and automated data entry to ensure precise inventory records..</p>
-                        <p><span class="bringer-highlight">02:</span>  Reduce costly mistakes and save money by optimizing your stock levels and have full control of your depts clients.</p>
+                        <span class="bringer-label">Champion Features</span>
+                        <h4>Score Big with Smart Financial Control 🎯</h4>
+                        <p><span class="bringer-highlight">01:</span> Champions know their numbers! Take control of your finances like a pro with our powerful tracking tools.</p>
+                        <p><span class="bringer-highlight">02:</span> Keep your business winning with perfect debt management and crystal-clear financial visibility.</p>
                     </div>
                     <div class="stg-col-3"><!-- Empty Column --></div>
                 </div>
@@ -110,10 +110,10 @@
                         </div>
                     </div>
                     <div class="stg-col-6 stg-tp-col-6" data-appear="fade-right" data-delay="100">
-                        <span class="bringer-label">why roman stock manager !</span>
-                        <h4>Security &amp; Privacy with Roman Stock Manager</h4>
-                        <p><span class="bringer-highlight">01:</span>In today’s digital age, security and privacy are paramount concerns for businesses, especially when it comes to managing sensitive inventory and customer data.</p>
-                        <p><span class="bringer-highlight">02:</span> The Roman Stock Manager takes these concerns seriously, implementing robust security measures and privacy protections to ensure that your business data is safe and compliant with industry standards.</p>
+                        <span class="bringer-label">Champion Features</span>
+                        <h4>Fortress-Level Security 🛡️</h4>
+                        <p><span class="bringer-highlight">01:</span> Champions protect their assets! Your data is guarded with world-class security measures.</p>
+                        <p><span class="bringer-highlight">02:</span> Sleep easy knowing your business information is protected like championship gold.</p>
                     </div>
                 </div>
                 <!-- Step 04 Row -->
@@ -125,8 +125,8 @@
                     </div>
                     <div class="stg-col-6 stg-tp-col-6" data-appear="fade-left" data-delay="100">
                         <span class="bringer-label"></span>
-                        <h4>Easy to use software &amp; Accessible anyplace any time</h4>
-                        <p><span class="bringer-highlight">01:</span>Roman stock manager provides you with an intuitive ,easy to use and the best user interface and also accesible to any smart device. Join us and you also have a seamless control of your business.</p>
+                        <h4>Victory at Your Fingertips 📱</h4>
+                        <p><span class="bringer-highlight">01:</span> True champions stay ready! Access your business empire anywhere, anytime. Be the boss you were born to be! 🌟</p>
                     </div>
                     <div class="stg-col-3"><!-- Empty Column --></div>
                 </div>
@@ -136,9 +136,9 @@
             <section class="backlight-bottom divider-top">
                 <div class="stg-row stg-large-gap stg-valign-middle stg-tp-column-reverse">
                     <div class="stg-col-6" data-appear="fade-right" data-unload="fade-left">
-                        <h3>Rsm revolutionizes your business into the tech world. 🌐🚀</h3>
-                        <p class="bringer-large-text">Rsm , is not only a solution to your business but a total transformation from normal to a super business.  </p>
-                        <p>With our creative and passionated team you can also unlish your business website within a short time.</p>
+                        <h3>Join the League of Business Champions! 🚀</h3>
+                        <p class="bringer-large-text">Roman Stock Manager - Where Champions Are Made in Business</p>
+                        <p>Our championship team is here to transform your business into the market leader it deserves to be! 🏆</p>
                         <div class="align-right">
                             <a href="{{ route('habout.route') }}" class="bringer-arrow-link">Learn More About Us</a>
                         </div>
@@ -168,7 +168,7 @@
                     <ul class="bringer-detailed-list">
                         <li>
                             <div class="bringer-detailed-list-title">
-                                <h4>Inventory management<span class="bringer-accent">.</span></h4>
+                                <h4>Champion-Level Inventory Control 📦</h4>
                             </div>
                             <div class="bringer-detailed-list-description">
                                 <p>We weave visual stories and craft strategic messaging that resonate at heartstrings, build unwavering trust, and turn customers into fervent brand champions. Imagine seeing your logo come alive, not just a symbol but a rallying cry, an unwavering beacon in a sea of sameness. That's the power of branding we unleash.</p>
@@ -180,7 +180,7 @@
                         </li>
                         <li>
                             <div class="bringer-detailed-list-title">
-                                <h4>Sales &amp;Invoice management <span class="bringer-accent">.</span></h4>
+                                <h4>Sales Mastery & Perfect Invoicing 💼</h4>
                             </div>
                             <div class="bringer-detailed-list-description">
                                 <p>We design data-driven campaigns that crackle with energy, ignite engagement like wildfire, and turn clicks into conversions. Picture social media abuzz with your brand, blog posts sparking curiosity, and targeted ads finding their perfect match. We're the storm that propels your brand to ever-higher heights.</p>
@@ -192,7 +192,7 @@
                         </li>
                         <li>
                             <div class="bringer-detailed-list-title">
-                                <h4>Customer Dept control and management <span class="bringer-accent">.</span></h4>
+                                <h4>Debt Management Excellence 💫</h4>
                             </div>
                             <div class="bringer-detailed-list-description">
                                 <p>We craft visual masterpieces that sing your brand's story in vibrant colors and captivating shapes. From logos that lodge in minds to infographics that make complex ideas sing, we inject emotional punch and crystal-clear clarity into every pixel. Let your visuals become the unforgettable face of your brand.</p>
@@ -204,22 +204,10 @@
                         </li>
                         <li>
                             <div class="bringer-detailed-list-title">
-                                <h4>Budjet management<span class="bringer-accent">.</span></h4>
+                                <h4>Business Intelligence for Winners 📊</h4>
                             </div>
                             <div class="bringer-detailed-list-description">
                                 <p>We sculpt user-friendly websites that convert visitors into loyal devotees, seamlessly blending stunning aesthetics with intuitive navigation and flawless experiences for every screen. Imagine your website as a warm, inviting space where potential customers linger, explore, and ultimately succumb to its charms. We craft that digital haven.</p>
-                            </div>
-                            <div class="bringer-detailed-list-button">
-                                <span class="bringer-icon bringer-icon-explore"></span>
-                            </div>
-                            <a href="{{ route('service.route') }}"></a>
-                        </li>
-                        <li>
-                            <div class="bringer-detailed-list-title">
-                                <h4>Website Creation<span class="bringer-accent">.</span></h4>
-                            </div>
-                            <div class="bringer-detailed-list-description">
-                                <p>We weave compelling narratives into blog posts, website copy, and social media content that resonate with your audience like a well-loved symphony. Picture search engines whispering your brand's name, and customers sharing your story with eager ears. We craft the voice that makes your brand sing.</p>
                             </div>
                             <div class="bringer-detailed-list-button">
                                 <span class="bringer-icon bringer-icon-explore"></span>
@@ -239,8 +227,8 @@
                     <form action="mail-short.php" method="post" data-fill-error="Please, fill out the form." class="bringer-contact-form is-short bringer-masked-media" data-appear="fade-up">
                         <div class="bringer-form-content bringer-cta-form">
                             <div class="bringer-cta-form-content" data-appear="fade-up" data-delay="100">
-                                <div class="bringer-cta-title">Ready to simplify your business?</div>
-                                <input type="email" id="subscribe_email" name="subscribe_email" placeholder="email@example.com" required>
+                                <div class="bringer-cta-title">Ready to Become a Business Champion? 😎</div>
+                                <input type="email" id="subscribe_email" name="subscribe_email" placeholder="your@email.com" required>
                             </div>
                             <div class="bringer-cta-form-button" data-appear="fade-up" data-delay="200">
                                 <button type="submit">
@@ -259,3 +247,4 @@
         </div><!-- .stg-container -->
 
 @endsection
+

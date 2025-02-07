@@ -81,4 +81,5 @@ class PosController extends Controller
             ->back()
             ->with('success', 'Product has been deleted from cart!');
     }
+    
 }
