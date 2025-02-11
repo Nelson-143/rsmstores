@@ -24,6 +24,7 @@ class User extends Authenticatable implements MustVerifyEmail
         "store_address",
         "store_phone",
         "store_email",
+        "'is_banned",
     ];
 
     protected $hidden = [
@@ -100,5 +101,9 @@ public function getIsAdminAttribute()
   {
       return $this->hasMany(Notification::class, 'notifiable_id')->where('notifiable_type', self::class);
   }
+  public function isDeveloper()
+{
+    return $this->role === 'developer'; // Adjust based on your role system
+}
  
 }

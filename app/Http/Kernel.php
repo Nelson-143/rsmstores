@@ -71,8 +71,10 @@ class Kernel extends HttpKernel
         // other middlewares
         'role' => \Spatie\Permission\Middleware\RoleMiddleware::class,
         'permission' => \Spatie\Permission\Middleware\PermissionMiddleware::class,
-        'chief.auth' => \App\Http\Middleware\ChiefAuthMiddleware::class,
+        'developer' => \App\Http\Middleware\EnsureUserIsDeveloper::class,
     ];
+    
+   
 
     
     

@@ -14,6 +14,7 @@ use Database\Seeders\RolesAndPermissionsSeeder as SeedersRolesAndPermissionsSeed
 use Illuminate\Database\Seeder;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
 use RolesAndPermissionsSeeder;
+use AdminUserSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -28,7 +29,8 @@ class DatabaseSeeder extends Seeder
             UnitSeeder::class,
             SupplierSeeder::class,
             ProductSeeder::class,
-            RolesAndPermissionsSeeder::class,
+            AdminUserSeeder::class,
+           
         ]);
 
         Customer::factory(15)->create();

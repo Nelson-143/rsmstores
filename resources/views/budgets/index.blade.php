@@ -45,14 +45,14 @@
             <!-- Progress -->
             <div class="col-md-6">
                 <h4 class="mb-3">Progress</h4>
-                <div class="progress mb-3">
-                    @php
-                        $percentage = $budgets->sum('amount') > 0 ? ($expenses / $budgets->sum('amount')) * 100 : 0;
-                    @endphp
-                    <div class="progress-bar bg-danger" role="progressbar" style="width: {{ $percentage }}%;" aria-valuenow="{{ $percentage }}" aria-valuemin="0" aria-valuemax="100">
-                        {{ round($percentage, 2) }}%
-                    </div>
-                </div>
+               <div class="progress mb-3">
+    @php
+        $percentage = $budgets->sum('amount') > 0 ? (($expenses->sum('amount') ?? 0) / $budgets->sum('amount')) * 100 : 0;
+    @endphp
+    <div class="progress-bar bg-danger" role="progressbar" style="width: {{ $percentage }}%;" aria-valuenow="{{ $percentage }}" aria-valuemin="0" aria-valuemax="100">
+        {{ round($percentage, 2) }}%
+    </div>
+</div>
                 <p class="text-muted">You have used {{ round($percentage, 2) }}% of your total budget.</p>
                 <canvas id="growthChart"></canvas>
             </div>
@@ -142,8 +142,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="amount" class="form-label">Allocated Amount</label>
-                        <input type="number" class="form-control" id="amount" name="amount" min="50" required>
-                    </div>
+                    <input type="number" class="form-control" id="amount" name="amount" min="50" step="50" oninput="this.value = Math.ceil(this.value / 50) * 50" required>
                     <div class="mb-3">
                         <label for="start_date" class="form-label">Start Date</label>
                         <input type="date" class="form-control" id="start_date" name="start_date" required>

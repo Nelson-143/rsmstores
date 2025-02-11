@@ -43,7 +43,13 @@ return [
             'visibility' => 'public',
             'throw' => false,
         ],
-
+        'basset' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/basset'),
+            'url' => env('APP_URL').'/storage/basset',
+            'visibility' => 'public',
+        ],
+        
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),

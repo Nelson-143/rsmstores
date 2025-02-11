@@ -25,4 +25,5 @@ class BudgetCategory extends Model
     {
         return $this->hasMany(Budget::class, 'category_id');
     }
+    
 }

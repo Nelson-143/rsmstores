@@ -16,13 +16,14 @@ class Budget extends Model
      */
     protected $fillable = [
         'user_id',
-        'name',
+        'category_id', // ✅ Make sure this is here!
         'amount',
         'start_date',
         'end_date',
-        'description',
     ];
-
+    
+   
+    
     /**
      * Get the user associated with the budget.
      */
@@ -38,6 +39,11 @@ class Budget extends Model
     {
         return $this->hasMany(Expense::class, 'budget_id');
     }
+    // In Budget.php model
+public function category()
+{
+    return $this->belongsTo(BudgetCategory::class, 'category_id');
+}
 
     /**
      * Calculate the remaining budget.
@@ -49,4 +55,6 @@ class Budget extends Model
         $totalExpenses = $this->expenses()->sum('amount');
         return $this->amount - $totalExpenses;
     }
+    
+    
 }

@@ -14,7 +14,7 @@ class BudgetController extends Controller
         // Fetch data for the budget dashboard
         $growthData = $this->getGrowthData();
         $expenses = Expense::with('category')->where('user_id', auth()->id())->get();
-        $budgets = Budget::with('budgetCategory')->where('user_id', auth()->id())->get(); // Ensure relationship is correct
+        $budgets = Budget::with('category')->where('user_id', auth()->id())->get();
         $budgetCategories = BudgetCategory::all();
 
         return view('budgets.index', compact('budgets', 'budgetCategories', 'expenses', 'growthData'));

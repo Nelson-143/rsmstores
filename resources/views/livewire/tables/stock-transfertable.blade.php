@@ -21,19 +21,30 @@
         <div class="row g-3">
             <div class="col-md-3">
                 <label for="product_id" class="form-label">{{ __('Product') }}</label>
-                <select name="product_id" class="form-select" required>
+    <select name="product_id" class="form-select" required>
     <option value="" disabled {{ isset($products) && $products->isEmpty() ? 'selected' : '' }}>
         {{ __('Select Product') }}
     </option>
 
     @if (isset($products) && $products->isNotEmpty())
         @foreach ($products as $product)
-            <option value="{{ $product->id }}">{{ $product->name }}</option>
+            <option value="{{ $product->id }}" {{ old('product_id') == $product->id ? 'selected' : '' }}>
+                {{ $product->name }}
+            </option>
         @endforeach
     @else
         <option value="" disabled selected>{{ __('No products available') }}</option>
     @endif
 </select>
+
+<!--
+Other places to debug for related error:
+1. Check if the $products variable is being passed to the view from the controller.
+2. Verify if the $products variable is a collection of products and not empty.
+3. Ensure that the product model has the 'id' and 'name' attributes.
+4. Check the database to see if there are any products available.
+5. Verify if there are any errors in the product model or the database query that retrieves the products.
+-->
             </div>
             <div class="col-md-3">
                 <label for="from_location" class="form-label">{{ __('From Location') }}</label>
