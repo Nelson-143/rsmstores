@@ -15,18 +15,18 @@ class CreateDebtsTable extends Migration
     {
         Schema::create('debts', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('customer_id'); // Foreign key to the customers table
+            // In the migration file for debts
+            $table->foreignId('customer_id')->nullable()->constrained()->onDelete('cascade');
+            //$table->unsignedBigInteger('customer_id'); // Foreign key to the customers table
             $table->decimal('amount', 10, 2); // Total debt amount
             $table->decimal('amount_paid', 10, 2)->default(0); // Paid amount
             $table->date('due_date'); // Due date for the debt
             $table->timestamp('paid_at')->nullable(); // Payment date if fully paid
             $table->timestamps();
-
+            // In the migration file for debts
+            $table->uuid('uuid')->unique();
             // Foreign key constraint
-            $table->foreign('customer_id')
-                ->references('id')
-                ->on('customers')
-                ->onDelete('cascade'); // Delete debts if the customer is deleted
+           
         });
     }
 

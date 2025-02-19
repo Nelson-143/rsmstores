@@ -71,25 +71,26 @@
                 </div>
 
                 <!-- Chat Messages -->
-                <div class="chat-messages">
-                    <div class="message assistant">
-                        <div class="message-content">
-                            <p>Hello! I'm your Roman Stock Manager AI assistant. How can I help you today?</p>
-                        </div>
-                    </div>
-                    <!-- Messages will be dynamically added here -->
-                </div>
+                <div class="chat-messages" id="chatMessages">
+    <div class="message assistant">
+        <div class="message-content">
+            <p>Hello! I'm  FinAssist, an  AI assistant for Roman Stock Manager. How can I help you today?</p>
+        </div>
+    </div>
+</div>
+
 
                 <!-- Chat Input -->
                 <div class="chat-input-container">
-                    <div class="chat-input-box">
-                        <textarea placeholder="Ask about your business..." rows="1"></textarea>
-                        <button class="send-button">
-                            <i class="fas fa-paper-plane"></i>
-                        </button>
-                    </div>
-                    <p class="input-disclaimer">Roman Stock Manager can make mistakes. Consider checking important information.</p>
-                </div>
+    <div class="chat-input-box">
+        <textarea id="userMessage" placeholder="Ask about your business..." rows="1"></textarea>
+        <button class="send-button" onclick="sendMessage()">
+            <i class="fas fa-paper-plane"></i>
+        </button>
+    </div>
+    <p class="input-disclaimer">FinAssist  can make mistakes. Consider checking important information.</p>
+</div>
+
             </div>
         </div>
     </div>
@@ -291,52 +292,67 @@ textarea:focus {
     }
 }
 </style>
-
 <script>
 document.addEventListener("DOMContentLoaded", function () {
-    const textarea = document.querySelector('textarea');
-    const sendButton = document.querySelector('.send-button');
-    const chatMessages = document.querySelector('.chat-messages');
-    const welcomeScreen = document.querySelector('.welcome-screen');
+    const textarea = document.getElementById("userMessage");
+    const sendButton = document.querySelector(".send-button");
+    const chatMessages = document.getElementById("chatMessages");
+    const welcomeScreen = document.querySelector(".welcome-screen");
 
     // Auto-resize textarea
-    textarea.addEventListener('input', function() {
-        this.style.height = 'auto';
-        this.style.height = (this.scrollHeight) + 'px';
+    textarea.addEventListener("input", function () {
+        this.style.height = "auto";
+        this.style.height = this.scrollHeight + "px";
     });
 
     // Send message function
     function sendMessage() {
-        const message = textarea.value.trim();
-        if (message) {
-            // Hide welcome screen on first message
-            if (welcomeScreen) {
-                welcomeScreen.style.display = 'none';
-            }
+        let userMessage = textarea.value.trim();
+        if (!userMessage) return;
 
-            // Add user message
-            addMessage(message, 'user');
-
-            // Simulate AI response
-            setTimeout(() => {
-                let response = "I'll help you analyze that. ";
-                if (message.toLowerCase().includes('loan')) {
-                    response += "Based on your current financials, taking a loan might strain your cash flow.";
-                } else if (message.toLowerCase().includes('stock')) {
-                    response += "Looking at your inventory data, I recommend reordering Product X within 3 days.";
-                }
-                addMessage(response, 'assistant');
-            }, 1000);
-
-            // Reset textarea
-            textarea.value = '';
-            textarea.style.height = 'auto';
+        // Hide welcome screen on first message
+        if (welcomeScreen) {
+            welcomeScreen.style.display = "none";
         }
+
+        // Append user message
+        addMessage(userMessage, "user");
+
+        // Clear input
+        textarea.value = "";
+        textarea.style.height = "auto";
+
+        // Send request to backend
+        fetch("{{ route('finassist.query') }}", {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json",
+        "X-CSRF-TOKEN": "{{ csrf_token() }}"
+    },
+    body: JSON.stringify({ message: userMessage })
+})
+.then(response => response.json())
+.then(data => {
+    console.log("API Response:", data); // Debugging step
+    if (data.response) {
+        let botMessageDiv = document.createElement("div");
+        botMessageDiv.classList.add("message", "assistant");
+        botMessageDiv.innerHTML = `<div class="message-content"><p>${data.response}</p></div>`;
+        chatMessages.appendChild(botMessageDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    } else {
+        console.error("Unexpected API response:", data);
+    }
+})
+.catch(error => {
+    console.error("Fetch Error:", error);
+});
+
     }
 
     // Add message to chat
     function addMessage(content, type) {
-        const messageDiv = document.createElement('div');
+        const messageDiv = document.createElement("div");
         messageDiv.className = `message ${type}`;
         messageDiv.innerHTML = `
             <div class="message-content">
@@ -348,14 +364,14 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Event listeners
-    sendButton.addEventListener('click', sendMessage);
-    textarea.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' && !e.shiftKey) {
+    sendButton.addEventListener("click", sendMessage);
+    textarea.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" && !e.shiftKey) {
             e.preventDefault();
             sendMessage();
         }
     });
-
+});
     // Suggestion card clicks
     document.querySelectorAll('.suggestion-card').forEach(card => {
         card.addEventListener('click', () => {
@@ -364,7 +380,26 @@ document.addEventListener("DOMContentLoaded", function () {
             textarea.focus();
         });
     });
-});
+
+    function sendMessage() {
+        let userMessage = document.getElementById("userMessage").value;
+        if (!userMessage.trim()) return;
+
+        let chatMessages = document.getElementById("chatMessages");
+    }
+
+    document.getElementById("sendMessage").addEventListener("click", function() {
+        let messageBox = document.getElementById("userMessage");
+        let message = messageBox.value.trim();
+        if (message) {
+            let chatMessages = document.getElementById("chatMessages");
+            chatMessages.innerHTML += `<div class='text-end p-3 mb-3 bg-primary text-white rounded'>${message}</div>`;
+            messageBox.value = "";
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+    });
+
 </script>
+
 
 @endsection

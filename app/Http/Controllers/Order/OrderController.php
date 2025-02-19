@@ -259,4 +259,37 @@ public function deleteCartItem(Request $request)
     return response()->json(['success' => true, 'cartContent' => view('partials.cart-content', compact('cart'))->render()]);
 }
 
+public function showOrder($orderId)
+{
+    // Fetch the order with its related customer and items
+$order = Order::with(['customer', 'details'])->where('uuid', $orderId)->firstOrFail();
+    // Calculate the total for the order (if not already stored in the database)
+    $order->total = $order->items->sum(function ($item) {
+        return $item->quantity * $item->price;
+    });
+
+    return view('orders.show', compact('order'));
+
+}
+
+public function approve($uuid)
+{
+    // Find the order by UUID
+    $order = Order::where('uuid', $uuid)->firstOrFail();
+
+    // Update the order status to COMPLETE
+    $order->update([
+        'order_status' => OrderStatus::COMPLETE,
+    ]);
+
+    // Optionally, you can reduce the product stock here (if not already handled elsewhere)
+    foreach ($order->details as $detail) {
+        $product = Product::find($detail->product_id);
+        $product->update([
+            'quantity' => $product->quantity - $detail->quantity,
+        ]);
+    }
+
+    return response()->json(['success' => true]);
+}
 }

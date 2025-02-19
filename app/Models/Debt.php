@@ -13,6 +13,21 @@ use App\Models\Customer;
  */
 class Debt extends Model
 {
+    protected $fillable = [
+        'customer_id', // The ID of the customer (nullable for personal debts)
+        'amount',      // The total amount of the debt
+        'amount_paid', // The amount paid so far (defaults to 0)
+        'due_date',    // The due date for the debt
+        'paid_at',     // The date when the debt was fully paid (nullable)
+    ];
+    // Debt.php
+protected static function boot()
+{
+    parent::boot();
+    static::creating(function ($debt) {
+        $debt->uuid = (string) \Illuminate\Support\Str::uuid();
+    });
+}
     public function customer()
 {
     return $this->belongsTo(Customer::class, 'customer_id');
@@ -22,8 +37,14 @@ class Debt extends Model
   {
       return $this->belongsTo(Branch::class);
   }
-  
-
+  public function payments()
+{
+    return $this->hasMany(Payment::class);
+}
+public function getRouteKeyName()
+{
+    return 'uuid'; // Use 'uuid' instead of 'id' for route model binding
+}
 
 
 }

@@ -439,29 +439,8 @@
                                 </div>
                             </li>
 
-
-
-                            <li class="nav-item {{ request()->is('quotations*') ? 'active' : null }}">
-                                <a class="nav-link" href="{{ route('quotations.index') }}">
-                                    <span
-                                        class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/home -->
-                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                            class="icon icon-tabler icon-tabler-file" width="24" height="24"
-                                            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
-                                            fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                            <path d="M14 3v4a1 1 0 0 0 1 1h4" />
-                                            <path
-                                                d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" />
-                                        </svg>
-                                    </span>
-                                    <span class="nav-link-title">
-                                        {{ __('Quotations') }}
-                                    </span>
-                                </a>
-                            </li>
                             <li
-                                class="nav-item dropdown {{ request()->is('suppliers*', 'customers*','Debts*','expences*','stock*','budgets*','gamification*') ? 'active' : null }}">
+                                class="nav-item dropdown {{ request()->is('suppliers*', 'customers*','debts*','expences*','stock*','budgets*','gamification*','quotations*') ? 'active' : null }}">
                                 <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown"
                                     data-bs-auto-close="outside" role="button" aria-expanded="false">
                                     <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -483,6 +462,17 @@
                                 <div class="dropdown-menu">
                                     <div class="dropdown-menu-columns">
                                         <div class="dropdown-menu-column">
+
+                                        <a class="dropdown-item" href="{{ route('quotations.index') }}">
+                                            <lord-icon
+                                                      src="https://cdn.lordicon.com/rguiapej.json"
+                                                        trigger="hover"
+                                                        colors="primary:black"
+                                                      style="width:20px;height:20px">
+                                                         </lord-icon>
+                                                          {{ __('Quotations') }}
+                                                     </a>
+
                                             <a class="dropdown-item" href="{{ route('suppliers.index') }}">
                                             <lord-icon
                                                       src="https://cdn.lordicon.com/pbrgppbb.json"
@@ -501,7 +491,7 @@
                                                          </lord-icon>
                                                           {{ __('Customers') }}
                                                      </a>
-                                            <a class="dropdown-item" href="{{ route('Debts.index') }}">
+                                            <a class="dropdown-item" href="{{ route('debts.index') }}">
                                             <lord-icon
                                                 src="https://cdn.lordicon.com/xuyycdjx.json"
                                                 trigger="morph"
@@ -664,26 +654,41 @@
                                 </div>
                             </li>
                    
-                            <!--search---->
-                        <div class="my-2 my-md-0 flex-grow-1 flex-md-grow-0 order-first order-md-last">
-                            <form action="./" method="get" autocomplete="off" novalidate>
-                                <div class="input-icon">
-                                    <span class="input-icon-addon">
-                                        <!-- Download SVG icon from http://tabler-icons.io/i/search -->
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
-                                            height="24" viewBox="0 0 24 24" stroke-width="2"
-                                            stroke="currentColor" fill="none" stroke-linecap="round"
-                                            stroke-linejoin="round">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                            <path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
-                                            <path d="M21 21l-6 -6" />
-                                        </svg>
-                                    </span>
-                                    <input type="text" name="search" id="search" value=""
-                                        class="form-control" placeholder="Search…" aria-label="Search in website">
-                                </div>
-                            </form>
-                        </div>
+                       <div class="my-2 my-md-0 flex-grow-1 flex-md-grow-0 order-first order-md-last">
+    <form action="" method="get" autocomplete="off" novalidate>
+        <div class="input-icon">
+            <span class="input-icon-addon">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
+                    <path d="M21 21l-6 -6" />
+                </svg>
+            </span>
+            <input type="text" name="search" id="search" value="" class="form-control" placeholder="Search…" aria-label="Search in website">
+        </div>
+    </form>
+</div>
+
+<script>
+    $(document).ready(function() {
+        $('#search').on('keyup', function() {
+            var search = $(this).val().toLowerCase();
+            $('.page-wrapper *').each(function() {
+                if ($(this).text().toLowerCase().indexOf(search) !== -1) {
+                    $(this).addClass('highlight');
+                } else {
+                    $(this).removeClass('highlight');
+                }
+            });
+        });
+    });
+</script>
+
+<style>
+    .highlight {
+        background-color: yellow;
+    }
+</style>
                         </ul>
                         
                     </div>

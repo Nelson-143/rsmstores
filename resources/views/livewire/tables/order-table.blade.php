@@ -104,7 +104,7 @@
                             {{ $order->payment_type }}
                         </td>
                         <td class="align-middle text-center">
-                            {{ Number::currency($order->total, 'Tsh') }}
+                            Tsh.{{ ($order->total) }}
                         </td>
                         <td class="align-middle text-center">
                             <x-status dot
@@ -115,8 +115,18 @@
                         </td>
                         <td class="align-middle text-center">
                             <x-button.show class="btn-icon" route="{{ route('orders.show', $order->uuid) }}" />
-                            <x-button.print class="btn-icon"
-                                route="{{ route('order.downloadInvoice', $order->uuid) }}" />
+                            <x-button.print class="btn-icon" route="{{ route('order.downloadInvoice', $order->uuid) }}" />
+
+                            <!-- Tick Button for Approval -->
+                            @if ($order->order_status === \App\Enums\OrderStatus::PENDING)
+                                <button class="btn btn-icon btn-success" onclick="approveOrder('{{ $order->uuid }}')">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-check" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                        <path d="M5 12l5 5l10 -10"/>
+                                    </svg>
+                                </button>
+                            @endif
+
                             @if ($order->order_status === \App\Enums\OrderStatus::PENDING)
                                 <x-button.delete class="btn-icon" route="{{ route('orders.cancel', $order) }}"
                                     onclick="return confirm('Are you sure to cancel invoice no. {{ $order->invoice_no }} ?')" />
@@ -145,3 +155,31 @@
         </ul>
     </div>
 </div>
+@push('scripts')
+<script>
+    function approveOrder(uuid) {
+        if (confirm('Are you sure you want to approve this order?')) {
+            fetch(`/orders/${uuid}/approve`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    window.location.reload(); // Reload the page to reflect the changes
+                } else {
+                    alert('Failed to approve the order.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while approving the order.');
+            });
+        }
+    }
+</script>
+@endpush

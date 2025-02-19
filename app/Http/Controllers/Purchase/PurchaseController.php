@@ -80,11 +80,11 @@ class PurchaseController extends Controller
         $purchase = Purchase::with('supplier')->where('uuid', $uuid)->first();
         $suppliers = Supplier::all();
         $products = $purchase->details; // Fetch associated purchase details (products)
-    
+
         return view('purchases.edit', compact('purchase', 'suppliers', 'products'));
     }
-    
-    
+
+
 
     /**
      * Show the form for creating a new purchase.
@@ -102,66 +102,71 @@ class PurchaseController extends Controller
      */
 
      public function store(Request $request)
-     {
-         // Validate the request data
-         $validated = $request->validate([
-             'date' => 'required|date',
-             'supplier_id' => 'required|exists:suppliers,id',
-             'reference' => 'required|string',
-             'products' => 'required|array',
-             'products.*.id' => 'required|exists:products,id',
-             'products.*.quantity' => 'required|integer|min:1',
-             'products.*.unitcost' => 'required|numeric|min:0',
-             'tax_rate' => 'required|numeric|min:0', // Validate a single tax rate for the entire purchase
-         ]);
-     
-         // Generate purchase number automatically
-         $purchaseNumber = $this->generatePurchaseNumber(); // Placeholder function
-     
-         // Initialize total amount
-         $totalAmount = 0;
-     
-         // Calculate the total amount based on products
-         foreach ($validated['products'] as $product) {
-             $totalAmount += $product['quantity'] * $product['unitcost']; // Accumulate total amount
-         }
-     
-         // Calculate the total tax amount based on the total price
-         $taxAmount = $totalAmount * ($validated['tax_rate'] / 100);
-     
-         // Calculate the total amount including taxes
-         $totalAmountWithTaxes = $totalAmount + $taxAmount;
-     
-         // Create the purchase with total amount and user ID
-         $purchase = Purchase::create([
-             'supplier_id' => $validated['supplier_id'],
-             'date' => $validated['date'],
-             'total_amount' => $totalAmountWithTaxes, // Save the total amount with taxes
-             'taxes' => $taxAmount, // Save the total taxes amount for the purchase
-             'created_by' => auth()->id(), // Assuming you have an authenticated user
-             'purchase_no' => $purchaseNumber, // Use your generated purchase number
-             'uuid' => Str::uuid(), // Generate a UUID
-             'user_id' => auth()->id(), // Set the user_id to the authenticated user
-         ]);
-     
-         // Save the purchase details without storing tax information for each product
-         foreach ($validated['products'] as $product) {
-             $productTotal = $product['quantity'] * $product['unitcost']; // Calculate total for each product
-     
-             PurchaseDetails::create([
-                 'purchase_id' => $purchase->id,
-                 'product_id' => $product['id'],
-                 'quantity' => $product['quantity'],
-                 'unitcost' => $product['unitcost'],
-                 'total' => $productTotal, // Store total for each product
-                 // No need to store tax amount for each product
-             ]);
-         }
-     
-         // Optionally return a response or redirect
-         return redirect()->route('purchases.index')->with('success', 'Purchase created successfully!');
-     }
-     
+{
+    // Validate the request data
+    $validated = $request->validate([
+        'date' => 'required|date',
+        'supplier_id' => 'required|exists:suppliers,id',
+        'reference' => 'required|string',
+        'products' => 'required|array',
+        'products.*.id' => 'required|exists:products,id',
+        'products.*.quantity' => 'required|integer|min:1',
+        'products.*.unitcost' => 'required|numeric|min:0',
+        'tax_rate' => 'required|numeric|min:0', // Validate a single tax rate for the entire purchase
+    ]);
+
+    // Generate purchase number automatically
+    $purchaseNumber = $this->generatePurchaseNumber(); // Placeholder function
+
+    // Initialize total amount
+    $totalAmount = 0;
+
+    // Calculate the total amount based on products
+    foreach ($validated['products'] as $product) {
+        $totalAmount += $product['quantity'] * $product['unitcost']; // Accumulate total amount
+    }
+
+    // Calculate the total tax amount based on the total price
+    $taxAmount = $totalAmount * ($validated['tax_rate'] / 100);
+
+    // Calculate the total amount including taxes
+    $totalAmountWithTaxes = $totalAmount + $taxAmount;
+
+    // Create the purchase with total amount and user ID
+    $purchase = Purchase::create([
+        'supplier_id' => $validated['supplier_id'],
+        'date' => $validated['date'],
+        'total_amount' => $totalAmountWithTaxes, // Save the total amount with taxes
+        'taxes' => $taxAmount, // Save the total taxes amount for the purchase
+        'created_by' => auth()->id(), // Assuming you have an authenticated user
+        'purchase_no' => $purchaseNumber, // Use your generated purchase number
+        'uuid' => Str::uuid(), // Generate a UUID
+        'user_id' => auth()->id(), // Set the user_id to the authenticated user
+    ]);
+
+    // Save the purchase details and update product quantities
+    foreach ($validated['products'] as $product) {
+        $productTotal = $product['quantity'] * $product['unitcost']; // Calculate total for each product
+
+        // Create purchase details
+        PurchaseDetails::create([
+            'purchase_id' => $purchase->id,
+            'product_id' => $product['id'],
+            'quantity' => $product['quantity'],
+            'unitcost' => $product['unitcost'],
+            'total' => $productTotal, // Store total for each product
+        ]);
+
+        // Update the product quantity in the products table
+        $productModel = Product::find($product['id']);
+        $productModel->quantity += $product['quantity']; // Increase the product quantity
+        $productModel->save(); // Save the updated quantity
+    }
+
+    // Optionally return a response or redirect
+    return redirect()->route('purchases.index')->with('success', 'Purchase created successfully!');
+}
+
 
     // Placeholder function for generating purchase numbers
     private function generatePurchaseNumber()
@@ -220,14 +225,14 @@ class PurchaseController extends Controller
     } catch (Exception $e) {
         // Roll back the transaction in case of an error
         DB::rollBack();
-        
+
         // Redirect back with an error message
         return back()->withErrors(['error' => 'Error updating purchase: ' . $e->getMessage()]);
     }
 }
 
-    
-    
+
+
 
     public function approve($uuid)
     {

@@ -92,7 +92,7 @@
                             </div>
                         </div>
                         <div class="d-flex align-items-baseline">
-                            <div class="h1 mb-0 me-2">Tsh {{ isset($debt) ? number_format($debt, 2) : '0.00' }}</div>
+                            <div class="h1 mb-0 me-2">Tsh {{ isset($totalValueOfDebt) ? number_format($totalValueOfDebt, 2) : '0.00' }}</div>
                             <div class="me-auto">
                                 <span class="text-red d-inline-flex align-items-center lh-1">
                                   {{ isset($debtChange) ? $debtChange . '%' : '0%' }} 

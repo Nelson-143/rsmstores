@@ -50,7 +50,7 @@
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $purchase->supplier->name }}</td> <!-- Assuming supplier model has 'name' -->
                                     <td>{{ $purchase->date }}</td>
-                                    <td>${{ $purchase->total_amount }}</td>
+                                    <td>Tsh.{{ $purchase->total_amount }}</td>
                                     <td>{{ $purchase->status }}</td>
                                     <td>
                                         <form action="{{ route('purchases.approve', $purchase->uuid) }}" method="POST"

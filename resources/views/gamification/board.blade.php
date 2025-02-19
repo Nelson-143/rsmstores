@@ -15,10 +15,9 @@
         <div class="empty">
           <div class="empty-img"><img src="https://tabler.io/_next/image?url=%2Fillustrations%2Fdark%2Fcomputer-fix.png&w=800&q=75"/>
           </div>
-          <p class="empty-title">It's not You, It's Us</p>
+          <p class="empty-title">Hold Tight, the Best is in Sight 🚀</p>
           <p class="empty-subtitle text-secondary">
-              We apologize for the inconvenience. This site is still in production, and you will be notified when it is ready. Thank you for your understanding,Champ😎!
-          </p>
+          Thank you for your patience! Our site is currently under construction, but we're working hard behind the scenes to bring you something amazing. Stay tuned for updates – we promise it's worth the wait. Get ready to be wowed, Champ! 😎          </p>
           <div class="empty-action">
             <a href="{{ route('dashboard') }}" class="btn btn-primary">
               <!-- Download SVG icon from http://tabler-icons.io/i/arrow-left -->

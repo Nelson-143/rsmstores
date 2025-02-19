@@ -22,9 +22,7 @@
             <div class="col-md-3">
                 <label for="product_id" class="form-label">{{ __('Product') }}</label>
     <select name="product_id" class="form-select" required>
-    <option value="" disabled {{ isset($products) && $products->isEmpty() ? 'selected' : '' }}>
-        {{ __('Select Product') }}
-    </option>
+ 
 
     @if (isset($products) && $products->isNotEmpty())
         @foreach ($products as $product)

@@ -65,5 +65,11 @@ class Order extends Model
       {
           return $this->belongsTo(Branch::class);
       }
-      
+   
+
+    // Relationship to the OrderItem model
+    public function items()
+    {
+        return $this->hasMany(OrderDetails::class);
+    }
 }

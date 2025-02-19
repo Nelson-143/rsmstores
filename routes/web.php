@@ -82,17 +82,22 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('/products', ProductController::class);
 
     // Route POS
+
+
     Route::get('/pos', [PosController::class, 'index'])->name('pos.index');
-    Route::post('/pos/cart/add', [PosController::class, 'addCartItem'])->name('pos.addCartItem');
-    Route::post('/pos/cart/update/{rowId}', [PosController::class, 'updateCartItem'])->name('pos.updateCartItem');
-    Route::post('/pos/cart/delete', [PosController::class, 'deleteCartItem'])->name('pos.deleteCartItem');
-    
+    Route::post('/pos/add-cart-item/{productId}', [PosController::class, 'addCartItem'])->name('pos.addCartItem');
+    Route::post('/pos/update-cart-item/{rowId}', [PosController::class, 'updateCartItem'])->name('pos.updateCartItem');
+    Route::delete('/pos/delete-cart-item/{rowId}', [PosController::class, 'deleteCartItem'])->name('pos.deleteCartItem');
+    Route::get('/pos/get-customer-cart/{customerId}', [PosController::class, 'getCustomerCart'])->name('pos.getCustomerCart');
+    Route::post('/invoice/create', [PosController::class, 'createInvoice'])->name('invoice.create');
+
     //Route::post('/pos/invoice', [PosController::class, 'createInvoice'])->name('pos.createInvoice');
     Route::post('/invoice/create', [InvoiceController::class, 'create'])->name('invoice.create');
     // Route Orders
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
     Route::get('/orders/pending', OrderPendingController::class)->name('orders.pending');
     Route::get('/orders/complete', OrderCompleteController::class)->name('orders.complete');
+    Route::post('/orders/{uuid}/approve', [OrderController::class, 'approve'])->name('orders.approve');
     // web.php
     Route::post('/set-active-customer', [OrderController::class, 'setActiveCustomer'])->name('setActiveCustomer');
 
@@ -100,6 +105,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/orders/store', [OrderController::class, 'store'])->name('orders.store');
 
     // SHOW ORDER
+    //Route::get('/orders/{order}', [PosController::class, 'showOrder'])->name('orders.show');
     Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
     Route::put('/orders/update/{order}', [OrderController::class, 'update'])->name('orders.update');
     Route::delete('/orders/cancel/{order}', [OrderController::class, 'cancel'])->name('orders.cancel');
@@ -126,7 +132,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/purchases/show/{purchase}', [PurchaseController::class, 'show'])->name('purchases.show');
     Route::get('/purchases/{purchase}/edit', [PurchaseController::class, 'edit'])->name('purchases.edit');
-    Route::put('/purchases/{purchase}/update', [PurchaseController::class, 'update'])->name('purchases.update');    
+    Route::put('/purchases/{purchase}/update', [PurchaseController::class, 'update'])->name('purchases.update');
 
     Route::get('/suppliers/info/{uuid}', [SupplierController::class, 'getSupplierDetails'])->name('suppliers.details');
 
@@ -142,15 +148,21 @@ Route::middleware(['auth'])->group(function () {
 });
 
     //Route Finassist
-    
+
 Route::get('/finassist', [FinAssistController::class, 'index'])->name('finassist');
 Route::post('/finassist/query', [FinAssistController::class, 'handleQuery'])->name('finassist.query');
-    
-//Route Debts
-Route::resource('/Debts', DebtsController::class);
+
+
+// routes/web.php
+Route::get('/debts', [DebtsController::class, 'index'])->name('debts.index');
 Route::post('/debts', [DebtsController::class, 'store'])->name('debts.store');
- 
-//Routes for RsmPlay
+Route::get('/debts/{uuid}/edit', [DebtsController::class, 'edit'])->name('debts.edit');
+Route::put('/debts/{uuid}', [DebtsController::class, 'update'])->name('debts.update');
+Route::delete('/debts/{uuid}', [DebtsController::class, 'destroy'])->name('debts.destroy');
+Route::post('/debts/pay', [DebtsController::class, 'pay'])->name('debts.pay');
+Route::get('/debts/{uuid}/payments', [DebtsController::class, 'showPaymentHistory'])->name('debts.history');
+
+//route to game
 Route::prefix('gamification')->middleware(['auth'])->group(function () {
     Route::get('/RsmPlay', [GamificationController::class, 'index'])->name('gamification.board');
     Route::post('/missions/{id}/complete', [GamificationController::class, 'completeMission'])->name('gamification.mission.complete');
@@ -208,7 +220,7 @@ Route::get('auth/email/verify/{token}', [EmailVerificationController::class, 've
 // see the supplier in the dashboard
 Route::get('/purchases-by-supplier', [PurchaseController::class, 'getPurchasesBySupplier'])->name('purchases.bySupplier');
 Route::get('/purchases-by-category', [PurchaseController::class, 'getPurchasesByCategory'])->name('purchases.byCategory');
-//for notifications 
+//for notifications
 use App\Http\Controllers\NotificationController;
 Route::middleware(['auth'])->group(function () {
     Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
