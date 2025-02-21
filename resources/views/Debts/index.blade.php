@@ -234,7 +234,8 @@
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                                         </form>
-                                        <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#paymentModal" onclick="setDebtId({{ $debt['uuid'] }})">Pay</button>
+<!-- Button to Trigger Modal with Debt UUID -->
+<button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#paymentModal" data-debt-uuid="{{ $debt['uuid'] }}">Pay</button>
 
                         <a href="{{ route('debts.history', $debt['uuid']) }}" class="btn btn-info btn-sm">Payment History</a>                                    </td>
                                 </tr>
@@ -263,8 +264,8 @@
             <form id="paymentForm" method="POST" action="{{ route('debts.pay') }}">
                 @csrf
                 <div class="modal-body">
-                    <input type="hidden" name="debt_uuid" value="{{ $debt['uuid'] }}">
-                       <div class="mb-3">
+                    <input type="hidden" name="debt_uuid" id="debt_uuid" value="">
+                    <div class="mb-3">
                         <label class="form-label">Amount Paid</label>
                         <input type="number" name="amount_paid" class="form-control" placeholder="Enter amount" required>
                     </div>
@@ -278,22 +279,22 @@
     </div>
 </div>
 
+
 <script>
 
     // Update the debt_id value when the payment modal is opened
 function setDebtId(debtId) {
     document.getElementById('debt_id').value = debtId;
 }
-
-    const paymentModal = document.getElementById('paymentModal');
-    paymentModal.addEventListener('show.bs.modal', function (event) {
-        const button = event.relatedTarget; // Button that triggered the modal
-        const debtUuid = button.getAttribute('data-debt-uuid'); // Extract info from data-* attributes
-        const input = paymentModal.querySelector('input[name="debt_uuid"]');
-        input.value = debtUuid; // Update the input value
+document.addEventListener('DOMContentLoaded', function () {
+        var paymentModal = document.getElementById('paymentModal');
+        paymentModal.addEventListener('show.bs.modal', function (event) {
+            var button = event.relatedTarget; // Button that triggered the modal
+            var debtUuid = button.getAttribute('data-debt-uuid'); // Extract info from data-* attribute
+            var modalDebtUuidInput = paymentModal.querySelector('#debt_uuid');
+            modalDebtUuidInput.value = debtUuid; // Update hidden input value
+        });
     });
-
-
 </script>
 
 @endsection

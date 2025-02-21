@@ -122,13 +122,13 @@
                                                     {{ $item->product->name }}
                                                 </td>
                                                 <td class="align-middle text-center">
-                                                    {{ Number::currency($item->unitcost, 'TSH') }}
+                                                    Tsh.{{ ($item->unitcost) }}
                                                 </td>
                                                 <td class="align-middle text-center">
                                                     {{ $item->quantity }}
                                                 </td>
                                                 <td class="align-middle text-center">
-                                                    {{ Number::currency($item->total, 'TSH') }}
+                                                    Tsh.{{($item->total) }}
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -141,7 +141,7 @@
                                             </td>
                                             <td class="align-middle text-center">
                                                 <strong>
-                                                    {{ Number::currency($order->sub_total, 'TSH') }}
+                                                    Tsh.{{($order->sub_total) }}
                                                 </strong>
                                             </td>
                                         </tr>
@@ -151,7 +151,7 @@
                                             </td>
                                             <td class="align-middle text-center">
                                                 <strong>
-                                                    {{ Number::currency($order->vat, 'TSH') }}
+                                                    Tsh.{{($order->vat) }}
                                                 </strong>
                                             </td>
                                         </tr>
@@ -161,7 +161,7 @@
                                             </td>
                                             <td class="align-middle text-center">
                                                 <strong>
-                                                    {{ Number::currency($order->total, 'TSH') }}
+                                                    Tsh.{{($order->total) }}
                                                 </strong>
                                             </td>
                                         </tr>

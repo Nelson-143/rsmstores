@@ -4,7 +4,7 @@
 @endsection
 @section('content')
 <div class="container">
-<h1>Payment History for {{ $debt->customer->name }}</h1>
+    <h1>Payment History for {{ $debt->customer->name ?? 'Personal Debt' }}</h1>
     @if($payments->isEmpty())
         <p>No payment history found.</p>
     @else

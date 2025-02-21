@@ -117,14 +117,22 @@
                             <x-button.show class="btn-icon" route="{{ route('orders.show', $order->uuid) }}" />
                             <x-button.print class="btn-icon" route="{{ route('order.downloadInvoice', $order->uuid) }}" />
 
-                            <!-- Tick Button for Approval -->
+                            <!-- Form for Approval -->
                             @if ($order->order_status === \App\Enums\OrderStatus::PENDING)
-                                <button class="btn btn-icon btn-success" onclick="approveOrder('{{ $order->uuid }}')">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-check" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                                        <path d="M5 12l5 5l10 -10"/>
+                                <form action="{{ route('orders.approve', $order->uuid) }}" method="POST" style="display: inline;">
+                                    @csrf
+                                    @method('POST')
+                                    <button type="submit" class="btn btn-icon btn-success" onclick="return confirm('Are you sure you want to approve this order?')">
+                                        <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        class="icon icon-tabler icon-tabler-check" width="24" height="24"
+                                        viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                        stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path d="M5 12l5 5l10 -10" />
                                     </svg>
-                                </button>
+                                                                    </button>
+                                </form>
                             @endif
 
                             @if ($order->order_status === \App\Enums\OrderStatus::PENDING)

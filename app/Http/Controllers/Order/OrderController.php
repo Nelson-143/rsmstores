@@ -282,7 +282,7 @@ public function approve($uuid)
         'order_status' => OrderStatus::COMPLETE,
     ]);
 
-    // Optionally, you can reduce the product stock here (if not already handled elsewhere)
+    // Optionally, reduce the product stock here (if not already handled elsewhere)
     foreach ($order->details as $detail) {
         $product = Product::find($detail->product_id);
         $product->update([
@@ -290,6 +290,8 @@ public function approve($uuid)
         ]);
     }
 
-    return response()->json(['success' => true]);
+    return redirect()
+        ->route('orders.index')
+        ->with('success', 'Order approved successfully!');
 }
 }
