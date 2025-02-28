@@ -15,6 +15,8 @@ class CreateUserRewardsTable extends Migration
             $table->foreignId('reward_id')->constrained('rewards')->onDelete('cascade');
             $table->enum('status', ['pending', 'redeemed'])->default('pending');
             $table->timestamp('redeemed_at')->nullable();
+            $table->uuid('account_id')->nullable(); // Add account_id
+            $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade'); // Add foreign key directly
             $table->timestamps();
         });
     }

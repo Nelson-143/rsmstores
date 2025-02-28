@@ -10,12 +10,11 @@ class CreateBranchesTable extends Migration
         Schema::create('branches', function (Blueprint $table) {
             $table->id(); // Primary key
             $table->string('name'); // Branch name
-            $table->unsignedBigInteger('created_by'); // Super admin ID
             $table->enum('status', ['active', 'disabled'])->default('active'); // Branch status
             $table->timestamps(); // Created and updated timestamps
-
+            $table->uuid('account_id')->nullable(); // Add account_id
+            $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade'); // Add foreign key directly
             // Foreign key constraint
-            $table->foreign('created_by')->references('id')->on('users')->onDelete('cascade');
         });
     }
 }

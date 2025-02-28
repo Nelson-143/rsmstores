@@ -33,7 +33,8 @@ return new class extends Migration
             $table->foreignId('unit_id')->constrained()->onDelete('cascade');
 
             $table->foreignId('supplier_id')->nullable()->constrained()->onDelete('set null');
-
+            $table->uuid('account_id')->nullable(); // Add account_id
+            $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade'); // Add foreign key directly
             $table->softDeletes();
 
             $table->timestamps();

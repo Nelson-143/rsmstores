@@ -8,7 +8,7 @@ use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
-use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\Auth\EmailVerificationController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TeamController;
@@ -17,21 +17,37 @@ Route::middleware('guest')->group(function () {
     // Registration routes
     Route::get('register', [RegisteredUserController::class, 'create'])->name('register');
     Route::post('register', [RegisteredUserController::class, 'store']);
+
     // Login routes
     Route::get('login', [AuthenticatedSessionController::class, 'create'])->name('login');
     Route::post('login', [AuthenticatedSessionController::class, 'store']);
+
     // Forgot password routes
     Route::get('forgot-password', [PasswordResetLinkController::class, 'create'])->name('password.request');
     Route::post('forgot-password', [PasswordResetLinkController::class, 'store'])->name('password.email');
+
     // Reset password routes
     Route::get('reset-password/{token}', [NewPasswordController::class, 'create'])->name('password.reset');
     Route::post('reset-password', [NewPasswordController::class, 'store'])->name('password.store');
-    // Onboarding route (accessible only after registration)
-    Route::get('onboarding', function () {
-        return view('auth.onboarding');
-    })->name('auth.onboarding');
 });
 
+// Email verification routes
+Route::middleware('auth')->group(function () {
+    Route::get('email/verify', [EmailVerificationController::class, 'showVerificationForm'])
+        ->name('verification.notice');
+    Route::post('email/verification-notification', [EmailVerificationController::class, 'resendVerification'])
+        ->name('verification.send');
+    Route::get('email/verify/{token}', [EmailVerificationController::class, 'verify'])
+        ->name('verification.verify');
+    Route::post('email/verification/resend', [EmailVerificationController::class, 'resendVerification'])
+        ->name('verification.resend');
+        Route::post('/send-verification', [EmailVerificationController::class, 'sendVerification']);
+});
+
+// Onboarding route (accessible only after registration)
+Route::middleware('auth')->get('onboarding', function () {
+    return view('auth.onboarding');
+})->name('auth.onboarding');
 Route::middleware('auth')->group(function () {
   
 
@@ -56,7 +72,7 @@ Route::middleware(['auth',])->group(function () {
     Route::delete('/team/{user}', [TeamController::class, 'destroy'])->name('admin.team.destroy');
 
 
-    Route::get('/admin/team/Logs', [TeamLogsController::class, 'showTeamLogs'])->name('admin.team.logs.show');    
+    Route::get('/TeamLogs', [TeamLogsController::class, 'showTeamLogs'])->name('admin.team.logs.show');    
 });
 
 /*

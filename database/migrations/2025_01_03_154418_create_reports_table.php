@@ -13,6 +13,8 @@ class CreateReportsTable extends Migration
             $table->string('type'); // daily, weekly, monthly, yearly
             $table->json('data'); // Store the report details in JSON format
             $table->string('file_path')->nullable(); // For exported files
+            $table->uuid('account_id')->nullable(); // Add account_id
+            $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade'); // Add foreign key directly
             $table->timestamps();
         });
     }

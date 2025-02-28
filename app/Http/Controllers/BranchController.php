@@ -21,18 +21,20 @@ class BranchController extends Controller
      */
     public function store(Request $request)
     {
+        // Validate the request
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'created_by' => 'required|exists:users,id',
+            'status' => 'required|in:active,disabled',
         ]);
-
+    
+        // Add the authenticated user as the creator
+       
+    
+        // Create the branch
         $branch = Branch::create($validated);
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Branch created successfully!',
-            'branch' => $branch
-        ], 201);
+    
+        // Redirect with a success message
+        return redirect()->route('branches.index')->with('success', 'Branch created successfully!');
     }
 
     /**

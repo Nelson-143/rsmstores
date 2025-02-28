@@ -48,6 +48,39 @@
                 </div>
             @enderror
         </div>
+        <!-- Account Name -->
+        <div class="mb-3">
+            <label for="account_name" class="form-label">Account Name</label>
+            <input id="account_name" type="text" name="account_name"
+                class="form-control @error('account_name') is-invalid @enderror"
+                value="{{ old('account_name') }}"
+                placeholder="Enter Account Name"
+                required
+            >
+
+            @error('account_name')
+                <div class="invalid-feedback">
+                    {{ $message }}
+                </div>
+            @enderror
+        </div>
+                <!-- Branch Name -->
+        <div class="mb-3">
+            <label for="branch_name" class="form-label">Branch Name</label>
+            <input id="branch_name" type="text" name="branch_name"
+                class="form-control @error('branch_name') is-invalid @enderror"
+                value="{{ old('branch_name') }}"
+                placeholder="Enter branch name"
+                required
+            >
+
+            @error('branch_name')
+                <div class="invalid-feedback">
+                    {{ $message }}
+                </div>
+            @enderror
+        </div>
+        
         <div class="mb-3">
             <label for="password" class="form-label">Password</label>
             <div class="input-group input-group-flat">

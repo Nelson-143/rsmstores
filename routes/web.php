@@ -32,6 +32,7 @@ use App\Http\Controllers\OnboardingController;
 use App\Http\Controllers\Auth\EmailVerificationController;
 use App\Http\Controllers\ExpenseCategoryController;
 use App\Http\Controllers\BudgetCategoryController;
+use App\Http\Controllers\SubscriptionController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -54,7 +55,7 @@ Route::get('/', function () {
     return redirect('/login');
 });
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth','verified'])->group(function () {
 
     Route::get('dashboard/', [DashboardController::class, 'index'])->name('dashboard');
 
@@ -233,7 +234,15 @@ Route::post('/expense-categories', [ExpenseCategoryController::class, 'store'])-
 //for expence cartegories
 Route::post('/budget-categories', [BudgetCategoryController::class, 'store'])->name('budget-categories.store');
 
+//
 
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/subscriptions', [SubscriptionController::class, 'index'])->name('subscriptions.index');
+    Route::post('/subscriptions/assign', [SubscriptionController::class, 'assign'])->name('subscriptions.assign');
+    Route::put('/subscriptions/{user}/update', [SubscriptionController::class, 'update'])->name('subscriptions.update');
+    Route::delete('/subscriptions/{user}/cancel', [SubscriptionController::class, 'cancel'])->name('subscriptions.cancel');
+});
 
 //-------------THE ROUTES TO THE Roman Website place ,WELCOMES ----------------
 

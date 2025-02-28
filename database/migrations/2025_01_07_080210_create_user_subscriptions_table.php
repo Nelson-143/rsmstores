@@ -11,16 +11,27 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // Create the user_subscriptions table
         Schema::create('user_subscriptions', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('subscription_id');
-            $table->timestamp('starts_at')->nullable(); // Subscription start date
-            $table->timestamp('ends_at')->nullable(); // Subscription end date
+            $table->uuid('id')->primary();
+            $table->unsignedBigInteger('user_id'); // Use unsignedBigInteger to match users table
+            $table->uuid('subscription_id');
+            $table->timestamp('starts_at')->nullable();
+            $table->timestamp('ends_at')->nullable();
             $table->timestamps();
-        
+
+            // Foreign key constraints
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('subscription_id')->references('id')->on('subscriptions')->onDelete('cascade');
+        });
+
+        // Update the users table
+        Schema::table('users', function (Blueprint $table) {
+            $table->uuid('subscription_id')->nullable()->after('photo');
+            $table->foreign('subscription_id')->references('id')->on('subscriptions')->onDelete('set null');
+            $table->timestamp('subscription_ends_at')->nullable()->after('subscription_id');
+            $table->boolean('is_trialing')->default(false)->after('subscription_ends_at');
+            $table->timestamp('trial_ends_at')->nullable()->after('is_trialing');
         });
     }
 
@@ -29,6 +40,15 @@ return new class extends Migration
      */
     public function down(): void
     {
+        // Reverse the users table update
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropForeign(['subscription_id']);
+            $table->dropColumn(['subscription_id', 'subscription_ends_at', 'is_trialing', 'trial_ends_at']);
+            $table->uuid('account_id')->nullable(); // Add account_id
+            $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade'); // Add foreign key directly
+        });
+
+        // Drop the user_subscriptions table
         Schema::dropIfExists('user_subscriptions');
     }
 };

@@ -26,6 +26,8 @@ return new class extends Migration
             $table->rememberToken();
             $table->timestamps();
             $table->string('photo')->nullable();
+            $table->uuid('account_id')->nullable(); // Add account_id
+            $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
         });
     }
 
@@ -34,6 +36,9 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropForeign(['account_id']);
+        });
         Schema::dropIfExists('users');
     }
 };

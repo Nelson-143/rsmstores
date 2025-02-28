@@ -6,15 +6,18 @@
 @section('content')
 <div class="container">
     <!-- Page Header -->
-    <div class="page-header d-flex justify-content-between align-items-center mb-4">
+    <div class="page-header d-flex justify-content-between  mb-4">
         <div>
             <h2 class="page-title">Team Management</h2>
             <p class="text-muted mb-0">Manage your team with a glance and ease.</p>
-        </div>
-        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#userModal">
-            <i class="ti ti-plus"></i> Add User
-        </button>
-    </div>
+            <div class="d-flex flex-row">
+    <button class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#userModal">
+        <i class="ti ti-circle-plus"></i> Add Team Member
+    </button>
+    <a class="btn btn-primary" href="{{ route('admin.team.logs.show') }}">
+        <i class="ti ti-eye"></i> View Team Logs
+    </a>
+</div>
 
     <!-- Success Message -->
     @if(session('success'))

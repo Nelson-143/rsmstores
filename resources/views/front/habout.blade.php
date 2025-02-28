@@ -126,7 +126,7 @@ About us | Roman Stock Manager
             
             <section data-padding="none" data-unload="zoom-out">
                 <div class="bringer-expand-on-scroll">
-                    <img class="bringer-lazy" src="img/null.png" data-src="{{ asset('frontend/assets/img/inner-pages/view2.jpg') }}" alt="Positive Beverage" width="1920" height="960">
+                    <img class="bringer-lazy" src="img/null.png" data-src="{{ asset('frontend/assets/img/inner-pages/view2.png') }}" alt="Positive Beverage" width="1920" height="960">
                 </div><!-- .bringer-expand-on-scroll -->
             </section>
             

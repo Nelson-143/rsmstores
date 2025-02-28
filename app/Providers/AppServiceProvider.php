@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Breadcrumbs\Breadcrumbs;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Blade;
 
 class AppServiceProvider extends ServiceProvider
 {

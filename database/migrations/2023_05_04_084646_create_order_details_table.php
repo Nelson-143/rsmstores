@@ -26,6 +26,8 @@ return new class extends Migration
             $table->integer('unitcost');
             $table->integer('total');
             $table->timestamps();
+            $table->uuid('account_id')->nullable(); // Add account_id
+            $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade'); // Add foreign key directly 
         });
     }
 

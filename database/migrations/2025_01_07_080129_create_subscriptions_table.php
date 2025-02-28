@@ -12,14 +12,17 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('subscriptions', function (Blueprint $table) {
-            $table->id();
-            $table->string('name'); // Tier name (Starter, Essentials, etc.)
-            $table->decimal('price', 10, 2); // Subscription price
-            $table->integer('max_branches')->nullable(); // Limit on branches
-            $table->integer('max_users')->nullable(); // Limit on team members
-            $table->json('features')->nullable(); // List of features as JSON
+            $table->uuid('id')->primary(); // Use UUID
+            $table->string('name');
+            $table->decimal('price', 10, 2);
+            $table->integer('max_branches')->nullable();
+            $table->integer('max_users')->nullable();
+            $table->json('features')->nullable();
             $table->timestamps();
+            $table->uuid('account_id')->nullable(); // Add account_id
+            $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade'); // Add foreign key directly
         });
+        
         
     }
 

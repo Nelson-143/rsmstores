@@ -3,6 +3,7 @@
 
 <head>
     <link rel="manifest" href="/manifest.json">
+    <link rel="icon" href="{{ asset('favicon.png') }}" type="image/x-icon"/>
     <meta name="theme-color" content="#2196f3">
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
@@ -111,7 +112,16 @@
     @stack('page-styles')
     @livewireStyles
 </head>
-
+<!-- for email verification -->
+@if (auth()->check() && !auth()->user()->hasVerifiedEmail())
+    <div class="alert alert-warning">
+        <p>
+            Please verify your email address. We've sent a verification link to <strong>{{ auth()->user()->email }}</strong>.
+            <a href="{{ route('verification.resend') }}">Resend Verification Email</a>
+        </p>
+    </div>
+@endif
+<!--the xxx-->
 <body>
     <script src="{{ asset('dist/js/demo-theme.min.js') }}"></script>
 
@@ -153,105 +163,18 @@
                             </div>
                         </div>
                     </div>
-                    <!-- the notification panel -->
-                    <div class="nav-item dropdown d-none d-md-flex me-3">
-                <a href="#" class="nav-link px-0" data-bs-toggle="dropdown" tabindex="-1" aria-label="Show notifications">
-                  <!-- Download SVG icon from http://tabler-icons.io/i/bell -->
-                     <lord-icon
-                    src="https://cdn.lordicon.com/lznlxwtc.json"
-                    trigger="hover"
-                    colors="primary:black"
-                     style="width:20px;height:20px">
-                    </lord-icon>
-                  <span class="badge bg-red"></span>
-                </a>
-                <div class="dropdown-menu dropdown-menu-arrow dropdown-menu-end dropdown-menu-card">
-                  <div class="card">
-                    <div class="card-header">
-                      <h3 class="card-title">Last updates</h3>
-                    </div>
-                    <div class="list-group list-group-flush list-group-hoverable">
-                      <div class="list-group-item">
-                        <div class="row align-items-center">
-                          <div class="col-auto"><span class="status-dot status-dot-animated bg-red d-block"></span></div>
-                          <div class="col text-truncate">
-                            <a href="#" class="text-body d-block">Example 1</a>
-                            <div class="d-block text-secondary text-truncate mt-n1">
-                              Change deprecated html tags to text decoration classes (#29604)
-                            </div>
-                          </div>
-                          <div class="col-auto">
-                            <a href="#" class="list-group-item-actions">
-                              <!-- Download SVG icon from http://tabler-icons.io/i/star -->
-                              <svg xmlns="http://www.w3.org/2000/svg" class="icon text-muted" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" /></svg>
-                            </a>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="list-group-item">
-                        <div class="row align-items-center">
-                          <div class="col-auto"><span class="status-dot d-block"></span></div>
-                          <div class="col text-truncate">
-                            <a href="#" class="text-body d-block">Example 2</a>
-                            <div class="d-block text-secondary text-truncate mt-n1">
-                              justify-content:between ⇒ justify-content:space-between (#29734)
-                            </div>
-                          </div>
-                          <div class="col-auto">
-                            <a href="#" class="list-group-item-actions show">
-                              <!-- Download SVG icon from http://tabler-icons.io/i/star -->
-                              <svg xmlns="http://www.w3.org/2000/svg" class="icon text-yellow" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" /></svg>
-                            </a>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="list-group-item">
-                        <div class="row align-items-center">
-                          <div class="col-auto"><span class="status-dot d-block"></span></div>
-                          <div class="col text-truncate">
-                            <a href="#" class="text-body d-block">Example 3</a>
-                            <div class="d-block text-secondary text-truncate mt-n1">
-                              Update change-version.js (#29736)
-                            </div>
-                          </div>
-                          <div class="col-auto">
-                            <a href="#" class="list-group-item-actions">
-                              <!-- Download SVG icon from http://tabler-icons.io/i/star -->
-                              <svg xmlns="http://www.w3.org/2000/svg" class="icon text-muted" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" /></svg>
-                            </a>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="list-group-item">
-                        <div class="row align-items-center">
-                          <div class="col-auto"><span class="status-dot status-dot-animated bg-green d-block"></span></div>
-                          <div class="col text-truncate">
-                            <a href="#" class="text-body d-block">Example 4</a>
-                            <div class="d-block text-secondary text-truncate mt-n1">
-                              Regenerate package-lock.json (#29730)
-                            </div>
-                          </div>
-                          <div class="col-auto">
-                            <a href="#" class="list-group-item-actions">
-                              <!-- Download SVG icon from http://tabler-icons.io/i/star -->
-                              <svg xmlns="http://www.w3.org/2000/svg" class="icon text-muted" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" /></svg>
-                            </a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+                    <!-- the notification-panel -->
+                    <x-notification-panel />
 
                     <div class="nav-item dropdown">
                     <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown" aria-label="Open user menu">
-    <span class="avatar avatar-rounded shadow-none" style="background-image: url('{{ Auth::user()->photo ? asset('storage/profile/' . Auth::user()->photo) : asset('assets/img/illustrations/profiles/admin.jpg') }}'); background-size: cover; background-position: center; border-radius: 50%; width: 40px; height: 40px; display: inline-block;">
-    </span>
-    <div class="d-none d-xl-block ps-2">
-        <div>{{ Auth::user()->name }}</div>
-        <div class="mt-1 small text-muted">Admin</div>
-    </div>
+<span class="avatar avatar-rounded shadow-none" style="background-image: url('{{ Auth::user()->photo ?? '' }}'); background-size: cover; background-position: center; border-radius: 50%; width: 40px; height: 40px; display: inline-block;"></span>
+
+</span>
+    <dv class="d-none d-xl-block ps-2">
+      {{ Auth::user()->name ?? '' }}
+      <div class="mt-1 small text-muted">{{ Auth::user()->getRoleNames()->first() }}</div>
+    </dv>
 </a>
                         <div class="dropdown-menu">
                             <a href="{{ route('profile.edit') }}" class="dropdown-item">
@@ -267,15 +190,16 @@
                                 </svg>
                                 Account
                             </a>
-                            <a href="{{ route('price.route') }}" class="dropdown-item">
+                            @role('Super Admin')
+                            <a href="{{ route('subscriptions.index') }}" class="dropdown-item">
                             <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  
                             class="icon icon-tabler icons-tabler-outline icon-tabler-shopping-cart-up"><path stroke="none" d="M0 0h24v24H0z" 
-                            fill="none"/><path d="M4 19a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+                            fill="none"stroke-linecap="round" stroke-linejoin="round"/><path d="M4 19a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
                             <path d="M12.5 17h-6.5v-14h-2" /><path d="M6 5l14 1l-.854 5.977m-2.646 1.023h-10.5" />
                             <path d="M19 22v-6" /><path d="M22 19l-3 -3l-3 3" /></svg>
                                  Subscriptions
                             </a>
-                        
+                            @endrole
                             <form action="{{ route('logout') }}" method="post">
                                 @csrf
                                 <button type="submit" class="dropdown-item">
@@ -397,7 +321,7 @@
                                 </div>
                             </li>
 
-
+                            @role('Super Admin')
                             <li class="nav-item dropdown {{ request()->is('purchases*') ? 'active' : null }}">
                                 <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown"
                                     data-bs-auto-close="outside" role="button" aria-expanded="false">
@@ -438,6 +362,7 @@
                                     </div>
                                 </div>
                             </li>
+                            @endrole
 
                             <li
                                 class="nav-item dropdown {{ request()->is('suppliers*', 'customers*','debts*','expences*','stock*','budgets*','gamification*','quotations*') ? 'active' : null }}">
@@ -472,7 +397,7 @@
                                                          </lord-icon>
                                                           {{ __('Quotations') }}
                                                      </a>
-
+                                                     @role('Super Admin')
                                             <a class="dropdown-item" href="{{ route('suppliers.index') }}">
                                             <lord-icon
                                                       src="https://cdn.lordicon.com/pbrgppbb.json"
@@ -482,6 +407,7 @@
                                                          </lord-icon>
                                                           {{ __('Suppliers') }}
                                                      </a>
+                                                     @endrole
                                             <a class="dropdown-item" href="{{ route('customers.index') }}">
                                             <lord-icon
                                                       src="https://cdn.lordicon.com/iazmohzf.json"
@@ -530,7 +456,7 @@
                                                          </lord-icon>
                                                           {{ __('Stock Transfer') }}
                                                      </a>
-
+                                                     @role('Super Admin')
                                                      <a class="dropdown-item" href="{{ route('gamification.board') }}">
                                             <lord-icon
                                             src="https://cdn.lordicon.com/jyjslctx.json"
@@ -541,6 +467,7 @@
                                                          </lord-icon>
                                                           {{ __('RsmPlay') }}
                                                      </a>
+                                                     @endrole
                                         </div>
                                     </div>
                                 </div>
@@ -549,6 +476,7 @@
                                             <!-- Reports -->
                     <!--@canany(['superadmin', 'admin'], auth()->user())--->
                     <!--@endcanany--->
+                    @role('Super Admin')
                     <li class="nav-item {{ request()->is('reports*') ? 'active' : null }}">
                         <a class="nav-link" href="{{ route('reports.index') }}">
                             <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -563,11 +491,7 @@
                             </span>
                         </a>
                     </li>
-                  
-
                      <!----FinAssist---->
-                     
-                    
                     <li class="nav-item {{ request()->is('finassist*') ? 'active' : null }}">
                                 <a class="nav-link" href="{{ route('finassist') }}">
                                     <span
@@ -581,10 +505,10 @@
                                     </span>
                                 </a>
                             </li>
-                    
+                    @endrole
                         <!---settings--->
                             <li
-                                class="nav-item dropdown {{ request()->is('users*', 'categories*', 'units*' , 'team*') ? 'active' : null }}">
+                                class="nav-item dropdown {{ request()->is('users*', 'categories*', 'units*' , 'team*','branches*') ? 'active' : null }}">
                                 <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown"
                                     data-bs-auto-close="outside" role="button" aria-expanded="false">
                                     <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -627,7 +551,7 @@
                                                          </lord-icon>
                                                           {{ __('Units') }}
                                                      </a>
-                                                    
+                                                     @role('Super Admin')      
                                             <a class="dropdown-item" href="{{ route('admin.team.index') }}">
                                             <lord-icon
                                                       src="https://cdn.lordicon.com/hrjifpbq.json"
@@ -648,6 +572,7 @@
                                                          </lord-icon>
                                                           {{ __('Set Branch') }}
                                                      </a>
+                                                     @endrole
                                         </div>
                                     
                                     </div>
@@ -757,7 +682,39 @@
         </div>
     </div>
 <!--page loader starts --->
-                                             
+<script>
+    function markAllAsRead() {
+        fetch('/notifications/mark-all-read', {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                'Content-Type': 'application/json',
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.message) {
+                location.reload();
+            }
+        });
+    }
+
+    function markNotificationAsRead(notificationId) {
+        fetch(`/notifications/${notificationId}/mark-as-read`, {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                'Content-Type': 'application/json',
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.message) {
+                location.reload();
+            }
+        });
+    }
+</script>                   
                                                
 
                                             <!--end of loader snip---
@@ -770,5 +727,7 @@
     @stack('page-scripts')
 
     @livewireScripts
+
+
 </body>
 </html>

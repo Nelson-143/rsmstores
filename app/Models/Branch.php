@@ -11,7 +11,6 @@ class Branch extends Model
     // Specify the fillable attributes
     protected $fillable = [
         'name',
-        'created_by',
         'status',
     ];
 

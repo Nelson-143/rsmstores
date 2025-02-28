@@ -7,25 +7,26 @@ use App\Models\Notification;
 
 class NotificationController extends Controller
 {
- public function index(){
-    $notifications = Notification::where('user_id', Auth::id())->get();
-    return view('notifications.index', compact('notifications'));
+    public function index()
+    {
+        $notifications = Notification::where('notifiable_id', Auth::id())
+            ->where('notifiable_type', get_class(Auth::user()))
+            ->orderBy('created_at', 'desc')
+            ->get();
 
- }
+        return view('layouts.tabler', compact('notifications'));
+    }
 
     public function markAllRead()
     {
-        auth()->user()->unreadNotifications->markAsRead();
-
+        Auth::user()->unreadNotifications->markAsRead();
         return redirect()->back();
     }
 
     public function fetchNotifications()
     {
-        // Get the currently authenticated user
         $user = Auth::user();
 
-        // Fetch and group notifications
         $notifications = Notification::where('notifiable_id', $user->id)
             ->where('notifiable_type', get_class($user))
             ->orderBy('created_at', 'desc')
@@ -34,27 +35,24 @@ class NotificationController extends Controller
                 return $notification->read_at ? 'read' : 'unread';
             });
 
-        // Format and return response
         return response()->json([
             'unread' => $notifications['unread'] ?? [],
             'read' => $notifications['read'] ?? [],
         ]);
     }
 
-    // Mark notification as read
     public function markAsRead($id)
     {
         $notification = Notification::find($id);
 
         if ($notification && $notification->notifiable_id === Auth::id()) {
-            $notification->update(['read_at' => now()]);
+            $notification->markAsRead();
             return response()->json(['message' => 'Notification marked as read.']);
         }
 
         return response()->json(['error' => 'Notification not found or unauthorized.'], 404);
     }
 
-    // Mark all as read 
     public function markAllAsRead()
     {
         $user = Auth::user();

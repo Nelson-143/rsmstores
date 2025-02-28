@@ -1,3 +1,4 @@
+@section('title' , 'Terms of service')
 <!-- CSS files -->
 <link href="./dist/css/tabler.min.css?1692870487" rel="stylesheet"/>
     <link href="./dist/css/tabler-flags.min.css?1692870487" rel="stylesheet"/>

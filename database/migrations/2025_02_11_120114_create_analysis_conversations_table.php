@@ -17,6 +17,8 @@ return new class extends Migration
         $table->string('title');
         $table->enum('analysis_type', ['inventory', 'financial', 'customer', 'fraud']);
         $table->json('context')->nullable();
+        $table->uuid('account_id')->nullable(); // Add account_id
+        $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade'); // Add foreign key directly
         $table->timestamps();
     });
 }

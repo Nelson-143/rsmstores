@@ -121,7 +121,7 @@ Pricing|Roman Stock Manager
                                 <li>Core Support System 🛡️</li>
                                 <li>Single Commander Access 👤</li>
                             </ul>
-                            <a href="{{ route('subscriptions.index') }}" class="bringer-button is-fullwidth">Start Winning Now!</a>
+                            <a href="{{ route('register') }}" class="bringer-button is-fullwidth">Start Winning Now!</a>
                         </div><!-- .bringer-carousel-card -->
                                                 
                         <!-- Carousel Item 02 -->
@@ -141,7 +141,7 @@ Pricing|Roman Stock Manager
                                 <li>Multi-Commander Access (3-5) 👥</li>
                                 <li>Priority Support Channel 🎯</li>
                             </ul>
-                            <a href="{{ route('subscriptions.index') }}" class="bringer-button is-fullwidth">Claim Your Victory!</a>
+                            <a href="{{ route('register') }}" class="bringer-button is-fullwidth">Claim Your Victory!</a>
                         </div><!-- .bringer-carousel-card -->
                                                 
                         <!-- Carousel Item 03 -->
@@ -161,7 +161,7 @@ Pricing|Roman Stock Manager
                                 <li>Full E-commerce Arsenal 🛍️</li>
                                 <li>VIP Support Access 👑</li>
                             </ul>
-                            <a href="{{ route('subscriptions.index') }}" class="bringer-button is-fullwidth">Dominate Now!</a>
+                            <a href="{{ route('register') }}" class="bringer-button is-fullwidth">Dominate Now!</a>
                         </div><!-- .bringer-carousel-card -->
                                                 
                         <!-- Carousel Item 04 -->
@@ -184,7 +184,7 @@ Pricing|Roman Stock Manager
                                 <li>Low customer Dept manager 🧾</li>
                                 <li>1 Account</li>
                             </ul>
-                            <a href="{{ route('subscriptions.index') }}" class="bringer-button is-fullwidth">Order Now</a>
+                            <a href="{{ route('register') }}" class="bringer-button is-fullwidth">Order Now</a>
                         </div><!-- .bringer-carousel-card -->
                     </div>
                     <!-- Pagination -->

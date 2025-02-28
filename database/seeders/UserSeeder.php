@@ -22,26 +22,10 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('password'),
                 'created_at' => now(),
                 'uuid' => Str::uuid(),
-                'photo' => 'admin.jpg'
+                'photo' => 'admin.jpg',
+                
             ],
-            [
-                'name' => 'quest',
-                'email' => 'quest@quest.com',
-                'email_verified_at' => now(),
-                'password' => bcrypt('password'),
-                'created_at' => now(),
-                'uuid' => Str::uuid(),
-                'photo' => 'admin.jpg'
-            ],
-            [
-                'name' => 'user',
-                'email' => 'user@user.com',
-                'email_verified_at' => now(),
-                'password' => bcrypt('password'),
-                'created_at' => now(),
-                'uuid' => Str::uuid(),
-                'photo' => 'admin.jpg'
-            ]
+            
         ]);
 
         $users->each(function ($user) {

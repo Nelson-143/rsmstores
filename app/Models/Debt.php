@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Scopes\BranchScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -21,6 +22,8 @@ class Debt extends Model
         'paid_at',     // The date when the debt was fully paid (nullable)
     ];
     // Debt.php
+      // Apply the global scope
+      
 protected static function boot()
 {
     parent::boot();
@@ -45,6 +48,9 @@ public function getRouteKeyName()
 {
     return 'uuid'; // Use 'uuid' instead of 'id' for route model binding
 }
-
+public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
 }

@@ -15,6 +15,8 @@ class CreateUserMissionsTable extends Migration
             $table->foreignId('mission_id')->constrained('missions')->onDelete('cascade');
             $table->enum('status', ['pending', 'completed'])->default('pending');
             $table->timestamp('completed_at')->nullable();
+            $table->uuid('account_id')->nullable(); // Add account_id
+            $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade'); // Add foreign key directly
             $table->timestamps();
         });
     }

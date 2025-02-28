@@ -20,6 +20,8 @@ class CreateStockTransfersTable extends Migration
             $table->string('to_location'); // Destination location
             $table->unsignedInteger('quantity'); // Quantity transferred
             $table->string('status')->default('pending'); // Status: pending, completed
+            $table->uuid('account_id')->nullable(); // Add account_id
+            $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade'); // Add foreign key directly
             $table->timestamps();
         });
     }

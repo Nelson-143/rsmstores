@@ -9,7 +9,7 @@
 
 @section('Damage')
 <div class="container">
-    <h2>Activity Logs for Team</h2>
+    <h2>Activity Logs for your Team</h2>
     <table class="table">
         <thead>
             <tr>
