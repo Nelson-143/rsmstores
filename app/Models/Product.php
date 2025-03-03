@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Builder;
+use App\Scopes\AccountScope;
 
 class Product extends Model
 {
@@ -29,6 +30,7 @@ class Product extends Model
         'category_id',
         'unit_id',
         'supplier_id',
+        'account_id',
     ];
     public function scopeSearch(Builder $query, string $search = null)
     {
@@ -82,4 +84,6 @@ class Product extends Model
       {
           return $this->belongsTo(Product::class);
       }
+
+  
 }

@@ -1,35 +1,41 @@
 <?php
-
 namespace Database\Seeders;
 
+use App\Models\Account;
 use App\Models\User;
 use Illuminate\Database\Seeder;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Str;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
+
+
 
 class UserSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
-    public function run(): void
+    public function run()
     {
-        $users = collect([
-            [
-                'name' => 'Admin',
-                'email' => 'admin@admin.com',
-                'email_verified_at' => now(),
-                'password' => bcrypt('password'),
-                'created_at' => now(),
-                'uuid' => Str::uuid(),
-                'photo' => 'admin.jpg',
-                
-            ],
-            
+        // Create an account
+        $account = Account::create([
+            'name' => 'Admin Account', // No need to manually set the ID
         ]);
 
-        $users->each(function ($user) {
-            User::insert($user);
-        });
+        // Debugging: Log the created account
+        Log::info('Account created:', $account->toArray());
+
+        // Create a user associated with the account
+        $user = User::create([
+            'uuid' => Str::uuid(), // Optional: Keep UUID for external references
+            'username' => 'admin',
+            'name' => 'Admin',
+            'email' => 'admin@admin.com',
+            'password' => Hash::make('password'),
+            'account_id' => $account->id, // Use the account's auto-incrementing ID
+            'email_verified_at' => now(),
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        // Debugging: Log the created user
+        Log::info('User created:', $user->toArray());
     }
 }

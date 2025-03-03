@@ -90,6 +90,7 @@
                             <td>{{ $expense->description }}</td>
                         <td>{{ $expense->expense_date }}
                         </td>
+                        <td>
                                 @if ($expense->attachment)
                                     <a href="{{ asset('storage/'.$expense->attachment) }}" class="btn btn-sm btn-link" target="_blank">View</a>
                                 @else

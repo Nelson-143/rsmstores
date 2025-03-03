@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Scopes\AccountScope;
 
 class DamagedProduct extends Model
 {
@@ -26,5 +27,6 @@ class DamagedProduct extends Model
           return $this->belongsTo(Branch::class);
       }
       
+  
 }
 

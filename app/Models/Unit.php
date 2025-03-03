@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Scopes\AccountScope;
 
 /**
  * @method static where(string $string, int|string|null $id)
@@ -20,6 +21,7 @@ class Unit extends Model
         'slug',
         'short_code',
         'user_id',
+        'account_id',
     ];
     protected $casts = [
         'created_at' => 'datetime',
@@ -45,5 +47,5 @@ class Unit extends Model
           return $this->belongsTo(Branch::class);
       }
       
-
+    
 }

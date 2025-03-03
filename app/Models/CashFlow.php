@@ -3,6 +3,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Scopes\AccountScope;
 
 class CashFlow extends Model
 {
@@ -19,5 +20,5 @@ class CashFlow extends Model
       {
           return $this->belongsTo(Branch::class);
       }
-      
+  
 }

@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use Spatie\Permission\Traits\HasRoles;
@@ -7,6 +6,8 @@ use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Scopes\AccountScope;
+
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable implements MustVerifyEmail
@@ -27,7 +28,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'store_email',
         'is_banned',
         'branch_id',
-        'account_id', // Add this field
+        'account_id', 
+       // Add this field
     ];
 
     protected $hidden = [
@@ -39,6 +41,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
+        'account_id' => 'integer', // Cast account_id to integer
     ];
 
     public function scopeSearch($query, $value): void
@@ -53,7 +56,6 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     // for the roles manager
-
     public function customers()
     {
         return $this->hasMany(Customer::class);
@@ -97,6 +99,12 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->belongsTo(Branch::class);
     }
 
+    // Add the relationship with the Account model
+    public function account()
+    {
+        return $this->belongsTo(Account::class);
+    }
+
     public function emailVerification()
     {
         return $this->hasOne(EmailVerification::class);
@@ -111,4 +119,5 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->role === 'developer'; // Adjust based on your role system
     }
+
 }

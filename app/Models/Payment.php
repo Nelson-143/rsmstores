@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+use App\Scopes\AccountScope;
 class Payment extends Model
 {
     use HasFactory;
@@ -17,5 +17,7 @@ class Payment extends Model
     public function debt()
 {
     return $this->belongsTo(Debt::class);
+
 }
+
 }

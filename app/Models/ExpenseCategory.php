@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Scopes\AccountScope;
 
 class ExpenseCategory extends Model
 {
@@ -14,7 +15,7 @@ class ExpenseCategory extends Model
      *
      * @var array
      */
-    protected $fillable = ['name', 'description'];
+    protected $fillable = ['account_id','name', 'description'];
 
     /**
      * Get the expenses associated with this category.
@@ -28,6 +29,11 @@ class ExpenseCategory extends Model
       {
           return $this->belongsTo(Branch::class);
       }
-      
+
+      //scoope
+      protected static function booted()
+    {
+        static::addGlobalScope(new AccountScope);
+    }
 }
 

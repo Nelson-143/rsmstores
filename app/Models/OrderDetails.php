@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-
+use App\Scopes\AccountScope;
 /**
  * @method static insert(array $oDetails)
  */
@@ -41,5 +41,5 @@ class OrderDetails extends Model
       {
           return $this->belongsTo(Branch::class);
       }
-      
+  
 }

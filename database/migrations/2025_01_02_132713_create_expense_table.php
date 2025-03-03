@@ -20,9 +20,9 @@ class CreateExpenseTable extends Migration
             $table->decimal('amount', 10, 2); // Amount spent
             $table->text('description')->nullable(); // Optional description of the expense
             $table->date('expense_date'); // Date of the expense
-            $table->uuid('account_id')->nullable(); // Add account_id
-            $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade'); // Add foreign key directly
             $table->string('attachment')->nullable(); // Optional file attachment for receipts
+            $table->unsignedBigInteger('account_id'); // Reference to accounts table
+            $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
             $table->timestamps(); // Created and updated timestamps
         });
     }

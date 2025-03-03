@@ -16,8 +16,10 @@ return new class extends Migration
         $table->foreignId('debt_id')->constrained()->onDelete('cascade');
         $table->decimal('amount_paid', 10, 2);
         $table->timestamp('paid_at')->useCurrent();
-        $table->uuid('account_id')->nullable(); // Add account_id
-        $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade'); // Add foreign key directly
+        $table->unsignedBigInteger('account_id'); // Reference to accounts table
+        $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
+
+    
         $table->timestamps();
     });
 }

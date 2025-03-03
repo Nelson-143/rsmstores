@@ -20,4 +20,5 @@ class Permission extends Model
           return $this->belongsTo(Branch::class);
       }
       
+      
 }

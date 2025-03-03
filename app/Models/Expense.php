@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Scopes\AccountScope;
 
 class Expense extends Model
 {
@@ -16,6 +17,7 @@ class Expense extends Model
      */
     protected $table = 'expense';
     protected $fillable = [
+        'account_id',
         'user_id',
         'category_id',
         'amount',
@@ -31,7 +33,11 @@ class Expense extends Model
     {
         return $this->belongsTo(ExpenseCategory::class, 'category_id');
     }
-
+    //scope to filter expenses by account
+    protected static function booted()
+    {
+        static::addGlobalScope(new AccountScope);
+    }
     /**
      * Get the user associated with the expense.
      */

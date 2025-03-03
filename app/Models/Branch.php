@@ -2,6 +2,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Scopes\AccountScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Branch extends Model
@@ -12,6 +13,7 @@ class Branch extends Model
     protected $fillable = [
         'name',
         'status',
+        'account_id',
     ];
 
     // Define relationships to other models
@@ -62,6 +64,11 @@ class Branch extends Model
     public function stockTransfers()
     {
         return $this->hasMany(StockTransfer::class);
+    }
+   
+    protected static function booted()
+    {
+        static::addGlobalScope(new AccountScope);
     }
   
     // Add any additional methods or relationships as needed

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Builder;
+use App\Scopes\AccountScope;
 
 class Supplier extends Model
 {
@@ -49,5 +50,5 @@ class Supplier extends Model
           return $this->belongsTo(Branch::class);
       }
       
-
+   
 }

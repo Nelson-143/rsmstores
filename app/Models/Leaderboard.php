@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Scopes\AccountScope;
 
 class Leaderboard extends Model
 {
@@ -24,5 +25,6 @@ class Leaderboard extends Model
       {
           return $this->belongsTo(Branch::class);
       }
-      
+
+  
 }

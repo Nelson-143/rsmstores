@@ -6,7 +6,7 @@ use App\Enums\OrderStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-
+use App\Scopes\AccountScope;
 /**
  * @method static where(string $string, int|string|null $id)
  * @method static whereDate(string $string, string $format)
@@ -72,4 +72,6 @@ class Order extends Model
     {
         return $this->hasMany(OrderDetails::class);
     }
+
+ 
 }

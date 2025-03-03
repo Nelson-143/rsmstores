@@ -25,9 +25,9 @@ return new class extends Migration
             $table->string('account_holder')->nullable();
             $table->string('account_number')->nullable();
             $table->string('bank_name')->nullable();
-            $table->uuid('account_id')->nullable(); // Add account_id
-            $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade'); // Add foreign key directly
-            $table->timestamps();
+            $table->unsignedBigInteger('account_id'); // Reference to accounts table
+            $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
+             $table->timestamps();
         });
     }
 

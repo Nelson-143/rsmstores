@@ -18,6 +18,8 @@ return new class extends Migration
             $table->text('queue');
             $table->longText('payload');
             $table->longText('exception');
+            $table->unsignedBigInteger('account_id'); // Reference to accounts table
+            $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
             $table->timestamp('failed_at')->useCurrent();
         });
     }

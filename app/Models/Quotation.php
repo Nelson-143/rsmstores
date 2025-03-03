@@ -7,7 +7,7 @@ use Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-
+use App\Scopes\AccountScope;
 /**
  * @method static max(string $string)
  * @method static whereDate(string $string, string $format)
@@ -117,5 +117,5 @@ class Quotation extends Model
       {
           return $this->belongsTo(Branch::class);
       }
-      
+
 }

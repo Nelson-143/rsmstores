@@ -1,22 +1,26 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use App\Models\Debt;
-/**
- * @method static where(string $string, int|string|null $id)
- * @method static findOrFail(mixed $customer_id)
- */
+use App\Scopes\AccountScope; // Import the AccountScope
+
 class Customer extends Model
 {
     use HasFactory;
-    protected $guarded=[];
 
-    public function user(){
+    protected $guarded = [];
+
+    // Apply the global scope
+    protected static function booted()
+    {
+        static::addGlobalScope(new AccountScope);
+    }
+
+    public function user(): BelongsTo
+    {
         return $this->belongsTo(User::class);
     }
 
@@ -34,19 +38,16 @@ class Customer extends Model
 
     public function quotations(): HasMany
     {
-        return $this->HasMany(Quotation::class);
+        return $this->hasMany(Quotation::class);
     }
 
-    public function debts()
+    public function debts(): HasMany
     {
         return $this->hasMany(Debt::class, 'customer_id');
     }
-      // for the branches 
-      public function branch()
-      {
-          return $this->belongsTo(Branch::class);
-      }
-      
 
-
+    public function branch(): BelongsTo
+    {
+        return $this->belongsTo(Branch::class);
+    }
 }

@@ -19,8 +19,8 @@ return new class extends Migration
             $table->decimal('gross_profit', 15, 2);
             $table->decimal('operating_expenses', 15, 2);
             $table->decimal('net_income', 15, 2);
-            $table->uuid('account_id')->nullable(); // Add account_id
-            $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade'); // Add foreign key directly
+            $table->unsignedBigInteger('account_id'); // Reference to accounts table
+            $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
             $table->timestamps();
         
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

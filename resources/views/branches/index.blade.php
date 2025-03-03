@@ -30,39 +30,42 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($branches as $branch)
-                        <tr>
-                            <td>{{ $branch->name }}</td>
-                            <td>
-                                <span class="badge {{ $branch->status == 'active' ? 'bg-success' : 'bg-danger' }}">
-                                    {{ ucfirst($branch->status) }}
-                                </span>
-                            </td>
-                            <td>
-                                <div class="dropdown">
-                                    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                                        Actions
+    @foreach ($branches as $branch)
+        @if ($branch->account_id == auth()->user()->account_id)
+            <tr>
+                <td>{{ $branch->name }}</td>
+                <td>
+                    <span class="badge {{ $branch->status == 'active' ? 'bg-success' : 'bg-danger' }}">
+                        {{ ucfirst($branch->status) }}
+                    </span>
+                </td>
+                <td>
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                            Actions
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a class="dropdown-item text-warning" href="#" onclick="editBranch({{ json_encode($branch) }})">
+                                    <i class="ti ti-edit"></i> Edit
+                                </a>
+                            </li>
+                            <li>
+                                <form action="{{ route('branches.destroy', $branch->id) }}" method="POST" onsubmit="return confirm('Are you sure?')">
+                                    @csrf @method('DELETE')
+                                    <button type="submit" class="dropdown-item text-danger">
+                                        <i class="ti ti-trash"></i> Disable
                                     </button>
-                                    <ul class="dropdown-menu">
-                                        <li>
-                                            <a class="dropdown-item text-warning" href="#" onclick="editBranch({{ json_encode($branch) }})">
-    <i class="ti ti-edit"></i> Edit
-</a>
-                                        </li>
-                                        <li>
-                                            <form action="{{ route('branches.destroy', $branch->id) }}" method="POST" onsubmit="return confirm('Are you sure?')">
-                                                @csrf @method('DELETE')
-                                                <button type="submit" class="dropdown-item text-danger">
-                                                    <i class="ti ti-trash"></i> Disable
-                                                </button>
-                                            </form>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+        @endif
+    @endforeach
+</tbody>
+
             </table>
         </div>
     </div>
@@ -77,7 +80,7 @@
     </div>
 @endif
 <!-- Branch Modal -->
-<div class="modal fade" id="branchModal" tabindex="-1" aria-labelledby="branchModalLabel" aria-hidden="true">
+<div class="modal modal-blur fade" id="branchModal" tabindex="-1" aria-labelledby="branchModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">

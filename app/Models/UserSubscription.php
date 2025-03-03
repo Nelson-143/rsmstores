@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+use App\Scopes\AccountScope;
 class UserSubscription extends Model
 {
     use HasFactory;
@@ -24,4 +24,6 @@ class UserSubscription extends Model
     {
         return $this->hasMany(SubscriptionPayment::class, 'user_subscription_id', 'id');
     }
+
+   
 }

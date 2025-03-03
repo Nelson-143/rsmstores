@@ -1,19 +1,17 @@
 <?php
-
 namespace App\Http\Controllers;
 
-
-use App\Http\Controllers\Controller;
 use App\Http\Requests\Customer\StoreCustomerRequest;
 use App\Http\Requests\Customer\UpdateCustomerRequest;
-use App\Models\{Customer,User};
+use App\Models\{Customer, User};
 use Illuminate\Support\Str;
 
 class CustomerController extends Controller
 {
     public function index()
     {
-        $customers = Customer::where('user_id', auth()->id())->get();
+        // Fetch customers for the logged-in user's account
+        $customers = Customer::where('account_id', auth()->user()->account_id)->get();
 
         return view('customers.index', compact('customers'));
     }
@@ -29,6 +27,7 @@ class CustomerController extends Controller
 
         $data['uuid'] = Str::uuid();
         $data['user_id'] = auth()->id();
+        $data['account_id'] = auth()->user()->account_id; // Set the account_id
 
         if ($request->hasFile('photo')) {
             $file = $request->file('photo');
@@ -50,8 +49,6 @@ class CustomerController extends Controller
             // Save the path to the database (relative to the public folder)
             $data['photo'] = 'assets/img/customers/' . $fileName;
         }
-
-        // $request->merge(["user_id" => auth()->user()->id]);
 
         Customer::create($data);
 
@@ -60,24 +57,36 @@ class CustomerController extends Controller
 
     public function show($uuid)
     {
-        $customer = Customer::where('uuid' , $uuid)->firstOrFail();
-        return view('customers.show' , compact('customer'));
+        // Fetch the customer for the logged-in user's account
+        $customer = Customer::where('uuid', $uuid)
+            ->where('account_id', auth()->user()->account_id)
+            ->firstOrFail();
+
+        return view('customers.show', compact('customer'));
     }
 
     public function edit($uuid)
     {
-        $customer = Customer::where('uuid' , $uuid)->firstOrFail();
-        return view('customers.edit' , compact('customer'));
+        // Fetch the customer for the logged-in user's account
+        $customer = Customer::where('uuid', $uuid)
+            ->where('account_id', auth()->user()->account_id)
+            ->firstOrFail();
+
+        return view('customers.edit', compact('customer'));
     }
 
     public function update(UpdateCustomerRequest $request, $uuid)
     {
-        $customer = Customer::where('uuid', $uuid)->firstOrFail();
+        // Fetch the customer for the logged-in user's account
+        $customer = Customer::where('uuid', $uuid)
+            ->where('account_id', auth()->user()->account_id)
+            ->firstOrFail();
 
         $data = $request->validated();
 
         $data['uuid'] = Str::uuid();
         $data['user_id'] = auth()->id();
+        $data['account_id'] = auth()->user()->account_id; // Ensure account_id is set
 
         if ($request->hasFile('photo')) {
             $file = $request->file('photo');
@@ -98,25 +107,25 @@ class CustomerController extends Controller
 
             // Save the path to the database (relative to the public folder)
             $data['photo'] = 'assets/img/customers/' . $fileName;
-        }else {
+        } else {
             // Retain the existing photo if no new file is uploaded
             $data['photo'] = $customer->photo; // Keep the existing photo
         }
 
-        // $request->merge(["user_id" => auth()->user()->id]);
-
-        $customer->update($request->all());
+        $customer->update($data);
 
         return redirect()->route('customers.index')->with('success', 'Customer has been updated successfully.');
     }
 
     public function destroy($uuid)
     {
-        $customer = Customer::where('uuid', $uuid)->firstOrFail();
+        // Fetch the customer for the logged-in user's account
+        $customer = Customer::where('uuid', $uuid)
+            ->where('account_id', auth()->user()->account_id)
+            ->firstOrFail();
 
         $customer->delete();
 
         return redirect()->route('customers.index')->with('success', 'Customer has been deleted successfully.');
-
     }
 }

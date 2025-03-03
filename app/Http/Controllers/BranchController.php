@@ -12,7 +12,8 @@ class BranchController extends Controller
      */
     public function index()
     {
-        $branches = Branch::all();
+        $branches = Branch::where('account_id', auth()->user()->account_id)->get();
+
         return view('branches.index', compact('branches')); // Load the UI
     }
 

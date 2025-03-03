@@ -11,15 +11,20 @@ use Carbon\Carbon;
 
 class DebtsController extends Controller
 {
+    // Fetch the account ID of the logged-in user
+    protected function getAccountId()
+    {
+        return auth()->user()->account_id;
+    }
+
     // Fetch and display all debts
     public function index()
     {
-        // Fetch all debts with their associated customers
-        $debts = Debt::with('customer')->get();
-        
-        // Fetch all customers
-        $customers = Customer::all();
-        
+   $debts = Debt::where('account_id', $this->getAccountId())
+    ->with('customer')
+    ->get();
+
+$customers = Customer::where('account_id', $this->getAccountId())->get();
         // Map debts to include additional data for the view
         $debtsData = $debts->map(function ($debt, $index) {
             return [
@@ -67,6 +72,7 @@ class DebtsController extends Controller
         // Pass all data to the view
         return view('debts.index', compact('debts', 'debtsData', 'customers', 'totalCurrentDebts', 'totalValueOfDebt', 'totalPaidDebts', 'totalAmountReceived', 'overdueDebts', 'debtsDueSoon'));
     }
+
     // Adding of new debts handler
     public function store(Request $request)
     {
@@ -76,14 +82,16 @@ class DebtsController extends Controller
             'amount' => 'required|numeric|min:1',
             'due_date' => 'required|date|after_or_equal:today',
         ]);
-
-        Debt::create([
-            'customer_id' => $request->input('customer_id'), // Can be null
-            'customer_set' => $validated['customer_set'], // Store the customer set
-            'amount' => $request->input('amount'),
-            'amount_paid' => 0, // Default to 0
-            'due_date' => $request->input('due_date'),
-        ]);
+    
+        $debt = new Debt();
+        $debt->customer_id = $request->input('customer_id'); // Can be null
+        $debt->customer_set = $validated['customer_set']; // Store the customer set
+        $debt->amount = $request->input('amount');
+        $debt->amount_paid = 0; // Default to 0
+        $debt->due_date = $request->input('due_date');
+        $debt->account_id = $this->getAccountId(); // Set the account ID
+        $debt->save();
+    
 
         return redirect()->route('debts.index')->with('success', 'Debt added successfully.');
     }
@@ -91,13 +99,14 @@ class DebtsController extends Controller
     // Edit a debt
     public function edit($uuid)
     {
-        $debt = Debt::where('uuid', $uuid)->first();
-        if (!$debt) {
-            abort(404);
-        }
+        $debt = Debt::where('uuid', $uuid)
+            ->whereHas('customer', function ($query) {
+                $query->where('account_id', $this->getAccountId());
+            })
+            ->firstOrFail();
 
-        // Fetch all customers to pass to the view
-        $customers = Customer::all();
+        // Fetch all customers for the logged-in user's account
+        $customers = Customer::where('account_id', $this->getAccountId())->get();
 
         return view('debts.edit', compact('debt', 'customers'));
     }
@@ -105,10 +114,11 @@ class DebtsController extends Controller
     // For updating the debts
     public function update(Request $request, $uuid)
     {
-        $debt = Debt::where('uuid', $uuid)->first();
-        if (!$debt) {
-            abort(404);
-        }
+        $debt = Debt::where('uuid', $uuid)
+            ->whereHas('customer', function ($query) {
+                $query->where('account_id', $this->getAccountId());
+            })
+            ->firstOrFail();
 
         $validated = $request->validate([
             'amount_paid' => 'required|numeric|min:0|max:' . ($debt->amount - $debt->amount_paid),
@@ -137,10 +147,11 @@ class DebtsController extends Controller
     // Deletion of debts
     public function destroy($uuid)
     {
-        $debt = Debt::where('uuid', $uuid)->first();
-        if (!$debt) {
-            abort(404);
-        }
+        $debt = Debt::where('uuid', $uuid)
+            ->whereHas('customer', function ($query) {
+                $query->where('account_id', $this->getAccountId());
+            })
+            ->firstOrFail();
 
         $debt->delete();
 
@@ -154,10 +165,10 @@ class DebtsController extends Controller
             return 'Paid';
         }
 
-       $now = Carbon::now();
-if (Carbon::parse($debt->due_date)->isPast()) {
-    return 'Overdue';
-}
+        $now = Carbon::now();
+        if (Carbon::parse($debt->due_date)->isPast()) {
+            return 'Overdue';
+        }
 
         if ($now->diffInDays($debt->due_date) <= 14) {
             return 'Due Soon'; // Within 2 weeks
@@ -168,14 +179,15 @@ if (Carbon::parse($debt->due_date)->isPast()) {
 
     // Show payment history for a debt
     public function showPaymentHistory($uuid)
-    {
-        $debt = Debt::where('uuid', $uuid)->first();
-        if (!$debt) {
-            return redirect()->back()->with('error', 'Debt not found');
-        }
+    {$debt = Debt::where('uuid', $uuid)
+        ->whereHas('customer', function ($query) {
+            $query->where('account_id', $this->getAccountId());
+        })
+        ->firstOrFail();
 
-        $payments = Payment::where('debt_id', $debt->id)->get();
-        return view('debts.history', compact('debt', 'payments'));
+    $payments = Payment::where('debt_id', $debt->id)->get();
+    $customerName = $debt->customer ? $debt->customer->name : 'Personal Debt';
+    return view('debts.history', compact('debt', 'payments', 'customerName'));
     }
 
     // Handle payment for a debt
@@ -188,10 +200,11 @@ if (Carbon::parse($debt->due_date)->isPast()) {
         ]);
     
         // Find the debt by uuid
-        $debt = Debt::where('uuid', $validated['debt_uuid'])->first();
-        if (!$debt) {
-            return redirect()->route('debts.index')->with('error', 'Debt not found.');
-        }
+        $debt = Debt::where('uuid', $validated['debt_uuid'])
+            ->whereHas('customer', function ($query) {
+                $query->where('account_id', $this->getAccountId());
+            })
+            ->firstOrFail();
     
         // Check if the debt is already fully paid
         if ($debt->amount_paid >= $debt->amount) {

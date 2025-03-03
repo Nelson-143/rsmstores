@@ -25,8 +25,8 @@ class CreateDebtsTable extends Migration
             $table->timestamps();
             // In the migration file for debts
             $table->uuid('uuid')->unique();
-            $table->uuid('account_id')->nullable(); // Add account_id
-            $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade'); // Add foreign key directly
+            $table->unsignedBigInteger('account_id'); // Reference to accounts table
+            $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
             // Foreign key constraint
            
         });

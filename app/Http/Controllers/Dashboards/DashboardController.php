@@ -10,7 +10,7 @@ use App\Models\Purchase;
 use App\Models\Quotation;
 use App\Models\Customer;
 use App\Models\Debt;
-use App\Models\Branch; // If you need to calculate branches
+use App\Models\Branch;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -18,39 +18,41 @@ class DashboardController extends Controller
 {
     public function index()
     {
+        $accountId = auth()->user()->account_id;
+
         // Existing logic for counts
-        $ordersCount = Order::where("user_id", auth()->id())->count();
-        $productsCount = Product::where("user_id", auth()->id())->count();
-        $purchasesCount = Purchase::where("user_id", auth()->id())->count();
-        $todayPurchases = Purchase::whereDate('date', today()->format('Y-m-d'))->count();
-        $todayProducts = Product::whereDate('created_at', today()->format('Y-m-d'))->count();
-        $todayQuotations = Quotation::whereDate('created_at', today()->format('Y-m-d'))->count();
-        $todayOrders = Order::whereDate('created_at', today()->format('Y-m-d'))->count();
-        $categoriesCount = Category::where("user_id", auth()->id())->count();
-        $quotationsCount = Quotation::where("user_id", auth()->id())->count();
+        $ordersCount = Order::where('account_id', $accountId)->count();
+        $productsCount = Product::where('account_id', $accountId)->count();
+        $purchasesCount = Purchase::where('account_id', $accountId)->count();
+        $todayPurchases = Purchase::whereDate('date', today()->format('Y-m-d'))->where('account_id', $accountId)->count();
+        $todayProducts = Product::whereDate('created_at', today()->format('Y-m-d'))->where('account_id', $accountId)->count();
+        $todayQuotations = Quotation::whereDate('created_at', today()->format('Y-m-d'))->where('account_id', $accountId)->count();
+        $todayOrders = Order::whereDate('created_at', today()->format('Y-m-d'))->where('account_id', $accountId)->count();
+        $categoriesCount = Category::where('account_id', $accountId)->count();
+        $quotationsCount = Quotation::where('account_id', $accountId)->count();
 
         // New logic for customers, debt, branch, carts, and growth rates
-        $customersCount = Customer::where("user_id", auth()->id())->count(); // Count customers
+        $customersCount = Customer::where('account_id', $accountId)->count(); // Count customers
 
-       $debts = Debt::where("customer_id", auth()->id())->get();
-$totalValueOfDebt = $debts->sum(function ($debt) {
-    return $debt->amount - $debt->amount_paid; // Remaining balance for each debt
-});
+        $debts = Debt::where('account_id', $accountId)->get();
+        $totalValueOfDebt = $debts->sum(function ($debt) {
+            return $debt->amount - $debt->amount_paid; // Remaining balance for each debt
+        });
+
         // Calculate total sales (sum of all orders)
-        $totalSales = Order::where("user_id", auth()->id())->sum('total'); // Assuming 'total' is the field for total sales
+        $totalSales = Order::where('account_id', $accountId)->sum('total'); // Assuming 'total' is the field for total sales
 
         // Assuming you have a way to calculate branches
-        $branchCount = Branch::count(); // Count all branches
-        $previousBranchCount = 100; // Replace this with the actual previous branch count
-        $branchChange = $previousBranchCount > 0 ? (($branchCount - $previousBranchCount) / $previousBranchCount) * 100 : 0;
+        $branchCount = Branch::where('account_id', $accountId)->count(); // Count all branches
+
         // Calculate growth rates
-        $customerGrowth = $this->calculateGrowthRate(Customer::class, 'created_at');
-        $debtChange = $this->calculateGrowthRate(Debt::class, 'created_at', 'amount'); // Adjust as needed
+        $customerGrowth = $this->calculateGrowthRate(Customer::class, 'created_at', $accountId);
+        $debtChange = $this->calculateGrowthRate(Debt::class, 'created_at', $accountId, 'amount'); // Adjust as needed
         $branchChange = 0; // Replace with actual logic for branch change
-        $salesGrowth = $this->calculateGrowthRate(Order::class, 'created_at', 'total');
+        $salesGrowth = $this->calculateGrowthRate(Order::class, 'created_at', $accountId, 'total');
 
         // Calculate business growth rate based on sales
-        $salesData = Order::where('user_id', auth()->id())
+        $salesData = Order::where('account_id', $accountId)
             ->whereBetween('created_at', [Carbon::now()->subMonths(6), Carbon::now()])
             ->selectRaw('DATE_FORMAT(created_at, "%Y-%m") as month, SUM(total) as total_sales')
             ->groupBy('month')
@@ -62,8 +64,8 @@ $totalValueOfDebt = $debts->sum(function ($debt) {
         $months = $salesData->pluck('month')->toArray();
 
         // Calculate out-of-stock products
-        $outOfStockProducts = Product::where('quantity', '<=', 0)->count();
-        $totalProducts = Product::count();
+        $outOfStockProducts = Product::where('quantity', '<=', 0)->where('account_id', $accountId)->count();
+        $totalProducts = Product::where('account_id', $accountId)->count();
         $inStockProducts = $totalProducts - $outOfStockProducts;
 
         // Prepare data for the pie chart
@@ -96,13 +98,14 @@ $totalValueOfDebt = $debts->sum(function ($debt) {
         ]);
     }
 
-    private function calculateGrowthRate($model, $dateColumn, $valueColumn = null)
+    private function calculateGrowthRate($model, $dateColumn, $accountId, $valueColumn = null)
     {
         $now = Carbon::now();
         $previousPeriod = Carbon::now()->subDays(7);
 
         // Calculate the current value for the specified period
-        $currentValue = $model::whereBetween($dateColumn, [$previousPeriod, $now])
+        $currentValue = $model::where('account_id', $accountId)
+            ->whereBetween($dateColumn, [$previousPeriod, $now])
             ->when($valueColumn, function ($query) use ($valueColumn) {
                 return $query->sum($valueColumn);
             }, function ($query) {
@@ -110,7 +113,8 @@ $totalValueOfDebt = $debts->sum(function ($debt) {
             });
 
         // Calculate the previous value for the previous period
-        $previousValue = $model::whereBetween($dateColumn, [$previousPeriod->copy()->subDays(7), $previousPeriod])
+        $previousValue = $model::where('account_id', $accountId)
+            ->whereBetween($dateColumn, [$previousPeriod->copy()->subDays(7), $previousPeriod])
             ->when($valueColumn, function ($query) use ($valueColumn) {
                 return $query->sum($valueColumn);
             }, function ($query) {

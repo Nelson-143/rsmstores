@@ -134,7 +134,7 @@
             </div>
         @endif
 <!-- Modal for adding debtors -->
-<div class="modal fade" id="modal-report" tabindex="-1" aria-labelledby="modal-report-label" aria-hidden="true">
+<div class="modal modal-blur fade" id="modal-report" tabindex="-1" aria-labelledby="modal-report-label" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -254,7 +254,7 @@
 
 
 <!-- Payment Modal -->
-<div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
+<div class="modal modal-blur fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">

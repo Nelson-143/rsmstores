@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Scopes\AccountScope;
 
 class Budget extends Model
 {
@@ -22,7 +23,7 @@ class Budget extends Model
         'end_date',
     ];
     
-   
+  
     
     /**
      * Get the user associated with the budget.

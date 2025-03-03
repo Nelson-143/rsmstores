@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Notifications\DatabaseNotification as NotificationBase;
-
+use App\Scopes\AccountScope;
 class Notification extends NotificationBase
 {
     protected $table = 'notifications';
@@ -39,4 +39,5 @@ class Notification extends NotificationBase
     {
         return $query->whereNotNull('read_at');
     }
+
 }

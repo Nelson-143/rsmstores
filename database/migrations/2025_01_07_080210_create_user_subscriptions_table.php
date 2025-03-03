@@ -44,8 +44,8 @@ return new class extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->dropForeign(['subscription_id']);
             $table->dropColumn(['subscription_id', 'subscription_ends_at', 'is_trialing', 'trial_ends_at']);
-            $table->uuid('account_id')->nullable(); // Add account_id
-            $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade'); // Add foreign key directly
+            $table->unsignedBigInteger('account_id'); // Reference to accounts table
+            $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
         });
 
         // Drop the user_subscriptions table
