@@ -17,93 +17,116 @@ use Illuminate\Support\Str;
 
 class ProductController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth'); // Ensure authentication
+    }
+
     public function index()
     {
-        $products = Product::where('user_id', auth()->id())
-        ->get();
-
+        // Get the logged-in user's account_id
+        $accountId = auth()->user()->account_id;
+        
+        // Fetch products for the logged-in user's account
+        $products = Product::where('account_id', $accountId)
+                            ->where('user_id', auth()->id())
+                            ->get();
+        
         return view('products.index', compact('products'));
     }
 
     public function create(Request $request)
     {
+        $categories = Category::all();
+        $units = Unit::all();
+        $suppliers = Supplier::all();
 
-    $categories = Category::all();
-    $units = Unit::all();
-    $suppliers = Supplier::all();
-
-        return view('products.create', compact('categories', 'units' , 'suppliers'));
+        return view('products.create', compact('categories', 'units', 'suppliers'));
     }
 
     public function store(StoreProductRequest $request)
-{
-    $data = $request->validated();
+    {
+        $data = $request->validated();
+        $data['uuid'] = Str::uuid();
+        $data['user_id'] = auth()->id();
+        $data['account_id'] = auth()->user()->account_id; // Set the account_id
+        $data['slug'] = Str::slug($data['name']);
 
-    $data['uuid'] = Str::uuid();
-    $data['user_id'] = auth()->id();
-    $data['slug'] = Str::slug($data['name']);
-//    $data['image'] = Str::uuid();
-//    if ($request->hasFile('product_image')) {
-//        $file = $request->file('product_image');
-//
-//        // Define the custom path where you want to store the file
-//        $destinationPath = public_path('assets/img/products/');
-//
-//        // Ensure the directory exists or create it
-//        if (!file_exists($destinationPath)) {
-//            mkdir($destinationPath, 0755, true); // Create the directory if it doesn't exist
-//        }
-//
-//        // Define the filename (optional: you can rename or use the original name)
-//        $fileName = time() . '_' . $file->getClientOriginalName();
-//
-//        // Move the file to the specified folder
-//        $file->move($destinationPath, $fileName);
-//
-//        // Save the path to the database (relative to the public folder)
-//        $data['product_image'] = 'assets/img/products/' . $fileName;
-//    }
-        $image = "";
+        // Handle image upload
         if ($request->hasFile('product_image')) {
-            $image = $request->file('product_image')->store('products', 'public');
+            $file = $request->file('product_image');
+
+            // Define the custom path where you want to store the file
+            $destinationPath = public_path('assets/img/products/');
+
+            // Ensure the directory exists or create it
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true); // Create the directory if it doesn't exist
+            }
+
+            // Define the filename (optional: you can rename or use the original name)
+            $fileName = time() . '_' . $file->getClientOriginalName();
+
+            // Move the file to the specified folder
+            $file->move($destinationPath, $fileName);
+
+            // Save the path to the database (relative to the public folder)
+            $data['product_image'] = 'assets/img/products/' . $fileName;
         }
 
         Product::create($data);
 
-    return redirect()->route('products.index')->with('success', 'Product created successfully.');
-}
+        return redirect()->route('products.index')->with('success', 'Product created successfully.');
+    }
 
     public function show($uuid)
     {
-        $product = Product::where('uuid', $uuid)->firstOrFail();
+        // Get the logged-in user's account_id
+        $accountId = auth()->user()->account_id;
+
+        // Ensure the product belongs to the logged-in user's account
+        $product = Product::where('uuid', $uuid)
+                            ->where('account_id', $accountId)
+                            ->firstOrFail();
+
         $barcode = (new BarcodeGeneratorHTML())->getBarcode($product->code, 'C128'); // Generate barcode
 
         return view('products.show', compact('product', 'barcode'));
     }
 
     public function edit($uuid)
-{
-    $product = Product::where('uuid', $uuid)->firstOrFail();
+    {
+        // Get the logged-in user's account_id
+        $accountId = auth()->user()->account_id;
 
-    $categories = Category::all();
-    $units = Unit::all();
-    $suppliers = Supplier::all();
+        // Ensure the product belongs to the logged-in user's account
+        $product = Product::where('uuid', $uuid)
+                            ->where('account_id', $accountId)
+                            ->firstOrFail();
 
-    return view('products.edit', compact('product', 'categories' , 'units' , 'suppliers'));
-}
+        $categories = Category::all();
+        $units = Unit::all();
+        $suppliers = Supplier::all();
+
+        return view('products.edit', compact('product', 'categories', 'units', 'suppliers'));
+    }
 
     public function update(UpdateProductRequest $request, $uuid)
     {
-        $product = Product::where('uuid', $uuid)->firstOrFail();
+        // Get the logged-in user's account_id
+        $accountId = auth()->user()->account_id;
+
+        // Ensure the product belongs to the logged-in user's account
+        $product = Product::where('uuid', $uuid)
+                            ->where('account_id', $accountId)
+                            ->firstOrFail();
+
         $data = $request->validated();
-
-        $data['uuid'] = Str::uuid();
-        $data['user_id'] = auth()->id();
         $data['slug'] = Str::slug($data['name']);
+        $data['account_id'] = auth()->user()->account_id; // Set the account_id
 
-
+        // Handle image upload
         if ($request->hasFile('product_image')) {
-            // Get the uploaded file
             $file = $request->file('product_image');
 
             // Define the filename with a timestamp
@@ -134,14 +157,20 @@ class ProductController extends Controller
 
     public function destroy($uuid)
     {
-        $product = Product::where('uuid', $uuid)->firstOrFail();
+        // Get the logged-in user's account_id
+        $accountId = auth()->user()->account_id;
+
+        // Ensure the product belongs to the logged-in user's account
+        $product = Product::where('uuid', $uuid)
+                            ->where('account_id', $accountId)
+                            ->firstOrFail();
 
         if ($product->user_id !== auth()->id()) {
             return redirect()->route('products.index')->with('error', 'Unauthorized action.');
         }
 
         if ($product->product_image) {
-            // check if image exists in our file system
+            // Check if image exists in our file system
             if (file_exists(public_path('storage/') . $product->product_image)) {
                 unlink(public_path('storage/') . $product->product_image);
             }
@@ -151,5 +180,4 @@ class ProductController extends Controller
 
         return redirect()->route('products.index')->with('success', 'Product deleted successfully.');
     }
-   
 }

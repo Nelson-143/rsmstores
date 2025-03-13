@@ -75,4 +75,19 @@ class SubscriptionController extends Controller
         $subscription->delete();
         return redirect()->route('subscriptions.index')->with('success', 'Subscription deleted successfully.');
     }
+
+    public function showPlans()
+{
+    $plans = Subscription::all();
+    return view('subscriptions.plans', compact('plans'));
+}
+
+public function subscribe(Request $request, $planId)
+{
+    $user = auth()->user();
+    $plan = Subscription::findOrFail($planId);
+//$user->subscription()->associate($plan);
+//$user->save();
+    return redirect()->route('dashboard')->with('success', 'You have successfully subscribed to the ' . $plan->name . ' plan.');
+}
 }

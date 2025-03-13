@@ -18,23 +18,23 @@
                         <th>Features</th>
                     </tr>
                 </thead>
-                <tbody>
-                    @foreach ($subscriptions as $subscription)
-                        <tr>
-                            <td>{{ $subscription->name }}</td>
-                            <td>${{ number_format($subscription->price, 2) }}</td>
-                            <td>{{ $subscription->max_branches ?? 'Unlimited' }}</td>
-                            <td>{{ $subscription->max_users ?? 'Unlimited' }}</td>
-                            <td>
-                                <ul>
-                                    @foreach (json_decode($subscription->features, true) as $feature)
-                                        <li>{{ $feature }}</li>
-                                    @endforeach
-                                </ul>
-                            </td>
-                        </tr>
+             <tbody>
+    @foreach ($subscriptions->sortBy('price') as $subscription)
+        <tr>
+            <td>{{ $subscription->name }}</td>
+            <td>Tsh.{{ number_format($subscription->price, 2) }}</td>
+            <td>{{ $subscription->max_branches ?? 'Unlimited' }}</td>
+            <td>{{ $subscription->max_users ?? 'Unlimited' }}</td>
+            <td>
+                <ul>
+                    @foreach (json_decode($subscription->features, true) as $feature)
+                        <li>{{ $feature }}</li>
                     @endforeach
-                </tbody>
+                </ul>
+            </td>
+        </tr>
+    @endforeach
+</tbody>
             </table>
         </div>
     </div>

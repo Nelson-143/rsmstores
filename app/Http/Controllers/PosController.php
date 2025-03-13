@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Models\Customer;
+use App\Models\Debt;
+use App\Models\Order;
 use Illuminate\Http\Request;
 use Gloudemans\Shoppingcart\Facades\Cart;
 
@@ -24,10 +26,9 @@ class PosController extends Controller
         ]);
     }
 
-    public function addCartItem (Request $request)
+    public function addCartItem(Request $request)
     {
         $request->all();
-        //dd($request);
 
         $rules = [
             'id' => 'required|numeric',
@@ -43,7 +44,7 @@ class PosController extends Controller
             1,
             $validatedData['selling_price'],
             1,
-            (array)$options = null
+            (array) $options = null
         );
 
         return redirect()
@@ -81,5 +82,25 @@ class PosController extends Controller
             ->back()
             ->with('success', 'Product has been deleted from cart!');
     }
-    
+
+    public function storeDebt(Request $request)
+    {
+        $validated = $request->validate([
+            'customer_id' => 'nullable|exists:customers,id', // Allow null for personal debts
+            'customer_set' => 'required|string|max:255', // Validate custom
+            'amount' => 'required|numeric|min:1',
+            'due_date' => 'required|date|after_or_equal:today',
+        ]);
+
+        $debt = new Debt();
+        $debt->customer_id = $request->input('customer_id'); // Can be null
+        $debt->customer_set = $validated['customer_set']; // Store the customer set
+        $debt->amount = $request->input('amount');
+        $debt->amount_paid = 0; // Default to 0
+        $debt->due_date = $request->input('due_date');
+        $debt->account_id = auth()->user()->account_id; // Set the account ID
+        $debt->save();
+
+        return redirect()->route('debts.index')->with('success', 'Debt added successfully.');
+    }
 }

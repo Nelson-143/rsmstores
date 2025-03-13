@@ -12,7 +12,11 @@ class ProductExportController extends Controller
 {
     public function create()
     {
-        $products = Product::all()->sortBy('product_name');
+        // Get the logged-in user's account_id
+        $accountId = auth()->user()->account_id;
+
+        // Fetch products for the logged-in user's account
+        $products = Product::where('account_id', $accountId)->get()->sortBy('product_name');
 
         $product_array[] = array(
             'Product Name',

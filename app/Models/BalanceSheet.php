@@ -9,7 +9,17 @@ class BalanceSheet extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'assets', 'liabilities', 'equity'];
+    
+    protected $fillable = [
+        'assets',
+        'liabilities',
+        'equity',
+    ];
+
+    protected $casts = [
+        'assets' => 'array',
+        'liabilities' => 'array',
+    ];
 
     public function user()
     {

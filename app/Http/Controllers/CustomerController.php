@@ -1,8 +1,10 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Customer\StoreCustomerRequest;
 use App\Http\Requests\Customer\UpdateCustomerRequest;
+use App\Models\Order;
 use App\Models\{Customer, User};
 use Illuminate\Support\Str;
 
@@ -28,7 +30,9 @@ class CustomerController extends Controller
         $data['uuid'] = Str::uuid();
         $data['user_id'] = auth()->id();
         $data['account_id'] = auth()->user()->account_id; // Set the account_id
+      
 
+        // Handle image upload
         if ($request->hasFile('photo')) {
             $file = $request->file('photo');
 
@@ -52,17 +56,25 @@ class CustomerController extends Controller
 
         Customer::create($data);
 
-        return redirect()->route('customers.index')->with('success', 'Customer has been created successfully.');
+        return redirect()->route('customers.index')->with('success', 'Customer created successfully.');
     }
-
     public function show($uuid)
     {
         // Fetch the customer for the logged-in user's account
         $customer = Customer::where('uuid', $uuid)
             ->where('account_id', auth()->user()->account_id)
             ->firstOrFail();
-
-        return view('customers.show', compact('customer'));
+    
+        // Fetch the number of orders and the total amount contributed by the customer
+        $orderCount = Order::where('customer_id', $customer->id)
+            ->where('account_id', auth()->user()->account_id) // Ensure to filter by account_id
+            ->count();
+    
+        $totalContributed = Order::where('customer_id', $customer->id)
+            ->where('account_id', auth()->user()->account_id) // Ensure to filter by account_id
+            ->sum('total');
+    
+        return view('customers.show', compact('customer', 'orderCount', 'totalContributed'));
     }
 
     public function edit($uuid)
@@ -83,11 +95,11 @@ class CustomerController extends Controller
             ->firstOrFail();
 
         $data = $request->validated();
-
         $data['uuid'] = Str::uuid();
         $data['user_id'] = auth()->id();
         $data['account_id'] = auth()->user()->account_id; // Ensure account_id is set
 
+        // Handle image upload
         if ($request->hasFile('photo')) {
             $file = $request->file('photo');
 
@@ -114,7 +126,7 @@ class CustomerController extends Controller
 
         $customer->update($data);
 
-        return redirect()->route('customers.index')->with('success', 'Customer has been updated successfully.');
+        return redirect()->route('customers.index')->with('success', 'Customer updated successfully.');
     }
 
     public function destroy($uuid)
@@ -124,8 +136,12 @@ class CustomerController extends Controller
             ->where('account_id', auth()->user()->account_id)
             ->firstOrFail();
 
+        if ($customer->photo && file_exists(public_path($customer->photo))) {
+            unlink(public_path($customer->photo));
+        }
+
         $customer->delete();
 
-        return redirect()->route('customers.index')->with('success', 'Customer has been deleted successfully.');
+        return redirect()->route('customers.index')->with('success', 'Customer deleted successfully.');
     }
 }

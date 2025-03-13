@@ -10,11 +10,11 @@ use App\Models\Order;
 use App\Models\OrderDetails;
 use App\Models\Product;
 use App\Models\User;
+use App\Models\Debt;
 use App\Mail\StockAlert;
 use Carbon\Carbon;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
@@ -24,7 +24,12 @@ class OrderController extends Controller
 {
     public function index()
     {
-        $orders = Order::where('user_id', auth()->id())->count();
+        $userId = auth()->id();
+        $accountId = auth()->user()->account_id; // Get the account_id of the logged-in user
+
+        $orders = Order::where('user_id', $userId)
+            ->where('account_id', $accountId) // Filter by account_id
+            ->count();
 
         return view('orders.index', [
             'orders' => $orders
@@ -33,9 +38,17 @@ class OrderController extends Controller
 
     public function create()
     {
-        $products = Product::where('user_id', auth()->id())->with(['category', 'unit'])->get();
+        $userId = auth()->id();
+        $accountId = auth()->user()->account_id; // Get the account_id of the logged-in user
 
-        $customers = Customer::where('user_id', auth()->id())->get(['id', 'name']);
+        $products = Product::where('user_id', $userId)
+            ->where('account_id', $accountId) // Filter by account_id
+            ->with(['category', 'unit'])
+            ->get();
+
+        $customers = Customer::where('user_id', $userId)
+            ->where('account_id', $accountId) // Filter by account_id
+            ->get(['id', 'name']);
 
         $carts = Cart::content();
 
@@ -48,6 +61,9 @@ class OrderController extends Controller
 
     public function store(OrderStoreRequest $request)
     {
+        $userId = auth()->id();
+        $accountId = auth()->user()->account_id; // Get the account_id of the logged-in user
+
         foreach (Cart::content() as $item) {
             $product = Product::find($item->id);
             if ($item->qty > $product->quantity) {
@@ -72,93 +88,44 @@ class OrderController extends Controller
                 'prefix' => 'INV-'
             ]),
             'due' => (Cart::total() - $request->pay),
-            'user_id' => auth()->id(),
+            'user_id' => $userId,
+            'account_id' => $accountId, // Set the account_id
             'uuid' => Str::uuid(),
         ]);
 
-        // Create Order Details
-        $contents = Cart::content();
-        $oDetails = [];
+     $contents = Cart::content();
+foreach ($contents as $content) {
+    $oDetails = new OrderDetails();
+    $oDetails->order_id = $order['id'];
+    $oDetails->product_id = $content->id;
+    $oDetails->quantity = $content->qty;
+    $oDetails->unitcost = $content->price;
+    $oDetails->total = $content->subtotal;
+    $oDetails->created_at = Carbon::now();
+    $oDetails->account_id = $order->account_id;
+    $oDetails->save();
+}
 
-        foreach ($contents as $content) {
-            $oDetails['order_id'] = $order['id'];
-            $oDetails['product_id'] = $content->id;
-            $oDetails['quantity'] = $content->qty;
-            $oDetails['unitcost'] = $content->price;
-            $oDetails['total'] = $content->subtotal;
-            $oDetails['created_at'] = Carbon::now();
-
-            OrderDetails::insert($oDetails);
-        }
-
-        // Delete Cart Sopping History
+        // Delete Cart Shopping History
         Cart::destroy();
 
         return redirect()
             ->route('orders.index')
             ->with('success', 'Order has been created!');
     }
-    // public function store(OrderStoreRequest $request)
-    // {
-    //     // Check if any items in cart exceed the available stock
-    //     foreach (Cart::content() as $item) {
-    //         $product = Product::find($item->id);
-    //         if ($item->qty > $product->quantity) {
-    //             return back()->withErrors(['error' => 'Product "' . $product->name . '" is out of stock!']);
-    //         }
-    //     }
-
-    //     // Create the order
-    //     $order = Order::create([
-    //         'customer_id' => $request->customer_id,
-    //         'payment_type' => $request->payment_type,
-    //         'pay' => $request->pay,
-    //         'order_date' => Carbon::now()->format('Y-m-d'),
-    //         'order_status' => 'PENDING',
-    //         'total_products' => Cart::count(),
-    //         'sub_total' => Cart::subtotal(),
-    //         'vat' => Cart::tax(),
-    //         'total' => Cart::total(),
-    //         'invoice_no' => IdGenerator::generate([
-    //             'table' => 'orders',
-    //             'field' => 'invoice_no',
-    //             'length' => 10,
-    //             'prefix' => 'INV-'
-    //         ]),
-    //         'due' => (Cart::total() - $request->pay),
-    //         'user_id' => auth()->id(),
-    //         'uuid' => Str::uuid(),
-    //     ]);
-
-    //     // Store order details
-    //     foreach (Cart::content() as $content) {
-    //         OrderDetails::create([
-    //             'order_id' => $order->id,
-    //             'product_id' => $content->id,
-    //             'quantity' => $content->qty,
-    //             'unitcost' => $content->price,
-    //             'total' => $content->subtotal,
-    //         ]);
-
-    //         // Reduce product quantity
-    //         $product = Product::find($content->id);
-    //         $product->update([
-    //             'quantity' => $product->quantity - $content->qty
-    //         ]);
-    //     }
-
-    //     // Clear the cart
-    //     Cart::destroy();
-
-    //     return redirect()
-    //         ->route('orders.index')
-    //         ->with('success', 'Order has been created successfully!');
-    // }
 
     public function show($uuid)
     {
-        $order = Order::where('uuid', $uuid)->firstOrFail();
-        $order->loadMissing(['customer', 'details'])->get();
+        $userId = auth()->id();
+        $accountId = auth()->user()->account_id; // Get the account_id of the logged-in user
+
+        $order = Order::where('uuid', $uuid)
+            ->where('user_id', $userId)
+            ->where('account_id', $accountId) // Filter by account_id
+            ->firstOrFail();
+
+        $order->loadMissing(['customer', 'details']);
+
         return view('orders.show', [
             'order' => $order
         ]);
@@ -166,8 +133,13 @@ class OrderController extends Controller
 
     public function update($uuid, Request $request)
     {
-        $order = Order::where('uuid', $uuid)->firstOrFail();
-        // TODO refactoring
+        $userId = auth()->id();
+        $accountId = auth()->user()->account_id; // Get the account_id of the logged-in user
+
+        $order = Order::where('uuid', $uuid)
+            ->where('user_id', $userId)
+            ->where('account_id', $accountId) // Filter by account_id
+            ->firstOrFail();
 
         // Reduce the stock
         $products = OrderDetails::where('order_id', $order->id)->get();
@@ -184,11 +156,12 @@ class OrderController extends Controller
 
         if (count($stockAlertProducts) > 0) {
             $listAdmin = [];
-            foreach (User::all('email') as $admin) {
-                $listAdmin [] = $admin->email;
+            foreach (User ::all('email') as $admin) {
+                $listAdmin[] = $admin->email;
             }
             // Mail::to($listAdmin)->send(new StockAlert($stockAlertProducts));
         }
+
         $order->update([
             'order_status' => OrderStatus::COMPLETE,
             'due' => '0',
@@ -202,20 +175,27 @@ class OrderController extends Controller
 
     public function destroy($uuid)
     {
-        $order = Order::where('uuid', $uuid)->firstOrFail();
+        $userId = auth()->id();
+        $accountId = auth()->user()->account_id; // Get the account_id of the logged-in user
+
+        $order = Order::where('uuid', $uuid)
+            ->where('user_id', $userId)
+            ->where('account_id', $accountId) // Filter by account_id
+            ->firstOrFail();
+
         $order->delete();
     }
 
     public function downloadInvoice($uuid)
     {
-        $order = Order::with(['customer', 'details'])->where('uuid', $uuid)->firstOrFail();
-        // TODO: Need refactor
-        //dd($order);
+        $userId = auth()->id();
+        $accountId = auth()->user()->account_id; // Get the account_id of the logged-in user
 
-        //$order = Order::with('customer')->where('id', $order_id)->first();
-        // $order = Order::
-        //     ->where('id', $order)
-        //     ->first();
+        $order = Order::with(['customer', 'details'])
+            ->where('uuid', $uuid)
+            ->where('user_id', $userId)
+            ->where('account_id', $accountId) // Filter by account_id
+            ->firstOrFail();
 
         return view('orders.print-invoice', [
             'order' => $order,
@@ -235,42 +215,49 @@ class OrderController extends Controller
             ])
             ->with('success', 'Order has been canceled!');
     }
+
+
     public function setActiveCustomer(Request $request)
-{
-    $request->validate([
-        'active_customer' => 'required|integer|min:0|max:4'
-    ]);
+    {
+        $request->validate([
+            'active_customer' => 'required|integer|min:0|max:4'
+        ]);
 
-    session(['active_customer' => $request->active_customer]);
+        session(['active_customer' => $request->active_customer]);
 
-    return response()->json(['success' => true]);
-}
-public function updateCartItem(Request $request, $rowId)
-{
-    $qty = $request->input('qty');
-    // Update cart logic
-    return response()->json(['cartContent' => view('partials.cart-content', compact('cart'))->render()]);
-}
+        return response()->json(['success' => true]);
+    }
 
-public function deleteCartItem(Request $request)
-{
-    $rowId = $request->input('rowId');
-    // Delete cart item logic
-    return response()->json(['success' => true, 'cartContent' => view('partials.cart-content', compact('cart'))->render()]);
-}
+    public function updateCartItem(Request $request, $rowId)
+    {
+        $qty = $request->input('qty');
+        // Update cart logic
+        return response()->json(['cartContent' => view('partials.cart-content', compact('cart'))->render()]);
+    }
 
-public function showOrder($orderId)
-{
-    // Fetch the order with its related customer and items
-$order = Order::with(['customer', 'details'])->where('uuid', $orderId)->firstOrFail();
-    // Calculate the total for the order (if not already stored in the database)
-    $order->total = $order->items->sum(function ($item) {
-        return $item->quantity * $item->price;
-    });
+    public function deleteCartItem(Request $request)
+    {
+        $rowId = $request->input('rowId');
+        // Delete cart item logic
+        return response()->json(['success' => true, 'cartContent' => view('partials.cart-content', compact('cart'))->render()]);
+    }
 
-    return view('orders.show', compact('order'));
+    public function showOrder($orderId)
+    {
+        $userId = auth()->id();
+        $accountId = auth()->user()->account_id; // Get the account_id of the logged-in user
 
-}
+        // Fetch the order with its related customer and items
+        $order = Order::with(['customer', 'details'])
+            ->where('uuid', $orderId)
+            ->where('user_id', $userId)
+            ->where('account_id', $accountId) // Filter by account_id
+            ->firstOrFail();
+
+        return view('orders.show', compact('order'));
+    }
+ 
+
 
 public function approve($uuid)
 {
@@ -294,4 +281,9 @@ public function approve($uuid)
         ->route('orders.index')
         ->with('success', 'Order approved successfully!');
 }
+
+
+
 }
+
+

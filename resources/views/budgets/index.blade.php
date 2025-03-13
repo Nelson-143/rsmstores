@@ -95,6 +95,7 @@
         </div>
     </div>
 </div>
+
 <!-- Manage Categories Modal -->
 <div class="modal modal-blur fade" id="categoryModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-md" role="document">
@@ -133,16 +134,17 @@
                 <div class="modal-body">
                     <div class="mb-3">
                         <label for="category_id" class="form-label">Category</label>
-                        <select id="expense-category" name="expense_category_id" class="form-select" required>
-                <option value="" selected disabled>Select Expense Category</option>
-                @foreach ($budgetCategories as $budgetCategory)
-                    <option value="{{ $budgetCategory->id }}">{{ $budgetCategory->name }}</option>
-                @endforeach
-            </select>
+                        <select id="budget-category" name="budget_category_id" class="form-select" required>
+                            <option value="" selected disabled>Select Budget Category</option>
+                            @foreach ($budgetCategories as $budgetCategory)
+                                <option value="{{ $budgetCategory->id }}">{{ $budgetCategory->name }}</option>
+                            @endforeach
+                        </select>
                     </div>
                     <div class="mb-3">
                         <label for="amount" class="form-label">Allocated Amount</label>
-                    <input type="number" class="form-control" id="amount" name="amount" min="50" step="50" oninput="this.value = Math.ceil(this.value / 50) * 50" required>
+                        <input type="number" class="form-control" id="amount" name="amount" min="50" step="50" oninput="this.value = Math.ceil(this.value / 50) * 50" required>
+                    </div>
                     <div class="mb-3">
                         <label for="start_date" class="form-label">Start Date</label>
                         <input type="date" class="form-control" id="start_date" name="start_date" required>
@@ -217,3 +219,5 @@
 </script>
 
 @endsection
+
+

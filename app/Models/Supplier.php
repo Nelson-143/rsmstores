@@ -15,6 +15,7 @@ class Supplier extends Model
     use HasFactory;
 
     protected $fillable = [
+        'account_id',
         'name', 'email', 'phone', 'address', 'shopname', 'type', 'photo', 'account_holder', 'account_number', 'bank_name', 'user_id', 'uuid'
     ];
 
@@ -50,5 +51,9 @@ class Supplier extends Model
           return $this->belongsTo(Branch::class);
       }
       
+      protected static function booted()
+      {
+          static::addGlobalScope(new AccountScope);
+      }
    
 }

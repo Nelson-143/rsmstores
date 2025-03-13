@@ -14,8 +14,12 @@ class ProfileController extends Controller
 {
     public function edit(Request $request)
     {
+        // Get the logged-in user's account_id
+        $accountId = auth()->user()->account_id;
+
         return view('profile.edit', [
             'user' => $request->user(),
+            'account_id' => $accountId,
         ]);
     }
 
@@ -27,7 +31,7 @@ class ProfileController extends Controller
             'name' => 'required|max:50',
             'photo' => 'image|file|max:1024',
             'email' => 'required|email|max:50|unique:users,email,' . $user->id,
-            'username' => 'required|min:4|max:25|alpha_dash:ascii|unique:users,username,' . $user->id
+            'username' => 'required|min:4|max:25|alpha_dash|unique:users,username,' . $user->id
         ];
 
         $validatedData = $request->validate($rules);
@@ -68,12 +72,12 @@ class ProfileController extends Controller
     {
         return view('profile.settings', [
             'user' => $request->user(),
+            'account_id' => auth()->user()->account_id,
         ]);
     }
 
     public function store_settings_store(Request $request)
     {
-
         $request->validate([
             'store_name' => 'required|max:50',
             'store_address' => 'required|max:50',
@@ -97,6 +101,7 @@ class ProfileController extends Controller
     {
         return view('profile.store-settings', [
             'user' => auth()->user(),
+            'account_id' => auth()->user()->account_id,
         ]);
     }
 

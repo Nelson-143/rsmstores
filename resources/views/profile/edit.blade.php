@@ -11,7 +11,10 @@
                     <div class="col-auto mb-3">
                         <h1 class="page-header-title">
                             <div class="page-header-icon"><i data-feather="user"></i></div>
-                            Account Settings - Profile
+          <div class="mb-3">
+   
+    <div class="small font-italic text-muted mb-2">Account Settings for, <br><b>{{ old('account_name', $user->account->name ?? '') }}</b></div>
+</div>
                         </h1>
                     </div>
                 </div>

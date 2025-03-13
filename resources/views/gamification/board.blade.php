@@ -17,7 +17,7 @@
           </div>
           <p class="empty-title">Hold Tight, the Best is in Sight 🚀</p>
           <p class="empty-subtitle text-secondary">
-          Thank you for your patience! Our site is currently under construction, but we're working hard behind the scenes to bring you something amazing. Stay tuned for updates – we promise it's worth the wait. Get ready to be wowed, Champ! 😎          </p>
+            This site is Still in Production mode
           <div class="empty-action">
             <a href="{{ route('dashboard') }}" class="btn btn-primary">
               <!-- Download SVG icon from http://tabler-icons.io/i/arrow-left -->

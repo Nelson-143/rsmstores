@@ -68,30 +68,7 @@
     </div>
 </div>
 
-<!-- Additional Metrics -
-<div class="row mb-4">
-     Overdue Debts
-    <div class="col-md-6 mb-3">
-        <div class="card shadow-sm">
-            <div class="card-body text-center p-3">
-                <h6 class="card-title">Overdue Debts</h6>
-                <p class="card-text h5">{{ $overdueDebts }}</p>
-                <p class="text-muted small">Debts past their due date.</p>
-            </div>
-        </div>
-    </div>
 
-    < Debts Due Soon
-    <div class="col-md-6 mb-3">
-        <div class="card shadow-sm">
-            <div class="card-body text-center p-3">
-                <h6 class="card-title">Debts Due Soon</h6>
-                <p class="card-text h5">{{ $debtsDueSoon }}</p>
-                <p class="text-muted small">Debts due within the next 14 days.</p>
-            </div>
-        </div>
-    </div>
-</div>-->
 <style>
     .card {
     border-radius: 0.5rem; /* Rounded corners */
@@ -228,7 +205,6 @@
                                         @endif
                                     </td>
                                     <td>
-                                        <a href="{{ route('debts.edit', $debt['uuid']) }}" class="btn btn-warning btn-sm">Edit</a>
                                         <form action="{{ route('debts.destroy', $debt['uuid']) }}" method="POST" class="d-inline">
                                             @csrf
                                             @method('DELETE')

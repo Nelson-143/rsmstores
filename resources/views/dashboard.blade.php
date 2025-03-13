@@ -8,12 +8,15 @@
             <div class="row g-2 align-items-center">
                 <div class="col">
                     <div class="page-pretitle">
-                        Overview
+                        DASHBOARD
                     </div>
   <h2 class="page-title">
-    Dashboard|RomanStockManager
+    |{{ Auth::user()->name }},{{ $motivation }}
 </h2>
+
 <small class="text-muted">Today is ,{{ date('l, F j, Y') }}</small>
+
+
                 </div>
                 <!-- Page title actions -->
                 <div class="col-auto ms-auto d-print-none">
@@ -44,11 +47,9 @@
 <div class="subheader">Total Customers</div>
 <div class="ms-auto lh-1">
 <div class="dropdown">
-<a class="dropdown-toggle text-muted" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Last 7 days</a>
+<a class="text-muted" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Total Customers</a>
 <div class="dropdown-menu dropdown-menu-end">
-<a class="dropdown-item active" href="#">Last 7 days</a>
-<a class="dropdown-item" href="#">Last 30 days</a>
-<a class="dropdown-item" href="#">Last 3 months</a>
+
 </div>
 </div>
 </div>
@@ -57,8 +58,8 @@
 <div class="d-flex mb-2">
 
 <div class="ms-auto">
-<span class="text-green d-inline-flex align-items-center lh-1">
-
+<span class="text-blue d-inline-flex align-items-center lh-1">
+<svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-users-group"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 13a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M8 21v-1a2 2 0 0 1 2 -2h4a2 2 0 0 1 2 2v1" /><path d="M15 5a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M17 10h2a2 2 0 0 1 2 2v1" /><path d="M5 5a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M3 13v-1a2 2 0 0 1 2 -2h2" /></svg>
 </span>
 </div>
 </div>
@@ -79,25 +80,17 @@
 <div class="subheader">Total Debt</div>
 <div class="ms-auto lh-1">
 <div class="dropdown">
-<a class="dropdown-toggle text-muted" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Last 7 days</a>
+<a class="text-muted" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Total Debts</a>
 <div class="dropdown-menu dropdown-menu-end">
-<a class="dropdown-item active" href="#">Last 7 days</a>
-<a class="dropdown-item" href="#">Last 30 days</a>
-<a class="dropdown-item" href="#">Last 3 months</a>
+
 </div>
 </div>
 </div>
 </div>
 <div class="d-flex align-items-baseline">
-<div class="h1 mb-0 me-2">Tsh {{ isset($totalValueOfDebt) ? number_format($totalValueOfDebt, 2) : '0.00' }}</div>
-<div class="me-auto">
+<div class="h1 mb-0 me-2">Tsh {{ isset($debt) ? number_format($debt, 2) : '0.00' }}</div><div class="me-auto">
 <span class="text-red d-inline-flex align-items-center lh-1">
-{{ isset($debtChange) ? $debtChange . '%' : '0%' }}
-<svg xmlns="http://www.w3.org/2000/svg" class="icon ms-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-<path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-<path d="M17 7l-6 6l-4 -4l-8 8" />
-<path d="M7 17l7 0l0 -7" />
-</svg>
+<svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-moneybag-move"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9.5 3h5a1.5 1.5 0 0 1 1.5 1.5a3.5 3.5 0 0 1 -3.5 3.5h-1a3.5 3.5 0 0 1 -3.5 -3.5a1.5 1.5 0 0 1 1.5 -1.5" /><path d="M12.5 21h-4.5a4 4 0 0 1 -4 -4v-1a8 8 0 0 1 14.946 -3.971" /><path d="M16 19h6" /><path d="M19 16l3 3l-3 3" /></svg>
 </span>
 </div>
 </div>
@@ -114,11 +107,9 @@
 <div class="subheader">Total Branches</div>
 <div class="ms-auto lh-1">
 <div class="dropdown">
-<a class="dropdown-toggle text-muted" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Last 7 days</a>
+<a class="text-muted" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Your Branches</a>
 <div class="dropdown-menu dropdown-menu-end">
-<a class="dropdown-item active" href="#">Last 7 days</a>
-<a class="dropdown-item" href="#">Last 30 days</a>
-<a class="dropdown-item" href="#">Last 3 months</a>
+
 </div>
 </div>
 </div>
@@ -128,11 +119,8 @@
         <div class="h1 mb-3 me-2">{{ isset($branch) ? number_format($branch) : '1' }}</div>
         <div class="me-auto">
             <span class="text-yellow d-inline-flex align-items-center lh-1">
-                {{ isset($branchChange) ? $branchChange . '%' : '0%' }}
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon ms-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                    <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                    <path d="M5 12l14 0" />
-                </svg>
+              
+            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-building-store"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 21l18 0" /><path d="M3 7v1a3 3 0 0 0 6 0v-1m0 1a3 3 0 0 0 6 0v-1m0 1a3 3 0 0 0 6 0v-1h-18l2 -4h14l2 4" /><path d="M5 21l0 -10.15" /><path d="M19 21l0 -10.15" /><path d="M9 21v-4a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v4" /></svg>
             </span>
         </div>
     </div>
@@ -144,38 +132,51 @@
 </div>
 <!-- Total Sales -->
 <div class="col-sm-6 col-lg-3">
-<div class="card">
-<div class="card-body">
-<div class="d-flex align-items-center">
-<div class="subheader">Total Sales</div>
-<div class="ms-auto lh-1">
-<div class="dropdown">
-<a class="dropdown-toggle text-muted" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Last 7 days</a>
-<div class="dropdown-menu dropdown-menu-end">
-<a class="dropdown-item active" href="#">Last 7 days</a>
-<a class="dropdown-item" href="#">Last 30 days</a>
-<a class="dropdown-item" href="#">Last 3 months</a>
+    <div class="card">
+        <div class="card-body">
+            <div class="d-flex align-items-center">
+                <div class="subheader">Total Sales</div>
+                <div class="ms-auto lh-1">
+                 
+      <form method="GET" action="{{ route('dashboard') }}" class="d-flex align-items-center">
+    <div class="ms-auto lh-1">
+        <select name="period" class="form-select" onchange="this.form.submit()">
+            <option value="daily" {{ request('period') == 'daily' ? 'selected' : '' }}>Daily Sales</option>
+            <option value="weekly" {{ request('period') == 'weekly' ? 'selected' : '' }}>Weekly Sales</option>
+            <option value="monthly" {{ request('period') == 'monthly' ? 'selected' : '' }}>Monthly Sales</option>
+            <option value="yearly" {{ request('period') == 'yearly' ? 'selected' : '' }}>Yearly Sales</option>
+        </select>
+    </div>
+</form>
+                    </div>
+                
+            </div>
+            <div class="d-flex align-items-baseline">
+                <div class="h1 mb-3 me-2">Tsh {{ isset($carts) ? number_format($carts, 2) : '0.00' }}</div>
+                <div class="me-auto">
+                    <span class="text-green d-inline-flex align-items-center lh-1">
+                       
+                    <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-coins"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 14c0 1.657 2.686 3 6 3s6 -1.343 6 -3s-2.686 -3 -6 -3s-6 1.343 -6 3z" /><path d="M9 14v4c0 1.656 2.686 3 6 3s6 -1.344 6 -3v-4" /><path d="M3 6c0 1.072 1.144 2.062 3 2.598s4.144 .536 6 0c1.856 -.536 3 -1.526 3 -2.598c0 -1.072 -1.144 -2.062 -3 -2.598s-4.144 -.536 -6 0c-1.856 .536 -3 1.526 -3 2.598z" /><path d="M3 6v10c0 .888 .772 1.45 2 2" /><path d="M3 11c0 .888 .772 1.45 2 2" /></svg>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div id="chart-sales" class="chart-sm"></div>
+    </div>
 </div>
-</div>
-</div>
-</div>
-<div class="d-flex align-items-baseline">
-<div class="h1 mb-3 me-2">Tsh {{ isset($carts) ? number_format($carts, 2) : '0.00' }}</div>
-<div class="me-auto">
-<span class="text-green d-inline-flex align-items-center lh-1">
-{{ isset($salesGrowth) ? $salesGrowth . '%' : '0%' }}
-<svg xmlns="http://www.w3.org/2000/svg" class="icon ms-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-<path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-<path d="M3 17l6 -6l4 4l8 -8" />
-<path d="M14 7l7 0l0 7" />
-</svg>
-</span>
-</div>
-</div>
-</div>
-<div id="chart-sales" class="chart-sm"></div>
-</div>
-</div>
+<script>
+    function updateSalesChart(period) {
+        // Make an AJAX request to fetch data based on the selected period
+        fetch(`/sales-data?period=${period}`)
+            .then(response => response.json())
+            .then(data => {
+                // Update the chart with the new data
+                console.log('Sales data for ' + period + ':', data);
+                // Here you would update your chart with the new data
+            })
+            .catch(error => console.error('Error fetching sales data:', error));
+    }
+</script>
 @endrole
   
 <!--- STATIC DASH ---->
@@ -349,24 +350,16 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    // Data for the growth line chart
-    const growthData = {
-        labels: {!! json_encode($months) !!},
+  // Data for the growth line chart
+  const growthData = {
+        labels: {!! json_encode($months) !!}, // Months (e.g., ["Jan 2023", "Feb 2023", ...])
         datasets: [{
-            label: 'Total Sales',
-            data: {!! json_encode($growthRate) !!},
+            label: 'Sales Growth Rate (%)',
+            data: {!! json_encode($growthRate) !!}, // Growth rates (e.g., [12.34, -5.67, ...])
             borderColor: 'rgba(75, 192, 192, 1)',
             backgroundColor: 'rgba(75, 192, 192, 0.2)',
             fill: true,
-        }]
-    };
-
-    // Data for the pie chart
-    const pieData = {
-        labels: {!! json_encode($pieChartData['labels']) !!},
-        datasets: [{
-            data: {!! json_encode($pieChartData['data']) !!},
-            backgroundColor: ['#36A2EB', '#FF6384'],
+            yAxisID: 'y',
         }]
     };
 
@@ -379,11 +372,25 @@
             responsive: true,
             scales: {
                 y: {
-                    beginAtZero: true
+                    beginAtZero: true,
+                    max: 100, // Set the maximum value of the y-axis to 100%
+                    ticks: {
+                        callback: function(value) {
+                            return value + '%'; // Display values as percentages
+                        }
+                    }
                 }
             }
         }
     });
+      // Data for the pie chart
+      const pieData = {
+        labels: {!! json_encode($pieChartData['labels']) !!},
+        datasets: [{
+            data: {!! json_encode($pieChartData['data']) !!},
+            backgroundColor: ['#36A2EB', '#FF6384'],
+        }]
+    };
 
     // Create the pie chart
     const ctx2 = document.getElementById('supplierPieChart').getContext('2d');

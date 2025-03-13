@@ -1,15 +1,8 @@
-
 @extends('layouts.tabler')
 
-@section('title')
-    Financial Assistance 
-@endsection
+@section('title', 'Financial Assistance')
 
-@section('me')
-    @parent
-@endsection
-
-@section('finassist')
+@section('content')
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <div class="page-content">
     <div class="container-fluid">
@@ -18,32 +11,40 @@
             <div class="col-12">
                 <div class="page-title-box d-sm-flex align-items-center justify-content-between">
                     <h4 class="mb-sm-0">FinAssist</h4>
-                   
                 </div>
             </div>
         </div>
 
         <div class="chat-container">
-            <!-- Sidebar -->
-            <div class="chat-sidebar">
-                <button class="new-chat-btn">
-                    <i><svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-library-plus"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M7 3m0 2.667a2.667 2.667 0 0 1 2.667 -2.667h8.666a2.667 2.667 0 0 1 2.667 2.667v8.666a2.667 2.667 0 0 1 -2.667 2.667h-8.666a2.667 2.667 0 0 1 -2.667 -2.667z" /><path d="M4.012 7.26a2.005 2.005 0 0 0 -1.012 1.737v10c0 1.1 .9 2 2 2h10c.75 0 1.158 -.385 1.5 -1" /><path d="M11 10h6" /><path d="M14 7v6" /></svg></i> New chat
-                </button>
-                <div class="sidebar-conversations">
-                    <div class="conversation active">
-                        <i class="fas fa-comment"></i>
-                        <span>Sales Forecast Analysis</span>
-                    </div>
-                    <div class="conversation">
-                        <i class="fas fa-comment"></i>
-                        <span>Stock Reorder Query</span>
-                    </div>
-                    <div class="conversation">
-                        <i class="fas fa-comment"></i>
-                        <span>Loan Assessment</span>
-                    </div>
-                </div>
-            </div>
+         <div class="chat-sidebar" style="display: none;" id="sidebar">
+    <button class="new-chat-btn">
+        <i><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-library-plus"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M7 3m0 2.667a2.667 2.667 0 0 1 2.667 -2.667h8.666a2.667 2.667 0 0 1 2.667 2.667v8.666a2.667 2.667 0 0 1 -2.667 2.667h-8.666a2.667 2.667 0 0 1 -2.667 -2.667z" /><path d="M4.012 7.26a2.005 2.005 0 0 0 -1.012 1.737v10c0 1.1 .9 2 2 2h10c.75 0 1.158 -.385 1.5 -1" /><path d="M11 10h6" /><path d="M14 7v6" /></svg></i> New chat
+    </button>
+    <div class="sidebar-conversations">
+        <div class="conversation active">
+            <i class="fas fa-comment"></i>
+            <span>Sales Forecast Analysis</span>
+        </div>
+        <div class="conversation">
+            <i class="fas fa-comment"></i>
+            <span>Stock Reorder Query</span>
+        </div>
+        <div class="conversation">
+            <i class="fas fa-comment"></i>
+            <span>Loan Assessment</span>
+        </div>
+    </div>
+</div>
+
+<script>
+    window.addEventListener('resize', function() {
+        if (window.innerWidth < 768) {
+            document.getElementById('sidebar').style.display = 'none';
+        } else {
+            document.getElementById('sidebar').style.display = 'block';
+        }
+    });
+</script>
 
             <!-- Main Chat Area -->
             <div class="chat-main">
@@ -52,19 +53,19 @@
                     <h1>Roman Stock Manager FinAssist</h1>
                     <div class="suggestion-grid">
                         <div class="suggestion-card">
-                            <h3><i><svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-shopping-cart-bolt"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 19a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M13.5 17h-7.5v-14h-2" /><path d="M6 5l14 1l-.858 6.004m-2.642 .996h-10.5" /><path d="M19 16l-2 3h4l-2 3" /></svg></i> Sales Forecast</h3>
+                            <h3><i><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-shopping-cart-bolt"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 19a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M13.5 17h-7.5v-14h-2" /><path d="M6 5l14 1l-.858 6.004m-2.642 .996h-10.5" /><path d="M19 16l-2 3h4l-2 3" /></svg></i> Sales Forecast</h3>
                             <p>"Analyze my sales trends for next quarter"</p>
                         </div>
                         <div class="suggestion-card">
-                            <h3><i><svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-cube-plus"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M21 12.5v-4.509a1.98 1.98 0 0 0 -1 -1.717l-7 -4.008a2.016 2.016 0 0 0 -2 0l-7 4.007c-.619 .355 -1 1.01 -1 1.718v8.018c0 .709 .381 1.363 1 1.717l7 4.008a2.016 2.016 0 0 0 2 0" /><path d="M12 22v-10" /><path d="M12 12l8.73 -5.04" /><path d="M3.27 6.96l8.73 5.04" /><path d="M16 19h6" /><path d="M19 16v6" /></svg></i> Inventory</h3>
+                            <h3><i><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-cube-plus"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M21 12.5v-4.509a1.98 1.98 0 0 0 -1 -1.717l-7 -4.008a2.016 2.016 0 0 0 -2 0l-7 4.007c-.619 .355 -1 1.01 -1 1.718v8.018c0 .709 .381 1.363 1 1.717l7 4.008a2.016 2.016 0 0 0 2 0" /><path d="M12 22v-10" /><path d="M12 12l8.73 -5.04" /><path d="M3.27 6.96l8.73 5.04" /><path d="M16 19h6" /><path d="M19 16v6" /></svg></i> Inventory</h3>
                             <p>"Should I reorder Product X?"</p>
                         </div>
                         <div class="suggestion-card">
-                            <h3><i><svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-coins"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 14c0 1.657 2.686 3 6 3s6 -1.343 6 -3s-2.686 -3 -6 -3s-6 1.343 -6 3z" /><path d="M9 14v4c0 1.656 2.686 3 6 3s6 -1.344 6 -3v-4" /><path d="M3 6c0 1.072 1.144 2.062 3 2.598s4.144 .536 6 0c1.856 -.536 3 -1.526 3 -2.598c0 -1.072 -1.144 -2.062 -3 -2.598s-4.144 -.536 -6 0c-1.856 .536 -3 1.526 -3 2.598z" /><path d="M3 6v10c0 .888 .772 1.45 2 2" /><path d="M3 11c0 .888 .772 1.45 2 2" /></svg></i> Loans</h3>
+                            <h3><i><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-coins"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 14c0 1.657 2.686 3 6 3s6 -1.343 6 -3s-2.686 -3 -6 -3s-6 1.343 -6 3z" /><path d="M9 14v4c0 1.656 2.686 3 6 3s6 -1.344 6 -3v-4" /><path d="M3 6c0 1.072 1.144 2.062 3 2.598s4.144 .536 6 0c1.856 -.536 3 -1.526 3 -2.598c0 -1.072 -1.144 -2.062 -3 -2.598s-4.144 -.536 -6 0c-1.856 .536 -3 1.526 -3 2.598z" /><path d="M3 6v10c0 .888 .772 1.45 2 2" /><path d="M3 11c0 .888 .772 1.45 2 2" /></svg></i> Loans</h3>
                             <p>"Evaluate my loan eligibility"</p>
                         </div>
                         <div class="suggestion-card">
-                            <h3><i><svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-chart-bar"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 13a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /><path d="M15 9a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /><path d="M9 5a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /><path d="M4 20h14" /></svg></i> Profitability</h3>
+                            <h3><i><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-chart-bar"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 13a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /><path d="M15 9a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /><path d="M9 5a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /><path d="M4 20h14" /></svg></i> Profitability</h3>
                             <p>"Analyze my profit margins"</p>
                         </div>
                     </div>
@@ -72,31 +73,32 @@
 
                 <!-- Chat Messages -->
                 <div class="chat-messages" id="chatMessages">
-    <div class="message assistant">
-        <div class="message-content">
-            <p>Hello! I'm  FinAssist, an  AI assistant for Roman Stock Manager. How can I help you today?</p>
-        </div>
-    </div>
-</div>
-
+                    <div class="message assistant">
+                        <div class="message-content">
+                            <p>Hello! I'm FinAssist, an AI assistant for Roman Stock Manager. How can I help you today?</p>
+                        </div>
+                    </div>
+                </div>
 
                 <!-- Chat Input -->
                 <div class="chat-input-container">
-    <div class="chat-input-box">
-        <textarea id="userMessage" placeholder="Ask about your business..." rows="1"></textarea>
-        <button class="send-button" onclick="sendMessage()">
-            <i class="fas fa-paper-plane"></i>
-        </button>
-    </div>
-    <p class="input-disclaimer">FinAssist  can make mistakes. Consider checking important information.</p>
-</div>
-
+                    <div class="chat-input-box">
+                        <textarea id="userMessage" placeholder="Ask about your business..." rows="1"></textarea>
+                        <button class="send-button" onclick="sendMessage()">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                    <p class="input-disclaimer">FinAssist can make mistakes. Consider checking important information.</p>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
 <style>
+    /* Add your CSS styles here */
+    
+
 /* Rsm */
 .chat-container {
     display: flex;
@@ -280,19 +282,40 @@ textarea:focus {
     font-size: 12px;
     margin-top: 10px;
 }
+.message.assistant {
+    background-color: #f7f7f8; /* Light gray background for bot messages */
+    align-self: flex-start; /* Align to the left */
+}
 
-/* Responsive Design */
-@media (max-width: 768px) {
-    .chat-sidebar {
-        display: none;
-    }
-    
-    .suggestion-grid {
-        grid-template-columns: 1fr;
-    }
+.message.user {
+    background-color:rgb(151, 151, 151); /* Blue background for user messages */
+    color: white;
+    align-self: flex-end; /* Align to the right */
+    /* Loading message style */
+.message.assistant.loading .message-content p {
+    color: #666;
+    font-style: italic;
+}
+
+/* Error message style */
+.message.assistant.error .message-content p {
+    color: #ff4d4d;
+    font-weight: bold;
+}
 }
 </style>
+
 <script>
+
+function isGreeting(message) {
+    const greetings = ['hi', 'hello', 'hey', 'good morning', 'good afternoon', 'good evening'];
+    return greetings.some(greeting => message.toLowerCase().includes(greeting));
+}
+
+function handleGreeting(userName) {
+    return `Hello, Apologies for the inconvenience. Service will be restored soon.`;
+}
+
 document.addEventListener("DOMContentLoaded", function () {
     const textarea = document.getElementById("userMessage");
     const sendButton = document.querySelector(".send-button");
@@ -322,32 +345,41 @@ document.addEventListener("DOMContentLoaded", function () {
         textarea.value = "";
         textarea.style.height = "auto";
 
+        // Check if the message is a greeting
+        if (isGreeting(userMessage)) {
+            addMessage(handleGreeting("User "), "assistant");
+            return;
+        }
+
+        // Show loading indicator
+        const loadingMessage = addMessage("FinAssist is typing...", "assistant loading");
+
         // Send request to backend
         fetch("{{ route('finassist.query') }}", {
-    method: "POST",
-    headers: {
-        "Content-Type": "application/json",
-        "X-CSRF-TOKEN": "{{ csrf_token() }}"
-    },
-    body: JSON.stringify({ message: userMessage })
-})
-.then(response => response.json())
-.then(data => {
-    console.log("API Response:", data); // Debugging step
-    if (data.response) {
-        let botMessageDiv = document.createElement("div");
-        botMessageDiv.classList.add("message", "assistant");
-        botMessageDiv.innerHTML = `<div class="message-content"><p>${data.response}</p></div>`;
-        chatMessages.appendChild(botMessageDiv);
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-    } else {
-        console.error("Unexpected API response:", data);
-    }
-})
-.catch(error => {
-    console.error("Fetch Error:", error);
-});
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRF-TOKEN": "{{ csrf_token() }}"
+            },
+            body: JSON.stringify({ message: userMessage })
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Remove loading indicator
+            chatMessages.removeChild(loadingMessage);
 
+            if (data.response) {
+                // Append bot response to the chat interface
+                addMessage(data.response, "assistant");
+            } else {
+                addMessage("Something went wrong. Please try again later.", "assistant error");
+            }
+        })
+        .catch(error => {
+            console.error("Fetch Error:", error);
+            chatMessages.removeChild(loadingMessage);
+            addMessage("FinAssist is currently unavailable. Please try again later.", "assistant error");
+        });
     }
 
     // Add message to chat
@@ -361,6 +393,7 @@ document.addEventListener("DOMContentLoaded", function () {
         `;
         chatMessages.appendChild(messageDiv);
         chatMessages.scrollTop = chatMessages.scrollHeight;
+        return messageDiv; // Return the message element for later removal
     }
 
     // Event listeners
@@ -372,34 +405,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 });
-    // Suggestion card clicks
-    document.querySelectorAll('.suggestion-card').forEach(card => {
-        card.addEventListener('click', () => {
-            const suggestion = card.querySelector('p').textContent.replace(/"/g, '');
-            textarea.value = suggestion;
-            textarea.focus();
-        });
-    });
-
-    function sendMessage() {
-        let userMessage = document.getElementById("userMessage").value;
-        if (!userMessage.trim()) return;
-
-        let chatMessages = document.getElementById("chatMessages");
-    }
-
-    document.getElementById("sendMessage").addEventListener("click", function() {
-        let messageBox = document.getElementById("userMessage");
-        let message = messageBox.value.trim();
-        if (message) {
-            let chatMessages = document.getElementById("chatMessages");
-            chatMessages.innerHTML += `<div class='text-end p-3 mb-3 bg-primary text-white rounded'>${message}</div>`;
-            messageBox.value = "";
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        }
-    });
 
 </script>
-
-
 @endsection
+

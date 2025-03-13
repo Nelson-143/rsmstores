@@ -13,8 +13,6 @@ class CreateRecommendationsTable extends Migration
             $table->text('recommendation');
             $table->enum('priority', ['low', 'medium', 'high'])->default('medium');
             $table->boolean('is_read')->default(false);
-            $table->unsignedBigInteger('account_id'); // Reference to accounts table
-            $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
             $table->timestamps();
         });
     }

@@ -19,6 +19,7 @@ class Order extends Model
     ];
 
     protected $fillable = [
+        'account_id',
         'customer_id',
         'order_date',
         'order_status',
@@ -73,5 +74,9 @@ class Order extends Model
         return $this->hasMany(OrderDetails::class);
     }
 
+    protected static function booted()
+    {
+        static::addGlobalScope(new AccountScope);
+    }
  
 }

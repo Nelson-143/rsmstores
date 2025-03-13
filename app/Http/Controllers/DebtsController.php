@@ -111,38 +111,41 @@ $customers = Customer::where('account_id', $this->getAccountId())->get();
         return view('debts.edit', compact('debt', 'customers'));
     }
 
-    // For updating the debts
-    public function update(Request $request, $uuid)
-    {
-        $debt = Debt::where('uuid', $uuid)
-            ->whereHas('customer', function ($query) {
-                $query->where('account_id', $this->getAccountId());
-            })
-            ->firstOrFail();
 
-        $validated = $request->validate([
-            'amount_paid' => 'required|numeric|min:0|max:' . ($debt->amount - $debt->amount_paid),
-        ]);
+// <a href="{{ route('debts.edit', $debt['uuid']) }}" class="btn btn-warning btn-sm">Edit</a>
 
-        // Record the payment
-        $payment = new Payment();
-        $payment->debt_id = $debt->id;
-        $payment->amount_paid = $validated['amount_paid'];
-        $payment->paid_at = now(); // Record the payment date
-        $payment->save();
+// public function update(Request $request, $uuid)
+// {
+//     DB::beginTransaction();
+//     try {
+//         $debt = Debt::where('uuid', $uuid)
+//             ->whereHas('customer', function ($query) {
+//                 $query->where('account_id', $this->getAccountId());
+//             })
+//             ->firstOrFail();
 
-        // Update the amount paid in the debt
-        $debt->amount_paid += $validated['amount_paid'];
+//         $validated = $request->validate([
+//             'amount_paid' => 'required|numeric|min:0|max:' . ($debt->amount - $debt->amount_paid),
+//         ]);
 
-        // If the debt is fully paid, mark it as paid
-        if ($debt->amount_paid >= $debt->amount) {
-            $debt->paid_at = now(); // Mark as fully paid
-        }
+//         // Update the amount paid in the debt
+//         $debt->amount_paid += $validated['amount_paid'];
 
-        $debt->save();
+//         // If the debt is fully paid, mark it as paid
+//         if ($debt->amount_paid >= $debt->amount) {
+//             $debt->paid_at = now(); // Mark as fully paid
+//         }
 
-        return redirect()->route('debts.index')->with('success', 'Payment recorded successfully.');
-    }
+//         $debt->save();
+
+//         DB::commit();
+//         return redirect()->route('debts.index')->with('success', 'Payment recorded successfully.');
+//     } catch (\Exception $e) {
+//         DB::rollBack();
+//         return redirect()->route('debts.index')->with('error', 'Failed to record payment: ' . $e->getMessage());
+//     }
+// }
+
 
     // Deletion of debts
     public function destroy($uuid)
@@ -190,50 +193,54 @@ $customers = Customer::where('account_id', $this->getAccountId())->get();
     return view('debts.history', compact('debt', 'payments', 'customerName'));
     }
 
-    // Handle payment for a debt
-    public function pay(Request $request)
-    {
-        // Validate the request
-        $validated = $request->validate([
-            'debt_uuid' => 'required|exists:debts,uuid', // Use uuid instead of id
-            'amount_paid' => 'required|numeric|min:0',
-        ]);
-    
-        // Find the debt by uuid
-        $debt = Debt::where('uuid', $validated['debt_uuid'])
-            ->whereHas('customer', function ($query) {
-                $query->where('account_id', $this->getAccountId());
-            })
-            ->firstOrFail();
-    
-        // Check if the debt is already fully paid
-        if ($debt->amount_paid >= $debt->amount) {
-            return redirect()->route('debts.index')->with('error', 'This debt has already been fully paid.');
-        }
-    
-        // Ensure the payment does not exceed the remaining balance
-        $remainingBalance = $debt->amount - $debt->amount_paid;
-        if ($validated['amount_paid'] > $remainingBalance) {
-            return redirect()->route('debts.index')->with('error', 'The payment amount exceeds the remaining balance.');
-        }
-    
-        // Record the payment
-        $payment = new Payment();
-        $payment->debt_id = $debt->id; // Use the debt's id for the payment record
-        $payment->amount_paid = $validated['amount_paid'];
-        $payment->paid_at = now(); // Record the payment date
-        $payment->save();
-    
-        // Update the amount paid in the debt
-        $debt->amount_paid += $validated['amount_paid'];
-    
-        // If the debt is fully paid, mark it as paid
-        if ($debt->amount_paid >= $debt->amount) {
-            $debt->paid_at = now(); // Mark as fully paid
-        }
-    
-        $debt->save();
-    
-        return redirect()->route('debts.index')->with('success', 'Payment recorded successfully.');
+    // Handle payment for a debt```php
+public function pay(Request $request)
+{
+    // Validate the request
+    $validated = $request->validate([
+        'debt_uuid' => 'required|exists:debts,uuid', // Use uuid instead of id
+        'amount_paid' => 'required|numeric|min:0',
+    ]);
+
+    // Find the debt by uuid
+    $debt = Debt::where('uuid', $validated['debt_uuid'])
+        ->where(function ($query) {
+            $query->where('account_id', $this->getAccountId())
+                ->orWhereHas('customer', function ($query) {
+                    $query->where('account_id', $this->getAccountId());
+                });
+        })
+        ->firstOrFail();
+
+    // Check if the debt is already fully paid
+    if ($debt->amount_paid >= $debt->amount) {
+        return redirect()->route('debts.index')->with('error', 'This debt has already been fully paid.');
     }
-}
+
+    // Ensure the payment does not exceed the remaining balance
+    $remainingBalance = $debt->amount - $debt->amount_paid;
+    if ($validated['amount_paid'] > $remainingBalance) {
+        return redirect()->route('debts.index')->with('error', 'The payment amount exceeds the remaining balance.');
+    }
+
+    // Record the payment
+    $payment = new Payment();
+    $payment->debt_id = $debt->id; // Use the debt's id for the payment record
+    $payment->amount_paid = $validated['amount_paid'];
+    $payment->paid_at = now(); // Record the payment date
+    $payment->account_id = $this->getAccountId();
+    $payment->save();
+
+    // Update the amount paid in the debt
+    $debt->amount_paid += $validated['amount_paid'];
+
+    // If the debt is fully paid, mark it as paid
+    if ($debt->amount_paid >= $debt->amount) {
+        $debt->paid_at = now(); // Mark as fully paid
+    }
+
+    $debt->save();
+
+    return redirect()->route('debts.index')->with('success', 'Payment recorded successfully.');
+
+}}

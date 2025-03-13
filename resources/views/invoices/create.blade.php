@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <title>Invoice Create</title>
-    <link href="{{ asset('static/icon.png') }}" rel="icon" />
+    <link rel="icon" href="{{ asset('favicon.png') }}" type="image/x-icon"/>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
@@ -142,77 +142,130 @@
                         </h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
+          
+          
+          
+          
+          
+          
+ <!-- Back to Previous Button -->
+<form action="{{ route('invoice.create') }}" method="POST" style="display: inline;">
+    @csrf
+    <button type="submit" class="btn btn-warning">
+        {{ __('Back to previous') }}
+    </button>
+</form>
 
-                    <form action="{{ route('orders.store') }}" method="POST">
-                        @csrf
-                        <div class="modal-body">
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <div class="mb-3">
-                                        <input type="hidden" name="customer_id" value="{{ $customer->id }}">
+<!-- Order Form -->
+<form action="{{ route('orders.store') }}" method="POST" id="order-form">
+    @csrf
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="mb-3">
+                    <input type="hidden" name="customer_id" value="{{ $customer->id }}">
+                    <x-input.index label="Customer" name="customer" value="{{ $customer->name }}" disabled />
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="mb-3">
+                    <label for="payment_type" class="form-label required">{{ __('Payment') }}</label>
+                    <select class="form-control @error('payment_type') is-invalid @enderror" id="payment_type" name="payment_type" onchange="toggleForms(this)">
+                        <option selected="" disabled="">Select a payment:</option>
+                        <option value="HandCash">HandCash</option>
+                        <option value="Cheque">Cheque</option>
+                        <option value="Due">Due</option>
+                    </select>
+                    @error('payment_type')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <label for="pay" class="form-label required">{{ __('Pay Now') }}</label>
+                <input type="number" id="pay" name="pay" class="form-control @error('pay') is-invalid @enderror" value="{{ Cart::total() }}" required>
+                @error('pay')
+                <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn me-auto" data-bs-dismiss="modal">{{ __('Cancel') }}</button>
+        <button class="btn btn-primary" type="submit">{{ __('Pay') }}</button>
+    </div>
+</form>
 
-                                        <x-input.index label="Customer" name="customer" value="{{ $customer->name }}" disabled/>
-                                    </div>
-                                </div>
+<!-- Debt Form -->
+<form action="{{ route('pos.storeDebt') }}" method="POST" id="debt-form" style="display: none;">
+    @csrf
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="mb-3">
+                    <input type="hidden" name="customer_id" value="{{ $customer->id }}">
+                    <x-input.index label="Customer" name="customer" value="{{ $customer->name }}" disabled />
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="mb-3">
+                    <label for="payment_type" class="form-label required">{{ __('Payment') }}</label>
+                    <select class="form-control @error('payment_type') is-invalid @enderror" id="payment_type" name="payment_type" onchange="toggleForms(this)">
+                        <option selected="" disabled="">Select a payment:</option>
+                        <option value="HandCash">HandCash</option>
+                        <option value="Cheque">Cheque</option>
+                        <option value="Due">Due</option>
+                    </select>
+                    @error('payment_type')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="mb-3">
+                    <label for="due_date" class="form-label required">{{ __('Due Date') }}</label>
+                    <input type="date" id="due_date" name="due_date" class="form-control @error('due_date') is-invalid @enderror">
+                    @error('due_date')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <label for="pay" class="form-label required">{{ __('Amount') }}</label>
+                <input type="number" id="pay" name="pay" class="form-control @error('pay') is-invalid @enderror" value="{{ Cart::total() }}" required>
+                @error('pay')
+                <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn me-auto" data-bs-dismiss="modal">{{ __('Cancel') }}</button>
+        <button class="btn btn-primary" type="submit">{{ __('Create Debt') }}</button>
+    </div>
+</form>
 
-                                <div class="col-lg-6">
-                                    <div class="mb-3">
-                                        <label for="payment_type" class="form-label required">
-                                            {{ __('Payment') }}
-                                        </label>
+<script>
+function toggleForms(select) {
+    const orderForm = document.getElementById('order-form');
+    const debtForm = document.getElementById('debt-form');
 
-                                        <select class="form-control @error('payment_type') is-invalid @enderror" id="payment_type" name="payment_type">
-                                            <option selected="" disabled="">Select a payment:</option>
-                                            <option value="HandCash">HandCash</option>
-                                            <option value="Cheque">Cheque</option>
-                                            <option value="Due">Due</option>
-                                        </select>
+    if (select.value === 'Due') {
+        orderForm.style.display = 'none';
+        debtForm.style.display = 'block';
+    } else {
+        orderForm.style.display = 'block';
+        debtForm.style.display = 'none';
+    }
+}
+</script>
 
-                                        @error('payment_type')
-                                        <div class="invalid-feedback">
-                                            {{ $message }}
-                                        </div>
-                                        @enderror
-                                    </div>
-                                </div>
 
-                                <div class="col-lg-12">
-                                    <label for="pay" class="form-label required">
-                                        {{ __('Pay Now') }}
-                                    </label>
 
-                                    <input type="number"
-                                           id="pay"
-                                           name="pay"
-                                           class="form-control @error('pay') is-invalid @enderror"
-                                           value="{{ old('pay') }}"
-                                           required
-                                    >
-
-                                    @error('pay')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
-                                    </div>
-                                    @enderror
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="modal-footer">
-                            <button type="button" class="btn me-auto" data-bs-dismiss="modal">
-                                {{ __('Cancel') }}
-                            </button>
-
-                            <button class="btn btn-primary" type="submit">
-                                {{ __('Pay') }}
-                            </button>
-
-                        </div>
-                    </form>
                 </div>
             </div>
         </div>
-
+  
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     </body>
 </html>

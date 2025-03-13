@@ -11,6 +11,8 @@ class StockTransfer extends Model
     use HasFactory;
 
     protected $fillable = [
+        
+        'account_id', 
         'product_id', 
         'from_location', 
         'to_location', 
@@ -29,5 +31,9 @@ class StockTransfer extends Model
           return $this->belongsTo(Branch::class);
       }
       
+      protected static function booted()
+      {
+          static::addGlobalScope(new AccountScope);
+      }
 
 }

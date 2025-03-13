@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use App\Models\Order;
+use App\Models\Debt;
 use App\Models\Customer;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use App\Http\Requests\Invoice\StoreInvoiceRequest;
@@ -20,4 +24,9 @@ class InvoiceController extends Controller
             'carts' => $carts
         ]);
     }
+
+  
 }
+
+
+

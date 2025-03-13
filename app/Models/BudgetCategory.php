@@ -16,7 +16,7 @@ class BudgetCategory extends Model
      * @var array
      */
 
-    protected $fillable = ['name', 'description'];
+    protected $fillable = ['account_id','name', 'description'];
     
     public function branch()
       {

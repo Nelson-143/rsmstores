@@ -17,11 +17,12 @@ class Unit extends Model
     protected $guarded =['id'];
 
     protected $filable =[
+        'account_id',
         'name',
         'slug',
         'short_code',
         'user_id',
-        'account_id',
+        'branch_id',
     ];
     protected $casts = [
         'created_at' => 'datetime',
@@ -47,5 +48,8 @@ class Unit extends Model
           return $this->belongsTo(Branch::class);
       }
       
-    
+      protected static function booted()
+      {
+          static::addGlobalScope(new AccountScope);
+      }
 }

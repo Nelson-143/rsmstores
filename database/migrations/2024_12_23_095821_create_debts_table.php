@@ -14,22 +14,17 @@ class CreateDebtsTable extends Migration
     public function up()
     {
         Schema::create('debts', function (Blueprint $table) {
-            $table->id();
-            // In the migration file for debts
-            $table->foreignId('customer_id')->nullable()->constrained()->onDelete('cascade');
-            //$table->unsignedBigInteger('customer_id'); // Foreign key to the customers table
-            $table->decimal('amount', 10, 2); // Total debt amount
-            $table->decimal('amount_paid', 10, 2)->default(0); // Paid amount
-            $table->date('due_date'); // Due date for the debt
-            $table->timestamp('paid_at')->nullable(); // Payment date if fully paid
-            $table->timestamps();
-            // In the migration file for debts
-            $table->uuid('uuid')->unique();
-            $table->unsignedBigInteger('account_id'); // Reference to accounts table
-            $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
-            // Foreign key constraint
-           
-        });
+    $table->id();
+    $table->foreignId('customer_id')->nullable()->constrained()->onDelete('cascade');
+    $table->decimal('amount', 10, 2);
+    $table->decimal('amount_paid', 10, 2)->default(0);
+    $table->date('due_date');
+    $table->timestamp('paid_at')->nullable();
+    $table->timestamps();
+    $table->uuid('uuid')->unique();
+    $table->unsignedBigInteger('account_id');
+    $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
+});
     }
 
     /**

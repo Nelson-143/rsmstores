@@ -64,7 +64,7 @@
                       <h3 id="Taves">6. Taxes</h3>
                       <p>Your taxes are your responsibility.You are responsible for determining any and all taxes assessed, incurred, or required to be collected, paid, or withheld for any reason for your use of the Payment Services (“Taxes”). You also are solely responsible for collecting, withholding, reporting, and remitting correct Taxes to the appropriate tax authority. We are not obligated to, nor will we determine whether Taxes apply, or calculate, collect, report, or remit any Taxes to any tax authority arising from any transaction.</p>
                       <h3 id="receipts">7. Receipts</h3>
-                      <p>Our system does not automatically issue TRA fiscal receipts.In case you want to issue electronic receipts, you are required to contact TRA and ask for your unique/customized API for your business to be integrated with our system manually. This service (manual integration of your business TRA API) may be charged by Settlo as a separate service.</p>
+                      <p>Our system does not automatically issue TRA fiscal receipts.In case you want to issue electronic receipts, you are required to contact TRA and ask for your unique/customized API for your business to be integrated with our system manually. This service (manual integration of your business TRA API) may be charged by Roman Stock Manager as a separate service.</p>
                     
                     </div>
                   </div>

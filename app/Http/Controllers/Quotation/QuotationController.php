@@ -12,13 +12,16 @@ use App\Http\Controllers\Controller;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use App\Http\Requests\Quotation\StoreQuotationRequest;
 use Illuminate\Support\Facades\Request;
-use Str;
+use Illuminate\Support\Str;
 
 class QuotationController extends Controller
 {
     public function index()
     {
-        $quotations = Quotation::where("user_id",auth()->id())->count();
+        $account_id = auth()->user()->account_id;
+        $quotations = Quotation::where("user_id", auth()->id())
+                               ->where("account_id", $account_id)
+                               ->count();
 
         return view('quotations.index', [
             'quotations' => $quotations
@@ -29,13 +32,15 @@ class QuotationController extends Controller
     {
         Cart::instance('quotation')->destroy();
 
+        $account_id = auth()->user()->account_id;
         return view('quotations.create', [
             'cart' => Cart::content('quotation'),
-            'products' => Product::where("user_id",auth()->id())->get(),
-            'customers' => Customer::where("user_id",auth()->id())->get(),
-
-            // maybe?
-            //'statuses' => QuotationStatus::cases()
+            'products' => Product::where("user_id", auth()->id())
+                                 ->where("account_id", $account_id)
+                                 ->get(),
+            'customers' => Customer::where("user_id", auth()->id())
+                                   ->where("account_id", $account_id)
+                                   ->get(),
         ]);
     }
 
@@ -44,12 +49,17 @@ class QuotationController extends Controller
         if (count(Cart::instance('quotation')->content()) === 0) {
             return redirect()->back()->with('message', 'Please search & select products!');
         }
+
         DB::transaction(function () use ($request) {
+            $account_id = auth()->user()->account_id;
             $quotation = Quotation::create([
                 'date' => $request->date,
                 'reference' => $request->reference,
                 'customer_id' => $request->customer_id,
-                'customer_name' => Customer::findOrFail($request->customer_id)->name,
+                'customer_name' => Customer::where('id', $request->customer_id)
+                                           ->where('account_id', $account_id)
+                                           ->firstOrFail()
+                                           ->name,
                 'tax_percentage' => $request->tax_percentage,
                 'discount_percentage' => $request->discount_percentage,
                 'shipping_amount' => $request->shipping_amount, //* 100,
@@ -58,6 +68,7 @@ class QuotationController extends Controller
                 'note' => $request->note,
                 "uuid" => Str::uuid(),
                 "user_id" => auth()->id(),
+                "account_id" => $account_id,
                 'tax_amount' => Cart::instance('quotation')->tax(), //* 100,
                 'discount_amount' => Cart::instance('quotation')->discount(), //* 100,
             ]);
@@ -78,7 +89,9 @@ class QuotationController extends Controller
                 ]);
                 //status = sent, reduce product quantity
                 if ($request->status == 1) {
-                    Product::where('id', $cart_item->id)->update(['quantity' => DB::raw('quantity-' . $cart_item->qty)]);
+                    Product::where('id', $cart_item->id)
+                           ->where('account_id', $account_id)
+                           ->update(['quantity' => DB::raw('quantity-' . $cart_item->qty)]);
                 }
             }
 
@@ -92,11 +105,16 @@ class QuotationController extends Controller
 
     public function show($uuid)
     {
-        $quotation = Quotation::where("user_id",auth()->id())->where('uuid', $uuid)->firstOrFail();
+        $account_id = auth()->user()->account_id;
+        $quotation = Quotation::where("user_id", auth()->id())
+                              ->where('account_id', $account_id)
+                              ->where('uuid', $uuid)
+                              ->firstOrFail();
 
         return view('quotations.show', [
             'quotation' => $quotation,
-            'quotation_details' => QuotationDetails::where('quotation_id', $quotation->id)->get()
+            'quotation_details' => QuotationDetails::where('quotation_id', $quotation->id)
+                                                   ->get()
         ]);
     }
 
@@ -105,7 +123,11 @@ class QuotationController extends Controller
         $quotation->update([
             "status" => 2
         ]);
-        $quotations = Quotation::where("user_id",auth()->id())->count();
+
+        $account_id = auth()->user()->account_id;
+        $quotations = Quotation::where("user_id", auth()->id())
+                               ->where("account_id", $account_id)
+                               ->count();
 
         return redirect()
             ->route('quotations.index', [
@@ -113,19 +135,27 @@ class QuotationController extends Controller
             ]);
     }
 
-    // complete quotaion method
-    public function update(Request $request,$uuid)
+    // complete quotation method
+    public function update(Request $request, $uuid)
     {
-        $quotation = Quotation::where("user_id",auth()->id())->where('uuid', $uuid)->firstOrFail();
+        $account_id = auth()->user()->account_id;
+        $quotation = Quotation::where("user_id", auth()->id())
+                              ->where('account_id', $account_id)
+                              ->where('uuid', $uuid)
+                              ->firstOrFail();
+
         $quotation->with(['customer', 'quotationDetails'])->get();
         $quotation->status = 1;
+        
         // Reduce the stock
         $quoteProducts = $quotation->quotationDetails;
 
         foreach ($quoteProducts as $product) {
             Product::where('id', $product->product_id)
-                ->update(['quantity' => DB::raw('quantity-' . $product->quantity)]);
+                   ->where('account_id', $account_id)
+                   ->update(['quantity' => DB::raw('quantity-' . $product->quantity)]);
         }
+
         $quotation->save();
 
         return redirect()

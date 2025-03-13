@@ -6,8 +6,8 @@ use App\Http\Controllers\Dashboards\DashboardController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\Order\DueOrderController;
 use App\Http\Controllers\Order\OrderCompleteController;
-use App\Http\Controllers\Order\OrderController;
 use App\Http\Controllers\Order\OrderPendingController;
+use App\Http\Controllers\Order\OrderController;
 use App\Http\Controllers\PosController;
 use App\Http\Controllers\Product\ProductController;
 use App\Http\Controllers\Product\ProductExportController;
@@ -47,17 +47,17 @@ use App\Http\Controllers\SubscriptionController;
 Route::get('php/', function () {
     return phpinfo();
 });
-
-Route::get('/', function () {
-    if (Auth::check()) {
-        return redirect('/dashboard');
-    }
-    return redirect('/login');
-});
+Route::get('/', function () { 
+    if (Auth::check()) { 
+        return redirect('/dashboard'); 
+    } 
+    return view('front.about_master');  
+})->name('about_master.route');
 
 Route::middleware(['auth','verified'])->group(function () {
 
     Route::get('dashboard/', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/sales-data', [DashboardController::class, 'getSalesData']);
 
     // User Management
 //     Route::resource('/users', UserController::class); //->except(['show']);
@@ -91,14 +91,27 @@ Route::middleware(['auth','verified'])->group(function () {
     Route::delete('/pos/delete-cart-item/{rowId}', [PosController::class, 'deleteCartItem'])->name('pos.deleteCartItem');
     Route::get('/pos/get-customer-cart/{customerId}', [PosController::class, 'getCustomerCart'])->name('pos.getCustomerCart');
     Route::post('/invoice/create', [PosController::class, 'createInvoice'])->name('invoice.create');
+    Route::post('/pos/store-debt', [PosController::class, 'storeDebt'])->name('pos.storeDebt');
+
+Route::get('/pos', [PosController::class, 'index'])->name('pos.index');
+Route::post('/pos/add-cart-item', [PosController::class, 'addCartItem'])->name('pos.addCartItem');
+Route::post('/pos/update-cart-item/{rowId}', [PosController::class, 'updateCartItem'])->name('pos.updateCartItem');
+Route::post('/pos/delete-cart-item/{rowId}', [PosController::class, 'deleteCartItem'])->name('pos.deleteCartItem');
+Route::post('/pos/store-debt', [PosController::class, 'storeDebt'])->name('pos.storeDebt');
 
     //Route::post('/pos/invoice', [PosController::class, 'createInvoice'])->name('pos.createInvoice');
     Route::post('/invoice/create', [InvoiceController::class, 'create'])->name('invoice.create');
-    // Route Orders
-    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
-    Route::get('/orders/pending', OrderPendingController::class)->name('orders.pending');
-    Route::get('/orders/complete', OrderCompleteController::class)->name('orders.complete');
-    Route::post('/orders/{uuid}/approve', [OrderController::class, 'approve'])->name('orders.approve');
+    ;
+
+Route::resource('orders', OrderController::class);
+Route::resource('debts', DebtsController::class);
+
+
+      // Route Orders
+      Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+      Route::get('/orders/pending', OrderPendingController::class)->name('orders.pending');
+      Route::get('/orders/complete', OrderCompleteController::class)->name('orders.complete');
+      Route::post('/orders/{uuid}/approve', [OrderController::class, 'approve'])->name('orders.approve');
     // web.php
     Route::post('/set-active-customer', [OrderController::class, 'setActiveCustomer'])->name('setActiveCustomer');
 
@@ -111,15 +124,25 @@ Route::middleware(['auth','verified'])->group(function () {
     Route::put('/orders/update/{order}', [OrderController::class, 'update'])->name('orders.update');
     Route::delete('/orders/cancel/{order}', [OrderController::class, 'cancel'])->name('orders.cancel');
 
+
+    // TODO: Remove from OrderController
+    Route::get('/orders/details/{order_id}/download', [OrderController::class, 'downloadInvoice'])->name('order.downloadInvoice');
+    Route::get('/orders/customer/{customerId}/details', [OrderController::class, 'getCustomerOrderDetails'])
+    ->name('orders.customer.details');
+    Route::get('/orders/customer/{customerId}', [OrderController::class, 'getCustomerOrders']);
+    // routes for oders 
+    Route::get('/orders/customer/{customerId}/details', [OrderController::class, 'getCustomerOrderDetails'])
+    ->name('orders.customer.details');
+
+    Route::get('/pos/get-cart-content', [OrderController::class, 'getCartContent'])->name('pos.getCartContent');
+    Route::post('/cart/add/{productId}', [OrderController::class, 'addToCart'])
+    ->name('cart.add');
+
     // DUES
     Route::get('due/orders/', [DueOrderController::class, 'index'])->name('due.index');
     Route::get('due/order/view/{order}', [DueOrderController::class, 'show'])->name('due.show');
     Route::get('due/order/edit/{order}', [DueOrderController::class, 'edit'])->name('due.edit');
     Route::put('due/order/update/{order}', [DueOrderController::class, 'update'])->name('due.update');
-
-    // TODO: Remove from OrderController
-    Route::get('/orders/details/{order_id}/download', [OrderController::class, 'downloadInvoice'])->name('order.downloadInvoice');
-
 
     // Route Purchases
     Route::get('/purchases/approved', [PurchaseController::class, 'approvedPurchases'])->name('purchases.approvedPurchases');
@@ -148,11 +171,15 @@ Route::middleware(['auth','verified'])->group(function () {
     Route::delete('/quotations/delete/{quotation}', [QuotationController::class, 'destroy'])->name('quotations.delete');
 });
 
+
+
+
+// Route::post('/handle-payment', [PosController::class, 'handlePayment'])->name('invoices.create');
+
     //Route Finassist
 
 Route::get('/finassist', [FinAssistController::class, 'index'])->name('finassist');
 Route::post('/finassist/query', [FinAssistController::class, 'handleQuery'])->name('finassist.query');
-
 
 // routes/web.php
 Route::get('/debts', [DebtsController::class, 'index'])->name('debts.index');
@@ -188,6 +215,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
     Route::post('/reports/generate', [ReportController::class, 'generate'])->name('reports.generate');
     Route::patch('/recommendations/{id}/read', [ReportController::class, 'markRecommendationRead'])->name('recommendations.read');
+    // routes/web.php
+Route::post('/reports/calculate-balance-sheet', [ReportController::class, 'calculateBalanceSheet'])->name('reports.calculateBalanceSheet');
+Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
 });
 //routes for branch
 Route::middleware(['auth'])->group(function () {
@@ -246,9 +276,7 @@ Route::middleware(['auth'])->group(function () {
 
 //-------------THE ROUTES TO THE Roman Website place ,WELCOMES ----------------
 
-Route::get('/Welcome', function () {
-    return view('front.about_master');   // The welcome page
-})->name('about_master.route');
+
 
 Route::get('/About Us', function () {
     return view('front.habout');       // The About  page

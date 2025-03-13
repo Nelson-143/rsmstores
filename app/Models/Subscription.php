@@ -1,40 +1,43 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Support\Str;
 use App\Scopes\AccountScope;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Str;
 
 class Subscription extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'uuid';
+    protected $fillable = ['id', 'name', 'price', 'max_branches', 'max_users', 'features', 'account_id'];
+
+    protected $casts = [
+        'features' => 'array',
+    ];
+
     public $incrementing = false;
     protected $keyType = 'string';
-
-    protected $fillable = [
-        'uuid',
-        'name',
-        'price',
-        'max_branches',
-        'max_users',
-        'features',
-    ];
-    protected $casts = [
-        'features' => 'array', // Automatically converts JSON to array
-    ];
 
     protected static function boot()
     {
         parent::boot();
+
         static::creating(function ($model) {
-            $model->uuid = (string) Str::uuid();
+            if (!$model->id) {
+                $model->id = Str::uuid();
+            }
         });
     }
 
+    public function account(): BelongsTo
+    {
+        return $this->belongsTo(Account::class);
+    }
+    
     public function userSubscriptions(): HasMany
     {
         return $this->hasMany(UserSubscription::class, 'subscription_id', 'uuid');
@@ -42,3 +45,7 @@ class Subscription extends Model
 
 
 }
+
+
+
+

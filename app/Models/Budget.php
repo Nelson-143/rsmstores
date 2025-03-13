@@ -16,15 +16,16 @@ class Budget extends Model
      * @var array
      */
     protected $fillable = [
+        'account_id', 
         'user_id',
-        'category_id', // ✅ Make sure this is here!
+        'category_id', 
         'amount',
         'start_date',
         'end_date',
+        'branch_id',
+      
     ];
-    
-  
-    
+
     /**
      * Get the user associated with the budget.
      */
@@ -36,15 +37,18 @@ class Budget extends Model
     /**
      * Get the expenses associated with this budget.
      */
-    public function expense()
+    public function expenses() // Corrected relationship name
     {
         return $this->hasMany(Expense::class, 'budget_id');
     }
-    // In Budget.php model
-public function category()
-{
-    return $this->belongsTo(BudgetCategory::class, 'category_id');
-}
+
+    /**
+     * Get the category associated with this budget.
+     */
+    public function category()
+    {
+        return $this->belongsTo(BudgetCategory::class, 'category_id');
+    }
 
     /**
      * Calculate the remaining budget.
@@ -53,9 +57,12 @@ public function category()
      */
     public function remainingBudget()
     {
-        $totalExpenses = $this->expenses()->sum('amount');
+        $totalExpenses = $this->expenses()->sum('amount'); // Use the corrected relationship name
         return $this->amount - $totalExpenses;
     }
-    
-    
+
+    protected static function booted()
+    {
+        static::addGlobalScope(new AccountScope);
+    }
 }

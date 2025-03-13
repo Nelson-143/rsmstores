@@ -10,6 +10,7 @@ class Purchase extends Model
     use HasFactory;
 
     protected $fillable = [
+        'account_id',
         'supplier_id',
         'date',
         'total_amount',
@@ -56,5 +57,8 @@ class Purchase extends Model
           return $this->belongsTo(Branch::class);
       }
    
-      
+      protected static function booted()
+      {
+          static::addGlobalScope(new AccountScope);
+      }
 }

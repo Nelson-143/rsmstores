@@ -44,6 +44,11 @@ class Category extends Model
       {
           return $this->belongsTo(Branch::class);
       }
+
+      protected static function booted()
+      {
+          static::addGlobalScope(new AccountScope);
+      }
       
    
 }

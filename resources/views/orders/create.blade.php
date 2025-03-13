@@ -60,18 +60,102 @@
                                     <span class="text-danger">*</span>
                                 </label>
 
-                                <select class="form-select form-control-solid @error('customer_id') is-invalid @enderror" id="customer_id" name="customer_id">
-                                <option value="pass_by" selected>PASS BY</option>
-                                <option selected="" disabled="">
-                                        Select a customer:
-                                    </option>
+                                <style>
+    .dropdown-container {
+        position: relative;
+    }
 
-                                    @foreach ($customers as $customer)
-                                        <option value="{{ $customer->id }}" @selected( old('customer_id') == $customer->id)>
-                                            {{ $customer->name }}
-                                        </option>
-                                    @endforeach
-                                </select>
+    .form-select {
+        position: relative;
+        z-index: 1;
+        display: none; /* Hide the original select */
+    }
+
+    .form-control {
+        margin-bottom: 10px;
+    }
+
+    .custom-dropdown {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        z-index: 2;
+        display: none;
+        border: 1px solid #ccc;
+        background: white;
+        max-height: 200px;
+        overflow-y: auto;
+    }
+
+    .custom-dropdown.open {
+        display: block;
+    }
+
+    .custom-option {
+        padding: 8px;
+        cursor: pointer;
+    }
+
+    .custom-option:hover {
+        background-color: #f0f0f0;
+    }
+</style>
+
+<div class="dropdown-container">
+    <input type="text" class="form-control" id="customer-search" placeholder="Search for customers...">
+    <div class="custom-dropdown" id="customer-dropdown">
+        <div class="custom-option" data-value="pass_by" selected>PASS BY</div>
+        <div class="custom-option" data-value="" disabled>Select a customer:</div>
+        @foreach ($customers as $customer)
+            <div class="custom-option" data-value="{{ $customer->id }}">
+                {{ $customer->name }}
+            </div>
+        @endforeach
+    </div>
+    <input type="hidden" id="customer_id" name="customer_id" value="pass_by">
+</div>
+
+<script>
+    const searchInput = document.getElementById('customer-search');
+    const dropdown = document.getElementById('customer-dropdown');
+    const customerIdInput = document.getElementById('customer_id');
+
+    searchInput.addEventListener('input', function () {
+        const query = this.value.toLowerCase();
+        dropdown.classList.add('open');
+        dropdown.querySelectorAll('.custom-option').forEach(option => {
+            option.style.display = option.textContent.toLowerCase().includes(query) ? '' : 'none';
+        });
+    });
+
+    searchInput.addEventListener('focus', function () {
+        dropdown.classList.add('open');
+    });
+
+    searchInput.addEventListener('blur', function () {
+        // Delay to allow click event to register
+        setTimeout(() => {
+            dropdown.classList.remove('open');
+        }, 200);
+    });
+
+    dropdown.addEventListener('click', function (event) {
+        if (event.target.classList.contains('custom-option')) {
+            const selectedValue = event.target.getAttribute('data-value');
+            const selectedText = event.target.textContent;
+
+            // Set the hidden input value
+            customerIdInput.value = selectedValue;
+
+            // Set the search input value
+            searchInput.value = selectedText;
+
+            // Close the dropdown
+            dropdown.classList.remove('open');
+        }
+    });
+</script>
 
                                 @error('customer_id')
                                 <div class="invalid-feedback">
@@ -332,3 +416,5 @@
     });
 </script>
 @endpushonce
+
+

@@ -32,6 +32,7 @@ class Expense extends Model
     public function category()
     {
         return $this->belongsTo(ExpenseCategory::class, 'category_id');
+       
     }
     //scope to filter expenses by account
     protected static function booted()
@@ -54,6 +55,11 @@ class Expense extends Model
       public function budget()
       {
         return $this->hasMany(Expense::class, 'budget_id');
+
+
       }
-}
+    
+  }
+
+
 

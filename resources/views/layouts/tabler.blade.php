@@ -7,6 +7,7 @@
     <meta name="theme-color" content="#2196f3">
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta http-equiv="X-UA-Compatible" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <style>
@@ -148,34 +149,19 @@
                                data-bs-placement="bottom">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 12m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" /><path d="M3 12h1m8 -9v1m8 8h1m-9 8v1m-6.4 -15.4l.7 .7m12.1 -.7l-.7 .7m0 11.4l.7 .7m-12.1 -.7l-.7 .7" /></svg>
                             </a>
-
-
-                        <div class="nav-item dropdown d-none d-md-flex me-3">
-                            <div class="dropdown-menu dropdown-menu-arrow dropdown-menu-end dropdown-menu-card">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <h3 class="card-title">Last updates</h3>
-                                    </div>
-                                    <div class="list-group list-group-flush list-group-hoverable">
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                     <!-- the notification-panel -->
                     <x-notification-panel />
 
-                    <div class="nav-item dropdown">
-                    <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown" aria-label="Open user menu">
-<span class="avatar avatar-rounded shadow-none" style="background-image: url('{{ Auth::user()->photo ?? '' }}'); background-size: cover; background-position: center; border-radius: 50%; width: 40px; height: 40px; display: inline-block;"></span>
-
-</span>
-    <dv class="d-none d-xl-block ps-2">
-      {{ Auth::user()->name ?? '' }}
-      <div class="mt-1 small text-muted">{{ Auth::user()->getRoleNames()->first() }}</div>
-    </dv>
-</a>
+                                            <div class="nav-item dropdown">
+                                            <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown" aria-label="Open user menu">
+                        <span class="avatar avatar-rounded shadow-none" style="background-color: gold; color: black; border-radius: 50%; width: 40px; height: 40px; display: inline-block; text-align: center; line-height: 40px;">{{ substr(Auth::user()->name, 0, 1) }}{{ substr(Auth::user()->name, strpos(Auth::user()->name, ' ') + 1, 1) }}</span>
+                        </span>
+                            <dv class="d-none d-xl-block ps-2">
+                            {{ Auth::user()->name ?? '' }}
+                            <div class="mt-1 small text-muted">{{ Auth::user()->getRoleNames()->first() }}</div>
+                            </dv>
+                        </a>
                         <div class="dropdown-menu">
                             <a href="{{ route('profile.edit') }}" class="dropdown-item">
                                 <svg xmlns="http://www.w3.org/2000/svg"
@@ -365,7 +351,7 @@
                             @endrole
 
                             <li
-                                class="nav-item dropdown {{ request()->is('suppliers*', 'customers*','debts*','expences*','stock*','budgets*','gamification*','quotations*') ? 'active' : null }}">
+                                class="nav-item dropdown {{ request()->is('suppliers*', 'customers*','debts*','expenses*','stock*','budgets*','gamification*','quotations*') ? 'active' : null }}">
                                 <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown"
                                     data-bs-auto-close="outside" role="button" aria-expanded="false">
                                     <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -454,7 +440,7 @@
                                                         colors="primary:black"
                                                       style="width:20px;height:20px">
                                                          </lord-icon>
-                                                          {{ __('Stock Transfer') }}
+                                                          {{ __('Transfer/Damage') }}
                                                      </a>
                                                      @role('Super Admin')
                                                      <a class="dropdown-item" href="{{ route('gamification.board') }}">

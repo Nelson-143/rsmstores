@@ -19,7 +19,8 @@ class Debt extends Model
         'customer_id', // The ID of the customer (nullable for personal debts)
         'amount',      // The total amount of the debt
         'amount_paid', // The amount paid so far (defaults to 0)
-        'due_date',    // The due date for the debt
+        'due_date',
+        'customer_set',    // The due date for the debt
         'paid_at',     // The date when the debt was fully paid (nullable)
     ];
     // Debt.php

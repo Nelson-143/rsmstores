@@ -85,5 +85,13 @@ class Product extends Model
           return $this->belongsTo(Product::class);
       }
 
-  
+      protected static function booted()
+      {
+          static::addGlobalScope(new AccountScope);
+      }
+
+      public function account()
+{
+    return $this->belongsTo(Account::class, 'account_id');
+}
 }

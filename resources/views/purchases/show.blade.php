@@ -103,87 +103,64 @@
                     </div>
 
                     <div class="col-lg-12">
-                        <div class="table-responsive">
-                            <table class="table table-bordered table-striped align-middle">
-                                <thead class="thead-light">
-                                    <tr>
-                                        <th scope="col" class="align-middle text-center">No.</th>
-                                        <th scope="col" class="align-middle text-center">Photo</th>
-                                        <th scope="col" class="align-middle text-center">Product Name</th>
-                                        <th scope="col" class="align-middle text-center">Product Code</th>
-                                        <th scope="col" class="align-middle text-center">Current Stock</th>
-                                        <th scope="col" class="align-middle text-center">Quantity</th>
-                                        <th scope="col" class="align-middle text-center">Unit Price</th>
-                                        <th scope="col" class="align-middle text-center">Total</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($purchase->details as $item)
-                                        <tr>
-                                            <td class="align-middle text-center">{{ $loop->iteration }}</td>
-                                            <td class="align-middle justify-content-center text-center">
-                                                <div style="max-height: 80px; max-width: 80px;">
-                                                    <img class="img-fluid"
-                                                        src="{{ $item->product->product_image ? asset($item->product->product_image) : asset('assets/img/products/default.webp') }}">
-                                                </div>
-                                            </td>
-                                            <td class="align-middle text-center">
-                                                {{ $item->product->name }}
-                                            </td>
-                                            <td class="align-middle text-center">
-                                                <span class="badge bg-indigo-lt">
-                                                    {{ $item->product->code }}
-                                                </span>
-                                            </td>
-                                            <td class="align-middle text-center">
-                                                <span class="badge bg-primary-lt">
-                                                    {{ $item->product->quantity }}
-                                                </span>
-                                            </td>
-                                            <td class="align-middle text-center">
-                                                <span class="badge bg-primary-lt">
-                                                    {{ $item->quantity }}
-                                                </span>
-                                            </td>
-                                            <td class="align-middle text-center">
-                                                {{ number_format($item->unitcost, 2) }}
-                                            </td>
-                                            <td class="align-middle text-center">
-                                                {{ number_format($item->total, 2) }}
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                    <tr>
-                                        <td class="align-middle text-end" colspan="7">
-                                            Total
-                                        </td>
-                                        <td class="align-middle text-center">
-                                            {{ number_format($purchase->details->sum('total'), 2) }}
-                                            <!-- Total of product amounts -->
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="align-middle text-end" colspan="7">
-                                            Taxes
-                                        </td>
-                                        <td class="align-middle text-center">
-                                            {{ number_format($purchase->total_amount - ($purchase->details->sum('total')), 2) }}
-                                            <!-- Total of product amounts -->
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="align-middle text-end" colspan="7">
-                                            Grand Total
-                                        </td>
-                                        <td class="align-middle text-center">
-                                            {{ number_format($purchase->total_amount, 2) }}
-                                        </td>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped align-middle">
+            <thead class="thead-light">
+                <tr>
+                    <th scope="col" class="align-middle text-center">No.</th>
+                    <th scope="col" class="align-middle text-center">Photo</th>
+                    <th scope="col" class="align-middle text-center">Product Name</th>
+                    <th scope="col" class="align-middle text-center">Product Code</th>
+                    <th scope="col" class="align-middle text-center">Previous Stock</th>
+                    <th scope="col" class="align-middle text-center">Stock During Purchase</th>
+                    <th scope="col" class="align-middle text-center">Quantity Bought</th>
+                    <th scope="col" class="align-middle text-center">Unit Price</th>
+                    <th scope="col" class="align-middle text-center">Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($purchase->details as $item)
+                    <tr>
+                        <td class="align-middle text-center">{{ $loop->iteration }}</td>
+                        <td class="align-middle justify-content-center text-center">
+                            <div style="max-height: 80px; max-width: 80px;">
+                                <img class="img-fluid"
+                                    src="{{ $item->product->product_image ? asset($item->product->product_image) : asset('assets/img/products/default.webp') }}">
+                            </div>
+                        </td>
+                        <td class="align-middle text-center">{{ $item->product->name }}</td>
+                        <td class="align-middle text-center">
+                            <span class="badge bg-indigo-lt">{{ $item->product->code }}</span>
+                        </td>
+                        <td class="align-middle text-center">
+                            <span class="badge bg-warning-lt">{{ $item->previous_stock }}</span>
+                        </td>
+                        <td class="align-middle text-center">
+                            <span class="badge bg-primary-lt">{{ $item->current_stock }}</span>
+                        </td>
+                        <td class="align-middle text-center">
+                            <span class="badge bg-primary-lt">{{ $item->quantity }}</span>
+                        </td>
+                        <td class="align-middle text-center">{{ number_format($item->unitcost, 2) }}</td>
+                        <td class="align-middle text-center">{{ number_format($item->total, 2) }}</td>
+                    </tr>
+                @endforeach
+                <tr>
+                    <td class="align-middle text-end" colspan="8">Total</td>
+                    <td class="align-middle text-center">{{ number_format($purchase->details->sum('total'), 2) }}</td>
+                </tr>
+                <tr>
+                    <td class="align-middle text-end" colspan="8">Taxes</td>
+                    <td class="align-middle text-center">{{ number_format($purchase->total_amount - ($purchase->details->sum('total')), 2) }}</td>
+                </tr>
+                <tr>
+                    <td class="align-middle text-end" colspan="8">Grand Total</td>
+                    <td class="align-middle text-center">{{ number_format($purchase->total_amount, 2) }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
                 </div>
                 <div class="card-footer">
                     {{--- ---}}
@@ -193,3 +170,4 @@
     </div>
 </div>
 @endsection
+
