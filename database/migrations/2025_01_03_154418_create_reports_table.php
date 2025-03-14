@@ -19,6 +19,8 @@ class CreateReportsTable extends Migration
         });
     }
 
+  
+
     public function down()
     {
         Schema::dropIfExists('reports');

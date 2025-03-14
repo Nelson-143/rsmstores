@@ -455,7 +455,58 @@
     <div class="col-md-12">
         <div class="card shadow-sm">
             <div class="card-header bg-light">
-                <h3 class="card-title">Detailed Reports</h3>
+                <h3 class="card-title">Last 5 Days' Detailed Reports</h3>
+            </div>
+            <div class="card-body">
+                <!-- Last 5 Days' Reports Table -->
+                <div class="table-responsive">
+                    <table class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Sales (Tsh)</th>
+                                <th>Expenses (Tsh)</th>
+                                <th>Profit (Tsh)</th>
+                                <th>Products Sold</th>
+                                <th>Type</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse($reports as $report)
+                                <tr>
+                                    <td>{{ $report->created_at->format('Y-m-d') }}</td>
+                                    <td>{{ isset($report->data['sales']) ? number_format($report->data['sales'], 2) : 'Tsh 0.00' }}</td>
+                                    <td>{{ isset($report->data['expenses']) ? number_format($report->data['expenses'], 2) : 'Tsh 0.00' }}</td>
+                                    <td>{{ isset($report->data['profit']) ? number_format($report->data['profit'], 2) : 'Tsh 0.00' }}</td>
+                                    <td>{{ isset($report->data['products_sold']) ? $report->data['products_sold'] : 0 }}</td>
+                                    <td>{{ ucfirst($report->type) }}</td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="6" class="text-center text-muted">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icon-tabler-file-text text-muted mx-auto">
+                                            <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
+                                            <path d="M17 21h-10a2 2 0 0 1-2-2V8c0-1.1.9-2 2-2h7.41"></path>
+                                            <path d="M9 14L12 17l3-3"></path>
+                                        </svg>
+                                        <p class="mt-2">No detailed reports available for the last 5 days.</p>
+                                    </td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Date Search Form and Reports Table (Existing Code) -->
+<div class="row mt-4">
+    <div class="col-md-12">
+        <div class="card shadow-sm">
+            <div class="card-header bg-light">
+                <h3 class="card-title">Search Reports by Date</h3>
             </div>
             <div class="card-body">
                 <!-- Date Search Form -->
@@ -480,6 +531,7 @@
                                 <th>Sales (Tsh)</th>
                                 <th>Expenses (Tsh)</th>
                                 <th>Profit (Tsh)</th>
+                                <th>Products Sold</th>
                                 <th>Type</th>
                             </tr>
                         </thead>
@@ -490,11 +542,12 @@
                                     <td>{{ isset($report->data['sales']) ? number_format($report->data['sales'], 2) : 'Tsh 0.00' }}</td>
                                     <td>{{ isset($report->data['expenses']) ? number_format($report->data['expenses'], 2) : 'Tsh 0.00' }}</td>
                                     <td>{{ isset($report->data['profit']) ? number_format($report->data['profit'], 2) : 'Tsh 0.00' }}</td>
+                                    <td>{{ isset($report->data['products_sold']) ? $report->data['products_sold'] : 0 }}</td>
                                     <td>{{ ucfirst($report->type) }}</td>
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="5" class="text-center text-muted">
+                                    <td colspan="6" class="text-center text-muted">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icon-tabler-file-text text-muted mx-auto">
                                             <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
                                             <path d="M17 21h-10a2 2 0 0 1-2-2V8c0-1.1.9-2 2-2h7.41"></path>

@@ -2,7 +2,7 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
-    <link rel="manifest" href="/manifest.json">
+<link rel="manifest" href="{{ asset('manifest.json') }}">
     <link rel="icon" href="{{ asset('favicon.png') }}" type="image/x-icon"/>
     <meta name="theme-color" content="#2196f3">
     <meta charset="utf-8" />
@@ -700,6 +700,9 @@
             }
         });
     }
+
+
+    
 </script>                   
                                                
 
@@ -713,7 +716,45 @@
     @stack('page-scripts')
 
     @livewireScripts
+    <script>
+ if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('{{ asset('service-worker.js') }}')
+      .then((registration) => {
+        console.log('Service Worker registered with scope:', registration.scope);
+      })
+      .catch((error) => {
+        console.error('Service Worker registration failed:', error);
+      });
+  }
+</script>
+<script>
+  let deferredPrompt;
 
+  window.addEventListener('beforeinstallprompt', (event) => {
+    event.preventDefault();
+    deferredPrompt = event;
+
+    // Show the install button
+    const installButton = document.getElementById('install-button');
+    if (installButton) {
+      installButton.style.display = 'block';
+    }
+  });
+
+  document.getElementById('install-button').addEventListener('click', () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then((choiceResult) => {
+        if (choiceResult.outcome === 'accepted') {
+          console.log('User accepted the install prompt');
+        } else {
+          console.log('User dismissed the install prompt');
+        }
+        deferredPrompt = null;
+      });
+    }
+  });
+</script>
 
 </body>
 </html>

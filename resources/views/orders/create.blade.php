@@ -11,9 +11,15 @@
                          <div>
                             <h3 class="card-title">
                                 {{ __('New Order') }}
+                                <script src="https://cdn.lordicon.com/lordicon.js"></script>
+<lord-icon
+    src="https://cdn.lordicon.com/ggirntso.json"
+    trigger="hover"
+    style="width:40px;height:40px">
+</lord-icon>
                             </h3>
                         </div>
-        @for ($i = 1; $i <= 5; $i++)
+        <!-- @for ($i = 1; $i <= 5; $i++)
             <button 
                 class="btn btn-{{ $i === 1 ? 'success' : 'secondary' }} customer-switcher" 
                 data-customer-id="customer{{ $i }}"
@@ -25,7 +31,7 @@
                 aria-selected="{{ $i === 1 ? 'true' : 'false' }}">
                 Customer {{ $i }}
             </button>
-        @endfor
+        @endfor -->
     </div>
     <div class="tab-content">
         @for ($i = 1; $i <= 5; $i++)

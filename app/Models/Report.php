@@ -8,7 +8,7 @@ class Report extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'type', 'data', 'file_path'];
+    protected $fillable = ['account_id','user_id', 'type', 'data', 'file_path'];
 
     protected $casts = [
         'data' => 'array', // Automatically cast JSON data

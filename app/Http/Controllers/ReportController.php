@@ -17,6 +17,7 @@ use App\Models\Expense;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use illuminate\Support\Facades\log;
+use Illuminate\Support\Carbon;
 
 class ReportController extends Controller
 {
@@ -77,10 +78,29 @@ class ReportController extends Controller
         $reportCount = Report::where('user_id', $userId)
             ->where('account_id', $accountId)
             ->count();
-    
+            
+
+
+            
+       // Get the selected date from the request
+       $date = $request->input('date', now()->format('Y-m-d'));
+
+       // Fetch the last five days' reports
+       $reports = Report::where('created_at', '>=', Carbon::now()->subDays(5))
+           ->orderBy('created_at', 'desc')
+           ->get();
+
+       // Log the fetched reports for debugging
+       Log::info('Fetched Reports:', ['reports' => $reports]);
+
+       
         // Fetch actionable insights
         $actionableInsights = $this->generateActionableInsights($userId, $accountId);
     
+
+
+
+
         // Calculate stock values
         $totalAvailableStock = Product::where('account_id', $accountId)->sum('quantity');
         $lowStockItems = Product::where('account_id', $accountId)
@@ -121,6 +141,7 @@ class ReportController extends Controller
             'lowStockItems' => $lowStockItems,
             'outOfStockItems' => $outOfStockItems,
             'totalStockValue' => $totalStockValue,
+            'date' => $date,
         ]);
     }
 
@@ -579,34 +600,38 @@ private function getChartData($reportType, $userId, $accountId)
 
 public function generateDailyReport()
 {
-    $userId = auth()->id();
-    $accountId = auth()->user()->account_id;
+    $date = now()->format('Y-m-d');
 
-    // Calculate sales, expenses, and profit for the day
-    $sales = Order::where('user_id', $userId)
-        ->where('account_id', $accountId)
-        ->whereDate('created_at', now()->toDateString())
-        ->sum('total');
+    // Fetch data from the orders table
+    $orders = Order::whereDate('order_date', $date)->get();
+    $totalSales = $orders->sum('total');
+    $totalProductsSold = $orders->sum('total_products');
 
-    $expenses = Expense::where('user_id', $userId)
-        ->where('account_id', $accountId)
-        ->whereDate('created_at', now()->toDateString())
-        ->sum('amount');
+    // Fetch data from the expenses table
+    $expenses = Expense::whereDate('expense_date', $date)->get();
+    $totalExpenses = $expenses->sum('amount');
 
-    $profit = $sales - $expenses;
+    // Calculate profit
+    $profit = $totalSales - $totalExpenses;
 
-    // Save the report to the database
+    // Prepare the report data
+    $reportData = [
+        'sales' => $totalSales,
+        'expenses' => $totalExpenses,
+        'profit' => $profit,
+        'products_sold' => $totalProductsSold,
+    ];
+
+    // Save the report
     Report::create([
-        'user_id' => $userId,
-        'account_id' => $accountId,
+        'user_id' => auth()->id(),
         'type' => 'daily',
-        'data' => [
-            'sales' => $sales,
-            'expenses' => $expenses,
-            'profit' => $profit,
-        ],
+        'data' => $reportData,
+        'account_id' => auth()->user()->account_id,
     ]);
 
     return redirect()->route('reports.index')->with('success', 'Daily report generated successfully.');
 }
+
+
 }

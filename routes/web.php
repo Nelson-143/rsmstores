@@ -214,6 +214,7 @@ Route::middleware(['auth'])->group(function () {
 Route::middleware(['auth'])->group(function () {
     Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
     Route::post('/reports/generate', [ReportController::class, 'generate'])->name('reports.generate');
+    Route::post('/reports/generate-daily', [ReportController::class, 'generateDailyReport'])->name('reports.generate-daily');
     Route::patch('/recommendations/{id}/read', [ReportController::class, 'markRecommendationRead'])->name('recommendations.read');
     // routes/web.php
 Route::post('/reports/calculate-balance-sheet', [ReportController::class, 'calculateBalanceSheet'])->name('reports.calculateBalanceSheet');
