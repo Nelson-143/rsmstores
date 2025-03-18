@@ -166,7 +166,7 @@
                     <input type="hidden" name="customer_id" value="{{ $customer->id }}">
                     <x-input.index label="Customer" name="customer" value="{{ $customer->name }}" disabled />
                 </div>
-            </div>
+            </div> 
             <div class="col-lg-6">
                 <div class="mb-3">
                     <label for="payment_type" class="form-label required">{{ __('Payment') }}</label>
@@ -196,8 +196,7 @@
     </div>
 </form>
 
-<!-- Debt Form -->
-<form action="{{ route('pos.storeDebt') }}" method="POST" id="debt-form" style="display: none;">
+<form action="{{ route('pos.storeDebt') }}" method="POST" id="debt-form">
     @csrf
     <div class="modal-body">
         <div class="row">
@@ -217,24 +216,33 @@
                         <option value="Due">Due</option>
                     </select>
                     @error('payment_type')
-                    <div class="invalid-feedback">{{ $message }}</div>
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="mb-3">
+                    <label for="customer_set" class="form-label required">{{ __('Customer Set') }}</label>
+                    <input type="text" id="customer_set" name="customer_set" class="form-control @error('customer_set') is-invalid @enderror" value="Order Goods" required>
+                    @error('customer_set')
+                        <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
             </div>
             <div class="col-lg-6">
                 <div class="mb-3">
                     <label for="due_date" class="form-label required">{{ __('Due Date') }}</label>
-                    <input type="date" id="due_date" name="due_date" class="form-control @error('due_date') is-invalid @enderror">
+                    <input type="date" id="due_date" name="due_date" class="form-control @error('due_date') is-invalid @enderror" required>
                     @error('due_date')
-                    <div class="invalid-feedback">{{ $message }}</div>
+                        <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
             </div>
             <div class="col-lg-12">
-                <label for="pay" class="form-label required">{{ __('Amount') }}</label>
-                <input type="number" id="pay" name="pay" class="form-control @error('pay') is-invalid @enderror" value="{{ Cart::total() }}" required>
-                @error('pay')
-                <div class="invalid-feedback">{{ $message }}</div>
+                <label for="amount" class="form-label required">{{ __('Amount') }}</label>
+                <input type="number" id="amount" name="amount" class="form-control @error('amount') is-invalid @enderror" value="{{ Cart::total() }}" required>
+                @error('amount')
+                    <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
         </div>

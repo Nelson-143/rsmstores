@@ -10,6 +10,8 @@
         "awobaz/compoships": "^2.2",
         "backpack/crud": "*",
         "backpack/theme-tabler": "*",
+        "cloudinary-labs/cloudinary-laravel": "*",
+        "cloudinary/cloudinary_php": "*",
         "guzzlehttp/guzzle": "*",
         "haruncpi/laravel-id-generator": "^1.1",
         "laravel/framework": "^10.8",

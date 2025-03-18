@@ -88,12 +88,13 @@ class RegisteredUserController extends Controller
             ]);
             Log::info('Email verification token created', ['user' => $user, 'token' => $token]);
 
-            // Construct the verification URL using the url() helper function
-            $verificationUrl = url(route('verification.verify', ['token' => $token], false));
+           // Construct the verification URL using route()
+$verificationUrl = route('verification.verify', ['token' => $token]);
 
-            // Send the verification email
-            Mail::to($user->email)->send(new VerifyEmail($verificationUrl));
-            Log::info('Verification email sent', ['user' => $user, 'url' => $verificationUrl]);
+// Send the verification email
+Mail::to($user->email)->send(new VerifyEmail($verificationUrl));
+Log::info('Verification email sent', ['user' => $user, 'url' => $verificationUrl]);
+
 
             // Assign the Super Admin role to the user
             $user->assignRole('Super Admin');

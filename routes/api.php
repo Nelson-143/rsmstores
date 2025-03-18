@@ -23,10 +23,10 @@ Route::get('products/', [ProductController::class, 'index'])->name('api.product.
 
 
 
-use App\Http\Controllers\Auth\EmailVerificationController;
-Route::prefix('auth')->group(function () {
-    Route::post('/email/verify/send', [EmailVerificationController::class, 'sendVerification']);
-    Route::get('/email/verify/{token}', [EmailVerificationController::class, 'verify']);
-    Route::post('/email/verify/resend', [EmailVerificationController::class, 'resendVerification']);
-});
+// use App\Http\Controllers\Auth\EmailVerificationController;
+// Route::prefix('auth')->group(function () {
+//     Route::post('/email/verify/send', [EmailVerificationController::class, 'sendVerification']);
+//     Route::get('/email/verify/{token}', [EmailVerificationController::class, 'verify']);
+//     Route::post('/email/verify/resend', [EmailVerificationController::class, 'resendVerification']);
+// });
 

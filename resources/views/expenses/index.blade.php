@@ -166,7 +166,7 @@
 
                     <!-- Amount -->
                     <div class="mb-3">
-                        <label for="expense-amount" class="form-label">Amount</label>
+                        <label for="expense-amount" class="form-label">{{ __('Amount') }}</label>
                         <input type="number" step="0.01" id="expense-amount" name="amount" class="form-control" required>
                     </div>
 

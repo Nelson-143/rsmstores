@@ -56,7 +56,7 @@
         </div>
         <p>Hello,</p>
         <p>We are thrilled to welcome you to {{ config('app.name') }}! To complete your registration and gain access to all features, please verify your email address by clicking the button below:</p>
-        <a href="{{ $verificationUrl }}" class="button">
+    
             Verify Email
         </a>
         <p>This verification link will expire in 24 hours. If the button above does not work, you can copy and paste the following link into your browser:</p>

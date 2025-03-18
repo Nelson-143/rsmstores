@@ -174,7 +174,7 @@
                                     </path>
                                     <path d="M12 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"></path>
                                 </svg>
-                                Account
+                                {{ __('Account') }}
                             </a>
                             @role('Super Admin')
                             <a href="{{ route('subscriptions.index') }}" class="dropdown-item">
@@ -183,7 +183,7 @@
                             fill="none"stroke-linecap="round" stroke-linejoin="round"/><path d="M4 19a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
                             <path d="M12.5 17h-6.5v-14h-2" /><path d="M6 5l14 1l-.854 5.977m-2.646 1.023h-10.5" />
                             <path d="M19 22v-6" /><path d="M22 19l-3 -3l-3 3" /></svg>
-                                 Subscriptions
+                                 {{ __('Subscriptions') }}
                             </a>
                             @endrole
                             <form action="{{ route('logout') }}" method="post">
@@ -199,7 +199,7 @@
                                         <path d="M9 12h12l-3 -3" />
                                         <path d="M18 15l3 -3" />
                                     </svg>
-                                    Logout
+                                    {{ __('Logout') }}
                                 </button>
 
                             </form>
@@ -299,9 +299,7 @@
                                             <a class="dropdown-item" href="{{ route('orders.pending') }}">
                                                 {{ __('Pending') }}
                                             </a>
-                                            <a class="dropdown-item" href="{{ route('due.index') }}">
-                                                {{ __('Due') }}
-                                            </a>
+                                            
                                         </div>
                                     </div>
                                 </div>
@@ -351,7 +349,7 @@
                             @endrole
 
                             <li
-                                class="nav-item dropdown {{ request()->is('suppliers*', 'customers*','debts*','expenses*','stock*','budgets*','gamification*','quotations*') ? 'active' : null }}">
+                                class="nav-item dropdown {{ request()->is('suppliers*', 'customers*','debts*','expenses*','stock*','budgets*','gamification*','quotations*,','ads*') ? 'active' : null }}">
                                 <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown"
                                     data-bs-auto-close="outside" role="button" aria-expanded="false">
                                     <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -443,6 +441,17 @@
                                                           {{ __('Transfer/Damage') }}
                                                      </a>
                                                      @role('Super Admin')
+                                                     <a class="dropdown-item" href="{{ route('ads.generator') }}">
+                                            <lord-icon
+                                            src="https://cdn.lordicon.com/wsaaegar.json"
+                                                trigger="hover"
+                                                stroke="bold"
+                                                colors="primary:#000000,secondary:#000000"
+                                            colors="primary:black"
+                                                          style="width:20px;height:20px">
+                                                         </lord-icon>
+                                                          {{ __('Ads Generator') }}
+                                                     </a>
                                                      <a class="dropdown-item" href="{{ route('gamification.board') }}">
                                             <lord-icon
                                             src="https://cdn.lordicon.com/jyjslctx.json"
@@ -599,7 +608,40 @@
     .highlight {
         background-color: yellow;
     }
+
 </style>
+
+<li class="nav-item dropdown {{ request()->is('users*', 'categories*', 'units*', 'team*', 'branches*') ? 'active' : null }}">
+    <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
+        <span class="nav-link-icon d-md-none d-lg-inline-block">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-language-hiragana">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                <path d="M4 5h7" />
+                <path d="M7 4c0 4.846 0 7 .5 8" />
+                <path d="M10 8.5c0 2.286 -2 4.5 -3.5 4.5s-2.5 -1.135 -2.5 -2c0 -2 1 -3 3 -3s5 .57 5 2.857c0 1.524 -.667 2.571 -2 3.143" />
+                <path d="M12 20l4 -9l4 9" />
+                <path d="M19.1 18h-6.2" />
+            </svg>
+        </span>
+        <span class="nav-link-title">
+            {{ __('Language') }}
+        </span>
+    </a>
+    <div class="dropdown-menu">
+        <div class="dropdown-menu-columns">
+            <div class="dropdown-menu-column">
+                <a class="dropdown-item" href="{{ route('change-locale', 'en') }}">
+                    {{ __('English') }}
+                </a>
+                <a class="dropdown-item" href="{{ route('change-locale', 'sw') }}">
+                    {{ __('Swahili') }}
+                </a>
+            </div>
+        </div>
+    </div>
+</li>
+
+
                         </ul>
                         
                     </div>
@@ -754,6 +796,35 @@
       });
     }
   });
+
+  async function translatePage(targetLanguage) {
+    const translatableElements = document.querySelectorAll('[data-translate]');
+
+    for (const element of translatableElements) {
+        const text = element.innerText;
+        const sourceLanguage = 'en'; // Default source language
+        const response = await fetch('/translate', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+            },
+            body: JSON.stringify({
+                text: text,
+                sourceLanguage: sourceLanguage,
+                targetLanguage: targetLanguage,
+            }),
+        });
+
+        const data = await response.json();
+        element.innerText = data.translatedText;
+    }
+}
+
+// Example: Translate the page to Swahili when a button is clicked
+document.getElementById('translate-to-swahili').addEventListener('click', () => {
+    translatePage('sw');
+});
 </script>
 
 </body>

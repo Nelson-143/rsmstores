@@ -11,13 +11,11 @@
                          <div>
                             <h3 class="card-title">
                                 {{ __('New Order') }}
-                                <script src="https://cdn.lordicon.com/lordicon.js"></script>
-<lord-icon
-    src="https://cdn.lordicon.com/ggirntso.json"
-    trigger="hover"
-    style="width:40px;height:40px">
-</lord-icon>
                             </h3>
+                            <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#addProductModal">
+    <lord-icon src="https://cdn.lordicon.com/ggirntso.json" trigger="hover" style="width:30px;height:30px"></lord-icon>
+    <span class="ms-2">Add Wingzz!</span>
+</button>
                         </div>
         <!-- @for ($i = 1; $i <= 5; $i++)
             <button 
@@ -61,114 +59,115 @@
                             </div>
 
                             <div class="col-md-4">
-                                <label class="small mb-1" for="customer_id">
-                                    {{ __('Customer') }}
-                                    <span class="text-danger">*</span>
-                                </label>
+    <label class="small mb-1" for="customer_id">
+        {{ __('Customer') }}
+        <span class="text-danger">*</span>
+    </label>
 
-                                <style>
-    .dropdown-container {
-        position: relative;
-    }
+    <style>
+        .dropdown-container {
+            position: relative;
+        }
 
-    .form-select {
-        position: relative;
-        z-index: 1;
-        display: none; /* Hide the original select */
-    }
+        .form-select {
+            position: relative;
+            z-index: 1;
+            display: none; /* Hide the original select */
+        }
 
-    .form-control {
-        margin-bottom: 10px;
-    }
+        .form-control {
+            margin-bottom: 10px;
+        }
 
-    .custom-dropdown {
-        position: absolute;
-        top: 100%;
-        left: 0;
-        right: 0;
-        z-index: 2;
-        display: none;
-        border: 1px solid #ccc;
-        background: white;
-        max-height: 200px;
-        overflow-y: auto;
-    }
+        .custom-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            z-index: 2;
+            display: none;
+            border: 1px solid #ccc;
+            background: white;
+            max-height: 200px;
+            overflow-y: auto;
+        }
 
-    .custom-dropdown.open {
-        display: block;
-    }
+        .custom-dropdown.open {
+            display: block;
+        }
 
-    .custom-option {
-        padding: 8px;
-        cursor: pointer;
-    }
+        .custom-option {
+            padding: 8px;
+            cursor: pointer;
+        }
 
-    .custom-option:hover {
-        background-color: #f0f0f0;
-    }
-</style>
+        .custom-option:hover {
+            background-color: #f0f0f0;
+        }
+    </style>
 
-<div class="dropdown-container">
-    <input type="text" class="form-control" id="customer-search" placeholder="Search for customers...">
-    <div class="custom-dropdown" id="customer-dropdown">
-        <div class="custom-option" data-value="pass_by" selected>PASS BY</div>
-        <div class="custom-option" data-value="" disabled>Select a customer:</div>
-        @foreach ($customers as $customer)
-            <div class="custom-option" data-value="{{ $customer->id }}">
-                {{ $customer->name }}
-            </div>
-        @endforeach
+    <div class="dropdown-container">
+        <input type="text" class="form-control" id="customer-search" placeholder="Search for customers...">
+        <div class="custom-dropdown" id="customer-dropdown">
+            <div class="custom-option" data-value="pass_by" selected>PASS BY</div>
+            <div class="custom-option" data-value="" disabled>Select a customer:</div>
+            @foreach ($customers as $customer)
+                <div class="custom-option" data-value="{{ $customer->id }}">
+                    {{ $customer->name }}
+                </div>
+            @endforeach
+        </div>
+        <input type="hidden" id="customer_id" name="customer_id" value="pass_by">
     </div>
-    <input type="hidden" id="customer_id" name="customer_id" value="pass_by">
+
+    <script>
+        const searchInput = document.getElementById('customer-search');
+        const dropdown = document.getElementById('customer-dropdown');
+        const customerIdInput = document.getElementById('customer_id');
+
+        searchInput.addEventListener('input', function () {
+            const query = this.value.toLowerCase().trim();
+            dropdown.classList.add('open');
+            dropdown.querySelectorAll('.custom-option').forEach(option => {
+                option.style.display = option.textContent.toLowerCase().includes(query) ? '' : 'none';
+            });
+        });
+
+        searchInput.addEventListener('focus', function () {
+            dropdown.classList.add('open');
+        });
+
+        searchInput.addEventListener('blur', function () {
+            // Delay to allow click event to register
+            setTimeout(() => {
+                dropdown.classList.remove('open');
+            }, 200);
+        });
+
+        dropdown.addEventListener('click', function (event) {
+            if (event.target.classList.contains('custom-option')) {
+                const selectedValue = event.target.getAttribute('data-value').trim();
+                const selectedText = event.target.textContent.trim();
+
+                // Set the hidden input value
+                customerIdInput.value = selectedValue;
+
+                // Set the search input value
+                searchInput.value = selectedText;
+
+                // Close the dropdown
+                dropdown.classList.remove('open');
+            }
+        });
+    </script>
+
+    @error('customer_id')
+    <div class="invalid-feedback">
+        {{ $message }}
+    </div>
+    @enderror
 </div>
 
-<script>
-    const searchInput = document.getElementById('customer-search');
-    const dropdown = document.getElementById('customer-dropdown');
-    const customerIdInput = document.getElementById('customer_id');
-
-    searchInput.addEventListener('input', function () {
-        const query = this.value.toLowerCase();
-        dropdown.classList.add('open');
-        dropdown.querySelectorAll('.custom-option').forEach(option => {
-            option.style.display = option.textContent.toLowerCase().includes(query) ? '' : 'none';
-        });
-    });
-
-    searchInput.addEventListener('focus', function () {
-        dropdown.classList.add('open');
-    });
-
-    searchInput.addEventListener('blur', function () {
-        // Delay to allow click event to register
-        setTimeout(() => {
-            dropdown.classList.remove('open');
-        }, 200);
-    });
-
-    dropdown.addEventListener('click', function (event) {
-        if (event.target.classList.contains('custom-option')) {
-            const selectedValue = event.target.getAttribute('data-value');
-            const selectedText = event.target.textContent;
-
-            // Set the hidden input value
-            customerIdInput.value = selectedValue;
-
-            // Set the search input value
-            searchInput.value = selectedText;
-
-            // Close the dropdown
-            dropdown.classList.remove('open');
-        }
-    });
-</script>
-
-                                @error('customer_id')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-                                @enderror
-                            </div>
 
                             <div class="col-md-4">
                                 <label class="small mb-1" for="reference">
@@ -278,16 +277,25 @@
                         </div>
                         {{-- {{ Cart::count() > 0 ? '' : 'disabled' }} --}}
                     </div>
+                    <!-- the xif -->
                     @php
-                        $outOfStock = false;
-                        foreach ($carts as $item) {
-                            $product = \App\Models\Product::find($item->id);
-                            if ($product->quantity == 0) {
-                                $outOfStock = true;
-                                break;
-                            }
-                        }
-                    @endphp
+    $outOfStock = false;
+    foreach ($carts as $item) {
+        // Check if the product exists in the inventory
+        $product = \App\Models\Product::find($item->id);
+
+        // Skip stock check for custom products (products not in the inventory)
+        if (!$product) {
+            continue;
+        }
+
+        // Check if the product is out of stock
+        if ($product->quantity == 0) {
+            $outOfStock = true;
+            break;
+        }
+    }
+@endphp
                     <script>
                         $(document).on('change', '.product-quantity', function() {
                             var selectedQty = parseInt($(this).val());
@@ -399,6 +407,46 @@
                 </div>
             </div>
 
+        </div>
+    </div>
+</div>
+
+
+<!-- The Modal -->
+<div class="modal modal-blur fade" id="addProductModal" tabindex="-1" aria-labelledby="addProductModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addProductModalLabel">Add Product to Cart</h5>
+                <lord-icon
+                    src="https://cdn.lordicon.com/ercyvufy.json"
+                    trigger="in"
+                    delay="1300"
+                    state="in-share"
+                    colors="primary:#000000"
+                    style="width:30px;height:30px">
+                </lord-icon>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ route('pos.addCartItem') }}" method="POST">
+                    @csrf
+                    <input type="hidden" name="is_custom_product" value="1"> <!-- Flag for custom product -->
+                    <div class="mb-3">
+                        <label for="productName" class="form-label">Product Name</label>
+                        <input type="text" class="form-control" id="productName" name="name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="productQuantity" class="form-label">Quantity</label>
+                        <input type="number" class="form-control" id="productQuantity" name="quantity" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="productPrice" class="form-label">Price</label>
+                        <input type="number" class="form-control" id="productPrice" name="selling_price" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add to Cart</button>
+                </form>
+            </div>
         </div>
     </div>
 </div>

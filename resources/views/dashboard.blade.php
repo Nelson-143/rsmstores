@@ -3,18 +3,19 @@
 
 
 @section('content')
+
     <div class="page-header d-print-none">
         <div class="container-xl">
             <div class="row g-2 align-items-center">
                 <div class="col">
                     <div class="page-pretitle">
-                        DASHBOARD
+                        {{ __('DASHBOARD') }}
                     </div>
   <h2 class="page-title">
     |{{ Auth::user()->name }},{{ $motivation }}
 </h2>
 
-<small class="text-muted">Today is ,{{ date('l, F j, Y') }}</small>
+<small class="text-muted">{{ __('Today is') }} ,{{ date('l, F j, Y') }}</small>
 
 
                 </div>
@@ -23,7 +24,7 @@
                     <div class="btn-list">
                         <a href="{{ route('orders.create') }}" class="btn btn-primary d-none d-sm-inline-block">
                             <x-icon.plus />
-                            Create new order
+                            {{ __('Create new order') }}
                         </a>
                         <a href="{{ route('orders.create') }}" class="btn btn-primary d-sm-none btn-icon"
                             aria-label="Create new report">
@@ -44,10 +45,10 @@
 <div class="card">
 <div class="card-body">
 <div class="d-flex align-items-center">
-<div class="subheader">Total Customers</div>
+<div class="subheader">{{ __('Total Customers')}}</div>
 <div class="ms-auto lh-1">
 <div class="dropdown">
-<a class="text-muted" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Total Customers</a>
+<a class="text-muted" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ __('Total Customers')}}</a>
 <div class="dropdown-menu dropdown-menu-end">
 
 </div>
@@ -77,10 +78,10 @@
 <div class="card">
 <div class="card-body">
 <div class="d-flex align-items-center">
-<div class="subheader">Total Debt</div>
+<div class="subheader">{{ __('Total Debt')}}</div>
 <div class="ms-auto lh-1">
 <div class="dropdown">
-<a class="text-muted" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Total Debts</a>
+<a class="text-muted" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ __('Total Debts')}}</a>
 <div class="dropdown-menu dropdown-menu-end">
 
 </div>
@@ -104,10 +105,10 @@
 <div class="card">
 <div class="card-body">
 <div class="d-flex align-items-center">
-<div class="subheader">Total Branches</div>
+<div class="subheader">{{ __('Total Branches')}}</div>
 <div class="ms-auto lh-1">
 <div class="dropdown">
-<a class="text-muted" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Your Branches</a>
+<a class="text-muted" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ __('Your Branches')}}</a>
 <div class="dropdown-menu dropdown-menu-end">
 
 </div>
@@ -135,16 +136,16 @@
     <div class="card">
         <div class="card-body">
             <div class="d-flex align-items-center">
-                <div class="subheader">Total Sales</div>
+                <div class="subheader">{{ __('Total Sales')}}</div>
                 <div class="ms-auto lh-1">
                  
       <form method="GET" action="{{ route('dashboard') }}" class="d-flex align-items-center">
     <div class="ms-auto lh-1">
         <select name="period" class="form-select" onchange="this.form.submit()">
-            <option value="daily" {{ request('period') == 'daily' ? 'selected' : '' }}>Daily Sales</option>
-            <option value="weekly" {{ request('period') == 'weekly' ? 'selected' : '' }}>Weekly Sales</option>
-            <option value="monthly" {{ request('period') == 'monthly' ? 'selected' : '' }}>Monthly Sales</option>
-            <option value="yearly" {{ request('period') == 'yearly' ? 'selected' : '' }}>Yearly Sales</option>
+            <option value="daily" {{ request('period') == 'daily' ? 'selected' : '' }}>{{ __('Daily Sales')}}</option>
+            <option value="weekly" {{ request('period') == 'weekly' ? 'selected' : '' }}>{{ __('Weekly Sales')}}</option>
+            <option value="monthly" {{ request('period') == 'monthly' ? 'selected' : '' }}>{{ __('Monthly Sales')}}</option>
+            <option value="yearly" {{ request('period') == 'yearly' ? 'selected' : '' }}>{{ __('Yearly Sales')}}</option>
         </select>
     </div>
 </form>
@@ -209,10 +210,10 @@
                                         </div>
                                         <div class="col">
                                             <div class="font-weight-medium">
-                                                {{ $products }} Products
+                                                {{ $products }} {{ __('Products')}}
                                             </div>
                                             <div class="text-muted">
-                                                {{ $categories }} categories
+                                                {{ $categories }} {{ __('categories')}}
                                             </div>
                                         </div>
                                     </div>
@@ -240,10 +241,10 @@
                                         </div>
                                         <div class="col">
                                             <div class="font-weight-medium">
-                                                {{ $orders }} Orders
+                                                {{ $orders }} {{ __('Orders')}}
                                             </div>
                                             <div class="text-muted">
-                                                {{ $todayOrders }} shipped
+                                                {{ $todayOrders }} {{ __('shipped')}}
                                             </div>
                                         </div>
                                     </div>
@@ -272,10 +273,10 @@
                                         </div>
                                         <div class="col">
                                             <div class="font-weight-medium">
-                                                {{ $purchases }} Purchases
+                                                {{ $purchases }} {{ __('Purchases')}}
                                             </div>
                                             <div class="text-muted">
-                                                {{ $todayPurchases }} today
+                                                {{ $todayPurchases }} {{ __('today')}}
                                             </div>
                                         </div>
                                     </div>
@@ -304,10 +305,10 @@
                                         </div>
                                         <div class="col">
                                             <div class="font-weight-medium">
-                                                {{ $quotations }} Quotations
+                                                {{ $quotations }} {{ __('Quotations')}}
                                             </div>
                                             <div class="text-muted">
-                                                {{ $todayQuotations }} today
+                                                {{ $todayQuotations }} {{ __('today')}}
                                             </div>
                                         </div>
                                     </div>
@@ -323,7 +324,7 @@
     <div class="col-md-6">
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">Business Growth Rate</h3>
+                <h3 class="card-title">{{ __('Business Growth Rate') }}</h3>
             </div>
             <div class="card-body">
                 <canvas id="growthLineChart" width="400" height="400"></canvas>
@@ -337,7 +338,7 @@
     <div class="col-md-6">
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">Out of Stock Products</h3>
+                <h3 class="card-title">{{ __('Out of Stock Products') }}
             </div>
             <div class="card-body">
                 <canvas id="supplierPieChart" width="400" height="400"></canvas>

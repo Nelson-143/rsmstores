@@ -3,7 +3,7 @@
 
 <head>
     <title>Print Invoice</title>
-    <link href="{{ asset('static/icon.png') }}" rel="icon" />
+    <link rel="icon" href="{{ asset('favicon.png') }}" type="image/x-icon"/>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
@@ -179,7 +179,7 @@
                             <i class="fa fa-download"></i>
                             Download Invoice
                         </a>
-                        <a id="small_print_btn" class="btn btn-lg btn-small-print">
+                        <a id="small_print_btn" class="btn btn-lg btn-print">
                             <i class="fa fa-print"></i>
                             Small Print
                         </a>

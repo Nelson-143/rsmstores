@@ -31,7 +31,7 @@ $customers = Customer::where('account_id', $this->getAccountId())->get();
                 'uuid' => $debt->uuid,
                 'no' => $index + 1,
                 'customer_name' => $debt->customer ? $debt->customer->name : 'Personal Debt',
-                'customer_set' => $debt->customer ? ($debt->customer->set ?? 'N/A') : 'N/A',
+               'customer_set' => $debt->customer_set,
                 'created_date' => $debt->created_at->format('Y-m-d'),
                 'debts_amount' => $debt->amount,
                 'received_amount' => $debt->amount_paid,
@@ -70,7 +70,7 @@ $customers = Customer::where('account_id', $this->getAccountId())->get();
         })->count();
     
         // Pass all data to the view
-        return view('debts.index', compact('debts', 'debtsData', 'customers', 'totalCurrentDebts', 'totalValueOfDebt', 'totalPaidDebts', 'totalAmountReceived', 'overdueDebts', 'debtsDueSoon'));
+        return view('debts.index', compact('debts', 'debtsData', 'customers', 'totalCurrentDebts', 'totalValueOfDebt', 'totalPaidDebts', 'totalAmountReceived', 'overdueDebts', 'debtsDueSoon',));
     }
 
     // Adding of new debts handler

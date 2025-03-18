@@ -14,8 +14,7 @@ return new class extends Migration
         Schema::create('password_reset_tokens', function (Blueprint $table) {
             $table->string('email')->primary();
             $table->string('token');
-            $table->unsignedBigInteger('account_id'); // Reference to accounts table
-            $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
+ 
             $table->timestamp('created_at')->nullable();
         });
     }

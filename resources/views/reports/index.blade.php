@@ -13,20 +13,20 @@
         <div class="col-md-12">
             <div class="card shadow-sm">
                 <div class="card-header text-center bg-light">
-                    <h2>Business Overview</h2>
-                    <p class="text-muted">A glance summary of your business performance 🚀.</p>
+                    <h2>{{ __('Business Overview') }}</h2>
+                    <p class="text-muted">{{ __('A glance summary of your business') }}🚀.</p>
                 </div>
                 <div class="card-body d-flex justify-content-around align-items-center">
                     <div class="text-center">
-                        <h5>Total Sales</h5>
+                        <h5>{{ __('Total Sales') }}</h5>
                         <p class="h3 text-success">{{ isset($carts) ? number_format($carts, 2) : 'Tsh 0.00' }}</p>
                     </div>
                     <div class="text-center">
-                        <h5>Total Expenses</h5>
+                        <h5>{{ __('Total Expenses') }}</h5>
                         <p class="h3 text-danger">{{ isset($totalExpenses) ? number_format($totalExpenses, 2) : 'Tsh 0.00' }}</p>
                     </div>
                     <div class="text-center">
-                        <h5>Profit</h5>
+                        <h5>{{ __('Profit') }}</h5>
                         <p class="h3 text-primary">{{ isset($profit) ? number_format($profit, 2) : 'Tsh 0.00' }}</p>
                     </div>
 
@@ -35,23 +35,23 @@
                 <!-- display -->
                 <div class="card-body d-flex justify-content-around align-items-center">
                 <div class="text-center">
-                    <h5>Total Available Stock</h5>
+                    <h5>{{ __('Total Available Stock') }}</h5>
                     <p class="h3 text-success">{{ isset($totalAvailableStock) ? number_format($totalAvailableStock, 2) : '0' }}</p>
                     <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-packages"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M7 16.5l-5 -3l5 -3l5 3v5.5l-5 3z" /><path d="M2 13.5v5.5l5 3" /><path d="M7 16.545l5 -3.03" /><path d="M17 16.5l-5 -3l5 -3l5 3v5.5l-5 3z" /><path d="M12 19l5 3" /><path d="M17 16.5l5 -3" /><path d="M12 13.5v-5.5l-5 -3l5 -3l5 3v5.5" /><path d="M7 5.03v5.455" /><path d="M12 8l5 -3" /></svg>
 
                 </div>
                 <div class="text-center">
-                    <h5>Low Stock Items</h5>
+                    <h5>{{ __('Low Stock Items') }}</h5>
                     <p class="h3 text-warning">{{ isset($lowStockItems) ? number_format($lowStockItems, 2) : '0' }}</p>
                     <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-shopping-bag-exclamation"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 21h-6.426a3 3 0 0 1 -2.965 -2.544l-1.255 -8.152a2 2 0 0 1 1.977 -2.304h11.339a2 2 0 0 1 1.977 2.304l-.258 1.678" /><path d="M9 11v-5a3 3 0 0 1 6 0v5" /><path d="M19 16v3" /><path d="M19 22v.01" /></svg>
                 </div>
                 <div class="text-center">
-                    <h5>Out of Stock Items</h5>
+                    <h5>{{ __('Out of Stock Items') }}</h5>
                     <p class="h3 text-danger">{{ isset($outOfStockItems) ? number_format($outOfStockItems, 2) : '0' }}</p>
                     <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-shopping-bag-x"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M13 21h-4.426a3 3 0 0 1 -2.965 -2.544l-1.255 -8.152a2 2 0 0 1 1.977 -2.304h11.339a2 2 0 0 1 1.977 2.304l-.506 3.287" /><path d="M9 11v-5a3 3 0 0 1 6 0v5" /><path d="M22 22l-5 -5" /><path d="M17 22l5 -5" /></svg>
                 </div>
                 <div class="text-center">
-                    <h5>Total Stock Value</h5>
+                    <h5>{{ __('Total Stock Value') }}</h5>
                     <p class="h3 text-primary">{{ isset($totalStockValue) ? number_format($totalStockValue, 2) : 'Tsh 0.00' }}</p>
                     <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-businessplan"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M16 6m-5 0a5 3 0 1 0 10 0a5 3 0 1 0 -10 0" /><path d="M11 6v4c0 1.657 2.239 3 5 3s5 -1.343 5 -3v-4" /><path d="M11 10v4c0 1.657 2.239 3 5 3s5 -1.343 5 -3v-4" /><path d="M11 14v4c0 1.657 2.239 3 5 3s5 -1.343 5 -3v-4" /><path d="M7 9h-2.5a1.5 1.5 0 0 0 0 3h1a1.5 1.5 0 0 1 0 3h-2.5" /><path d="M5 15v1m0 -8v1" /></svg>
                 </div>
@@ -74,14 +74,14 @@
     <div class="col-md-12">
         <div class="card shadow-sm">
             <div class="card-header d-flex justify-content-between align-items-center bg-light">
-                <h3 class="card-title">Trends and Insights</h3>
+                <h3 class="card-title">{{ __('Trends and Insights') }}</h3>
                 <div class="card-actions">
                     <form id="report-type-form">
                         <select class="form-select form-select-sm" id="report-type-select" name="report_type">
-                            <option value="daily" {{ $reportType === 'daily' ? 'selected' : '' }}>Daily</option>
-                            <option value="weekly" {{ $reportType === 'weekly' ? 'selected' : '' }}>Weekly</option>
-                            <option value="monthly" {{ $reportType === 'monthly' ? 'selected' : '' }}>Monthly</option>
-                            <option value="yearly" {{ $reportType === 'yearly' ? 'selected' : '' }}>Yearly</option>
+                            <option value="daily" {{ $reportType === 'daily' ? 'selected' : '' }}>{{ __('Daily') }}</option>
+                            <option value="weekly" {{ $reportType === 'weekly' ? 'selected' : '' }}>{{ __('Weekly') }}</option>
+                            <option value="monthly" {{ $reportType === 'monthly' ? 'selected' : '' }}>{{ __('Monthly') }}</option>
+                            <option value="yearly" {{ $reportType === 'yearly' ? 'selected' : '' }}>{{ __('Yearly') }}</option>
                         </select>
                     </form>
                 </div>
@@ -107,19 +107,19 @@
         <div class="col-md-12">
             <div class="card shadow-sm">
                 <div class="card-header bg-light">
-                    <h3 class="card-title">Key Performance Indicators (KPIs)</h3>
+                    <h3 class="card-title">{{ __('Key Performance Indicators ') }}(KPIs)</h3>
                 </div>
                 <div class="card-body d-flex justify-content-around">
                     <div class="text-center">
-                        <h5>Gross Margin</h5>
+                        <h5>{{ __('Gross Margin') }}</h5>
                         <p class="h3 text-success">{{ isset($grossMargin) ? number_format($grossMargin, 2) . '%' : '0%' }}</p>
                     </div>
                     <div class="text-center">
-                        <h5>Expense Ratio</h5>
+                        <h5>{{ __('Expense Ratio') }}</h5>
                         <p class="h3 text-danger">{{ isset($expenseRatio) ? number_format($expenseRatio, 2) . '%' : '0%' }}</p>
                     </div>
                     <div class="text-center">
-                        <h5>Year-to-Date Performance</h5>
+                        <h5>{{ __('Year-to-Date Performance') }}</h5>
                         <p class="h3 text-primary">{{ isset($ytdPerformance) ? number_format($ytdPerformance, 2) : 'Tsh 0.00' }}</p>
                     </div>
                 </div>
@@ -127,43 +127,13 @@
         </div>
     </div>
 
-    <!-- Comparative Analysis Section -->
-    <!-- <h5 class="mt-4">Monthly Performance Comparison</h5>
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>Month</th>
-            <th>Sales (Tsh)</th>
-            <th>Expenses (Tsh)</th>
-            <th>Profit (Tsh)</th>
-        </tr>
-    </thead>
-    <tbody>
-        @if(isset($monthlyData))
-            @foreach($monthlyData as $data)
-                <tr>
-                    <td>{{ $data['month'] }}</td>
-                    <td>{{ number_format($data['sales'], 2) }}</td>
-                    <td>{{ number_format($data['expenses'], 2) }}</td>
-                    <td>{{ number_format($data['sales'] - $data['expenses'], 2) }}</td>
-                </tr>
-            @endforeach
-        @else
-            <tr>
-                <td colspan="4" class="text-center text-muted">
-                    <p>No monthly performance data available.</p>
-                </td>
-            </tr>
-        @endif
-    </tbody>
-</table> -->
     
     <!-- Accounting Reports Section -->
 <div class="row mb-4">
     <div class="col-md-12">
         <div class="card shadow-sm">
             <div class="card-header bg-light">
-                <h3 class="card-title">Accounting Reports</h3>
+                <h3 class="card-title">{{ __('Accounting Reports') }}</h3>
             </div>
             <div class="card-body">
                 <div class="accordion" id="accounting-reports">
@@ -171,7 +141,7 @@
                     <div class="accordion-item">
                         <h2 class="accordion-header">
                             <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#income-statement">
-                                Income Statement
+                                {{ __('Income Statement') }}
                             </button>
                         </h2>
                         <div id="income-statement" class="accordion-collapse collapse show">
@@ -179,29 +149,29 @@
                                 <table class="table table-striped">
                                     <thead>
                                         <tr>
-                                            <th>Description</th>
-                                            <th>Amount (Tsh)</th>
+                                            <th>{{ __('Description') }}</th>
+                                            <th> {{ __('Amount') }}(Tsh)</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td><span data-bs-toggle="tooltip" title="Total income from sales.">Revenue</span></td>
+                                            <td><span data-bs-toggle="tooltip" title="Total income from sales.">{{ __('Revenue') }}</span></td>
                                             <td>{{ number_format($incomeStatement['revenue'], 2) }}</td>
                                         </tr>
                                         <tr>
-                                            <td><span data-bs-toggle="tooltip" title="Cost of goods sold.">COGS</span></td>
+                                            <td><span data-bs-toggle="tooltip" title="Cost of goods sold.">{{ __('COGS') }}</span></td>
                                             <td>{{ number_format($incomeStatement['cogs'], 2) }}</td>
                                         </tr>
                                         <tr>
-                                            <td><span data-bs-toggle="tooltip" title="Revenue minus COGS.">Gross Profit</span></td>
+                                            <td><span data-bs-toggle="tooltip" title="Revenue minus COGS.">{{ __('Gross Profit') }}</span></td>
                                             <td>{{ number_format($incomeStatement['grossProfit'], 2) }}</td>
                                         </tr>
                                         <tr>
-                                            <td><span data-bs-toggle="tooltip" title="Operating expenses like salaries, rent, etc.">Operating Expenses</span></td>
+                                            <td><span data-bs-toggle="tooltip" title="Operating expenses like salaries, rent, etc.">{{ __('Operating Expenses') }}</span></td>
                                             <td>{{ number_format($incomeStatement['expenses'], 2) }}</td>
                                         </tr>
                                         <tr>
-                                            <td><span data-bs-toggle="tooltip" title="Gross profit minus operating expenses.">Net Income</span></td>
+                                            <td><span data-bs-toggle="tooltip" title="Gross profit minus operating expenses.">{{ __('Net Income') }}</span></td>
                                             <td>{{ number_format($incomeStatement['netIncome'], 2) }}</td>
                                         </tr>
                                     </tbody>
@@ -213,7 +183,7 @@
                       <div class="accordion-item">
                         <h2 class="accordion-header">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#cash-flow">
-                                Cash Flow
+                                {{ __('Cash Flow') }}
                             </button>
                         </h2>
                         <div id="cash-flow" class="accordion-collapse collapse">
@@ -221,13 +191,13 @@
                                 <table class="table table-striped">
                                     <thead>
                                         <tr>
-                                            <th>Category</th>
-                                            <th>Amount (Tsh)</th>
+                                            <th>{{ __('Category') }}</th>
+                                            <th>{{ __('Amount') }} (Tsh)</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td><strong>Inflows</strong></td>
+                                            <td><strong>{{ __('Inflows') }}</strong></td>
                                             <td></td>
                                         </tr>
                                         @foreach($cashFlow['inflows'] as $inflow => $amount)
@@ -237,12 +207,12 @@
                                             </tr>
                                         @endforeach
                                         <tr>
-                                            <td><strong>Total Inflows</strong></td>
+                                            <td><strong>{{ __('Total Inflows') }}</strong></td>
                                             <td>{{ number_format(array_sum($cashFlow['inflows']), 2) }}</td>
                                         </tr>
 
                                         <tr>
-                                            <td><strong>Outflows</strong></td>
+                                            <td><strong>{{ __('Outflows') }}</strong></td>
                                             <td></td>
                                         </tr>
                                         @foreach($cashFlow['outflows'] as $outflow => $amount)
@@ -252,12 +222,12 @@
                                             </tr>
                                         @endforeach
                                         <tr>
-                                            <td><strong>Total Outflows</strong></td>
+                                            <td><strong>{{ __('Total Outflows') }}</strong></td>
                                             <td>{{ number_format(array_sum($cashFlow['outflows']), 2) }}</td>
                                         </tr>
 
                                         <tr>
-                                            <td><strong>Net Cash Flow</strong></td>
+                                            <td><strong>{{ __('Net Cash Flow') }}</strong></td>
                                             <td>{{ number_format(array_sum($cashFlow['inflows']) - array_sum($cashFlow['outflows']), 2) }}</td>
                                         </tr>
                                     </tbody>
@@ -270,7 +240,7 @@
                     <div class="accordion-item">
                         <h2 class="accordion-header">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#balance-sheet">
-                                Balance Sheet
+                                {{ __('Balance Sheet') }}
                             </button>
                         </h2>
                         <div id="balance-sheet" class="accordion-collapse collapse">
@@ -278,7 +248,7 @@
 <div class="accordion-item">
     <h2 class="accordion-header">
         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#balance-sheet">
-            Balance Sheet Calculator
+            {{ __('Balance Sheet Calculator') }}
         </button>
     </h2>
     <div id="balance-sheet" class="accordion-collapse collapse">
@@ -288,7 +258,7 @@
     @csrf
     <!-- Form fields for assets and liabilities -->
     <div class="mb-3">
-        <h5>Assets</h5>
+        <h5>{{ __('Assets') }}</h5>
         <div id="assets-container">
             @if (isset($balanceSheet['assets']) && count($balanceSheet['assets']) > 0)
                 @foreach ($balanceSheet['assets'] as $name => $amount)
@@ -304,11 +274,11 @@
                 </div>
             @endif
         </div>
-        <button type="button" class="btn btn-sm btn-success" onclick="addAssetField()">+ Add Asset</button>
+        <button type="button" class="btn btn-sm btn-success" onclick="addAssetField()">+ {{ __('Add Asset') }}</button>
     </div>
 
     <div class="mb-3">
-        <h5>Liabilities</h5>
+        <h5>{{ __('Liabilities') }}</h5>
         <div id="liabilities-container">
             @if (isset($balanceSheet['liabilities']) && count($balanceSheet['liabilities']) > 0)
                 @foreach ($balanceSheet['liabilities'] as $name => $amount)
@@ -324,23 +294,23 @@
                 </div>
             @endif
         </div>
-        <button type="button" class="btn btn-sm btn-success" onclick="addLiabilityField()">+ Add Liability</button>
+        <button type="button" class="btn btn-sm btn-success" onclick="addLiabilityField()">+ {{ __('Add Liability') }}</button>
     </div>
 
-    <button type="submit" class="btn btn-primary">Calculate</button>
+    <button type="submit" class="btn btn-primary">{{ __('Calculate') }}</button>
 </form>
 
             <!-- Balance Sheet Table -->
             <table class="table table-striped mt-4">
                 <thead>
                     <tr>
-                        <th>Category</th>
-                        <th>Amount (Tsh)</th>
+                        <th>{{ __('Category') }}</th>
+                        <th> {{ __('Amount') }}(Tsh)</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td><strong>Assets</strong></td>
+                        <td><strong>{{ __('Assets') }}</strong></td>
                         <td></td>
                     </tr>
                     @if (isset($balanceSheet['assets']) && count($balanceSheet['assets']) > 0)
@@ -352,12 +322,12 @@
                         @endforeach
                     @endif
                     <tr>
-                        <td><strong>Total Assets</strong></td>
+                        <td><strong>{{ __('Total Assets') }}</strong></td>
                         <td>{{ isset($balanceSheet['totalAssets']) ? number_format($balanceSheet['totalAssets'], 2) : '0.00' }}</td>
                     </tr>
 
                     <tr>
-                        <td><strong>Liabilities</strong></td>
+                        <td><strong>{{ __('Liabilities') }}</strong></td>
                         <td></td>
                     </tr>
                     @if (isset($balanceSheet['liabilities']) && count($balanceSheet['liabilities']) > 0)
@@ -369,12 +339,12 @@
                         @endforeach
                     @endif
                     <tr>
-                        <td><strong>Total Liabilities</strong></td>
+                        <td><strong>{{ __('Total Liabilities') }}</strong></td>
                         <td>{{ isset($balanceSheet['totalLiabilities']) ? number_format($balanceSheet['totalLiabilities'], 2) : '0.00' }}</td>
                     </tr>
 
                     <tr>
-                        <td><strong>Equity</strong></td>
+                        <td><strong>{{ __('Equity') }}</strong></td>
                         <td>{{ isset($balanceSheet['equity']) ? number_format($balanceSheet['equity'], 2) : '0.00' }}</td>
                     </tr>
                 </tbody>
@@ -396,7 +366,7 @@
     <div class="col-md-12">
         <div class="card shadow-sm">
             <div class="card-header bg-light">
-                <h3 class="card-title">AI-Driven Recommendations</h3>
+                <h3 class="card-title">{{ __('AI-Driven Recommendations') }}</h3>
             </div>
             <div class="card-body">
                 @forelse($recommendations as $recommendation)
@@ -424,7 +394,7 @@
     <div class="col-md-12">
         <div class="card shadow-sm">
             <div class="card-header bg-light">
-                <h3 class="card-title">Actionable Insights</h3>
+                <h3 class="card-title">{{ __('Actionable Insights') }}</h3>
             </div>
             <div class="card-body">
                 @forelse($actionableInsights as $insight)
@@ -455,7 +425,7 @@
     <div class="col-md-12">
         <div class="card shadow-sm">
             <div class="card-header bg-light">
-                <h3 class="card-title">Last 5 Days' Detailed Reports</h3>
+                <h3 class="card-title">{{ __('Last 5 Days Detailed Reports') }}</h3>
             </div>
             <div class="card-body">
                 <!-- Last 5 Days' Reports Table -->
@@ -463,12 +433,12 @@
                     <table class="table table-striped table-bordered">
                         <thead>
                             <tr>
-                                <th>Date</th>
-                                <th>Sales (Tsh)</th>
-                                <th>Expenses (Tsh)</th>
-                                <th>Profit (Tsh)</th>
-                                <th>Products Sold</th>
-                                <th>Type</th>
+                                <th>{{ __('Date') }}</th>
+                                <th> {{ __('Sales') }}(Tsh)</th>
+                                <th> {{ __('Expenses') }}(Tsh)</th>
+                                <th> {{ __('Profit') }}(Tsh)</th>
+                                <th>{{ __('Products Sold') }}d</th>
+                                <th>{{ __('Type') }}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -506,18 +476,18 @@
     <div class="col-md-12">
         <div class="card shadow-sm">
             <div class="card-header bg-light">
-                <h3 class="card-title">Search Reports by Date</h3>
+                <h3 class="card-title">{{ __('Search Reports by Date') }}</h3>
             </div>
             <div class="card-body">
                 <!-- Date Search Form -->
                 <form action="{{ route('reports.index') }}" method="GET" class="mb-4">
                     <div class="row">
                         <div class="col-md-4">
-                            <label for="date" class="form-label">Select Date</label>
+                            <label for="date" class="form-label">{{ __('Select Date') }}</label>
                             <input type="date" class="form-control" id="date" name="date" value="{{ request('date') }}">
                         </div>
                         <div class="col-md-2 align-self-end">
-                            <button type="submit" class="btn btn-primary">Search</button>
+                            <button type="submit" class="btn btn-primary">{{ __('Search') }}</button>
                         </div>
                     </div>
                 </form>
@@ -527,12 +497,12 @@
                     <table class="table table-striped table-bordered">
                         <thead>
                             <tr>
-                                <th>Date</th>
-                                <th>Sales (Tsh)</th>
-                                <th>Expenses (Tsh)</th>
-                                <th>Profit (Tsh)</th>
-                                <th>Products Sold</th>
-                                <th>Type</th>
+                                <th>{{ __('Date') }}</th>
+                                <th> {{ __('Sales') }}(Tsh)</th>
+                                <th> {{ __('Expenses') }}(Tsh)</th>
+                                <th> {{ __('Profit') }}(Tsh)</th>
+                                <th>{{ __('Products Sold') }}</th>
+                                <th>{{ __('Type') }}</th>
                             </tr>
                         </thead>
                         <tbody>

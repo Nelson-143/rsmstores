@@ -37,7 +37,7 @@ Route::middleware('auth')->group(function () {
         ->name('verification.notice');
     Route::post('email/verification-notification', [EmailVerificationController::class, 'resendVerification'])
         ->name('verification.send');
-    Route::get('email/verify/{token}', [EmailVerificationController::class, 'verify'])
+    Route::get('email/verify/{token}', [RegisteredUserController::class, 'store'])
         ->name('verification.verify');
     Route::post('email/verification/resend', [EmailVerificationController::class, 'resendVerification'])
         ->name('verification.resend');

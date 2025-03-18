@@ -33,6 +33,9 @@ use App\Http\Controllers\Auth\EmailVerificationController;
 use App\Http\Controllers\ExpenseCategoryController;
 use App\Http\Controllers\BudgetCategoryController;
 use App\Http\Controllers\SubscriptionController;
+use App\Http\Controllers\TranslationController;
+use App\Http\Controllers\LocaleController;
+use App\Http\Controllers\AdsGeneratorController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -93,11 +96,12 @@ Route::middleware(['auth','verified'])->group(function () {
     Route::post('/invoice/create', [PosController::class, 'createInvoice'])->name('invoice.create');
     Route::post('/pos/store-debt', [PosController::class, 'storeDebt'])->name('pos.storeDebt');
 
-Route::get('/pos', [PosController::class, 'index'])->name('pos.index');
+//Route::get('/pos', [PosController::class, 'index'])->name('pos.index');
 Route::post('/pos/add-cart-item', [PosController::class, 'addCartItem'])->name('pos.addCartItem');
 Route::post('/pos/update-cart-item/{rowId}', [PosController::class, 'updateCartItem'])->name('pos.updateCartItem');
 Route::post('/pos/delete-cart-item/{rowId}', [PosController::class, 'deleteCartItem'])->name('pos.deleteCartItem');
 Route::post('/pos/store-debt', [PosController::class, 'storeDebt'])->name('pos.storeDebt');
+
 
     //Route::post('/pos/invoice', [PosController::class, 'createInvoice'])->name('pos.createInvoice');
     Route::post('/invoice/create', [InvoiceController::class, 'create'])->name('invoice.create');
@@ -110,7 +114,7 @@ Route::resource('debts', DebtsController::class);
       // Route Orders
       Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
       Route::get('/orders/pending', OrderPendingController::class)->name('orders.pending');
-      Route::get('/orders/complete', OrderCompleteController::class)->name('orders.complete');
+      Route::get('/orders/complete', [OrderCompleteController::class, 'update'])->name('orders.complete');
       Route::post('/orders/{uuid}/approve', [OrderController::class, 'approve'])->name('orders.approve');
     // web.php
     Route::post('/set-active-customer', [OrderController::class, 'setActiveCustomer'])->name('setActiveCustomer');
@@ -235,20 +239,20 @@ Route::get('/onboarding', [OnboardingController::class, 'showOnboarding'])->name
 
 //route  to verify email
 // Group routes with shared middleware
-Route::middleware(['auth', 'throttle:6,1'])->group(function () {
-    // Verification notice page
-    Route::get('auth/email/verify', [EmailVerificationController::class, 'showVerificationForm'])
-        ->name('verification.notice');
+// Route::middleware(['auth', 'throttle:6,1'])->group(function () {
+//     // Verification notice page
+//     Route::get('auth/email/verify', [EmailVerificationController::class, 'showVerificationForm'])
+//         ->name('verification.notice');
 
-    // Resend verification email
-    Route::post('auth/email/verification-notification', [EmailVerificationController::class, 'sendVerification'])
-        ->name('verification.send');
-});
+//     // Resend verification email
+//     Route::post('auth/email/verification-notification', [EmailVerificationController::class, 'sendVerification'])
+//         ->name('verification.send');
+// });
 
-// Route for token-based email verification (no authentication required)
-Route::get('auth/email/verify/{token}', [EmailVerificationController::class, 'verify'])
-    ->middleware(['guest', 'throttle:6,1']) // Ensure unauthenticated users only
-    ->name('verification.verify');
+// // Route for token-based email verification (no authentication required)
+// Route::get('auth/email/verify/{token}', [EmailVerificationController::class, 'verify'])
+//     ->middleware(['guest', 'throttle:6,1']) // Ensure unauthenticated users only
+//     ->name('verification.verify');
 // see the supplier in the dashboard
 Route::get('/purchases-by-supplier', [PurchaseController::class, 'getPurchasesBySupplier'])->name('purchases.bySupplier');
 Route::get('/purchases-by-category', [PurchaseController::class, 'getPurchasesByCategory'])->name('purchases.byCategory');
@@ -268,6 +272,8 @@ Route::post('/budget-categories', [BudgetCategoryController::class, 'store'])->n
 //
 
 
+Route::post('/translate', [TranslationController::class, 'translate'])->name('translate');
+
 Route::middleware(['auth'])->group(function () {
     Route::get('/subscriptions', [SubscriptionController::class, 'index'])->name('subscriptions.index');
     Route::post('/subscriptions/assign', [SubscriptionController::class, 'assign'])->name('subscriptions.assign');
@@ -275,6 +281,18 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/subscriptions/{user}/cancel', [SubscriptionController::class, 'cancel'])->name('subscriptions.cancel');
 });
 
+//language
+
+
+// Language switcher route
+Route::get('/change-locale/{locale}', [LocaleController::class, 'change'])->name('change-locale');
+
+
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/ads-generator', [AdsGeneratorController::class, 'index'])->name('ads.generator');
+    Route::post('/ads-generator/upload', [AdsGeneratorController::class, 'generateAd'])->name('ads.generator.upload');
+});
 //-------------THE ROUTES TO THE Roman Website place ,WELCOMES ----------------
 
 
