@@ -280,6 +280,35 @@
                                                 @enderror
                                             </div>
                                         </div>
+                                        <!--expr-->
+                                      <div class="col-sm-6 col-md-6">
+                                            <div class="mb-3">
+                                                <label class="form-label" for="expire_date_toggle">
+                                                    {{ __('Enable Expiration Date') }}
+                                                </label>
+                                                <input type="checkbox" name="expire_date_toggle" id="expire_date_toggle" class="form-check-input">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6 col-md-6" id="expire_date_field" style="display: none;">
+                                            <x-input type="date"
+                                                    label="Expire Date"
+                                                    name="expire_date"
+                                                    id="expire_date"
+                                                    value="{{ old('expire_date') }}"
+                                            />
+                                        </div>
+
+                                        <script>
+                                            document.getElementById('expire_date_toggle').addEventListener('change', function() {
+                                                var expireDateField = document.getElementById('expire_date_field');
+                                                if (this.checked) {
+                                                    expireDateField.style.display = 'block';
+                                                } else {
+                                                    expireDateField.style.display = 'none';
+                                                }
+                                            });
+                                        </script>
 
                                         <div class="col-md-12">
                                             <div class="mb-3 mb-0">

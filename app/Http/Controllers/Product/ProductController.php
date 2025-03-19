@@ -51,31 +51,28 @@ class ProductController extends Controller
         $data['user_id'] = auth()->id();
         $data['account_id'] = auth()->user()->account_id; // Set the account_id
         $data['slug'] = Str::slug($data['name']);
-
+    
         // Handle image upload
         if ($request->hasFile('product_image')) {
             $file = $request->file('product_image');
-
-            // Define the custom path where you want to store the file
             $destinationPath = public_path('assets/img/products/');
-
-            // Ensure the directory exists or create it
             if (!file_exists($destinationPath)) {
-                mkdir($destinationPath, 0755, true); // Create the directory if it doesn't exist
+                mkdir($destinationPath, 0755, true);
             }
-
-            // Define the filename (optional: you can rename or use the original name)
             $fileName = time() . '_' . $file->getClientOriginalName();
-
-            // Move the file to the specified folder
             $file->move($destinationPath, $fileName);
-
-            // Save the path to the database (relative to the public folder)
             $data['product_image'] = 'assets/img/products/' . $fileName;
         }
-
+    
+        // Handle expire date
+        if ($request->has('expire_date_toggle') && $request->expire_date_toggle == 'on') {
+            $data['expire_date'] = $request->expire_date;
+        } else {
+            $data['expire_date'] = null;
+        }
+    
         Product::create($data);
-
+    
         return redirect()->route('products.index')->with('success', 'Product created successfully.');
     }
 
@@ -112,48 +109,41 @@ class ProductController extends Controller
     }
 
     public function update(UpdateProductRequest $request, $uuid)
-    {
-        // Get the logged-in user's account_id
-        $accountId = auth()->user()->account_id;
+{
+    $accountId = auth()->user()->account_id;
+    $product = Product::where('uuid', $uuid)
+                        ->where('account_id', $accountId)
+                        ->firstOrFail();
 
-        // Ensure the product belongs to the logged-in user's account
-        $product = Product::where('uuid', $uuid)
-                            ->where('account_id', $accountId)
-                            ->firstOrFail();
+    $data = $request->validated();
+    $data['slug'] = Str::slug($data['name']);
+    $data['account_id'] = auth()->user()->account_id;
 
-        $data = $request->validated();
-        $data['slug'] = Str::slug($data['name']);
-        $data['account_id'] = auth()->user()->account_id; // Set the account_id
-
-        // Handle image upload
-        if ($request->hasFile('product_image')) {
-            $file = $request->file('product_image');
-
-            // Define the filename with a timestamp
-            $fileName = time() . '_' . $file->getClientOriginalName();
-
-            // Define the path where the image will be stored
-            $destinationPath = public_path('assets/img/products');
-
-            // Ensure the directory exists or create it
-            if (!file_exists($destinationPath)) {
-                mkdir($destinationPath, 0755, true); // Create the directory if it doesn't exist
-            }
-
-            // Move the file to the specified folder
-            $file->move($destinationPath, $fileName);
-
-            // Store the relative path in the database
-            $data['product_image'] = 'assets/img/products/' . $fileName;
-        } else {
-            // Retain the existing photo if no new file is uploaded
-            $data['product_image'] = $product->product_image; // Keep the existing photo
+    // Handle image upload
+    if ($request->hasFile('product_image')) {
+        $file = $request->file('product_image');
+        $fileName = time() . '_' . $file->getClientOriginalName();
+        $destinationPath = public_path('assets/img/products');
+        if (!file_exists($destinationPath)) {
+            mkdir($destinationPath, 0755, true);
         }
-
-        $product->update($data);
-
-        return redirect()->route('products.index')->with('success', 'Product updated successfully.');
+        $file->move($destinationPath, $fileName);
+        $data['product_image'] = 'assets/img/products/' . $fileName;
+    } else {
+        $data['product_image'] = $product->product_image;
     }
+
+    // Handle expire date
+    if ($request->has('expire_date_toggle') && $request->expire_date_toggle == 'on') {
+        $data['expire_date'] = $request->expire_date;
+    } else {
+        $data['expire_date'] = null;
+    }
+
+    $product->update($data);
+
+    return redirect()->route('products.index')->with('success', 'Product updated successfully.');
+}
 
     public function destroy($uuid)
     {

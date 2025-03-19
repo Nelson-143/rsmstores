@@ -2,6 +2,27 @@
 @section('title' , 'Show Product')
 
 @section('content')
+@if($product->expire_date)
+    @php
+        $expireDate = \Carbon\Carbon::parse($product->expire_date);
+        $now = \Carbon\Carbon::now();
+        $diffInDays = $now->diffInDays($expireDate, false);
+    @endphp
+
+    @if($diffInDays < 0)
+        <div class="alert alert-danger">
+            This product has expired.
+        </div>
+    @elseif($diffInDays <= 7)
+        <div class="alert alert-warning">
+            This product will expire in {{ $diffInDays }} days.
+        </div>
+    @elseif($diffInDays <= 30)
+        <div class="alert alert-info">
+            This product will expire in {{ $diffInDays }} days.
+        </div>
+    @endif
+@endif
     <div class="page-header d-print-none">
         <div class="container-xl">
             <div class="row g-2 align-items-center mb-3">
@@ -146,6 +167,14 @@
                                         <tr>
                                             <td>Tax Type</td>
                                             <td>{{ $product->tax_type }}</td>
+                                        </tr>
+                                       <tr>
+                                            <td>Expire Date</td>
+                                            <td>
+                                                <span class="badge bg-red-lt">
+                                                    {{ $product->expire_date }}
+                                                </span>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td>{{ __('Notes') }}</td>

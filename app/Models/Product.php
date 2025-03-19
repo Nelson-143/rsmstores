@@ -30,6 +30,7 @@ class Product extends Model
         'category_id',
         'unit_id',
         'supplier_id',
+        'expire_date', // Add this line
         'account_id',
     ];
     public function scopeSearch(Builder $query, string $search = null)

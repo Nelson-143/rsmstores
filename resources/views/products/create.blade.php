@@ -151,44 +151,44 @@
                                         </div>
                                     </div>
                                     <div class="col-sm-6 col-md-6">
-    <div class="mb-3">
-        <label class="form-label" for="unit_id">
-            Unit
-            <span class="text-danger">*</span>
-        </label>
+                                            <div class="mb-3">
+                                                <label class="form-label" for="unit_id">
+                                                    Unit
+                                                    <span class="text-danger">*</span>
+                                                </label>
 
-        @if ($units->count() === 1)
-            <select name="unit_id" id="unit_id"  
-                    class="form-select @error('unit_id') is-invalid @enderror"
-                    readonly
-            >
-                @foreach ($units as $unit)
-                    <option value="{{ $unit->id }}" selected>
-                        {{ $unit->name }}
-                    </option>
-                @endforeach
-            </select>
-        @else
-            <select name="unit_id" id="unit_id"
-                    class="form-select @error('unit_id') is-invalid @enderror"
-            >
-                <option selected="" disabled="">
-                    Select a Unit:
-                </option>
+                                                @if ($units->count() === 1)
+                                                    <select name="unit_id" id="unit_id"  
+                                                            class="form-select @error('unit_id') is-invalid @enderror"
+                                                            readonly
+                                                    >
+                                                        @foreach ($units as $unit)
+                                                            <option value="{{ $unit->id }}" selected>
+                                                                {{ $unit->name }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                @else
+                                                    <select name="unit_id" id="unit_id"
+                                                            class="form-select @error('unit_id') is-invalid @enderror"
+                                                    >
+                                                        <option selected="" disabled="">
+                                                            Select a Unit:
+                                                        </option>
 
-                @foreach ($units as $unit)
-                    <option value="{{ $unit->id }}" @if(old('unit_id') == $unit->id) selected="selected" @endif>{{ $unit->name }}</option>
-                @endforeach
-            </select>
-        @endif
+                                                        @foreach ($units as $unit)
+                                                            <option value="{{ $unit->id }}" @if(old('unit_id') == $unit->id) selected="selected" @endif>{{ $unit->name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                @endif
 
-        @error('unit_id')
-        <div class="invalid-feedback">
-            {{ $message }}
-        </div>
-        @enderror
-    </div>
-</div>
+                                                @error('unit_id')
+                                                <div class="invalid-feedback">
+                                                    {{ $message }}
+                                                </div>
+                                                @enderror
+                                            </div>
+                                        </div>
 
 
                                     <div class="col-sm-6 col-md-6">
@@ -274,6 +274,35 @@
                                             @enderror
                                         </div>
                                     </div>
+                                    <!--expr-->
+                             <div class="col-sm-6 col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label" for="expire_date_toggle">
+                                                {{ __('Enable Expiration Date') }}
+                                            </label>
+                                            <input type="checkbox" name="expire_date_toggle" id="expire_date_toggle" class="form-check-input">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-6 col-md-6" id="expire_date_field" style="display: none;">
+                                        <x-input type="date"
+                                                label="Expire Date"
+                                                name="expire_date"
+                                                id="expire_date"
+                                                value="{{ old('expire_date') }}"
+                                        />
+                                    </div>
+
+                                    <script>
+                                        document.getElementById('expire_date_toggle').addEventListener('change', function() {
+                                            var expireDateField = document.getElementById('expire_date_field');
+                                            if (this.checked) {
+                                                expireDateField.style.display = 'block';
+                                            } else {
+                                                expireDateField.style.display = 'none';
+                                            }
+                                        });
+                                    </script>
 
                                     <div class="col-md-12">
                                         <div class="mb-3">

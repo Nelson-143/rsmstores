@@ -18,7 +18,7 @@
                {{ __(' Add Budget') }}
             </button>
             <button class="btn btn-secondary ms-2" data-bs-toggle="modal" data-bs-target="#categoryModal">
-                        <i class="fas fa-tags me-2"></i>{{ __('Manage Categories') }}
+                        <i class="fas fa-tags me-2"></i>{{__('Manage Categories') }}
                     </button>
         </div>
     </div>
