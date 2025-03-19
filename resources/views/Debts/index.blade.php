@@ -1,7 +1,7 @@
 @extends('layouts.tabler')
 
 @section('title')
-    Debts Management
+    {{ __('Debts Management') }}
 @endsection
 
 @section('me')
@@ -17,9 +17,9 @@
         <div class="col-md-3 col-sm-6">
             <div class="card shadow-sm">
                 <div class="card-body text-center">
-                    <h6 class="card-title mb-2">Total Current Debts</h6>
+                    <h6 class="card-title mb-2">{{ __('Total Current Debts') }}</h6>
                     <p class="card-text h5">{{ $totalCurrentDebts }}</p>
-                    <p class="text-muted small">Unpaid or partially paid debts.</p>
+                    <p class="text-muted small">{{ __('Unpaid or partially paid debts') }}.</p>
                 </div>
             </div>
         </div>
@@ -28,9 +28,9 @@
         <div class="col-md-3 col-sm-6">
             <div class="card shadow-sm">
                 <div class="card-body text-center">
-                    <h6 class="card-title mb-2">Total Value of Debt</h6>
+                    <h6 class="card-title mb-2">{{ __('Total Value of Debt') }}</h6>
                     <p class="card-text h5">Tsh{{ number_format($totalValueOfDebt, 2) }}</p>
-                    <p class="text-muted small">Sum of all remaining balances.</p>
+                    <p class="text-muted small">{{ __('Sum of all remaining balances') }}.</p>
                 </div>
             </div>
         </div>
@@ -39,9 +39,9 @@
         <div class="col-md-3 col-sm-6">
             <div class="card shadow-sm">
                 <div class="card-body text-center">
-                    <h6 class="card-title mb-2">Total Paid Debts</h6>
+                    <h6 class="card-title mb-2">{{ __('Total Paid Debts') }}</h6>
                     <p class="card-text h5">{{ $totalPaidDebts }}</p>
-                    <p class="text-muted small">Fully paid debts.</p>
+                    <p class="text-muted small">{{ __('Fully paid debts') }}.</p>
                 </div>
             </div>
         </div>
@@ -50,9 +50,9 @@
         <div class="col-md-3 col-sm-6">
             <div class="card shadow-sm">
                 <div class="card-body text-center">
-                    <h6 class="card-title mb-2">Total Amount Received</h6>
+                    <h6 class="card-title mb-2">{{ __('Total Amount Received') }}</h6>
                     <p class="card-text h5">Tsh{{ number_format($totalAmountReceived, 2) }}</p>
-                    <p class="text-muted small">Sum of all payments received.</p>
+                    <p class="text-muted small">{{ __('Sum of all payments received') }}.</p>
                 </div>
             </div>
         </div>
@@ -91,10 +91,10 @@
             <div class="container mt-4">
     <div class="card shadow-sm">
         <div class="card-header bg-white d-flex justify-content-between align-items-center">
-            <h3 class="card-title">Customer Debts Details</h3>
+            <h3 class="card-title">{{ __('Customer Debts Details') }}</h3>
             <div class="input-group input-group-flat">
                 <input type="text" class="form-control" id="search-input" placeholder="Search by customer name...">
-                <button type="button" class="btn btn-primary" id="search-button">Search</button>
+                <button type="button" class="btn btn-primary" id="search-button">{{ __('Search') }}</button>
             </div>
         </div>
         <div class="card-body">
@@ -111,7 +111,7 @@ document.getElementById('search-input').addEventListener('input', function () {
 });
 </script>
             <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-report">
-                <i class="bi bi-plus-circle"></i> Add Debtors
+                <i class="bi bi-plus-circle"></i> {{ __('Add Debtors') }}
             </button>
         </div>
         <div class="card-body">
@@ -146,15 +146,15 @@ document.getElementById('search-input').addEventListener('input', function () {
                             <tr>
                                 <th><input class="form-check-input" type="checkbox" aria-label="Select all invoices"></th>
                                 <th>No.</th>
-                                <th>Customer Name</th>
-                                <th>Customer Set</th>
-                                <th>Created Date</th>
-                                <th>Debts Amount</th>
-                                <th>Received Amount</th>
-                                <th>Balance Amount</th>
-                                <th>Due Date</th>
-                                <th>Status</th>
-                                <th>Action</th>
+                                <th>{{ __('Customer Name') }}</th>
+                                <th>{{ __('Customer Set') }}</th>
+                                <th>{{ __('Created Date') }}</th>
+                                <th>{{ __('Debts Amount') }}</th>
+                                <th>{{ __('Received Amount') }}</th>
+                                <th>{{ __('Balance Amount') }}</th>
+                                <th>{{ __('Due Date') }}</th>
+                                <th>{{ __('Status') }}</th>
+                                <th>{{ __('Action') }}</th>
                             </tr>
                         </thead>
                         <tbody id="debt">
@@ -171,21 +171,21 @@ document.getElementById('search-input').addEventListener('input', function () {
                                     <td>{{ $debt['due_date'] }}</td>
                                     <td>
                                         @if($debt['balance_amount'] == 0)
-                                            <span class="badge bg-success">Paid</span>
+                                            <span class="badge bg-success">{{ __('Paid') }}</span>
                                         @elseif($debt['due_date'] < now()->format('Y-m-d'))
-                                            <span class="badge bg-danger">Overdue</span>
+                                            <span class="badge bg-danger">{{ __('Overdue') }}</span>
                                         @else
-                                            <span class="badge bg-warning text-dark">Pending</span>
+                                            <span class="badge bg-warning text-dark">{{ __('Pending') }}</span>
                                         @endif
                                     </td>
                                     <td>
                                         <form action="{{ route('debts.destroy', $debt['uuid']) }}" method="POST" class="d-inline">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                            <button type="submit" class="btn btn-danger btn-sm">{{ __('Delete') }}</button>
                                         </form>
                                         <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#paymentModal" data-debt-uuid="{{ $debt['uuid'] }}">Pay</button>
-                                        <a href="{{ route('debts.history', $debt['uuid']) }}" class="btn btn-info btn-sm">Payment History</a>
+                                        <a href="{{ route('debts.history', $debt['uuid']) }}" class="btn btn-info btn-sm">Payment History{{ __('') }}</a>
                                     </td>
                                 </tr>
                             @endforeach
@@ -195,7 +195,7 @@ document.getElementById('search-input').addEventListener('input', function () {
             @endif
         </div>
         <div class="card-footer d-flex justify-content-between align-items-center">
-            <p class="m-0 text-secondary">Showing <span>1</span> to <span>{{ $debts->count() }}</span> of <span>{{ $debts->count() }}</span> entries</p>
+            <p class="m-0 text-secondary"> {{ __('Showing') }}<span>1</span> {{ __('to') }} <span>{{ $debts->count() }}</span> {{ __('of') }}<span>{{ $debts->count() }}</span> entries</p>
         </div>
     </div>
 </div>
@@ -206,14 +206,14 @@ document.getElementById('search-input').addEventListener('input', function () {
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modal-report-label">Create A Debtor</h5>
+                <h5 class="modal-title" id="modal-report-label">{{ __('Create A Debtor') }}</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form action="{{ route('debts.store') }}" method="POST" id="create-debtor-form">
                 @csrf <!-- Add CSRF token for security -->
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label class="form-label">Customer</label>
+                        <label class="form-label">{{ __('Customer') }}</label>
                         <select name="customer_id" class="form-control">
                             <!-- <option value="">Personal Debt</option> Option for personal debt -->
                             @foreach($customers as $customer)
@@ -222,21 +222,21 @@ document.getElementById('search-input').addEventListener('input', function () {
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Customer Set</label>
+                        <label class="form-label">{{ __('Customer Set') }}</label>
                         <input type="text" name="customer_set" class="form-control" placeholder="Enter Customer Set" required>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Amount</label>
+                        <label class="form-label">{{ __('Amount') }}</label>
                         <input type="number" name="amount" class="form-control" placeholder="Amount in Debt" required>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Due Date</label>
+                        <label class="form-label">{{ __('Due Date') }}</label>
                         <input type="date" name="due_date" class="form-control" required>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Create New Debtor</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ __('Cancel') }}</button>
+                    <button type="submit" class="btn btn-primary">{{ __('Create New Debtor') }}</button>
                 </div>
             </form>
         </div>
@@ -247,7 +247,7 @@ document.getElementById('search-input').addEventListener('input', function () {
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="paymentModalLabel">Make a Payment</h5>
+                <h5 class="modal-title" id="paymentModalLabel">{{ __('Make a Payment') }}</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form id="paymentForm" method="POST" action="{{ route('debts.pay') }}">
@@ -255,13 +255,13 @@ document.getElementById('search-input').addEventListener('input', function () {
                 <div class="modal-body">
                     <input type="hidden" name="debt_uuid" id="debt_uuid" value="">
                     <div class="mb-3">
-                        <label class="form-label">Amount Paid</label>
+                        <label class="form-label">{{ __('Amount Paid') }}</label>
                         <input type="number" name="amount_paid" class="form-control" placeholder="Enter amount" required>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Pay</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ __('Cancel') }}</button>
+                    <button type="submit" class="btn btn-primary">{{ __('Pay') }}</button>
                 </div>
             </form>
         </div>

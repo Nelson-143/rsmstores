@@ -1,19 +1,19 @@
 @extends('layouts.tabler')
 @section('title')
-    Payments History
+    {{ __('Payments History') }}
 @endsection
 @section('content')
 <div class="container">
-    <h1>Payment History for {{ $debt->customer->name ?? 'Personal Debt' }}</h1>
+    <h1>{{ __('Payment History for') }} {{ $debt->customer->name ?? 'Personal Debt' }}</h1>
     @if($payments->isEmpty())
         <p>No payment history found.</p>
     @else
         <table class="table">
             <thead>
                 <tr>
-                    <th>Date</th>
-                    <th>Amount Paid</th>
-                    <th>Account Holder</th>
+                    <th>{{ __('Date') }}</th>
+                    <th>{{ __('Amount Paid') }}</th>
+                    <th>{{ __('Account Holder') }}</th>
                 </tr>
             </thead>
             <tbody>

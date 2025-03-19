@@ -1,7 +1,7 @@
 @extends('layouts.tabler')
 
 @section('title')
-    Budgets Manager
+    {{__('Budgets Manager') }}
 @endsection
 
 @section('me')
@@ -12,13 +12,13 @@
 
 <div class="card">
     <div class="card-header">
-        <h3 class="card-title">Budget Overview</h3>
+        <h3 class="card-title">{{__('Budget Overview') }}</h3>
         <div class="card-actions">
             <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createBudgetModal">
-                Add Budget
+               {{ __(' Add Budget') }}
             </button>
             <button class="btn btn-secondary ms-2" data-bs-toggle="modal" data-bs-target="#categoryModal">
-                        <i class="fas fa-tags me-2"></i>Manage Categories
+                        <i class="fas fa-tags me-2"></i>{{ __('Manage Categories') }}
                     </button>
         </div>
     </div>
@@ -26,25 +26,25 @@
         <div class="row">
             <!-- Budget Summary -->
             <div class="col-md-6">
-                <h4 class="mb-3">Summary</h4>
+                <h4 class="mb-3">{{__('Summary') }}</h4>
                 <ul class="list-group">
                     <li class="list-group-item d-flex justify-content-between align-items-center">
-                        Total Budget
+                        {{ __('Total Budget') }}
                         <span class="badge bg-primary rounded-pill">Tsh {{ number_format($budgets->sum('amount')) }}</span>
                     </li>
                     <li class="list-group-item d-flex justify-content-between align-items-center">
-                        Expenses
+                        {{ __('Expenses') }}
                         <span class="badge bg-danger rounded-pill">Tsh {{ number_format($expenses->sum('amount')) }}</span>
                     </li>
                     <li class="list-group-item d-flex justify-content-between align-items-center">
-                        Remaining
+                        {{ __('Remaining') }}
                     <span class="badge bg-success rounded-pill">Tsh {{ number_format($budgets->sum('amount') - $expenses->sum('amount')) }}</span>                    </li>
                 </ul>
             </div>
 
             <!-- Progress -->
             <div class="col-md-6">
-                <h4 class="mb-3">Progress</h4>
+                <h4 class="mb-3">{{ __('Progress') }}</h4>
                <div class="progress mb-3">
     @php
         $percentage = $budgets->sum('amount') > 0 ? (($expenses->sum('amount') ?? 0) / $budgets->sum('amount')) * 100 : 0;
@@ -53,23 +53,23 @@
         {{ round($percentage, 2) }}%
     </div>
 </div>
-                <p class="text-muted">You have used {{ round($percentage, 2) }}% of your total budget.</p>
+                <p class="text-muted">{{ __('You have used') }} {{ round($percentage, 2) }}% {{ __('of your total budget') }}.</p>
                 <canvas id="growthChart"></canvas>
             </div>
         </div>
 
         <!-- Budget Details Table -->
-        <h4 class="mt-4">Budget Details</h4>
+        <h4 class="mt-4">{{ __('Budget Details') }}</h4>
         <div class="table-responsive">
             <table class="table table-striped">
                 <thead>
                     <tr>
                         <th>#</th>
-                        <th>Category</th>
-                        <th>Allocated</th>
-                        <th>Spent</th>
-                        <th>Remaining</th>
-                        <th>Action</th>
+                        <th>{{ __('Category') }}</th>
+                        <th>{{ __('Allocated') }}</th>
+                        <th>{{ __('Spent') }}</th>
+                        <th>{{ __('Remaining') }}</th>
+                        <th>{{ __('Action') }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -81,8 +81,8 @@
                             <td>Tsh {{ number_format($budget->spent) }}</td>
                             <td>Tsh {{ number_format($budget->amount - $budget->spent) }}</td>
                             <td>
-                                <button class="btn btn-sm btn-secondary">Edit</button>
-                                <button class="btn btn-sm btn-danger">Delete</button>
+                                <button class="btn btn-sm btn-secondary">{{ __('Edit') }}</button>
+                                <button class="btn btn-sm btn-danger">{{ __('Delete') }}</button>
                             </td>
                         </tr>
                     @empty
@@ -101,20 +101,20 @@
     <div class="modal-dialog modal-md" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Manage Categories</h5>
+                <h5 class="modal-title">{{ __('Manage Categories') }}</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form id="categoryForm" action="{{ route('budget-categories.store') }}" method="POST">
             @csrf
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label for="category-name" class="form-label">Category Name</label>
+                        <label for="category-name" class="form-label">{{ __('Category Name') }}</label>
                         <input type="text" id="category-name" name="name" class="form-control" required>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ __('Cancel') }}</button>
+                    <button type="submit" class="btn btn-primary">{{ __('Save') }}</button>
                 </div>
             </form>
         </div>
@@ -126,37 +126,37 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="createBudgetModalLabel">Create Budget</h5>
+                <h5 class="modal-title" id="createBudgetModalLabel">{{ __('Create Budget') }}</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form method="POST" action="{{ route('budgets.store') }}">
                 @csrf
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label for="category_id" class="form-label">Category</label>
+                        <label for="category_id" class="form-label">{{ __('Category') }}</label>
                         <select id="budget-category" name="budget_category_id" class="form-select" required>
-                            <option value="" selected disabled>Select Budget Category</option>
+                            <option value="" selected disabled>{{ __('') }}</option>
                             @foreach ($budgetCategories as $budgetCategory)
                                 <option value="{{ $budgetCategory->id }}">{{ $budgetCategory->name }}</option>
                             @endforeach
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label for="amount" class="form-label">Allocated Amount</label>
+                        <label for="amount" class="form-label">{{ __('Allocated Amount') }}</label>
                         <input type="number" class="form-control" id="amount" name="amount" min="50" step="50" oninput="this.value = Math.ceil(this.value / 50) * 50" required>
                     </div>
                     <div class="mb-3">
-                        <label for="start_date" class="form-label">Start Date</label>
+                        <label for="start_date" class="form-label">{{ __('Start Date') }}</label>
                         <input type="date" class="form-control" id="start_date" name="start_date" required>
                     </div>
                     <div class="mb-3">
-                        <label for="end_date" class="form-label">End Date</label>
+                        <label for="end_date" class="form-label">{{ __('End Date') }}</label>
                         <input type="date" class="form-control" id="end_date" name="end_date" required>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ __('Close') }}</button>
+                    <button type="submit" class="btn btn-primary">{{ __('Save') }}</button>
                 </div>
             </form>
         </div>
