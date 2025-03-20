@@ -279,6 +279,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/subscriptions/assign', [SubscriptionController::class, 'assign'])->name('subscriptions.assign');
     Route::put('/subscriptions/{user}/update', [SubscriptionController::class, 'update'])->name('subscriptions.update');
     Route::delete('/subscriptions/{user}/cancel', [SubscriptionController::class, 'cancel'])->name('subscriptions.cancel');
+    // web.php
+Route::get('/subscriptions/{subscriptionId}/pay', [SubscriptionController::class, 'pay'])->name('subscriptions.pay');
+Route::post('/subscriptions/{subscriptionId}/process-payment', [SubscriptionController::class, 'processPayment'])->name('subscriptions.process-payment');
 });
 
 //language

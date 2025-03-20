@@ -22,7 +22,9 @@ class TeamController extends Controller
      * Display the team management page (list users & manage them).
      */
     public function index()
+
     {
+       
         // Fetch users for the logged-in user's account
         $accountId = auth()->user()->account_id;
         $users = User::with('roles')

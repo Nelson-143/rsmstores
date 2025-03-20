@@ -15,34 +15,34 @@ use App\Http\Controllers\TeamController;
 use App\Http\Controllers\TeamLogsController;
 Route::middleware('guest')->group(function () {
     // Registration routes
-    Route::get('register', [RegisteredUserController::class, 'create'])->name('register');
-    Route::post('register', [RegisteredUserController::class, 'store']);
+    Route::get('register', [RegisteredUserController::class, 'create'])->middleware('doNotCacheResponse')->name('register');
+    Route::post('register', [RegisteredUserController::class, 'store'])->middleware('doNotCacheResponse');
 
     // Login routes
-    Route::get('login', [AuthenticatedSessionController::class, 'create'])->name('login');
-    Route::post('login', [AuthenticatedSessionController::class, 'store']);
+    Route::get('login', [AuthenticatedSessionController::class, 'create'])->middleware('doNotCacheResponse')->name('login');
+    Route::post('login', [AuthenticatedSessionController::class, 'store'])->middleware('doNotCacheResponse');
 
     // Forgot password routes
-    Route::get('forgot-password', [PasswordResetLinkController::class, 'create'])->name('password.request');
-    Route::post('forgot-password', [PasswordResetLinkController::class, 'store'])->name('password.email');
+    Route::get('forgot-password', [PasswordResetLinkController::class, 'create'])->middleware('doNotCacheResponse')->name('password.request');
+    Route::post('forgot-password', [PasswordResetLinkController::class, 'store'])->middleware('doNotCacheResponse')->name('password.email');
 
     // Reset password routes
-    Route::get('reset-password/{token}', [NewPasswordController::class, 'create'])->name('password.reset');
-    Route::post('reset-password', [NewPasswordController::class, 'store'])->name('password.store');
+    Route::get('reset-password/{token}', [NewPasswordController::class, 'create'])->middleware('doNotCacheResponse')->name('password.reset');
+    Route::post('reset-password', [NewPasswordController::class, 'store'])->middleware('doNotCacheResponse')->name('password.store');
 });
 
 // Email verification routes
 Route::middleware('auth')->group(function () {
-    Route::get('email/verify', [EmailVerificationController::class, 'showVerificationForm'])
+    Route::get('email/verify', [EmailVerificationController::class, 'showVerificationForm'])->middleware('doNotCacheResponse')
         ->name('verification.notice');
-    Route::post('email/verification-notification', [EmailVerificationController::class, 'resendVerification'])
+    Route::post('email/verification-notification', [EmailVerificationController::class, 'resendVerification'])->middleware('doNotCacheResponse')
         ->name('verification.send');
 
-    Route::post('email/verification/resend', [EmailVerificationController::class, 'resendVerification'])
+    Route::post('email/verification/resend', [EmailVerificationController::class, 'resendVerification'])->middleware('doNotCacheResponse')
         ->name('verification.resend');
-        Route::post('/send-verification', [EmailVerificationController::class, 'sendVerification']);
+        Route::post('/send-verification', [EmailVerificationController::class, 'sendVerification'])->middleware('doNotCacheResponse');
 });
-Route::get('email/verify/{token}', [EmailVerificationController::class, 'verify'])->name('verification.verify');
+Route::get('email/verify/{token}', [EmailVerificationController::class, 'verify'])->middleware('doNotCacheResponse')->name('verification.verify');
 
 
 // Onboarding route (accessible only after registration)
@@ -54,14 +54,14 @@ Route::middleware('auth')->group(function () {
 
 
 
-    Route::get('confirm-password', [ConfirmablePasswordController::class, 'show'])
+    Route::get('confirm-password', [ConfirmablePasswordController::class, 'show'])->middleware('doNotCacheResponse')
         ->name('password.confirm');
 
-    Route::post('confirm-password', [ConfirmablePasswordController::class, 'store']);
+    Route::post('confirm-password', [ConfirmablePasswordController::class, 'store'])->middleware('doNotCacheResponse');
 
-    Route::put('password', [PasswordController::class, 'update'])->name('password.update');
+    Route::put('password', [PasswordController::class, 'update'])->name('password.update')->middleware('doNotCacheResponse');
 
-    Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
+    Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])->middleware('doNotCacheResponse')
         ->name('logout');
 });
 

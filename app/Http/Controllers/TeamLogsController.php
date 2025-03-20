@@ -9,6 +9,7 @@ class TeamLogsController extends Controller
 {
     public function showTeamLogs()
     {
+       
         // Get the currently authenticated user
         $user = auth()->user();
 

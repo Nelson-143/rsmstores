@@ -102,61 +102,63 @@
                 </tr>
             </thead>
             <tbody>
-                @forelse ($products as $product)
-                    <tr>
-                        <td class="align-middle text-center">
-                            {{ $loop->iteration }}
-                        </td>
-                        <td class="align-middle text-center">
-                            <img style="width: 90px;"
-                            src="{{ $product->product_image ? asset($product->product_image) : asset('assets/img/products/default.webp') }}"
-                            alt="{{ $product->name }}">
-
-                                {{-- <img style="width: 90px;"
-                                 src="{{ asset($product->product_image) }}"
-                                 alt="{{ $product->name }}"> --}}
-                        </td>
-                        <td class="align-middle text-center">
-                            {{ $product->name }}
-                        </td>
-                        <td class="align-middle text-center">
-                            {{ $product->code }}
-                        </td>
-                        <td class="align-middle text-center">
-                            {{ $product->category ? $product->category->name : '--' }}
-                        </td>
-                        <td class="align-middle text-center">
-                            {{ $product->supplier? $product->supplier->name : '--' }}
-                        </td>
-                        <td class="align-middle text-center">
-                            {{ $product->quantity }}
-                        </td>
-                        <td class="align-middle text-center" style="width: 10%">
-                            <x-button.show class="btn-icon" route="{{ route('products.show', $product->uuid ) }}" />
-                            <x-button.edit class="btn-icon" route="{{ route('products.edit', $product->uuid) }}" />
-                            <x-button.delete class="btn-icon" route="{{ route('products.destroy', $product->uuid) }}"
-                                onclick="return confirm('Are you sure to delete product {{ $product->name }} ?')" />
-                        </td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td class="align-middle text-center" colspan="7">
-                            No results found
-                        </td>
-                    </tr>
-                @endforelse
-            </tbody>
+    @php
+        // Debugging: Log the products variable
+        \Log::info('Products in view:', $products->toArray());
+    @endphp
+  
+   
+    @forelse ($products as $product)
+        <tr>
+            <td class="align-middle text-center">
+                {{ $loop->iteration }}
+            </td>
+            <td class="align-middle text-center">
+                <img style="width: 90px;"
+                     src="{{ $product->product_image ? asset($product->product_image) : asset('assets/img/products/default.webp') }}"
+                     alt="{{ $product->name }}">
+            </td>
+            <td class="align-middle text-center">
+                {{ $product->name }}
+            </td>
+            <td class="align-middle text-center">
+                {{ $product->code }}
+            </td>
+            <td class="align-middle text-center">
+                {{ $product->category ? $product->category->name : '--' }}
+            </td>
+            <td class="align-middle text-center">
+                {{ $product->supplier ? $product->supplier->name : '--' }}
+            </td>
+            <td class="align-middle text-center">
+                {{ $product->quantity }}
+            </td>
+            <td class="align-middle text-center" style="width: 10%">
+                <x-button.show class="btn-icon" route="{{ route('products.show', $product->uuid) }}" />
+                <x-button.edit class="btn-icon" route="{{ route('products.edit', $product->uuid) }}" />
+                <x-button.delete class="btn-icon" route="{{ route('products.destroy', $product->uuid) }}"
+                                 onclick="return confirm('Are you sure to delete product {{ $product->name }} ?')" />
+            </td>
+        </tr>
+    @empty
+        <tr>
+            <td class="align-middle text-center" colspan="7">
+                No results found
+            </td>
+        </tr>
+    @endforelse
+</tbody>
         </table>
     </div>
 
     <div class="card-footer d-flex align-items-center">
-        <p class="m-0 text-secondary">
-            Showing <span>{{ $products->firstItem() }}</span>
-            to <span>{{ $products->lastItem() }}</span> of <span>{{ $products->total() }}</span> entries
-        </p>
+    <p class="m-0 text-secondary">
+        Showing <span>{{ $products->firstItem() }}</span>
+        to <span>{{ $products->lastItem() }}</span> of <span>{{ $products->total() }}</span> entries
+    </p>
 
-        <ul class="pagination m-0 ms-auto">
-            {{ $products->links() }}
-        </ul>
-    </div>
+    <ul class="pagination m-0 ms-auto">
+        {{ $products->links() }}
+    </ul>
+</div>
 </div>

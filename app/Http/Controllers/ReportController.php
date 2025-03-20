@@ -25,6 +25,7 @@ class ReportController extends Controller
 
     public function index(Request $request)
     {
+       
         $userId = auth()->id();
         $accountId = auth()->user()->account_id;
     

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8ca0765415b3aca317bdd53da4ac12e3",
+    "content-hash": "0e657e2f3108fcf35a9c2828b5833ca5",
     "packages": [
         {
             "name": "anayarojo/shoppingcart",
@@ -8448,6 +8448,47 @@
                 }
             ],
             "time": "2025-01-17T11:26:11+00:00"
+        },
+        {
+            "name": "taitech/azampay",
+            "version": "1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tairocruiz/azampay.git",
+                "reference": "437d2865239d9f343680f536adae97b366dab66f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/tairocruiz/azampay/zipball/437d2865239d9f343680f536adae97b366dab66f",
+                "reference": "437d2865239d9f343680f536adae97b366dab66f",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "^7.5",
+                "php": "^8.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Taitech\\Azampay\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Aman Simon Tairo",
+                    "email": "tairocruise@yahoo.com"
+                }
+            ],
+            "description": "A package library for integrating your composer/php-based project with AzamPay",
+            "support": {
+                "issues": "https://github.com/tairocruiz/azampay/issues",
+                "source": "https://github.com/tairocruiz/azampay/tree/1.0.2"
+            },
+            "time": "2024-12-04T12:20:25+00:00"
         },
         {
             "name": "tijsverkoyen/css-to-inline-styles",

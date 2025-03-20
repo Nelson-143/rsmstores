@@ -14,7 +14,7 @@ use Illuminate\Http\Request;
 use Picqer\Barcode\BarcodeGeneratorHTML;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-
+use Log;
 class ProductController extends Controller
 {
     public function __construct()
@@ -22,18 +22,16 @@ class ProductController extends Controller
         $this->middleware('auth'); // Ensure authentication
     }
 
-    public function index()
-    {
-        // Get the logged-in user's account_id
-        $accountId = auth()->user()->account_id;
-        
-        // Fetch products for the logged-in user's account
-        $products = Product::where('account_id', $accountId)
-                            ->where('user_id', auth()->id())
-                            ->get();
-        
-        return view('products.index', compact('products'));
-    }
+  public function index()
+{
+    // Get the logged-in user's account_id
+    $accountId = auth()->user()->account_id;
+    // Fetch products for the logged-in user's account
+    $products = Product::where('account_id', $accountId)
+    ->paginate(10);
+
+    return view('products.index', compact('products'));
+}
 
     public function create(Request $request)
     {

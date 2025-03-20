@@ -11,12 +11,10 @@ class AccountScope implements Scope
     public function apply(Builder $builder, Model $model)
     {
         // Get the authenticated user
-        $user = Auth::user();
-
-        // Apply the account filter if the user is logged in and not a Super Admin
-        if ($user && $user->role !== 'Super Admin') { // Replace with your custom role check
-            $builder->where('account_id', $user->account_id);
-        }
+    
+            $accountId = auth()->user()->account_id;
+            $builder->where('account_id', $accountId);
+        
     }
 }
 

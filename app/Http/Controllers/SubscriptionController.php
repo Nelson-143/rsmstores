@@ -22,7 +22,7 @@ class SubscriptionController extends Controller
 
     public function create()
     {
-        return view('subscriptions.create');
+        return view('subscriptions.pay');
     }
 
     public function store(Request $request)
@@ -89,5 +89,35 @@ public function subscribe(Request $request, $planId)
 //$user->subscription()->associate($plan);
 //$user->save();
     return redirect()->route('dashboard')->with('success', 'You have successfully subscribed to the ' . $plan->name . ' plan.');
+}
+
+public function pay($subscriptionId)
+{
+    $subscription = Subscription::findOrFail($subscriptionId);
+    return view('subscriptions.pay', compact('subscription'));
+}
+
+public function processPayment(Request $request, $subscriptionId)
+{
+    $subscription = Subscription::findOrFail($subscriptionId);
+    $user = auth()->user();
+
+    // Simulate payment processing (replace with actual payment gateway logic)
+    $paymentStatus = 'success'; // Assume payment is successful
+
+    if ($paymentStatus === 'success') {
+        // Save user subscription
+        UserSubscription::create([
+            'user_id' => $user->id,
+            'subscription_id' => $subscription->id,
+            'starts_at' => now(),
+            'ends_at' => now()->addMonth(), // 1-month subscription
+            'status' => 'active',
+        ]);
+
+        return redirect()->route('subscriptions.index')->with('success', 'Payment successful! Your subscription is now active.');
+    } else {
+        return redirect()->route('subscriptions.pay', $subscriptionId)->with('error', 'Payment failed. Please try again.');
+    }
 }
 }
