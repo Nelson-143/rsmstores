@@ -31,50 +31,50 @@
                                         <input type="date" name="date" class="form-control" value="{{ old('date') ?? now()->format('Y-m-d') }}" required>
                                     </div>
                                     <div class="col-md-4">
-                                        <label for="supplier_id" class="form-label required">Supplier</label>
+                                        <label for="supplier_id" class="form-label required">{{ __('Supplier') }}</label>
                                         <select name="supplier_id" class="form-select" required>
-                                            <option value="">Select Supplier</option>
+                                            <option value="">{{ __('Select Supplier') }}</option>
                                             @foreach($suppliers as $supplier)
                                                 <option value="{{ $supplier->id }}">{{ $supplier->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
                                     <div class="col-md-4">
-                                        <label for="reference" class="form-label required">Reference</label>
+                                        <label for="reference" class="form-label required">{{ __('Reference') }}</label>
                                         <input type="text" name="reference" class="form-control" required>
                                     </div>
                                 </div>
                                 <div class="row gx-3 mb-3">
                                     <div class="col-md-12">
-                                        <label for="tax_rate" class="form-label required">Tax Rate (%)</label>
+                                        <label for="tax_rate" class="form-label required"> {{ __('Tax Rate') }}(%)</label>
                                         <input type="number" name="tax_rate" class="form-control" required min="0" step="0.01">
                                     </div>
                                 </div>
                                 <div id="products">
                                     <div class="row gx-3 mb-3" id="product_0">
                                         <div class="col-md-4">
-                                            <label for="product_id_0" class="form-label required">Product</label>
+                                            <label for="product_id_0" class="form-label required">{{ __('Product') }}</label>
                                             <select name="products[0][id]" class="form-select" required onchange="updateUnitCost(this)">
-                                                <option value="">Select Product</option>
+                                                <option value="">{{ __('Select Product') }}</option>
                                                 @foreach($products as $product)
                                                 <option value="{{ $product->id }}" data-buying-price="{{ $product->buying_price }}">{{ $product->name }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
                                         <div class="col-md-4">
-                                            <label for="quantity_0" class="form-label required">Quantity</label>
+                                            <label for="quantity_0" class="form-label required">{{ __('Quantity') }}</label>
                                             <input type="number" name="products[0][quantity]" class="form-control" required min="1">
                                         </div>
                                         <div class="col-md-4">
-                                            <label for="unitcost_0" class="form-label">Unit Cost</label>
+                                            <label for="unitcost_0" class="form-label">{{ __('Unit Cost') }}</label>
                                             <input type="number" name="products[0][unitcost]" class="form-control" required min="0" step="0.01" readonly>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="card-footer text-end" style="direction:rtl">
-                                <button type="submit" class="btn btn-primary">Create Purchase</button>
-                                <button type="button" id="addProduct" class="btn btn-secondary">Add Another Product</button>
+                                <button type="submit" class="btn btn-primary">{{ __('Create Purchase') }}</button>
+                                <button type="button" id="addProduct" class="btn btn-secondary">{{ __('Add Another Product') }}</button>
                             </div>
                             <div id="errorMessages" class="mt-3" style="display:none;">
                                 <div class="alert alert-danger" role="alert"></div>

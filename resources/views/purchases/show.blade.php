@@ -108,14 +108,14 @@
             <thead class="thead-light">
                 <tr>
                     <th scope="col" class="align-middle text-center">No.</th>
-                    <th scope="col" class="align-middle text-center">Photo</th>
-                    <th scope="col" class="align-middle text-center">Product Name</th>
-                    <th scope="col" class="align-middle text-center">Product Code</th>
-                    <th scope="col" class="align-middle text-center">Previous Stock</th>
-                    <th scope="col" class="align-middle text-center">Stock During Purchase</th>
-                    <th scope="col" class="align-middle text-center">Quantity Bought</th>
-                    <th scope="col" class="align-middle text-center">Unit Price</th>
-                    <th scope="col" class="align-middle text-center">Total</th>
+                    <th scope="col" class="align-middle text-center">{{ __('Photo') }}</th>
+                    <th scope="col" class="align-middle text-center">{{ __('Product Name') }}</th>
+                    <th scope="col" class="align-middle text-center">{{ __('Product Code') }}</th>
+                    <th scope="col" class="align-middle text-center">{{ __('Previous Stock') }}</th>
+                    <th scope="col" class="align-middle text-center">{{ __('Stock During Purchase') }}</th>
+                    <th scope="col" class="align-middle text-center">{{ __('Quantity Bought') }}</th>
+                    <th scope="col" class="align-middle text-center">{{ __('Unit Price') }}</th>
+                    <th scope="col" class="align-middle text-center">{{ __('Total') }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -146,15 +146,15 @@
                     </tr>
                 @endforeach
                 <tr>
-                    <td class="align-middle text-end" colspan="8">Total</td>
+                    <td class="align-middle text-end" colspan="8">{{ __('Total') }}</td>
                     <td class="align-middle text-center">{{ number_format($purchase->details->sum('total'), 2) }}</td>
                 </tr>
                 <tr>
-                    <td class="align-middle text-end" colspan="8">Taxes</td>
+                    <td class="align-middle text-end" colspan="8">{{ __('Taxes') }}</td>
                     <td class="align-middle text-center">{{ number_format($purchase->total_amount - ($purchase->details->sum('total')), 2) }}</td>
                 </tr>
                 <tr>
-                    <td class="align-middle text-end" colspan="8">Grand Total</td>
+                    <td class="align-middle text-end" colspan="8">{{ __('Grand Total') }}</td>
                     <td class="align-middle text-center">{{ number_format($purchase->total_amount, 2) }}</td>
                 </tr>
             </tbody>

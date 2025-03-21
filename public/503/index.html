@@ -1,12 +1,12 @@
 <meta charset="UTF-8">
-<link rel="stylesheet" type="text/css" href="{{ asset('503/style.css') }}">
-<link rel="stylesheet" type="text/css" href="{{ asset('503/oxygen.fonts.css') }}">
+<link rel="stylesheet" type="text/css" href="style.css">
+<link rel="stylesheet" type="text/css" href="oxygen.fonts.css">
 <div class="container">
         <div class="error">
             <h1>503</h1>
-            <h2>Ohh Sorry!</h2>
-            <p>Roman Stock Manager is undergoing updates. We’ll be back shortly.</p>
-            <p class="subtitle">🚧 We’re Under Maintenance 🚧</p>
+            <h2>error</h2>
+            <p>Oh no, este sitio está temporalmente no disponible. Intenta acceder nuevamente más tarde</p>
+            <p class="subtitle">ERR_SERVICE_UNAVAILABLE</p>
         </div>
         <div class="stack-container">
             <div class="card-container">
@@ -113,7 +113,7 @@
             </div>
         </div>
     <footer>
-    <p class="copyright">&copy;{{ date('Y') }}RomanStockManager.</p>
+    <p>Copyright &copy; {{ date('Y') }} | RomanStockManager</p>
     </footer>
     </div>
     <style>
@@ -138,4 +138,4 @@
             bottom:0;
         }
     </style>
-	<script type="text/javascript" src="{{ asset('503/script.js') }}"></script>
+	<script type="text/javascript" src="script.js"></script>

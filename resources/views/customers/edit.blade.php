@@ -76,21 +76,21 @@
 
                                             <select class="form-select @error('bank_name') is-invalid @enderror"
                                                 id="bank_name" name="bank_name">
-                                                <option selected="" disabled>Select a bank:</option>
-                                                <option value="BRI"
-                                                    @if (old('bank_name', $customer->bank_name) == 'BRI') selected="selected" @endif>BRI
+                                                <option selected="" disabled>{{ __('Select a bank') }}:</option>
+                                                <option value="CRDB"
+                                                    @if (old('bank_name', $customer->bank_name) == 'CRDB') selected="selected" @endif>CRDB
                                                 </option>
-                                                <option value="BNI"
-                                                    @if (old('bank_name', $customer->bank_name) == 'BNI') selected="selected" @endif>BNI
+                                                <option value="NMB"
+                                                    @if (old('bank_name', $customer->bank_name) == 'NMB') selected="selected" @endif>NMB
                                                 </option>
-                                                <option value="BCA"
-                                                    @if (old('bank_name', $customer->bank_name) == 'BCA') selected="selected" @endif>BCA
+                                                <option value="NBC"
+                                                    @if (old('bank_name', $customer->bank_name) == 'NBC') selected="selected" @endif>NBC
                                                 </option>
-                                                <option value="BSI"
-                                                    @if (old('bank_name', $customer->bank_name) == 'BSI') selected="selected" @endif>BSI
+                                                <option value="TCB"
+                                                    @if (old('bank_name', $customer->bank_name) == 'TCB') selected="selected" @endif>TCB
                                                 </option>
-                                                <option value="Mandiri"
-                                                    @if (old('bank_name', $customer->bank_name) == 'Mandiri') selected="selected" @endif>Mandiri
+                                                <option value="Other Banks"
+                                                    @if (old('bank_name', $customer->bank_name) == 'Other Banks') selected="selected" @endif> {{ __('Other Banks') }}
                                                 </option>
                                             </select>
 

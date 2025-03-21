@@ -31,15 +31,15 @@
 
                     @if($diffInDays < 0)
                         <div class="alert alert-danger">
-                            This product has expired.
+                            {{ __('This product has expired.') }}
                         </div>
                     @elseif($diffInDays <= 7)
                         <div class="alert alert-warning">
-                            This product will expire in {{ $diffInDays }} days.
+                            {{ __('This product will expire in') }} {{ $diffInDays }} {{ __('days') }}.
                         </div>
                     @elseif($diffInDays <= 30)
                         <div class="alert alert-info">
-                            This product will expire in {{ $diffInDays }} days.
+                            {{ __('This product will expire in') }} {{ $diffInDays }} {{ __('days') }}.
                         </div>
                     @endif
                 @endif
@@ -104,11 +104,11 @@
                                 <table class="table table-bordered card-table table-vcenter text-nowrap datatable">
                                     <tbody>
                                         <tr>
-                                            <td>Name</td>
+                                            <td>{{ __('Name') }}</td>
                                             <td>{{ $product->name }}</td>
                                         </tr>
                                         <tr>
-                                            <td>Slug</td>
+                                            <td>{{ __('Slug') }}</td>
                                             <td>{{ $product->slug }}</td>
                                         </tr>
                                         <tr>
@@ -120,7 +120,7 @@
                                             <td>{!! $barcode !!}</td>
                                         </tr>
                                         <tr>
-                                            <td>Category</td>
+                                            <td>{{ __('Category') }}</td>
                                             <td>
                                                 <a href="{{ route('categories.show', $product->category) }}"
                                                     class="badge bg-blue-lt">
@@ -129,7 +129,7 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td>Unit</td>
+                                            <td>{{ __('Unit') }}</td>
                                             <td>
                                                 <a href="{{ route('units.show', $product->unit) }}"
                                                     class="badge bg-blue-lt">
@@ -139,11 +139,11 @@
                                         </tr>
 
                                         <tr>
-                                            <td>Quantity</td>
+                                            <td>{{ __('Quantity') }}</td>
                                             <td>{{ $product->quantity }}</td>
                                         </tr>
                                         <tr>
-                                            <td>Quantity Alert</td>
+                                            <td>{{ __('Quantity Alert') }}</td>
                                             <td>
                                                 <span class="badge bg-red-lt">
                                                     {{ $product->quantity_alert }}
@@ -152,15 +152,15 @@
                                         </tr>
 
                                         <tr>
-                                            <td>Buying Price</td>
+                                            <td>{{ __('Buying Price') }}</td>
                                             <td>{{ $product->buying_price }}</td>
                                         </tr>
                                         <tr>
-                                            <td>Selling Price</td>
+                                            <td>{{ __('Selling Price') }}</td>
                                             <td>{{ $product->selling_price }}</td>
                                         </tr>
                                         <tr>
-                                            <td>Tax</td>
+                                            <td>{{ __('Tax') }}</td>
                                             <td>
                                                 <span class="badge bg-red-lt">
                                                     {{ $product->tax }} %
@@ -168,11 +168,11 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td>Tax Type</td>
+                                            <td>{{ __('Tax Type') }}</td>
                                             <td>{{ $product->tax_type }}</td>
                                         </tr>
                                        <tr>
-                                            <td>Expire Date</td>
+                                            <td>{{ __('Expire Date') }}</td>
                                             <td>
                                                 <span class="badge bg-red-lt">
                                                     {{ $product->expire_date }}

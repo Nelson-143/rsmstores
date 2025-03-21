@@ -37,11 +37,11 @@
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Supplier</th>
-                                <th>Date</th>
-                                <th>Total</th>
-                                <th>Status</th>
-                                <th>Actions</th>
+                                <th>{{ __('Supplier') }}</th>
+                                <th>{{ __('Date') }}</th>
+                                <th>{{ __('Total') }}</th>
+                                <th>{{ __('Status') }}</th>
+                                <th>{{ __('Actions') }}</th>
                             </tr>
                         </thead>
                         <tbody>

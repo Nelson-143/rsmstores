@@ -1,7 +1,7 @@
 @extends('layouts.tabler')
 
 @section('title')
-    Stock Transfer
+    {{ __('Stock Transfer') }}
 @endsection
 
 @section('me')
@@ -22,8 +22,8 @@
                             It seems there are no products available at the moment. Try adding new products later.
                         </p>
                         <div class="d-flex justify-content-center gap-3 mt-3">
-                            <a href="{{ route('products.create') }}" class="btn btn-primary">Add Product</a>
-                            <a href="{{ route('products.import.view') }}" class="btn btn-success">Import Products</a>
+                            <a href="{{ route('products.create') }}" class="btn btn-primary">{{ __('Add Product') }}</a>
+                            <a href="{{ route('products.import.view') }}" class="btn btn-success">{{ __('Import Products') }}</a>
                         </div>
                     </div>
                 </div>
@@ -45,10 +45,10 @@
                 <div class="col-md-12">
                     <div class="card shadow-sm">
                         <div class="card-header bg-white d-flex justify-content-between align-items-center">
-                            <h4 class="mb-0">Stock Transfer</h4>
+                            <h4 class="mb-0">{{ __('Stock Transfer') }}</h4>
                             <div class="btn-group" role="group">
-                                <a href="{{ route('products.create') }}" class="btn btn-primary me-2">Add Product</a>
-                                <a href="{{ route('products.import.view') }}" class="btn btn-success">Import Products</a>
+                                <a href="{{ route('products.create') }}" class="btn btn-primary me-2">{{ __('Add Product') }}</a>
+                                <a href="{{ route('products.import.view') }}" class="btn btn-success">{{ __('Import Products') }}</a>
                             </div>
                         </div>
                         <div class="card-body">

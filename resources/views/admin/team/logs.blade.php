@@ -1,7 +1,7 @@
 @extends('layouts.tabler')
 
 @section('title')
-    Team Logs
+    {{ __('Team Logs') }}
 @endsection
 @section('me')
     @parent
@@ -9,14 +9,14 @@
 
 @section('Damage')
 <div class="container">
-    <h2>Activity Logs for your Team</h2>
+    <h2>{{ __('Activity Logs for your Team') }}</h2>
     <table class="table">
         <thead>
             <tr>
-                <th>Date</th>
-                <th>User</th>
-                <th>Activity</th>
-                <th>Details</th>  
+                <th>{{ __('Date') }}</th>
+                <th>{{ __('User') }}</th>
+                <th>{{ __('Activity') }}</th>
+                <th>{{ __('Details') }}</th>  
             </tr>
         </thead>
         <tbody>

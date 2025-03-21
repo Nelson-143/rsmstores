@@ -36,16 +36,9 @@
                 <nav class="bringer-nav">
                     <ul class="main-menu" data-stagger-appear="fade-down" data-stagger-delay="75">
                     <a href="{{ route('about_master.route') }}">HOME</a>
+                           
                         <li>
-                            <a href="#">ABOUT RSM</a>
-                            <ul class="sub-menu">
-                                <li>
-                                    <a href="{{ route('habout.route') }}">About Us</a>
-                                </li>
-                                <li>
-                                    <a href="{{ route('team.route') }}">Team Member</a>
-                                </li>
-                            </ul>
+                            <a href="{{ route('habout.route') }}">ABOUT US</a>
                         </li>
                         <li>
                         <a href="{{ route('service.route') }} ">SERVICES</a>
@@ -56,16 +49,18 @@
                         <li>
                             <a href="{{ route('contact.route') }} ">CONTACT</a>
                         </li>
-                    </ul>
-                </nav>
-            </div>
-            <!-- Header Button -->
-            <div class="bringer-header-rp">
+                        <div class="bringer-header-mp">
                 <a href="{{ route('login') }}" class="bringer-button">Login</a>
             </div>
-            <div class="bringer-header-rp">
+            <div class="bringer-header-mp">
                 <a href="{{ route('register') }}" class="bringer-button">SignUp</a>
             </div>
+                    </ul>
+                    <!-- Header Button -->
+           
+                </nav>
+            </div>
+            
         </div>
         <!-- Mobile Header -->
         <div class="bringer-mobile-header-inner">

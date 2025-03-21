@@ -66,11 +66,11 @@
 
                                     <div class="col-sm-6 col-md-6">
                                         <label for="type" class="form-label required">
-                                            Type of supplier
+                                           {{ __(' Type of supplier') }}
                                         </label>
 
                                         <select class="form-select @error('type') is-invalid @enderror" id="type" name="type">
-                                            <option selected="" disabled="">Select a type:</option>
+                                            <option selected="" disabled="">{{ __('Select a type') }}:</option>
 
                                             @foreach(\App\Enums\SupplierType::cases() as $supplierType)
                                                 <option value="{{ $supplierType->value }}" @selected(old('type') == $supplierType->value)>
@@ -88,17 +88,16 @@
 
                                     <div class="col-sm-6 col-md-6">
                                         <label for="bank_name" class="form-label required">
-                                            Bank Name
+                                            {{ __('Bank Name') }}
                                         </label>
 
                                         <select class="form-select form-control-solid @error('bank_name') is-invalid @enderror" id="bank_name" name="bank_name">
-                                            <option selected="" disabled="">Select a bank:</option>
+                                            <option selected="" disabled="">{{ __('Select a bank') }}:</option>
                                             <option value="CRDB" @if(old('bank_name') == 'CRDB')selected="selected"@endif>CRDB</option>
                                             <option value="NMB" @if(old('bank_name') == 'NMB')selected="selected"@endif>NMB</option>
                                             <option value="NBC" @if(old('bank_name') == 'NBC')selected="selected"@endif>NBC</option>
                                             <option value="TCB" @if(old('bank_name') == 'TCB')selected="selected"@endif>TCB</option>
-                                            <option value="Maendeleo Bank" @if(old('bank_name') == 'Maendeleo Bank')selected="selected"@endif>Maendeleo Bank</option>
-                                            <option value="Other Bank" @if(old('bank_name') == 'Other Bank')selected="selected"@endif>Other Bank</option>
+                                            <option value="Other Bank" @if(old('bank_name') == 'Other Bank')selected="selected"@endif>{{ __('Other Bank') }}</option>
 
                                         </select>
                                         @error('bank_name')

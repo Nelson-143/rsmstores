@@ -87,13 +87,14 @@
                                         <div class="col-sm-6 col-md-6">
                                             <div class="mb-3">
                                                 <label for="category_id" class="form-label">
-                                                    Product category
+                                                   {{ __('Product category') }}
                                                     <span class="text-danger">*</span>
                                                 </label>
 
                                                 <select name="category_id" id="category_id"
                                                     class="form-select @error('category_id') is-invalid @enderror">
-                                                    <option selected="" disabled="">Select a category:</option>
+                                                    <span class="text-danger">*</span>
+                                                    <option selected="" disabled="">{{ __('Select a category') }}:</option>
                                                     @foreach ($categories as $category)
                                                         <option value="{{ $category->id }}"
                                                             @if (old('category_id', $product->category_id) == $category->id) selected="selected" @endif>
@@ -112,13 +113,13 @@
                                         <div class="col-sm-6 col-md-6">
                                             <div class="mb-3">
                                                 <label for="supplier_id" class="form-label">
-                                                    Product supplier
+                                                    {{ __('Product supplier') }}
                                                     <span class="text-danger">*</span>
                                                 </label>
 
                                                 <select name="supplier_id" id="supplier_id"
                                                     class="form-select @error('supplier_id') is-invalid @enderror">
-                                                    <option selected="" disabled="">Select a supplier:</option>
+                                                    <option selected="" disabled="">{{ __('Select a supplier') }}:</option>
                                                     @foreach ($suppliers as $supplier)
                                                         <option value="{{ $supplier->id }}"
                                                             @if (old('supplier_id', $product->supplier_id) == $supplier->id) selected="selected" @endif>
@@ -144,7 +145,7 @@
                                                 <select name="unit_id" id="unit_id"
                                                     class="form-select @error('unit_id') is-invalid @enderror">
                                                     <option selected="" disabled="">
-                                                        Select a unit:
+                                                        {{ __('Select a unit') }}:
                                                     </option>
 
                                                     @foreach ($units as $unit)
@@ -165,7 +166,7 @@
                                         <div class="col-sm-6 col-md-6">
                                             <div class="mb-3">
                                                 <label class="form-label" for="buying_price">
-                                                    Buying price
+                                                    {{ __('Buying Price') }}
                                                     <span class="text-danger">*</span>
                                                 </label>
 
@@ -185,7 +186,7 @@
                                         <div class="col-sm-6 col-md-6">
                                             <div class="mb-3">
                                                 <label for="selling_price" class="form-label">
-                                                    Selling price
+                                                    {{ __('Selling Price') }}
                                                     <span class="text-danger">*</span>
                                                 </label>
 

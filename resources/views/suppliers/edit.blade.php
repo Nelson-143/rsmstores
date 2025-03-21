@@ -56,7 +56,7 @@
 
                                     <div class="col-sm-6 col-md-6">
                                         <label for="type" class="form-label required">
-                                            Type of supplier
+                                            {{ __('Type of supplier') }}
                                         </label>
 
                                         <select class="form-select @error('type') is-invalid @enderror" id="type" name="type">
@@ -76,16 +76,16 @@
 
                                     <div class="col-sm-6 col-md-6">
                                         <label for="bank_name" class="form-label required">
-                                            Bank Name
+                                            {{ __('Bank Name') }}
                                         </label>
 
                                         <select class="form-select @error('bank_name') is-invalid @enderror" id="bank_name" name="bank_name">
-                                            <option selected="" disabled="">Select a bank:</option>
-                                            <option value="BRI" @if(old('bank_name', $supplier->bank_name) == 'BRI')selected="selected"@endif>BRI</option>
-                                            <option value="BNI" @if(old('bank_name', $supplier->bank_name) == 'BNI')selected="selected"@endif>BNI</option>
-                                            <option value="BCA" @if(old('bank_name', $supplier->bank_name) == 'BCA')selected="selected"@endif>BCA</option>
-                                            <option value="BSI" @if(old('bank_name', $supplier->bank_name) == 'BSI')selected="selected"@endif>BSI</option>
-                                            <option value="Mandiri" @if(old('bank_name', $supplier->bank_name) == 'Mandiri')selected="selected"@endif>Mandiri</option>
+                                            <option selected="" disabled="">{{ __('Select a bank') }}:</option>
+                                            <option value="CRDB" @if(old('bank_name', $supplier->bank_name) == 'CRDB')selected="selected"@endif>CRDB</option>
+                                            <option value="NMB" @if(old('bank_name', $supplier->bank_name) == 'NMB')selected="selected"@endif>NMB</option>
+                                            <option value="NBC" @if(old('bank_name', $supplier->bank_name) == 'NBC')selected="selected"@endif>NBC</option>
+                                            <option value="TCB" @if(old('bank_name', $supplier->bank_name) == 'TCB')selected="selected"@endif>TCB</option>
+                                            <option value="Other Banks" @if(old('bank_name', $supplier->bank_name) == 'Other Banks')selected="selected"@endif>{{ __('Other Banks') }}</option>
                                         </select>
 
                                         @error('bank_name')

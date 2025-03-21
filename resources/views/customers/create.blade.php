@@ -56,25 +56,25 @@
                                     <div class="col-md-12">
                                         <x-input name="name" :required="true"/>
 
-                                        <x-input name="email" label="Email address" :required="true"/>
+                                        <x-input name="email" label="{{ __('Email address') }}" :required="true"/>
                                     </div>
 
                                     <div class="col-sm-6 col-md-6">
-                                        <x-input label="Phone Number" name="phone" :required="true"/>
+                                        <x-input label="{{ __('Phone Number') }}" name="phone" :required="true"/>
                                     </div>
 
                                     <div class="col-sm-6 col-md-6">
                                         <label for="bank_name" class="form-label">
-                                            Bank Name
+                                            {{ __('Bank Name') }}
                                         </label>
 
                                         <select class="form-select form-control-solid @error('bank_name') is-invalid @enderror" id="bank_name" name="bank_name">
-                                            <option selected="" disabled="">Select a bank:</option>
+                                            <option selected="" disabled="">{{ __('Select a bank') }}:</option>
                                             <option value="CRDB" @if(old('bank_name') == 'CRDB')selected="selected"@endif>CRDB</option>
                                             <option value="NMB" @if(old('bank_name') == 'NMB')selected="selected"@endif>NMB</option>
                                             <option value="NBC" @if(old('bank_name') == 'NBC')selected="selected"@endif>NBC</option>
                                             <option value="TCB" @if(old('bank_name') == 'TCB')selected="selected"@endif>TCB</option>
-                                            <option value="Maendeleo Bank" @if(old('bank_name') == 'Maendeleo Bank')selected="selected"@endif>Maendeleo Bank</option>
+                                            <option value="Other Banks" @if(old('bank_name') == 'Other Banks')selected="selected"@endif>{{ __('Other Banks') }}</option>
                                         </select>
 
                                         @error('bank_name')
@@ -86,16 +86,16 @@
 
 
                                     <div class="col-sm-6 col-md-6">
-                                        <x-input label="Account holder" name="account_holder" />
+                                        <x-input label="{{ __('Account holder') }}" name="account_holder" />
                                     </div>
 
                                     <div class="col-sm-6 col-md-6">
-                                        <x-input label="Account number" name="account_number" />
+                                        <x-input label="{{ __('Account number') }}" name="account_number" />
                                     </div>
 
                                     <div class="mb-3">
                                         <label for="address" class="form-label required">
-                                            Address
+                                            {{ __('Address') }}
                                         </label>
 
                                         <textarea name="address"

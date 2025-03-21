@@ -36,11 +36,11 @@
                         <thead class="thead-light">
                             <tr>
                                 <th scope="col" class="text-center">No.</th>
-                                <th scope="col" class="text-center">Purchase</th>
-                                <th scope="col" class="text-center">Supplier</th>
-                                <th scope="col" class="text-center">Date</th>
-                                <th scope="col" class="text-center">Total</th>
-                                <th scope="col" class="text-center">Action</th>
+                                <th scope="col" class="text-center">{{ __('Purchase') }}</th>
+                                <th scope="col" class="text-center">{{ __('Supplier') }}</th>
+                                <th scope="col" class="text-center">{{ __('Date') }}</th>
+                                <th scope="col" class="text-center">{{ __('Total') }}</th>
+                                <th scope="col" class="text-center">{{ __('Action') }}</th>
                             </tr>
                         </thead>
                         <tbody>

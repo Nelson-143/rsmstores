@@ -1,14 +1,14 @@
 @extends('layouts.tabler')
 @section('title')
-    Branch
+   {{ __(' Branch') }}
 @endsection
 
 @section('content')
 <div class="container">
     <div class="page-header d-flex justify-content-between align-items-center">
-        <h2 class="page-title">Branch Management</h2>
+        <h2 class="page-title">{{ __('Branch Management') }}</h2>
         <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#branchModal" @click="resetForm">
-            <i class="ti ti-plus"></i> Add Branch
+            <i class="ti ti-plus"></i> {{ __('Add Branch') }}
         </button>
     </div>
 
@@ -24,9 +24,9 @@
             <table class="table table-hover">
                 <thead class="bg-primary text-white">
                     <tr>
-                        <th>Name</th>
-                        <th>Status</th>
-                        <th>Actions</th>
+                        <th>{{ __('Name') }}</th>
+                        <th>{{ __('Status') }}</th>
+                        <th>{{ __('Actions') }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -42,19 +42,19 @@
                 <td>
                     <div class="dropdown">
                         <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                            Actions
+                            {{ __('Actions') }}
                         </button>
                         <ul class="dropdown-menu">
                             <li>
                                 <a class="dropdown-item text-warning" href="#" onclick="editBranch({{ json_encode($branch) }})">
-                                    <i class="ti ti-edit"></i> Edit
+                                    <i class="ti ti-edit"></i> {{ __('Edit') }}
                                 </a>
                             </li>
                             <li>
                                 <form action="{{ route('branches.destroy', $branch->id) }}" method="POST" onsubmit="return confirm('Are you sure?')">
                                     @csrf @method('DELETE')
                                     <button type="submit" class="dropdown-item text-danger">
-                                        <i class="ti ti-trash"></i> Disable
+                                        <i class="ti ti-trash"></i> {{ __('Disable') }}
                                     </button>
                                 </form>
                             </li>
@@ -84,7 +84,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="branchModalLabel">Add Branch</h5>
+                <h5 class="modal-title" id="branchModalLabel">{{ __('Add Branch') }}</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <form id="branchForm" action="{{ route('branches.store') }}" method="POST">
@@ -93,20 +93,20 @@
 
     <div class="modal-body">
         <div class="mb-3">
-            <label class="form-label">Branch Name</label>
+            <label class="form-label">{{ __('Branch Name') }}</label>
             <input type="text" class="form-control" name="name" id="name" required>
         </div>
         <div class="mb-3">
-            <label class="form-label">Status</label>
+            <label class="form-label">{{ __('Status') }}</label>
             <select class="form-select" name="status" id="status">
-                <option value="active">Active</option>
-                <option value="disabled">Disabled</option>
+                <option value="active">{{ __('Active') }}</option>
+                <option value="disabled">{{ __('Disabled') }}</option>
             </select>
         </div>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ __('Cancel') }}</button>
+        <button type="submit" class="btn btn-primary">{{ __('Save') }}</button>
     </div>
 </form>
         </div>

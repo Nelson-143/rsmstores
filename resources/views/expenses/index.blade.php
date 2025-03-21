@@ -12,16 +12,16 @@
     <div class="page-header d-print-none">
         <div class="row align-items-center">
             <div class="col">
-                <h2 class="page-title">Expense Management</h2>
-                <div class="text-muted mt-1">Track and manage your business expenses</div>
+                <h2 class="page-title">{{ __('Expense Management') }}</h2>
+                <div class="text-muted mt-1">{{ __('Track and manage your business expenses') }}</div>
             </div>
             <div class="col-auto ms-auto d-print-none">
                 <div class="d-flex">
                     <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addExpenseModal">
-                        <i class="fas fa-plus me-2"></i>Add Expense
+                        <i class="fas fa-plus me-2"></i>{{ __('Add Expense') }}
                     </button>
                     <button class="btn btn-secondary ms-2" data-bs-toggle="modal" data-bs-target="#categoryModal">
-                        <i class="fas fa-tags me-2"></i>Manage Categories
+                        <i class="fas fa-tags me-2"></i>{{ __('Manage Categories') }}
                     </button>
                 </div>
             </div>
@@ -31,9 +31,9 @@
     <!-- Filters -->
     <div class="row mb-3">
         <div class="col-md-4">
-            <label for="filter-category" class="form-label">Category</label>
+            <label for="filter-category" class="form-label">{{ __('Category') }}</label>
             <select id="expense-category" name="expense_category_id" class="form-select" required>
-                <option value="" selected disabled>Select Expense Category</option>
+                <option value="" selected disabled>{{ __('Select Expense Category') }}</option>
                 @foreach ($expenseCategories as $expenseCategory)
                     <option value="{{ $expenseCategory->id }}">{{ $expenseCategory->name }}</option>
                 @endforeach
@@ -41,22 +41,22 @@
 
         </div>
         <div class="col-md-4">
-            <label for="filter-date-from" class="form-label">From Date</label>
+            <label for="filter-date-from" class="form-label">{{ __('From Date') }}</label>
             <input type="date" id="filter-date-from" class="form-control">
         </div>
         <div class="col-md-4">
-            <label for="filter-date-to" class="form-label">To Date</label>
+            <label for="filter-date-to" class="form-label">{{ __('To Date') }}</label>
             <input type="date" id="filter-date-to" class="form-control">
         </div>
         <div class="col-md-12 mt-2">
-            <button class="btn btn-secondary w-100" onclick="filterExpenses()">Apply Filters</button>
+            <button class="btn btn-secondary w-100" onclick="filterExpenses()">{{ __('Apply Filters') }}</button>
         </div>
     </div>
 
     <!-- Expense Trends Chart -->
     <div class="card mb-4">
     <div class="card-header">
-        <h3 class="card-title">Expense Trends</h3>
+        <h3 class="card-title">{{ __('Expense Trends') }}</h3>
     </div>
     <div class="card-body">
         <canvas id="expenseTrendsChart"></canvas>
@@ -66,19 +66,19 @@
     <!-- Expense Table -->
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">Expense Records</h3>
+            <h3 class="card-title">{{ __('Expense Records') }}</h3>
         </div>
         <div class="table-responsive">
             <table class="table table-vcenter card-table" id="expensesTable">
                 <thead>
                     <tr>
                         <th>No.</th>
-                        <th>Category</th>
-                        <th>Amount</th>
-                        <th>Description</th>
-                        <th>Date</th>
-                        <th>Attachment</th>
-                        <th>Action</th>
+                        <th>{{ __('Category') }}</th>
+                        <th>{{ __('Amount') }}</th>
+                        <th>{{ __('Description') }}</th>
+                        <th>{{ __('Date') }}</th>
+                        <th>{{ __('Attachment') }}</th>
+                        <th>{{ __('Action') }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -92,13 +92,13 @@
                         </td>
                         <td>
                                 @if ($expense->attachment)
-                                    <a href="{{ asset('storage/'.$expense->attachment) }}" class="btn btn-sm btn-link" target="_blank">View</a>
+                                    <a href="{{ asset('storage/'.$expense->attachment) }}" class="btn btn-sm btn-link" target="_blank">View{{ __('') }}</a>
                                 @else
                                     N/A
                                 @endif
                             </td>
                             <td>
-                                <button class="btn btn-sm btn-danger" onclick="deleteExpense('{{ $expense->id }}')">Delete</button>
+                                <button class="btn btn-sm btn-danger" onclick="deleteExpense('{{ $expense->id }}')">Delete{{ __('') }}</button>
                             </td>
                         </tr>
                     @empty
@@ -122,20 +122,20 @@
     <div class="modal-dialog modal-md" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Manage Categories</h5>
+                <h5 class="modal-title">{{ __('Manage Categories') }}</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form id="categoryForm" action="{{ route('expense-categories.store') }}" method="POST">
             @csrf
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label for="category-name" class="form-label">Category Name</label>
+                        <label for="category-name" class="form-label">{{ __('Category Name') }}</label>
                         <input type="text" id="category-name" name="name" class="form-control" required>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ __('Cancel') }}</button>
+                    <button type="submit" class="btn btn-primary">{{ __('Save') }}</button>
                 </div>
             </form>
         </div>
@@ -146,7 +146,7 @@
     <div class="modal-dialog modal-md" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Add Expense</h5>
+                <h5 class="modal-title">{{ __('Add Expense') }}</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form id="expenseForm" action="{{ route('expenses.store') }}" method="POST" enctype="multipart/form-data">
@@ -154,9 +154,9 @@
                 <div class="modal-body">
                     <!-- Category -->
                     <div class="mb-3">
-                        <label for="expense-category" class="form-label">Category</label>
+                        <label for="expense-category" class="form-label">{{ __('Category') }}</label>
                         <select id="expense-category" name="expense_category_id" class="form-select" required>
-                        <option value="" selected disabled>Select Expense Category</option>
+                        <option value="" selected disabled>{{ __('Select Expense Category') }}</option>
                         @foreach ($expenseCategories as $expenseCategory)
                             <option value="{{ $expenseCategory->id }}">{{ $expenseCategory->name }}</option>
                         @endforeach
@@ -172,26 +172,26 @@
 
                     <!-- Description -->
                     <div class="mb-3">
-                        <label for="expense-description" class="form-label">Description</label>
+                        <label for="expense-description" class="form-label">{{ __('Description') }}</label>
                         <textarea id="expense-description" name="description" class="form-control" rows="3"></textarea>
                     </div>
 
                     <!-- Date -->
                     <div class="mb-3">
-                        <label for="expense-date" class="form-label">Expense Date</label>
+                        <label for="expense-date" class="form-label">{{ __('Expense Date') }}</label>
                         <input type="date" id="expense-date" name="expense_date" class="form-control" required>
                     </div>
 
                     <!-- Attachment (Optional) -->
                     <div class="mb-3">
-                        <label for="expense-attachment" class="form-label">Attachment (Optional)</label>
+                        <label for="expense-attachment" class="form-label">{{ __('Attachment (Optional)') }}</label>
                         <input type="file" id="expense-attachment" name="attachment" class="form-control">
                     </div>
                 </div>
                 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Save Expense</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ __('Cancel') }}</button>
+                    <button type="submit" class="btn btn-primary">{{ __('Save Expense') }}</button>
                 </div>
             </form>
         </div>

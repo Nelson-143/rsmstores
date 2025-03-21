@@ -1,21 +1,21 @@
 @extends('layouts.tabler')
 
 @section('title')
-    Your Team 
+    {{ __('Your Team') }}
 @endsection
 @section('content')
 <div class="container">
     <!-- Page Header -->
     <div class="page-header d-flex justify-content-between  mb-4">
         <div>
-            <h2 class="page-title">Team Management</h2>
-            <p class="text-muted mb-0">Manage your team with a glance and ease.</p>
+            <h2 class="page-title">{{ __('Team Management') }}</h2>
+            <p class="text-muted mb-0">{{ __('Manage your team with a glance and ease') }}.</p>
             <div class="d-flex flex-row">
     <button class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#userModal">
-        <i class="ti ti-circle-plus"></i> Add Team Member
+        <i class="ti ti-circle-plus"></i> {{ __('Add Team Member') }}
     </button>
     <a class="btn btn-primary" href="{{ route('admin.team.logs.show') }}">
-        <i class="ti ti-eye"></i> View Team Logs
+        <i class="ti ti-eye"></i> {{ __('View Team Logs') }}
     </a>
 </div>
 
@@ -33,10 +33,10 @@
             <table class="table table-hover mb-0">
                 <thead class="bg-primary text-white">
                     <tr>
-                        <th class="ps-4">Name</th>
-                        <th>Email</th>
-                        <th>Role</th>
-                        <th class="text-end pe-4">Actions</th>
+                        <th class="ps-4">{{ __('Name') }}</th>
+                        <th>{{ __('Email') }}</th>
+                        <th>{{ __('Role') }}</th>
+                        <th class="text-end pe-4">{{ __('Actions') }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -50,19 +50,19 @@
                             <td class="text-end pe-4">
                                 <div class="dropdown">
                                     <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                                        Actions
+                                        {{ __('Actions') }}
                                     </button>
                                     <ul class="dropdown-menu dropdown-menu-end">
                                         <li>
                                             <a class="dropdown-item text-warning" href="#" onclick="editUser({{ json_encode($user) }})">
-                                                <i class="ti ti-edit me-2"></i> Edit
+                                                <i class="ti ti-edit me-2"></i> {{ __('Edit') }}
                                             </a>
                                         </li>
                                         <li>
                                             <form action="{{ route('admin.team.destroy', $user->id) }}" method="POST" onsubmit="return confirm('Are you sure?')">
                                                 @csrf @method('DELETE')
                                                 <button type="submit" class="dropdown-item text-danger">
-                                                    <i class="ti ti-trash me-2"></i> Delete
+                                                    <i class="ti ti-trash me-2"></i> {{ __('Delete') }}
                                                 </button>
                                             </form>
                                         </li>
@@ -82,7 +82,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="userModalLabel">Add User</h5>
+                <h5 class="modal-title" id="userModalLabel">{{ __('Add User') }}</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <form id="userForm" action="{{ route('admin.team.storeOrUpdate') }}" method="POST">
@@ -91,19 +91,19 @@
 
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label class="form-label">Name</label>
+                        <label class="form-label">{{ __('Name') }}</label>
                         <input type="text" class="form-control" name="name" id="name" required>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Email</label>
+                        <label class="form-label">{{ __('Email') }}</label>
                         <input type="email" class="form-control" name="email" id="email" required>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Password</label>
+                        <label class="form-label">{{ __('Password') }}</label>
                         <input type="password" class="form-control" name="password" id="password">
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Role</label>
+                        <label class="form-label">{{ __('Role') }}</label>
                         <select class="form-select" name="role" id="role" required>
                             @foreach($roles as $role)
                                 <option value="{{ $role->name }}">{{ $role->name }}</option>
@@ -112,8 +112,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary" id="submitButton">Save</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ __('Cancel') }}</button>
+                    <button type="submit" class="btn btn-primary" id="submitButton">{{ __('Save') }}</button>
                 </div>
             </form>
         </div>
