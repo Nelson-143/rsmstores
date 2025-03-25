@@ -150,7 +150,7 @@
                                     <thead>
                                         <tr>
                                             <th>{{ __('Description') }}</th>
-                                            <th> {{ __('Amount') }}(Tsh)</th>
+                                            <th> {{ __('Amount') }}( {{ auth()->user()->account->currency }})</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -192,7 +192,7 @@
                                     <thead>
                                         <tr>
                                             <th>{{ __('Category') }}</th>
-                                            <th>{{ __('Amount') }} (Tsh)</th>
+                                            <th>{{ __('Amount') }} ( {{ auth()->user()->account->currency }})</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -305,7 +305,7 @@
                 <thead>
                     <tr>
                         <th>{{ __('Category') }}</th>
-                        <th> {{ __('Amount') }}(Tsh)</th>
+                        <th> {{ __('Amount') }}( {{ auth()->user()->account->currency }})</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -434,9 +434,9 @@
                         <thead>
                             <tr>
                                 <th>{{ __('Date') }}</th>
-                                <th> {{ __('Sales') }}(Tsh)</th>
-                                <th> {{ __('Expenses') }}(Tsh)</th>
-                                <th> {{ __('Profit') }}(Tsh)</th>
+                                <th> {{ __('Sales') }}( {{ auth()->user()->account->currency }})</th>
+                                <th> {{ __('Expenses') }}( {{ auth()->user()->account->currency }})</th>
+                                <th> {{ __('Profit') }}( {{ auth()->user()->account->currency }})</th>
                                 <th>{{ __('Products Sold') }}d</th>
                                 <th>{{ __('Type') }}</th>
                             </tr>
@@ -498,9 +498,9 @@
                         <thead>
                             <tr>
                                 <th>{{ __('Date') }}</th>
-                                <th> {{ __('Sales') }}(Tsh)</th>
-                                <th> {{ __('Expenses') }}(Tsh)</th>
-                                <th> {{ __('Profit') }}(Tsh)</th>
+                                <th> {{ __('Sales') }}( {{ auth()->user()->account->currency }})</th>
+                                <th> {{ __('Expenses') }}( {{ auth()->user()->account->currency }})</th>
+                                <th> {{ __('Profit') }}( {{ auth()->user()->account->currency }})</th>
                                 <th>{{ __('Products Sold') }}</th>
                                 <th>{{ __('Type') }}</th>
                             </tr>

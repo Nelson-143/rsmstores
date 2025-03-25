@@ -112,39 +112,6 @@ $customers = Customer::where('account_id', $this->getAccountId())->get();
     }
 
 
-// <a href="{{ route('debts.edit', $debt['uuid']) }}" class="btn btn-warning btn-sm">Edit</a>
-
-// public function update(Request $request, $uuid)
-// {
-//     DB::beginTransaction();
-//     try {
-//         $debt = Debt::where('uuid', $uuid)
-//             ->whereHas('customer', function ($query) {
-//                 $query->where('account_id', $this->getAccountId());
-//             })
-//             ->firstOrFail();
-
-//         $validated = $request->validate([
-//             'amount_paid' => 'required|numeric|min:0|max:' . ($debt->amount - $debt->amount_paid),
-//         ]);
-
-//         // Update the amount paid in the debt
-//         $debt->amount_paid += $validated['amount_paid'];
-
-//         // If the debt is fully paid, mark it as paid
-//         if ($debt->amount_paid >= $debt->amount) {
-//             $debt->paid_at = now(); // Mark as fully paid
-//         }
-
-//         $debt->save();
-
-//         DB::commit();
-//         return redirect()->route('debts.index')->with('success', 'Payment recorded successfully.');
-//     } catch (\Exception $e) {
-//         DB::rollBack();
-//         return redirect()->route('debts.index')->with('error', 'Failed to record payment: ' . $e->getMessage());
-//     }
-// }
 
 
     // Deletion of debts

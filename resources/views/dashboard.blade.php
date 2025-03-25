@@ -89,7 +89,9 @@
 </div>
 </div>
 <div class="d-flex align-items-baseline">
-<div class="h1 mb-0 me-2">Tsh {{ isset($debt) ? number_format($debt, 2) : '0.00' }}</div><div class="me-auto">
+<div class="h1 mb-0 me-2">
+    {{ auth()->user()->account->currency }} {{ isset($debt) ? number_format($debt, 2) : '0.00' }}
+
 <span class="text-red d-inline-flex align-items-center lh-1">
 <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-moneybag-move"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9.5 3h5a1.5 1.5 0 0 1 1.5 1.5a3.5 3.5 0 0 1 -3.5 3.5h-1a3.5 3.5 0 0 1 -3.5 -3.5a1.5 1.5 0 0 1 1.5 -1.5" /><path d="M12.5 21h-4.5a4 4 0 0 1 -4 -4v-1a8 8 0 0 1 14.946 -3.971" /><path d="M16 19h6" /><path d="M19 16l3 3l-3 3" /></svg>
 </span>
@@ -153,7 +155,7 @@
                 
             </div>
             <div class="d-flex align-items-baseline">
-                <div class="h1 mb-3 me-2">Tsh {{ isset($carts) ? number_format($carts, 2) : '0.00' }}</div>
+                <div class="h1 mb-3 me-2"> {{ auth()->user()->account->currency }} {{ isset($carts) ? number_format($carts, 2) : '0.00' }}</div>
                 <div class="me-auto">
                     <span class="text-green d-inline-flex align-items-center lh-1">
                        

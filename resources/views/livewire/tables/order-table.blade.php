@@ -104,7 +104,7 @@
                             {{ $order->payment_type }}
                         </td>
                         <td class="align-middle text-center">
-                            Tsh.{{ ($order->total) }}
+                        {{ auth()->user()->account->currency }}{{ ($order->total) }}
                         </td>
                         <td class="align-middle text-center">
                             <x-status dot

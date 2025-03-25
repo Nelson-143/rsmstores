@@ -128,7 +128,7 @@
                                                     {{ $item->quantity }}
                                                 </td>
                                                 <td class="align-middle text-center">
-                                                    Tsh.{{($item->total) }}
+                                                {{ auth()->user()->account->currency }}{{($item->total) }}
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -141,7 +141,7 @@
                                             </td>
                                             <td class="align-middle text-center">
                                                 <strong>
-                                                    Tsh.{{($order->sub_total) }}
+                                                {{ auth()->user()->account->currency }}{{($order->sub_total) }}
                                                 </strong>
                                             </td>
                                         </tr>
@@ -151,7 +151,7 @@
                                             </td>
                                             <td class="align-middle text-center">
                                                 <strong>
-                                                    Tsh.{{($order->vat) }}
+                                                {{ auth()->user()->account->currency }}{{($order->vat) }}
                                                 </strong>
                                             </td>
                                         </tr>
@@ -161,7 +161,7 @@
                                             </td>
                                             <td class="align-middle text-center">
                                                 <strong>
-                                                    Tsh.{{($order->total) }}
+                                                {{ auth()->user()->account->currency }}{{($order->total) }}
                                                 </strong>
                                             </td>
                                         </tr>

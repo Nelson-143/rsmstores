@@ -16,7 +16,7 @@ class OrderCompleteController extends Controller
             ->with('customer')
             ->get();
 
-        return view('orders.complete', [
+        return view('orders.complete-orders', [
             'orders' => $orders
         ]);
     }

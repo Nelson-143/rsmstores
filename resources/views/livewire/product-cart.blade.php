@@ -44,7 +44,7 @@
 
                                 <td x-data="{ open{{ $cart_item->id }}: false }" class="align-middle text-center">
                                     <span x-show="!open{{ $cart_item->id }}" @click="open{{ $cart_item->id }} = !open{{ $cart_item->id }}">
-                                        {{ format_currency($cart_item->price) }}
+                                    {{ auth()->user()->account->currency }}{{($cart_item->price) }}
                                     </span>
 
                                     <div x-show="open{{ $cart_item->id }}">
@@ -65,15 +65,15 @@
                                 </td>
 
                                 <td class="align-middle text-center">
-                                    {{ format_currency($cart_item->options->product_discount) }}
+                                {{ auth()->user()->account->currency }}{{($cart_item->options->product_discount) }}
                                 </td>
 
                                 <td class="align-middle text-center">
-                                    {{ format_currency($cart_item->options->product_tax) }}
+                                {{ auth()->user()->account->currency }}{{($cart_item->options->product_tax) }}
                                 </td>
 
                                 <td class="align-middle text-center">
-                                    {{ format_currency($cart_item->options->sub_total) }}
+                                {{ auth()->user()->account->currency }}{{($cart_item->options->sub_total) }}
                                 </td>
 
                                 <td class="align-middle text-center">
@@ -108,16 +108,16 @@
                 <table class="table table-striped">
                     <tr>
                         <th>Tax ({{ $global_tax }}%)</th>
-                        <td>(+) {{ format_currency(Cart::instance($cart_instance)->tax()) }}</td>
+                        <td>(+)  {{ auth()->user()->account->currency }} {{ (Cart::instance($cart_instance)->tax()) }}</td>
                     </tr>
                     <tr>
                         <th>Discount ({{ $global_discount }}%)</th>
-                        <td>(-) {{ format_currency(Cart::instance($cart_instance)->discount()) }}</td>
+                        <td>(-)  {{ auth()->user()->account->currency }} {{(Cart::instance($cart_instance)->discount()) }}</td>
                     </tr>
                     <tr>
                         <th>Shipping</th>
                         <input type="hidden" value="{{ $shipping }}" name="shipping_amount">
-                        <td>(+) {{ format_currency($shipping) }}</td>
+                        <td>(+)  {{ auth()->user()->account->currency }} {{($shipping) }}</td>
                     </tr>
                     <tr>
                         <th>Grand Total</th>
@@ -125,7 +125,7 @@
                             $total_with_shipping = Cart::instance($cart_instance)->total() + (float) $shipping
                         @endphp
                         <th>
-                            (=) {{ format_currency($total_with_shipping) }}
+                            (=)   {{ auth()->user()->account->currency }} {{($total_with_shipping) }}
                         </th>
                     </tr>
                 </table>

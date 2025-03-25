@@ -36,6 +36,8 @@ use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\TranslationController;
 use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\AdsGeneratorController;
+use App\Http\Controllers\ProfileCurrencyController;
+use App\Http\Controllers\LiabilityController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -122,8 +124,9 @@ Route::resource('debts', DebtsController::class);
     Route::get('/orders/create', [OrderController::class, 'create'])->name('orders.create');
     Route::post('/orders/store', [OrderController::class, 'store'])->name('orders.store');
 
-    // SHOW ORDER
-    //Route::get('/orders/{order}', [PosController::class, 'showOrder'])->name('orders.show');
+    // SHOW ORDERRoute::get('/orders/pending', OrderPendingController::class)->name('orders.pending');
+    Route::get('/orders/complete', OrderCompleteController::class)->name('orders.complete');
+    Route::get('/orders/{order}', [PosController::class, 'showOrder'])->name('orders.show');
     Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
     Route::put('/orders/update/{order}', [OrderController::class, 'update'])->name('orders.update');
     Route::delete('/orders/cancel/{order}', [OrderController::class, 'cancel'])->name('orders.cancel');
@@ -295,7 +298,31 @@ Route::get('/change-locale/{locale}', [LocaleController::class, 'change'])->name
 Route::middleware(['auth'])->group(function () {
     Route::get('/ads-generator', [AdsGeneratorController::class, 'index'])->name('ads.generator');
     Route::post('/ads-generator/upload', [AdsGeneratorController::class, 'generateAd'])->name('ads.generator.upload');
+
+
 });
+
+
+Route::post('/profile/currency/update', [ProfileCurrencyController::class, 'update'])->name('profile.currency.update');
+
+// Route to manage liabilities
+
+Route::middleware('auth')->group(function () {
+    // Liability Management
+    Route::get('/liabilities', [LiabilityController::class, 'index'])->name('liabilities.index');
+    Route::post('/liabilities', [LiabilityController::class, 'store'])->name('liabilities.store');
+    Route::delete('/liabilities/{liability}', [LiabilityController::class, 'destroy'])->name('liabilities.destroy');
+    Route::post('/liabilities/{liability}/pay', [LiabilityController::class, 'makePayment'])->name('liabilities.pay');
+    Route::get('/liabilities/{liability}/history', [LiabilityController::class, 'paymentHistory'])->name('liabilities.history');
+    Route::delete('/liabilities/{liability}', [LiabilityController::class, 'destroy'])->name('liabilities.destroy');
+    Route::post('/liabilities/consolidate', [LiabilityController::class, 'consolidateDebts'])->name('liabilities.consolidate');
+    
+    // Loan Calculator
+    Route::get('/loan-calculator', [LiabilityController::class, 'loanCalculator'])->name('loan.calculator');
+    Route::post('/calculate-loan', [LiabilityController::class, 'calculateLoan'])->name('calculate.loan');
+});
+
+
 //-------------THE ROUTES TO THE Roman Website place ,WELCOMES ----------------
 
 

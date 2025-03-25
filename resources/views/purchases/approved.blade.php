@@ -50,7 +50,7 @@
                                 <td class="text-center">{{ $purchase->purchase_no }}</td>
                                 <td class="text-center">{{ $purchase->supplier->name }}</td>
                                 <td class="text-center">{{ $purchase->created_at->format('d-m-Y') }}</td>
-                                <td class="text-center">Tsh.{{ ($purchase->total_amount) }}</td>
+                                <td class="text-center"> {{ auth()->user()->account->currency }}{{ ($purchase->total_amount) }}</td>
                                 <td class="text-center">
 
                                     <a href="{{ route('purchases.show', $purchase->uuid) }}" class="btn btn-icon btn-outline-info">

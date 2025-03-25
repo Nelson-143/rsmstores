@@ -29,7 +29,7 @@
             <div class="card shadow-sm">
                 <div class="card-body text-center">
                     <h6 class="card-title mb-2">{{ __('Total Value of Debt') }}</h6>
-                    <p class="card-text h5">Tsh{{ number_format($totalValueOfDebt, 2) }}</p>
+                    <p class="card-text h5">{{ auth()->user()->account->currency }},{{ number_format($totalValueOfDebt, 2) }}</p>
                     <p class="text-muted small">{{ __('Sum of all remaining balances') }}.</p>
                 </div>
             </div>
@@ -51,7 +51,7 @@
             <div class="card shadow-sm">
                 <div class="card-body text-center">
                     <h6 class="card-title mb-2">{{ __('Total Amount Received') }}</h6>
-                    <p class="card-text h5">Tsh{{ number_format($totalAmountReceived, 2) }}</p>
+                    <p class="card-text h5"> {{ auth()->user()->account->currency }},{{ number_format($totalAmountReceived, 2) }}</p>
                     <p class="text-muted small">{{ __('Sum of all payments received') }}.</p>
                 </div>
             </div>

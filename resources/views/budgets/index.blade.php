@@ -30,15 +30,15 @@
                 <ul class="list-group">
                     <li class="list-group-item d-flex justify-content-between align-items-center">
                         {{ __('Total Budget') }}
-                        <span class="badge bg-primary rounded-pill">Tsh {{ number_format($budgets->sum('amount')) }}</span>
+                        <span class="badge bg-primary rounded-pill"> {{ auth()->user()->account->currency }} {{ number_format($budgets->sum('amount')) }}</span>
                     </li>
                     <li class="list-group-item d-flex justify-content-between align-items-center">
                         {{ __('Expenses') }}
-                        <span class="badge bg-danger rounded-pill">Tsh {{ number_format($expenses->sum('amount')) }}</span>
+                        <span class="badge bg-danger rounded-pill"> {{ auth()->user()->account->currency }}{{ number_format($expenses->sum('amount')) }}</span>
                     </li>
                     <li class="list-group-item d-flex justify-content-between align-items-center">
                         {{ __('Remaining') }}
-                    <span class="badge bg-success rounded-pill">Tsh {{ number_format($budgets->sum('amount') - $expenses->sum('amount')) }}</span>                    </li>
+                    <span class="badge bg-success rounded-pill"> {{ auth()->user()->account->currency }} {{ number_format($budgets->sum('amount') - $expenses->sum('amount')) }}</span>                    </li>
                 </ul>
             </div>
 
@@ -77,9 +77,9 @@
                         <tr>
                             <td>{{ $index + 1 }}</td>
                             <td>{{ $budget->category->name }}</td>
-                            <td>Tsh {{ number_format($budget->amount) }}</td>
-                            <td>Tsh {{ number_format($budget->spent) }}</td>
-                            <td>Tsh {{ number_format($budget->amount - $budget->spent) }}</td>
+                            <td> {{ auth()->user()->account->currency }} {{ number_format($budget->amount) }}</td>
+                            <td> {{ auth()->user()->account->currency }} {{ number_format($budget->spent) }}</td>
+                            <td> {{ auth()->user()->account->currency }} {{ number_format($budget->amount - $budget->spent) }}</td>
                             <td>
                                 <button class="btn btn-sm btn-secondary">{{ __('Edit') }}</button>
                                 <button class="btn btn-sm btn-danger">{{ __('Delete') }}</button>
@@ -205,7 +205,7 @@
                 y: {
                     title: {
                         display: true,
-                        text: 'Amount (Tsh)'
+                        text: 'Amount  {{ auth()->user()->account->currency }}'
                     },
                     beginAtZero: true,
                     min: 0, // Start from 0
