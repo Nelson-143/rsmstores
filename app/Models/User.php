@@ -1,17 +1,20 @@
 <?php
 namespace App\Models;
 
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Spatie\Permission\Traits\HasRoles;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Scopes\AccountScope;
+use Illuminate\Support\Str;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
+   
     use HasRoles; // Add this trait
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -32,6 +35,15 @@ class User extends Authenticatable implements MustVerifyEmail
        // Add this field
     ];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($user) {
+            // Generate a UUID and assign it to the uuid field
+            $user->uuid = (string) Str::uuid();
+        });
+    }
     protected $hidden = [
         'password',
         'remember_token',

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0e657e2f3108fcf35a9c2828b5833ca5",
+    "content-hash": "0f14e3adc009819da214bfcd6cdb0222",
     "packages": [
         {
             "name": "anayarojo/shoppingcart",
@@ -145,29 +145,29 @@
         },
         {
             "name": "backpack/basset",
-            "version": "1.3.6",
+            "version": "1.3.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Laravel-Backpack/basset.git",
-                "reference": "2c20d233d58c42b8c826688e9c613cab82bf62e1"
+                "reference": "3ddbf8e29b94cf5fca5f05731d8c63412a5f902e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Laravel-Backpack/basset/zipball/2c20d233d58c42b8c826688e9c613cab82bf62e1",
-                "reference": "2c20d233d58c42b8c826688e9c613cab82bf62e1",
+                "url": "https://api.github.com/repos/Laravel-Backpack/basset/zipball/3ddbf8e29b94cf5fca5f05731d8c63412a5f902e",
+                "reference": "3ddbf8e29b94cf5fca5f05731d8c63412a5f902e",
                 "shasum": ""
             },
             "require": {
                 "guzzlehttp/guzzle": "^7.5",
-                "laravel/framework": "^10.15|^11"
+                "laravel/framework": "^10.15|^11|^12.0"
             },
             "require-dev": {
                 "nunomaduro/collision": "^6.0|^7.2",
-                "orchestra/testbench": "^7.22|^8.5",
-                "pestphp/pest": "^1.22|^2.5",
-                "pestphp/pest-plugin-laravel": "^1.4|^2.0",
-                "phpstan/phpstan": "^1.10",
-                "phpunit/phpunit": "~9.0|~10.0"
+                "orchestra/testbench": "^7.22|^8.5|^10.0",
+                "pestphp/pest": "^1.22|^2.5|^3.7",
+                "pestphp/pest-plugin-laravel": "^1.4|^2.0|^3.1",
+                "phpstan/phpstan": "^1.10|^2.1",
+                "phpunit/phpunit": "~9.0|~10.0|^11.5.3"
             },
             "suggest": {
                 "ext-zip": "Required to use @bassetArchive with .zip archives."
@@ -213,30 +213,30 @@
             ],
             "support": {
                 "issues": "https://github.com/Laravel-Backpack/basset/issues",
-                "source": "https://github.com/Laravel-Backpack/basset/tree/1.3.6"
+                "source": "https://github.com/Laravel-Backpack/basset/tree/1.3.7"
             },
-            "time": "2024-08-28T10:12:55+00:00"
+            "time": "2025-02-24T14:40:19+00:00"
         },
         {
             "name": "backpack/crud",
-            "version": "6.7.51",
+            "version": "6.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Laravel-Backpack/CRUD.git",
-                "reference": "36aa24ccf1db448012344b957b750504d38013a7"
+                "reference": "11437410b15499e2572048713e1d07542c227e7e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Laravel-Backpack/CRUD/zipball/36aa24ccf1db448012344b957b750504d38013a7",
-                "reference": "36aa24ccf1db448012344b957b750504d38013a7",
+                "url": "https://api.github.com/repos/Laravel-Backpack/CRUD/zipball/11437410b15499e2572048713e1d07542c227e7e",
+                "reference": "11437410b15499e2572048713e1d07542c227e7e",
                 "shasum": ""
             },
             "require": {
                 "backpack/basset": "^1.1.1|^1.3.2",
-                "creativeorange/gravatar": "~1.0",
+                "creativeorange/gravatar": "^1.0",
                 "doctrine/dbal": "^3.0|^4.0",
                 "guzzlehttp/guzzle": "^7.0",
-                "laravel/framework": "^10.0|^11.0",
+                "laravel/framework": "^10.0|^11.0|^12",
                 "prologue/alerts": "^1.0"
             },
             "require-dev": {
@@ -307,9 +307,9 @@
             ],
             "support": {
                 "issues": "https://github.com/Laravel-Backpack/CRUD/issues",
-                "source": "https://github.com/Laravel-Backpack/CRUD/tree/6.7.51"
+                "source": "https://github.com/Laravel-Backpack/CRUD/tree/6.8.0"
             },
-            "time": "2025-02-04T11:25:58+00:00"
+            "time": "2025-02-24T16:21:55+00:00"
         },
         {
             "name": "backpack/theme-tabler",
@@ -864,25 +864,25 @@
         },
         {
             "name": "creativeorange/gravatar",
-            "version": "v1.0.24",
+            "version": "v1.0.25",
             "source": {
                 "type": "git",
-                "url": "https://github.com/creativeorange/gravatar.git",
-                "reference": "ec0d78c7d4ef6d66c3cc09b6a03ab8d53e44379f"
+                "url": "https://github.com/brainpink/gravatar.git",
+                "reference": "21ba6cbe125d57965c58468047ea29dfa822b4d3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/creativeorange/gravatar/zipball/ec0d78c7d4ef6d66c3cc09b6a03ab8d53e44379f",
-                "reference": "ec0d78c7d4ef6d66c3cc09b6a03ab8d53e44379f",
+                "url": "https://api.github.com/repos/brainpink/gravatar/zipball/21ba6cbe125d57965c58468047ea29dfa822b4d3",
+                "reference": "21ba6cbe125d57965c58468047ea29dfa822b4d3",
                 "shasum": ""
             },
             "require": {
-                "illuminate/support": "^5|^6|^7|^8|^9|^10.0|^11.0",
+                "illuminate/support": "^5|^6|^7|^8|^9|^10.0|^11.0|^12.0",
                 "php": ">=5.4.0"
             },
             "require-dev": {
                 "nunomaduro/larastan": "^0.6.2|^2.4",
-                "orchestra/testbench": "^5.4|^8.0|^9.0",
+                "orchestra/testbench": "^5.4|^8.0|^9.0|^10.0",
                 "php": ">=7.2"
             },
             "type": "library",
@@ -920,10 +920,10 @@
                 "laravel"
             ],
             "support": {
-                "issues": "https://github.com/creativeorange/gravatar/issues",
-                "source": "https://github.com/creativeorange/gravatar/tree/v1.0.24"
+                "issues": "https://github.com/brainpink/gravatar/issues",
+                "source": "https://github.com/brainpink/gravatar/tree/v1.0.25"
             },
-            "time": "2024-02-28T09:23:55+00:00"
+            "time": "2025-02-22T19:11:54+00:00"
         },
         {
             "name": "dflydev/dot-access-data",
@@ -4990,22 +4990,22 @@
         },
         {
             "name": "prologue/alerts",
-            "version": "1.2.0",
+            "version": "1.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/prologuephp/alerts.git",
-                "reference": "00c4662ce50a633c39d3424698baa5cbfb880da3"
+                "reference": "0a73c65c70d4838a79cc927e8c966a00b2cefcfc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/prologuephp/alerts/zipball/00c4662ce50a633c39d3424698baa5cbfb880da3",
-                "reference": "00c4662ce50a633c39d3424698baa5cbfb880da3",
+                "url": "https://api.github.com/repos/prologuephp/alerts/zipball/0a73c65c70d4838a79cc927e8c966a00b2cefcfc",
+                "reference": "0a73c65c70d4838a79cc927e8c966a00b2cefcfc",
                 "shasum": ""
             },
             "require": {
-                "illuminate/config": "~9|^10|^11.0",
-                "illuminate/session": "~9|^10|^11.0",
-                "illuminate/support": "~9|^10|^11.0"
+                "illuminate/config": "~9|^10|^11.0|^12.0",
+                "illuminate/session": "~9|^10|^11.0|^12.0",
+                "illuminate/support": "~9|^10|^11.0|^12.0"
             },
             "require-dev": {
                 "mockery/mockery": "^1.0",
@@ -5053,9 +5053,9 @@
             ],
             "support": {
                 "issues": "https://github.com/prologuephp/alerts/issues",
-                "source": "https://github.com/prologuephp/alerts/tree/1.2.0"
+                "source": "https://github.com/prologuephp/alerts/tree/1.3.0"
             },
-            "time": "2024-03-12T11:23:19+00:00"
+            "time": "2025-02-24T15:15:54+00:00"
         },
         {
             "name": "psr/cache",
@@ -5889,6 +5889,96 @@
                 }
             ],
             "time": "2024-09-30T23:20:32+00:00"
+        },
+        {
+            "name": "realrashid/sweet-alert",
+            "version": "v7.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/realrashid/sweet-alert.git",
+                "reference": "d54b1663970da8d416eb09e8719a8561a45fb2d9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/realrashid/sweet-alert/zipball/d54b1663970da8d416eb09e8719a8561a45fb2d9",
+                "reference": "d54b1663970da8d416eb09e8719a8561a45fb2d9",
+                "shasum": ""
+            },
+            "require": {
+                "laravel/framework": "^5.6|^6.0|^7.0|^8.0|^9.0|^9.11|9.14.*|^10.0|^11.0|^12.0",
+                "php": "^7.2|^8.0|^8.1|^8.2|^8.3"
+            },
+            "require-dev": {
+                "symfony/thanks": "^1.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "aliases": {
+                        "Alert": "RealRashid\\SweetAlert\\Facades\\Alert"
+                    },
+                    "providers": [
+                        "RealRashid\\SweetAlert\\SweetAlertServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "files": [
+                    "src/functions.php"
+                ],
+                "psr-4": {
+                    "RealRashid\\SweetAlert\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Rashid Ali",
+                    "email": "realrashid05@gmail.com",
+                    "homepage": "https://realrashid.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Laravel Sweet Alert Is A Package For Laravel Provides An Easy Way To Display Alert Messages Using The SweetAlert2 Library.",
+            "homepage": "https://github.com/realrashid/sweet-alert",
+            "keywords": [
+                "alert",
+                "laravel",
+                "laravel-package",
+                "notifier",
+                "noty",
+                "sweet-alert",
+                "sweet-alert2",
+                "toast"
+            ],
+            "support": {
+                "docs": "https://realrashid.github.io/sweet-alert/",
+                "email": "realrashid05@gmail.com",
+                "issues": "https://github.com/realrashid/sweet-alert/issues",
+                "source": "https://github.com/realrashid/sweet-alert"
+            },
+            "funding": [
+                {
+                    "url": "https://ko-fi.com/realrashid",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://www.buymeacoffee.com/realrashid",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://issuehunt.io/r/realrashid",
+                    "type": "issuehunt"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/realrashid/sweet-alert",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2025-02-25T21:11:49+00:00"
         },
         {
             "name": "spatie/laravel-activitylog",

@@ -1,11 +1,13 @@
 <?php
 namespace App\Models;
 
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Scopes\AccountScope;
 class Report extends Model
 {
+    
     use HasFactory;
 
     protected $fillable = ['account_id','user_id', 'type', 'data', 'file_path'];

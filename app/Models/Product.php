@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use App\Enums\TaxType;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -12,6 +13,7 @@ use App\Scopes\AccountScope;
 
 class Product extends Model
 {
+   
     use HasFactory;
     protected $fillable = [
         'uuid',

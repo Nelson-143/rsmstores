@@ -8,12 +8,12 @@ use Illuminate\Support\Facades\Auth;
 
 class AdminMiddleware
 {
-    public function handle(Request $request, Closure $next)
+    public function handle($request, Closure $next)
     {
-        if (Auth::check() && Auth::user()->is_admin) {
-            return $next($request);
+        if (!auth('admin')->check()) {
+            return redirect()->route('backpack.auth.login');
         }
-
-        abort(403, 'Unauthorized action.');
+        
+        return $next($request);
     }
 }

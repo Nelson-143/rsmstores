@@ -46,7 +46,7 @@ return [
     // ----
 
     // Project name - shown in the window title
-    'project_name' => 'Backpack Admin Panel',
+    'project_name' => 'RSM-RomanStockManager',
 
     // Content of the HTML meta robots tag to prevent indexing and link following
     'meta_robots_content' => 'noindex, nofollow',
@@ -73,20 +73,32 @@ return [
     // ------
 
     // Developer or company name. Shown in footer.
-    'developer_name' => 'Cristian Tabacitu',
+    'developer_name' => 'welasonnelson-opensource',
 
     // Developer website. Link in footer. Type false if you want to hide it.
-    'developer_link' => 'http://tabacitu.ro',
+    'developer_link' => 'http://romanstockmanager.com',
 
     // Show powered by Laravel Backpack in the footer? true/false
-    'show_powered_by' => true,
+    'show_powered_by' => false,
 
     // ---------
     // DASHBOARD
     // ---------
-
+    'dashboard' => [
+    // Enable or disable the dashboard
+    'enabled' => true,
+    
+    // Use custom view for dashboard
+    'use_custom_view' => true,
+    
+    // Custom view path (relative to resources/views)
+    'custom_view' => 'vendor.backpack.base.dashboard',
+    
+    // Force the dashboard to be displayed full-width (no sidebar)
+    'force_full' => false,
+],
     // Show "Getting Started with Backpack" info block?
-    'show_getting_started' => env('APP_ENV') == 'local',
+    'show_getting_started' =>false,
 
     // -------------
     // GLOBAL STYLES

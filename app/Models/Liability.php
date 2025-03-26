@@ -1,12 +1,14 @@
 <?php
 namespace App\Models;
 
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Carbon\Carbon;
 
 class Liability extends Model
 {
+    
     protected $fillable = [
         'name',
         'amount',

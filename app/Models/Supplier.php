@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use App\Enums\SupplierType;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -12,6 +13,7 @@ use App\Scopes\AccountScope;
 
 class Supplier extends Model
 {
+   
     use HasFactory;
 
     protected $fillable = [

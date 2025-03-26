@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use App\Enums\QuotationStatus;
 use Attribute;
 use Illuminate\Database\Eloquent\Model;
@@ -16,6 +17,7 @@ use App\Scopes\AccountScope;
  */
 class Quotation extends Model
 {
+    
     protected $fillable = [
         'date',
         'reference',

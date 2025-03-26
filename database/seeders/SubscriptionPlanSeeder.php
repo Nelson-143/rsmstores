@@ -23,7 +23,7 @@ class SubscriptionPlanSeeder extends Seeder
             [
                 'id' => Str::uuid(),
                 'name' => 'Simple Plan',
-                'price' => 0,
+                'price' => 15000,
                 'max_branches' => 1,
                 'max_users' => 1,
                 'features' => json_encode([

@@ -1,12 +1,14 @@
 <?php
 namespace App\Models;
 
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Scopes\AccountScope;
 
 class IncomeStatement extends Model
 {
+   
     use HasFactory;
 
     protected $fillable = ['user_id', 'revenue', 'cogs', 'gross_profit', 'operating_expenses', 'net_income'];

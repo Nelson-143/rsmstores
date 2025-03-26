@@ -349,7 +349,7 @@
                             @endrole
 
                             <li
-                                class="nav-item dropdown {{ request()->is('suppliers*', 'customers*','debts*','expenses*','stock*','budgets*','gamification*','quotations*,','ads*') ? 'active' : null }}">
+                                class="nav-item dropdown {{ request()->is('suppliers*', 'customers*','debts*','expenses*','stock*','budgets*','gamification*','quotations*','ads*') ? 'active' : null }}">
                                 <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown"
                                     data-bs-auto-close="outside" role="button" aria-expanded="false">
                                     <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -584,7 +584,7 @@
                     <path d="M21 21l-6 -6" />
                 </svg>
             </span>
-            <input type="text" name="search" id="search" value="" class="form-control" placeholder="Search…" aria-label="Search in website">
+            <input type="text" name="search" id="search" value="" class="form-control" placeholder="{{ __('Search…') }}" aria-label="Search in website">
         </div>
     </form>
 </div>

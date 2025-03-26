@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use App\Scopes\BranchScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -15,6 +16,7 @@ use App\Models\Customer;
  */
 class Debt extends Model
 {
+   
     protected $fillable = [
         'customer_id', // The ID of the customer (nullable for personal debts)
         'amount',      // The total amount of the debt

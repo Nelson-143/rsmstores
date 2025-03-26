@@ -1,12 +1,14 @@
 <?php
 namespace App\Models;
 
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 use App\Scopes\AccountScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Branch extends Model
 {
+    
     use HasFactory;
 
     // Specify the fillable attributes

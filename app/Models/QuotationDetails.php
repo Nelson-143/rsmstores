@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -12,6 +13,7 @@ use App\Scopes\AccountScope;
  */
 class QuotationDetails extends Model
 {
+   
     protected $fillable = [
         'quotation_id',
         'product_id',

@@ -11,9 +11,9 @@ return new class extends Migration {
      */
     public function up(): void {
         Schema::create('users', function (Blueprint $table) {
-            $table->id(); // Auto-incrementing ID
-            $table->uuid('uuid')->unique(); // Optional: Keep UUID for external references if needed
-            $table->string('username')->nullable();
+            $table->id();
+            $table->uuid('uuid')->unique();
+            $table->string('username')->nullable()->unique();
             $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
@@ -25,9 +25,19 @@ return new class extends Migration {
             $table->rememberToken();
             $table->timestamps();
             $table->string('photo')->nullable();
-            $table->unsignedBigInteger('account_id'); // Ensure this is defined
+            $table->unsignedBigInteger('account_id');
+            
+            // New fields for enhanced functionality
+            $table->boolean('is_admin')->default(false);
+            $table->boolean('is_banned')->default(false);
+            $table->datetime('last_login')->nullable();
+            $table->string('last_ip')->nullable();
+            $table->string('timezone')->default('UTC');
+            $table->enum('status', ['active', 'inactive', 'suspended'])->default('active');
+            
             $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
         });
+        
     }
 
     /** 

@@ -9,7 +9,7 @@ use App\Scopes\AccountScope;
 
 class AiDecisionCrudController extends Model
 {
-    use CrudTrait;
+   
     use HasFactory;
     protected static function booted()
     {

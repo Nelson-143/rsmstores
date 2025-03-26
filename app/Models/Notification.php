@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Notifications\DatabaseNotification as NotificationBase;
 use App\Scopes\AccountScope;
 class Notification extends NotificationBase
 {
+  
     protected $table = 'notifications';
     protected $primaryKey = 'id';
     public $incrementing = false; // Since the ID is a UUID
