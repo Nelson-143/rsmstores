@@ -9,11 +9,13 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Scopes\AccountScope;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Http;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
+    use CrudTrait;
    
     use HasRoles; // Add this trait
     use HasApiTokens, HasFactory, Notifiable;
@@ -131,5 +133,25 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->role === 'developer'; // Adjust based on your role system
     }
+
+    //locations of our users
+    public function geocodeAddress()
+{
+    if (!$this->store_address) return;
+    
+    $response = Http::get('https://nominatim.openstreetmap.org/search', [
+        'q' => $this->store_address,
+        'format' => 'json',
+        'limit' => 1
+    ]);
+    
+    if ($response->successful() && count($response->json()) > 0) {
+        $data = $response->json()[0];
+        $this->update([
+            'latitude' => $data['lat'],
+            'longitude' => $data['lon']
+        ]);
+    }
+}
 
 }

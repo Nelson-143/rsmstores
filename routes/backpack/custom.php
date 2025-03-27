@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\DashboardController;
-
+use App\Http\Controllers\Admin\UserCrudController;
 // --------------------------
 // Custom Backpack Routes
 // --------------------------
@@ -20,8 +20,8 @@ Route::group([
     Route::crud('user-crud-controller', 'UserCrudControllerCrudController');
     Route::crud('admin', 'AdminCrudController');
     Route::get('dashboard', 'DashboardController@index')->name('dashboard');
-  
-
+    Route::get('user/locations', [UserCrudController::class, 'showLocations'])->name('user.locations');
+    Route::crud('user', 'UserCrudController');
 
 
 // Dashboard Route

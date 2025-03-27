@@ -1,10 +1,8 @@
- @php
+@php
     // as it is possible that we can be redirected with persistent table we save the alerts in a variable
     // and flush them from session, so we will get them later from localStorage.
-    $backpack_alerts = \Alert::getMessages();
-    \Alert::flush();
+    $backpack_alerts = session('alert.message'); // Example alternative
  @endphp
-
   {{-- DATA TABLES SCRIPT --}}
   @basset('https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js')
   @basset('https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap5.min.js')

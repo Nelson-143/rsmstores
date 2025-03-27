@@ -170,7 +170,7 @@ return [
         App\Providers\OpenAIServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\VoltServiceProvider::class,
-
+        RealRashid\SweetAlert\SweetAlertServiceProvider::class,
         /*
         * Third Party Service Providers...
         */
@@ -190,6 +190,7 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // 'Example' => App\Facades\Example::class,
+        'Alert' => RealRashid\SweetAlert\Facades\Alert::class,
     ])->toArray(),
 
 ];

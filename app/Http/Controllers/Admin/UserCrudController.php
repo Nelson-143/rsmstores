@@ -2,76 +2,83 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests\UserRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
+use App\Models\User;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
-
-/**
- * Class UserCrudController
- * @package App\Http\Controllers\Admin
- * @property-read \Backpack\CRUD\app\Library\CrudPanel\CrudPanel $crud
- */
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 class UserCrudController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
-    /**
-     * Configure the CrudPanel object. Apply settings to all operations.
-     * 
-     * @return void
-     */
     public function setup()
     {
-        CRUD::setModel(\App\Models\Admin::class);
-        CRUD::setRoute(config('backpack.base.route_prefix') . '/admin');
+        CRUD::setModel(User::class);
+        CRUD::setRoute(config('backpack.base.route_prefix') . '/user');
         CRUD::setEntityNameStrings('user', 'users');
+        
+        // Enable basic features
+      
+        $this->crud->enablePersistentTable();
     }
 
-    /**
-     * Define what happens when the List operation is loaded.
-     * 
-     * @see  https://backpackforlaravel.com/docs/crud-operation-list-entries
-     * @return void
-     */
     protected function setupListOperation()
     {
-        CRUD::setFromDb(); // set columns from db columns.
-
-        /**
-         * Columns can be defined using the fluent syntax:
-         * - CRUD::column('price')->type('number');
-         */
+        // Clear existing columns
+        $this->crud->removeAllColumns();
+        \Log::info('Total users: ', ['count' => User::count()]);
+        
+        // Add columns
+        CRUD::column('name')->label('Full Name');
+        CRUD::column('email');
+        //CRUD::column('store_name')->label('Business Name');
+        CRUD::column('store_phone')->label('Contact Phone');
+        CRUD::column('store_address')->label('Business Address');
+        
+    
     }
 
-    /**
-     * Define what happens when the Create operation is loaded.
-     * 
-     * @see https://backpackforlaravel.com/docs/crud-operation-create
-     * @return void
-     */
-    protected function setupCreateOperation()
+    protected function setupShowOperation()
     {
-        CRUD::setValidation(UserRequest::class);
-        CRUD::setFromDb(); // set fields from db columns.
-
-        /**
-         * Fields can be defined using the fluent syntax:
-         * - CRUD::field('price')->type('number');
-         */
+        $this->setupListOperation();
+        
+        // Additional fields for the show page
+        CRUD::column('created_at')->label('Registered On');
+        CRUD::column('last_login')->label('Last Active');
+        CRUD::column('account_id')->label('Account ID');
     }
 
-    /**
-     * Define what happens when the Update operation is loaded.
-     * 
-     * @see https://backpackforlaravel.com/docs/crud-operation-update
-     * @return void
-     */
-    protected function setupUpdateOperation()
+    public function showLocations()
     {
-        $this->setupCreateOperation();
+        // Get users with geocoded addresses
+        $usersWithGeo = User::select('*')
+            ->whereNotNull('store_address')
+            ->get()
+            ->each(function($user) {
+                // Simple geocoding - consider using a proper service
+                $parts = explode(',', $user->store_address);
+                $user->city = trim(end($parts));
+                $user->country = trim(prev($parts)) ?? 'Unknown';
+                return $user;
+            });
+        
+        // Get top locations
+        $topLocations = User::select(
+                DB::raw('SUBSTRING_INDEX(store_address, ",", -1) as city'),
+                DB::raw('SUBSTRING_INDEX(SUBSTRING_INDEX(store_address, ",", -2), ",", 1) as country'),
+                DB::raw('COUNT(*) as user_count')
+            )
+            ->whereNotNull('store_address')
+            ->groupBy('city', 'country')
+            ->orderBy('user_count', 'desc')
+            ->limit(10)
+            ->get();
+        
+        return view('vendor.backpack.crud.users_map', [
+            'usersWithGeo' => $usersWithGeo,
+            'topLocations' => $topLocations,
+            'title' => 'User  Locations'
+        ]);
     }
 }
