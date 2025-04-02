@@ -87,14 +87,20 @@ class Product extends Model
       {
           return $this->belongsTo(Product::class);
       }
-
-      protected static function booted()
-      {
-          static::addGlobalScope(new AccountScope);
-      }
-
-      public function account()
+// In Product model (remove or modify AccountScope)
+protected static function booted()
 {
-    return $this->belongsTo(Account::class, 'account_id');
+    static::addGlobalScope('account', function (Builder $builder) {
+        if (auth()->check()) {
+            $builder->where('account_id', auth()->user()->account_id);
+        }
+    });
 }
+
+      public function apply(Builder $builder, Model $model)
+      {
+          if (auth()->check()) {
+              $builder->where('account_id', auth()->user()->account_id);
+          }
+      }
 }

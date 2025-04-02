@@ -22,16 +22,14 @@ class ProductController extends Controller
         $this->middleware('auth'); // Ensure authentication
     }
 
-  public function index()
-{
-    // Get the logged-in user's account_id
-    $accountId = auth()->user()->account_id;
-    // Fetch products for the logged-in user's account
-    $products = Product::where('account_id', $accountId)
-    ->paginate(10);
-
-    return view('products.index', compact('products'));
-}
+    public function index()
+    {
+        $products = Product::where('account_id', auth()->user()->account_id)
+            ->latest()
+            ->paginate(10);
+    
+        return view('products.index', compact('products'));
+    }
 
     public function create(Request $request)
     {
