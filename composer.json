@@ -29,7 +29,6 @@
         "realrashid/sweet-alert": "*",
         "spatie/laravel-activitylog": "^4.9",
         "spatie/laravel-permission": "^6.12",
-        "spatie/laravel-responsecache": "*",
         "taitech/azampay": "*",
         "vildanbina/laravel-auto-translation": "*",
         "yajra/laravel-datatables-oracle": "^10.11"

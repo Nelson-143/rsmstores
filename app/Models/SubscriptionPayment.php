@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Scopes\AccountScope;
 class SubscriptionPayment extends Model
 {
+    use CrudTrait;
  
     public $incrementing = false;
     protected $keyType = 'string';

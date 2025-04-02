@@ -34,3 +34,45 @@
 @push('after_scripts')
     @basset(base_path('vendor/backpack/crud/src/resources/assets/js/common.js'))
 @endpush
+@push('after_scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Check initial status
+    function checkMaintenanceStatus() {
+        fetch('{{ backpack_url('maintenance-status') }}')
+            .then(response => response.json())
+            .then(data => {
+                const statusText = document.getElementById('maintenance-status-text');
+                statusText.textContent = data.status === 'maintenance' 
+                    ? 'Exit Maintenance' 
+                    : 'Enter Maintenance';
+            });
+    }
+
+    // Toggle handler
+    document.getElementById('toggle-maintenance').addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        fetch('{{ backpack_url('toggle-maintenance') }}', {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            checkMaintenanceStatus();
+            new Noty({
+                type: 'success',
+                text: 'Maintenance mode: ' + data.status,
+                timeout: 3000
+            }).show();
+        });
+    });
+
+    // Initial check
+    checkMaintenanceStatus();
+});
+</script>
+@endpush

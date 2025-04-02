@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Scopes\AccountScope;
 class UserSubscription extends Model
 {
+    use CrudTrait;
     
     use HasFactory;
 

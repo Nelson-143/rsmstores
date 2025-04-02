@@ -22,7 +22,8 @@ class Kernel extends HttpKernel
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
         \BeyondCode\QueryDetector\QueryDetectorMiddleware::class,
-        \Spatie\ResponseCache\Middlewares\CacheResponse::class,
+        \App\Http\Middleware\CheckMaintenanceMode::class,
+       
     
     ];
 
@@ -67,7 +68,7 @@ class Kernel extends HttpKernel
         'signed' => \App\Http\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
-        'doNotCacheResponse' => \Spatie\ResponseCache\Middlewares\DoNotCacheResponse::class,
+       
     ];
 
     protected $routeMiddleware = [

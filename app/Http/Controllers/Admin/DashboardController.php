@@ -175,7 +175,7 @@ class DashboardController extends AdminController
 public function getSystemHealth()
 {
     return [
-        'cpu_load' => sys_getloadavg()[0] ?? 'N/A',
+        'cpu_load' => function_exists('sys_getloadavg') ? sys_getloadavg()[0] : 'N/A',
         'memory_usage' => round(memory_get_usage(true)/1048576, 2).' MB',
         'disk_space' => round(disk_free_space('/')/1073741824, 2).' GB free',
         'active_connections' => DB::select("SHOW STATUS WHERE `variable_name` = 'Threads_connected'")[0]->Value,
