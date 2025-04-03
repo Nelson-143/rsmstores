@@ -10,7 +10,7 @@
 
 @section('Debts')
 <!-- the main debts table ---->
-
+@role('Super Admin')
 <div class="container mt-4">
     <div class="row row-deck row-cards">
         <!-- Total Current Debts -->
@@ -82,7 +82,7 @@
     font-size: 0.85rem; /* Slightly smaller muted text */
 }
 </style>
-
+@endrole
 
 <div class="container mt-4">
     <div class="card shadow-sm">
@@ -97,9 +97,7 @@
                 <button type="button" class="btn btn-primary" id="search-button">{{ __('Search') }}</button>
             </div>
         </div>
-        <div class="card-body">
-          
-        </div>
+        
     </div>
 </div>
 <script>

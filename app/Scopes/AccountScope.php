@@ -7,15 +7,17 @@ use Illuminate\Database\Eloquent\Scope;
 use Illuminate\Support\Facades\Auth;
 
 class AccountScope implements Scope
+{// app/Scopes/AccountScope.php
+public function apply(Builder $builder, Model $model)
 {
-    public function apply(Builder $builder, Model $model)
-    {
-        // Get the authenticated user
-    
-            $accountId = auth()->user()->account_id;
-            $builder->where('account_id', $accountId);
-        
+    // Only apply scope if user is logged in
+    if (auth()->check()) {
+        // For all non-superadmin users
+        if (!optional(auth()->user())->is_superadmin) {
+            $builder->where('account_id', auth()->user()->account_id);
+        }
     }
+}
 }
 
 

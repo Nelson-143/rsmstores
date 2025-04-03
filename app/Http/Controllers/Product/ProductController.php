@@ -14,7 +14,7 @@ use Illuminate\Http\Request;
 use Picqer\Barcode\BarcodeGeneratorHTML;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use Log;
+use Illuminate\Support\Facades\Log;
 class ProductController extends Controller
 {
     public function __construct()
@@ -24,11 +24,17 @@ class ProductController extends Controller
 
     public function index()
     {
-        $products = Product::where('account_id', auth()->user()->account_id)
-            ->latest()
-            ->paginate(10);
+        // Temporarily remove pagination for debugging
+        $products = Product::with(['category', 'unit', 'supplier'])
+            ->orderBy('created_at', 'desc')
+            ->get();
     
-        return view('products.index', compact('products'));
+        Log::debug('All products without pagination', [
+            'count' => $products->count(),
+            'items' => $products->pluck('id')
+        ]);
+    
+        return view('products.index', ['products' => $products]);
     }
 
     public function create(Request $request)
@@ -73,19 +79,17 @@ class ProductController extends Controller
     }
 
     public function show($uuid)
-    {
-        // Get the logged-in user's account_id
-        $accountId = auth()->user()->account_id;
+{
+    $product = Product::with(['category', 'unit', 'supplier', 'user'])
+                     ->where('uuid', $uuid)
+                     ->firstOrFail();
 
-        // Ensure the product belongs to the logged-in user's account
-        $product = Product::where('uuid', $uuid)
-                            ->where('account_id', $accountId)
-                            ->firstOrFail();
+    // Verify account access in middleware instead
+    $this->authorize('view', $product);
 
-        $barcode = (new BarcodeGeneratorHTML())->getBarcode($product->code, 'C128'); // Generate barcode
-
-        return view('products.show', compact('product', 'barcode'));
-    }
+    $barcode = (new BarcodeGeneratorHTML())->getBarcode($product->code, 'C128');
+    return view('products.show', compact('product', 'barcode'));
+}
 
     public function edit($uuid)
     {
@@ -141,29 +145,21 @@ class ProductController extends Controller
     return redirect()->route('products.index')->with('success', 'Product updated successfully.');
 }
 
-    public function destroy($uuid)
-    {
-        // Get the logged-in user's account_id
-        $accountId = auth()->user()->account_id;
+public function destroy($uuid)
+{
+    $accountId = auth()->user()->account_id;
+    
+    $product = Product::where('uuid', $uuid)
+                     ->where('account_id', $accountId)
+                     ->firstOrFail();
 
-        // Ensure the product belongs to the logged-in user's account
-        $product = Product::where('uuid', $uuid)
-                            ->where('account_id', $accountId)
-                            ->firstOrFail();
-
-        if ($product->user_id !== auth()->id()) {
-            return redirect()->route('products.index')->with('error', 'Unauthorized action.');
-        }
-
-        if ($product->product_image) {
-            // Check if image exists in our file system
-            if (file_exists(public_path('storage/') . $product->product_image)) {
-                unlink(public_path('storage/') . $product->product_image);
-            }
-        }
-
-        $product->delete();
-
-        return redirect()->route('products.index')->with('success', 'Product deleted successfully.');
+    // Remove image if exists
+    if ($product->product_image && file_exists(public_path($product->product_image))) {
+        unlink(public_path($product->product_image));
     }
+
+    $product->delete();
+
+    return redirect()->route('products.index')->with('success', 'Product deleted successfully.');
+}
 }

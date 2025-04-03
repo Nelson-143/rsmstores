@@ -21,7 +21,7 @@
 } ?>
 <?php unset($__defined_vars); ?>
 
-<?php if(isset($route)): ?>
+<!--[if BLOCK]><![endif]--><?php if(isset($route)): ?>
     <a href="<?php echo e($route); ?>" <?php echo e($attributes->class(['btn btn-primary'])); ?>>
         <?php echo e($slot); ?>
 
@@ -31,5 +31,5 @@
         <?php echo e($slot); ?>
 
     </button>
-<?php endif; ?>
+<?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 <?php /**PATH C:\rstoresV1R\rsmstores\resources\views/components/button/index.blade.php ENDPATH**/ ?>

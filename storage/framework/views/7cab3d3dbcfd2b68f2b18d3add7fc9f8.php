@@ -172,7 +172,7 @@
                             <?php echo e(__('Name')); ?>
 
                             <?php echo $__env->make('inclues._sort-icon', ['field' => 'name'], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
-                        </a>
+                         </a>
                     </th>
                     <th scope="col" class="align-middle text-center">
                         <a wire:click.prevent="sortBy('code')" href="#" role="button">

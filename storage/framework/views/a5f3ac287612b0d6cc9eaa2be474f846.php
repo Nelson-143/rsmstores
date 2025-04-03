@@ -12,7 +12,7 @@
 
                     </div>
   <h2 class="page-title">
-    |<?php echo e(Auth::user()->name); ?>,<?php echo e($motivation); ?>
+    |<b><?php echo e(Auth::user()->name); ?></b>,<?php echo e($motivation); ?>
 
 </h2>
 
@@ -469,7 +469,7 @@
     <script src="<?php echo e(asset('dist/libs/jsvectormap/dist/maps/world-merc.js')); ?>" defer></script>
 <?php $__env->stopPush(); ?>
 
-<?php if (! $__env->hasRenderedOnce('4796e1a1-29bd-40b1-8884-ce8ba7115c07')): $__env->markAsRenderedOnce('4796e1a1-29bd-40b1-8884-ce8ba7115c07');
+<?php if (! $__env->hasRenderedOnce('30eba7f7-2e0a-409a-b71f-0174b90210cf')): $__env->markAsRenderedOnce('30eba7f7-2e0a-409a-b71f-0174b90210cf');
 $__env->startPush('page-scripts'); ?>
     <script>
         // @formatter:off

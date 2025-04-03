@@ -9,7 +9,7 @@
 
 <?php $__env->startSection('Debts'); ?>
 <!-- the main debts table ---->
-
+<?php if (\Illuminate\Support\Facades\Blade::check('role', 'Super Admin')): ?>
 <div class="container mt-4">
     <div class="row row-deck row-cards">
         <!-- Total Current Debts -->
@@ -81,7 +81,7 @@
     font-size: 0.85rem; /* Slightly smaller muted text */
 }
 </style>
-
+<?php endif; ?>
 
 <div class="container mt-4">
     <div class="card shadow-sm">
@@ -96,9 +96,7 @@
                 <button type="button" class="btn btn-primary" id="search-button"><?php echo e(__('Search')); ?></button>
             </div>
         </div>
-        <div class="card-body">
-          
-        </div>
+        
     </div>
 </div>
 <script>

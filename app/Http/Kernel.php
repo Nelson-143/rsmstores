@@ -76,6 +76,7 @@ class Kernel extends HttpKernel
         'role' => \Spatie\Permission\Middleware\RoleMiddleware::class,
         'permission' => \Spatie\Permission\Middleware\PermissionMiddleware::class,
         'developer' => \App\Http\Middleware\EnsureUserIsDeveloper::class,
+        'account.access' => \App\Http\Middleware\CheckAccountAccess::class,
     ];
     
    

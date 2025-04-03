@@ -110,13 +110,13 @@
   ),
   'intervention/image' => 
   array (
-    'providers' => 
-    array (
-      0 => 'Intervention\\Image\\ImageServiceProvider',
-    ),
     'aliases' => 
     array (
       'Image' => 'Intervention\\Image\\Facades\\Image',
+    ),
+    'providers' => 
+    array (
+      0 => 'Intervention\\Image\\ImageServiceProvider',
     ),
   ),
   'kyslik/column-sortable' => 
@@ -167,13 +167,13 @@
   ),
   'laravolt/avatar' => 
   array (
-    'providers' => 
-    array (
-      0 => 'Laravolt\\Avatar\\ServiceProvider',
-    ),
     'aliases' => 
     array (
       'Avatar' => 'Laravolt\\Avatar\\Facade',
+    ),
+    'providers' => 
+    array (
+      0 => 'Laravolt\\Avatar\\ServiceProvider',
     ),
   ),
   'livewire/livewire' => 
@@ -196,13 +196,13 @@
   ),
   'mimisk13/laravel-tabler' => 
   array (
-    'providers' => 
-    array (
-      0 => 'MimisK13\\LaravelTabler\\LaravelTablerServiceProvider',
-    ),
     'aliases' => 
     array (
       'LaravelTabler' => 'MimisK13\\LaravelTabler\\Facades\\LaravelTabler',
+    ),
+    'providers' => 
+    array (
+      0 => 'MimisK13\\LaravelTabler\\LaravelTablerServiceProvider',
     ),
   ),
   'nesbot/carbon' => 
@@ -300,13 +300,13 @@
   ),
   'yajra/laravel-datatables-oracle' => 
   array (
-    'providers' => 
-    array (
-      0 => 'Yajra\\DataTables\\DataTablesServiceProvider',
-    ),
     'aliases' => 
     array (
       'DataTables' => 'Yajra\\DataTables\\Facades\\DataTables',
+    ),
+    'providers' => 
+    array (
+      0 => 'Yajra\\DataTables\\DataTablesServiceProvider',
     ),
   ),
 );

@@ -15,24 +15,28 @@ class CategoryController extends Controller
         $this->middleware('auth'); // Ensure authentication
     }
 
+    /**
+     * Display a listing of categories for the logged-in user's account.
+     */
     public function index()
     {
-        // Get the logged-in user's account_id
-        $accountId = auth()->user()->account_id;
-
-        // Fetch categories for the logged-in user's account
-        $categories = Category::where('account_id', $accountId)
-            ->where('user_id', auth()->id())
-            ->get();
+        // Fetch categories for the logged-in user's account (filtered by account_id via global scope)
+        $categories = Category::all();
 
         return view('categories.index', compact('categories'));
     }
 
+    /**
+     * Show the form for creating a new category.
+     */
     public function create()
     {
         return view('categories.create');
     }
 
+    /**
+     * Store a newly created category in storage.
+     */
     public function store(StoreCategoryRequest $request)
     {
         // Get the logged-in user's account_id
@@ -40,7 +44,7 @@ class CategoryController extends Controller
 
         $data = $request->validated();
         $data['uuid'] = Str::uuid();
-        $data['user_id'] = auth()->id();
+        $data['user_id'] = auth()->id(); // Keep track of the creator
         $data['account_id'] = $accountId; // Set the account_id
         $data['slug'] = Str::slug($data['name']);
 
@@ -49,37 +53,31 @@ class CategoryController extends Controller
         return redirect()->route('categories.index')->with('success', 'Category created successfully.');
     }
 
+    /**
+     * Display the specified category.
+     */
     public function show(Category $category)
     {
-        // Ensure the category belongs to the logged-in user's account
-        $this->authorize('view', $category);
-
-        $category = Category::where('slug', $category->slug)
-            ->where('account_id', auth()->user()->account_id)
-            ->firstOrFail();
-
+        // Ensure the category belongs to the logged-in user's account (via global scope)
         return view('categories.show', compact('category'));
     }
 
+    /**
+     * Show the form for editing the specified category.
+     */
     public function edit(Category $category)
     {
-        // Ensure the category belongs to the logged-in user's account
-        $this->authorize('update', $category);
-
-        $category = Category::where('slug', $category->slug)
-            ->where('account_id', auth()->user()->account_id)
-            ->firstOrFail();
-
+        // Ensure the category belongs to the logged-in user's account (via global scope)
         return view('categories.edit', compact('category'));
     }
 
+    /**
+     * Update the specified category in storage.
+     */
     public function update(UpdateCategoryRequest $request, $slug)
     {
-        // Get the logged-in user's account_id
-        $accountId = auth()->user()->account_id;
-
-        // Find the category by slug and account_id
-        $category = Category::where(['slug' => $slug, 'account_id' => $accountId, 'user_id' => auth()->id()])->firstOrFail();
+        // Find the category by slug (filtered by account_id via global scope)
+        $category = Category::where('slug', $slug)->firstOrFail();
 
         $data = $request->validated();
         $data['slug'] = Str::slug($data['name']);
@@ -89,15 +87,12 @@ class CategoryController extends Controller
         return redirect()->route('categories.index')->with('success', 'Category updated successfully.');
     }
 
+    /**
+     * Remove the specified category from storage.
+     */
     public function destroy(Category $category)
     {
-        // Ensure the category belongs to the logged-in user's account
-        $this->authorize('delete', $category);
-
-        $category = Category::where('slug', $category->slug)
-            ->where('account_id', auth()->user()->account_id)
-            ->firstOrFail();
-
+        // Ensure the category belongs to the logged-in user's account (via global scope)
         $category->delete();
 
         return redirect()->route('categories.index')->with('success', 'Category deleted successfully.');

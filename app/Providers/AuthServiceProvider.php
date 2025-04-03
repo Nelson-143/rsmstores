@@ -6,7 +6,8 @@ namespace App\Providers;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Notifications\Messages\MailMessage;
-
+use App\Models\Product;
+use App\Policies\ProductPolicy;
 class AuthServiceProvider extends ServiceProvider
 {
     /**
@@ -17,7 +18,9 @@ class AuthServiceProvider extends ServiceProvider
     /*protected $policies = [
         Subscription::class => SubscriptionPolicy::class,
     ];*/
-    
+    protected $policies = [
+        Product::class => ProductPolicy::class,
+    ];
 
     /**
      * Register any authentication / authorization services.

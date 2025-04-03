@@ -34,7 +34,9 @@ class UnitTable extends Component
     public function render()
     {
         return view('livewire.tables.unit-table', [
-            'units' => Unit::where("user_id",auth()->id())->with('products')
+            'units' => Unit::query()
+            ->where('account_id', auth()->user()->account_id)
+            ->with('products')
                 ->search($this->search)
                 ->orderBy($this->sortField, $this->sortAsc ? 'asc' : 'desc')
                 ->paginate($this->perPage)

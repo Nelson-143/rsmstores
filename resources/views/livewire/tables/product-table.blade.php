@@ -70,7 +70,7 @@
                         <a wire:click.prevent="sortBy('name')" href="#" role="button">
                             {{ __('Name') }}
                             @include('inclues._sort-icon', ['field' => 'name'])
-                        </a>
+                         </a>
                     </th>
                     <th scope="col" class="align-middle text-center">
                         <a wire:click.prevent="sortBy('code')" href="#" role="button">

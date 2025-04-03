@@ -80,20 +80,24 @@ class RegisteredUserController extends Controller
             Log::info('User logged in', ['user' => $user]);
             // Generate and store the email verification token
             $token = Str::random(64);
-            EmailVerification::create([
-                'user_id' => $user->id,
-                'email' => $user->email,
-                'token' => $token,
-                'expires_at' => Carbon::now()->addHours(24),
-            ]);
-            Log::info('Email verification token created', ['user' => $user, 'token' => $token]);
+        
+        EmailVerification::create([
+            'user_id' => $user->id,
+            'email' => $user->email,
+            'token' => $token,
+            'expires_at' => Carbon::now()->addHours(24),
+        ]);
 
-           // Construct the verification URL using route()
-$verificationUrl = route('verification.verify', ['token' => $token]);
+        Mail::to($user->email)->send(
+            new VerifyEmail(route('verification.verify', $token))
+        );
+
+        Log::info('Verification email sent', ['user_id' => $user->id]);
+
 
 // Send the verification email
-Mail::to($user->email)->send(new VerifyEmail($verificationUrl));
-Log::info('Verification email sent', ['user' => $user, 'url' => $verificationUrl]);
+//Mail::to($user->email)->send(new VerifyEmail($verificationUrl));
+//Log::info('Verification email sent', ['user' => $user, 'url' => $verificationUrl]);
 
 
             // Assign the Super Admin role to the user

@@ -32,7 +32,8 @@ class CustomerTable extends Component
     public function render()
     {
         return view('livewire.tables.customer-table', [
-            'customers' => Customer::where("user_id", auth()->id())
+            'customers' => Customer::query()
+            ->where('account_id', auth()->user()->account_id)
                 ->with('orders', 'quotations')
                 ->search($this->search)
                 ->orderBy($this->sortField, $this->sortAsc ? 'asc' : 'desc')

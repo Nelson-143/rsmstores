@@ -12,7 +12,7 @@
                         {{ __('DASHBOARD') }}
                     </div>
   <h2 class="page-title">
-    |{{ Auth::user()->name }},{{ $motivation }}
+    |<b>{{ Auth::user()->name }}</b>,{{ $motivation }}
 </h2>
 
 <small class="text-muted">{{ __('Today is') }} ,{{ date('l, F j, Y') }}</small>

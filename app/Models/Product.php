@@ -34,14 +34,10 @@ class Product extends Model
         'supplier_id',
         'expire_date', // Add this line
         'account_id',
-    ];
-    public function scopeSearch(Builder $query, string $search = null)
+    ];public function scopeSearch($query, $value)
     {
-        if ($search) {
-            $query->where('name', 'like', '%' . $search . '%')
-                  ->orWhere('slug', 'like', '%' . $search . '%');
-        }
-        return $query;
+        return $query->where('name', 'like', '%'.$value.'%')
+                   ->orWhere('code', 'like', '%'.$value.'%');
     }
     public function category()
     {
@@ -78,29 +74,23 @@ class Product extends Model
     }
 
       // for the branches 
-      public function branch()
-      {
-          return $this->belongsTo(Branch::class);
-      }
+    //   public function branch()
+    //   {
+    //       return $this->belongsTo(Branch::class);
+    //   }
       
-      public function product()
-      {
-          return $this->belongsTo(Product::class);
-      }
-// In Product model (remove or modify AccountScope)
-protected static function booted()
-{
-    static::addGlobalScope('account', function (Builder $builder) {
-        if (auth()->check()) {
-            $builder->where('account_id', auth()->user()->account_id);
-        }
-    });
-}
+    //   public function product()
+    //   {
+    //       return $this->belongsTo(Product::class);
+    //   }
 
-      public function apply(Builder $builder, Model $model)
+      protected static function booted()
       {
-          if (auth()->check()) {
-              $builder->where('account_id', auth()->user()->account_id);
-          }
+          static::addGlobalScope(new AccountScope);
       }
+
+      public function account()
+{
+    return $this->belongsTo(Account::class, 'account_id');
+}
 }

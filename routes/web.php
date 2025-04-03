@@ -82,11 +82,12 @@ Route::middleware(['auth','verified'])->group(function () {
     Route::resource('/units', UnitController::class);
 
     // Route Products
+Route::middleware(['auth', 'account.access'])->group(function () {
     Route::get('products/import/', [ProductImportController::class, 'create'])->name('products.import.view');
     Route::post('products/import/', [ProductImportController::class, 'store'])->name('products.import.store');
     Route::get('products/export/', [ProductExportController::class, 'create'])->name('products.export.store');
     Route::resource('/products', ProductController::class);
-
+});
     // Route POS
 
 
