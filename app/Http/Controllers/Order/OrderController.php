@@ -24,10 +24,10 @@ class OrderController extends Controller
 {
     public function index()
     {
-        $userId = auth()->id();
+        
         $accountId = auth()->user()->account_id; // Get the account_id of the logged-in user
 
-        $orders = Order::where('user_id', $userId)
+        $orders = Order::query()
             ->where('account_id', $accountId) // Filter by account_id
             ->count();
 
@@ -41,7 +41,7 @@ class OrderController extends Controller
         $userId = auth()->id();
         $accountId = auth()->user()->account_id; // Get the account_id of the logged-in user
 
-        $products = Product::where('user_id', $userId)
+        $products = Product::query()
             ->where('account_id', $accountId) // Filter by account_id
             ->with(['category', 'unit'])
             ->get();
@@ -116,11 +116,11 @@ foreach ($contents as $content) {
 
     public function show($uuid)
     {
-        $userId = auth()->id();
+       
         $accountId = auth()->user()->account_id; // Get the account_id of the logged-in user
 
         $order = Order::where('uuid', $uuid)
-            ->where('user_id', $userId)
+           
             ->where('account_id', $accountId) // Filter by account_id
             ->firstOrFail();
 
@@ -133,11 +133,11 @@ foreach ($contents as $content) {
 
     public function update($uuid, Request $request)
     {
-        $userId = auth()->id();
+     
         $accountId = auth()->user()->account_id; // Get the account_id of the logged-in user
 
         $order = Order::where('uuid', $uuid)
-            ->where('user_id', $userId)
+            
             ->where('account_id', $accountId) // Filter by account_id
             ->firstOrFail();
 
@@ -175,11 +175,11 @@ foreach ($contents as $content) {
 
     public function destroy($uuid)
     {
-        $userId = auth()->id();
+     
         $accountId = auth()->user()->account_id; // Get the account_id of the logged-in user
 
         $order = Order::where('uuid', $uuid)
-            ->where('user_id', $userId)
+           
             ->where('account_id', $accountId) // Filter by account_id
             ->firstOrFail();
 
@@ -188,12 +188,12 @@ foreach ($contents as $content) {
 
     public function downloadInvoice($uuid)
     {
-        $userId = auth()->id();
+        
         $accountId = auth()->user()->account_id; // Get the account_id of the logged-in user
 
         $order = Order::with(['customer', 'details'])
             ->where('uuid', $uuid)
-            ->where('user_id', $userId)
+            
             ->where('account_id', $accountId) // Filter by account_id
             ->firstOrFail();
 
@@ -244,13 +244,13 @@ foreach ($contents as $content) {
 
     public function showOrder($orderId)
     {
-        $userId = auth()->id();
+       
         $accountId = auth()->user()->account_id; // Get the account_id of the logged-in user
 
         // Fetch the order with its related customer and items
         $order = Order::with(['customer', 'details'])
             ->where('uuid', $orderId)
-            ->where('user_id', $userId)
+          
             ->where('account_id', $accountId) // Filter by account_id
             ->firstOrFail();
 

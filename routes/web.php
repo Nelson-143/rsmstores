@@ -145,6 +145,11 @@ Route::resource('debts', DebtsController::class);
     Route::get('/pos/get-cart-content', [OrderController::class, 'getCartContent'])->name('pos.getCartContent');
     Route::post('/cart/add/{productId}', [OrderController::class, 'addToCart'])
     ->name('cart.add');
+    //from Ajax but for oders
+    Route::post('add-to-cart/{product}', [OrderController::class, 'addCartItem'])->name('addCartItem');
+    Route::post('update-cart-item/{rowId}', [OrderController::class, 'updateCartItem'])->name('updateCartItem');
+    Route::delete('delete-cart-item/{rowId}', [OrderController::class, 'deleteCartItem'])->name('deleteCartItem');
+
 
     // DUES
     Route::get('due/orders/', [DueOrderController::class, 'index'])->name('due.index');

@@ -1,7 +1,6 @@
-@extends('layouts.tabler')
-@section('title' , 'Create Order')
+<?php $__env->startSection('title' , 'Create Order'); ?>
 
-@section('content')
+<?php $__env->startSection('content'); ?>
 <div class="page-body">
     <div class="container-xl">
         <div class="row row-cards">
@@ -10,57 +9,76 @@
                     <div class="card-header">
                          <div>
                             <h3 class="card-title">
-                                {{ __('New Order') }}
+                                <?php echo e(__('New Order')); ?>
+
                             </h3>
                             <!-- <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#addProductModal">
     <lord-icon src="https://cdn.lordicon.com/ggirntso.json" trigger="hover" style="width:30px;height:30px"></lord-icon>
     <span class="ms-2">Add Wingzz!</span>
 </button> -->
                         </div>
-        <!-- @for ($i = 1; $i <= 5; $i++)
+        <!-- <?php for($i = 1; $i <= 5; $i++): ?>
             <button 
-                class="btn btn-{{ $i === 1 ? 'success' : 'secondary' }} customer-switcher" 
-                data-customer-id="customer{{ $i }}"
-                id="customer-tab-{{ $i }}"
+                class="btn btn-<?php echo e($i === 1 ? 'success' : 'secondary'); ?> customer-switcher" 
+                data-customer-id="customer<?php echo e($i); ?>"
+                id="customer-tab-<?php echo e($i); ?>"
                 data-bs-toggle="tab" 
-                href="#customer-{{ $i }}" 
+                href="#customer-<?php echo e($i); ?>" 
                 role="tab" 
-                aria-controls="customer-{{ $i }}" 
-                aria-selected="{{ $i === 1 ? 'true' : 'false' }}">
-                Customer {{ $i }}
+                aria-controls="customer-<?php echo e($i); ?>" 
+                aria-selected="<?php echo e($i === 1 ? 'true' : 'false'); ?>">
+                Customer <?php echo e($i); ?>
+
             </button>
-        @endfor -->
+        <?php endfor; ?> -->
     </div>
     <div class="tab-content">
-        @for ($i = 1; $i <= 5; $i++)
-            <div class="tab-pane fade {{ $i === 1 ? 'show active' : '' }}" id="customer-{{ $i }}" role="tabpanel" aria-labelledby="customer-tab-{{ $i }}">
-                <form action="{{ route('invoice.create') }}" method="POST">
-                    @csrf
+        <?php for($i = 1; $i <= 5; $i++): ?>
+            <div class="tab-pane fade <?php echo e($i === 1 ? 'show active' : ''); ?>" id="customer-<?php echo e($i); ?>" role="tabpanel" aria-labelledby="customer-tab-<?php echo e($i); ?>">
+                <form action="<?php echo e(route('invoice.create')); ?>" method="POST">
+                    <?php echo csrf_field(); ?>
                     <div class="card-body">
                         <div class="row gx-3 mb-3">
-                            @include('partials.session')
+                            <?php echo $__env->make('partials.session', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
                             <div class="col-md-4">
                                 <label for="purchase_date" class="small my-1">
-                                    {{ __('Date') }}
+                                    <?php echo e(__('Date')); ?>
+
                                     <span class="text-danger">*</span>
                                 </label>
 
                                 <input name="purchase_date" id="purchase_date" type="date"
-                                       class="form-control example-date-input @error('purchase_date') is-invalid @enderror"
-                                       value="{{ old('purchase_date') ?? now()->format('Y-m-d') }}"
+                                       class="form-control example-date-input <?php $__errorArgs = ['purchase_date'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
+                                       value="<?php echo e(old('purchase_date') ?? now()->format('Y-m-d')); ?>"
                                        required
                                 >
 
-                                @error('purchase_date')
+                                <?php $__errorArgs = ['purchase_date'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
                                 <div class="invalid-feedback">
-                                    {{ $message }}
+                                    <?php echo e($message); ?>
+
                                 </div>
-                                @enderror
+                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                             </div>
 
                             <div class="col-md-4">
     <label class="small mb-1" for="customer_id">
-        {{ __('Customer') }}
+        <?php echo e(__('Customer')); ?>
+
         <span class="text-danger">*</span>
     </label>
 
@@ -111,11 +129,12 @@
         <div class="custom-dropdown" id="customer-dropdown">
             <div class="custom-option" data-value="pass_by" selected>PASS BY</div>
             <div class="custom-option" data-value="" disabled>Select a customer:</div>
-            @foreach ($customers as $customer)
-                <div class="custom-option" data-value="{{ $customer->id }}">
-                    {{ $customer->name }}
+            <?php $__currentLoopData = $customers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <div class="custom-option" data-value="<?php echo e($customer->id); ?>">
+                    <?php echo e($customer->name); ?>
+
                 </div>
-            @endforeach
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
         </div>
         <input type="hidden" id="customer_id" name="customer_id" value="pass_by">
     </div>
@@ -161,17 +180,26 @@
         });
     </script>
 
-    @error('customer_id')
+    <?php $__errorArgs = ['customer_id'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
     <div class="invalid-feedback">
-        {{ $message }}
+        <?php echo e($message); ?>
+
     </div>
-    @enderror
+    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
 </div>
 
 
                             <div class="col-md-4">
                                 <label class="small mb-1" for="reference">
-                                    {{ __('Reference') }}
+                                    <?php echo e(__('Reference')); ?>
+
                                 </label>
 
                                 <input type="text" class="form-control"
@@ -181,11 +209,19 @@
                                        readonly
                                 >
 
-                                @error('reference')
+                                <?php $__errorArgs = ['reference'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
                                 <div class="invalid-feedback">
-                                    {{ $message }}
+                                    <?php echo e($message); ?>
+
                                 </div>
-                                @enderror
+                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                             </div>
                         </div>
 
@@ -193,28 +229,30 @@
                             <table class="table table-striped table-bordered align-middle">
                                 <thead class="thead-light">
                                     <tr>
-                                        <th scope="col">{{ __('Product') }}</th>
-                                        <th scope="col" class="text-center">{{ __('Quantity') }}</th>
-                                        <th scope="col" class="text-center">{{ __('Price') }}</th>
-                                        <th scope="col" class="text-center">{{ __('SubTotal') }}</th>
+                                        <th scope="col"><?php echo e(__('Product')); ?></th>
+                                        <th scope="col" class="text-center"><?php echo e(__('Quantity')); ?></th>
+                                        <th scope="col" class="text-center"><?php echo e(__('Price')); ?></th>
+                                        <th scope="col" class="text-center"><?php echo e(__('SubTotal')); ?></th>
                                         <th scope="col" class="text-center">
-                                            {{ __('Action') }}
+                                            <?php echo e(__('Action')); ?>
+
                                         </th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @forelse ($carts as $item)
+                                    <?php $__empty_1 = true; $__currentLoopData = $carts; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                                     <tr>
                                         <td>
-                                            {{ $item->name }}
+                                            <?php echo e($item->name); ?>
+
                                         </td>
                                         <td style="min-width: 170px;">
                                             <form></form>
-                                            <form action="{{ route('pos.updateCartItem', $item->rowId) }}" method="POST">
-                                                @csrf
+                                            <form action="<?php echo e(route('pos.updateCartItem', $item->rowId)); ?>" method="POST">
+                                                <?php echo csrf_field(); ?>
                                                 <div class="input-group">
-                                                    <input type="number" class="form-control" name="qty" required value="{{ old('qty', $item->qty) }}">
-                                                    <input type="hidden" class="form-control" name="product_id" value="{{ $item->id }}">
+                                                    <input type="number" class="form-control" name="qty" required value="<?php echo e(old('qty', $item->qty)); ?>">
+                                                    <input type="hidden" class="form-control" name="product_id" value="<?php echo e($item->id); ?>">
 
                                                     <div class="input-group-append text-center">
                                                         <button type="submit" class="btn btn-icon btn-success border-none" data-toggle="tooltip" data-placement="top" title="" data-original-title="Sumbit">
@@ -225,60 +263,67 @@
                                             </form>
                                         </td>
                                         <td class="text-center">
-                                            {{ $item->price }}
+                                            <?php echo e($item->price); ?>
+
                                         </td>
                                         <td class="text-center">
-                                            {{ $item->subtotal }}
+                                            <?php echo e($item->subtotal); ?>
+
                                         </td>
                                         <td class="text-center">
-                                            <form action="{{ route('pos.deleteCartItem', $item->rowId) }}" method="POST">
-                                                @method('delete')
-                                                @csrf
+                                            <form action="<?php echo e(route('pos.deleteCartItem', $item->rowId)); ?>" method="POST">
+                                                <?php echo method_field('delete'); ?>
+                                                <?php echo csrf_field(); ?>
                                                 <button type="submit" class="btn btn-icon btn-outline-danger " onclick="return confirm('Are you sure you want to delete this record?')">
                                                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 7l16 0" /><path d="M10 11l0 6" /><path d="M14 11l0 6" /><path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" /><path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" /></svg>
                                                 </button>
                                             </form>
                                         </td>
                                     </tr>
-                                    @empty
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                                     <td colspan="5" class="text-center">
-                                        {{ __('Add Products') }}
+                                        <?php echo e(__('Add Products')); ?>
+
                                     </td>
-                                    @endforelse
+                                    <?php endif; ?>
 
                                     <tr>
                                         <td colspan="4" class="text-end">
                                             Total Product
                                         </td>
                                         <td class="text-center">
-                                            {{ Cart::count() }}
+                                            <?php echo e(Cart::count()); ?>
+
                                         </td>
                                     </tr>
                                     <tr>
                                         <td colspan="4" class="text-end">Subtotal</td>
                                         <td class="text-center">
-                                            {{ Cart::subtotal() }}
+                                            <?php echo e(Cart::subtotal()); ?>
+
                                         </td>
                                     </tr>
                                     <tr>
                                         <td colspan="4" class="text-end">Tax</td>
                                         <td class="text-center">
-                                            {{ Cart::tax() }}
+                                            <?php echo e(Cart::tax()); ?>
+
                                         </td>
                                     </tr>
                                     <tr>
                                         <td colspan="4" class="text-end">Total</td>
                                         <td class="text-center">
-                                            {{ Cart::total() }}
+                                            <?php echo e(Cart::total()); ?>
+
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
-                        {{-- {{ Cart::count() > 0 ? '' : 'disabled' }} --}}
+                        
                     </div>
                     <!-- the xif -->
-                    @php
+                    <?php
     $outOfStock = false;
     foreach ($carts as $item) {
         // Check if the product exists in the inventory
@@ -295,7 +340,7 @@
             break;
         }
     }
-@endphp
+?>
                     <script>
                         $(document).on('change', '.product-quantity', function() {
                             var selectedQty = parseInt($(this).val());
@@ -311,13 +356,14 @@
 
                     <div class="card-footer text-end">
 
-                        <button type="submit" class="btn btn-success add-list mx-1 {{ Cart::count() > 0 && !$outOfStock ? '' : 'disabled' }}">
-                            {{ __('Create Invoice') }}
+                        <button type="submit" class="btn btn-success add-list mx-1 <?php echo e(Cart::count() > 0 && !$outOfStock ? '' : 'disabled'); ?>">
+                            <?php echo e(__('Create Invoice')); ?>
+
                         </button>
                     </div>
                 </form>
             </div>
-        @endfor
+        <?php endfor; ?>
     </div>
 </div>
 
@@ -345,7 +391,7 @@
                                     <thead class="thead-light">
                                         
                                         <tr>
-                                            {{--- <th scope="col">No.</th> ---}}
+                                            
                                             <th scope="col">Name</th>
                                             <th scope="col">Quantity</th>
                                             <th scope="col">Unit</th>
@@ -355,49 +401,72 @@
                                     </thead>
                                     <tbody>
                                     <tbody id="product-list">
-                                        @forelse ($products as $product)
+                                        <?php $__empty_1 = true; $__currentLoopData = $products; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                                         <tr>
-{{--                                            --}}{{-----}}
-{{--                                            <td>--}}
-{{--                                                <div style="max-height: 80px; max-width: 80px;">--}}
-{{--                                                    <img class="img-fluid"  src="{{ $product->product_image ? asset('storage/products/'.$product->product_image) : asset('assets/img/products/default.webp') }}">--}}
-{{--                                                </div>--}}
-{{--                                            </td>--}}
-{{--                                            ---}}
+
+
+
+
+
+
+
                                             <td class="text-center">
-                                                {{ $product->name }}
+                                                <?php echo e($product->name); ?>
+
                                             </td>
                                             <td class="text-center">
-                                                {{ $product->quantity }}
+                                                <?php echo e($product->quantity); ?>
+
                                             </td>
                                             <td class="text-center">
-                                                {{ $product->unit->name }}
+                                                <?php echo e($product->unit->name); ?>
+
                                             </td>
                                             <td class="text-center">
-                                                {{ number_format($product->selling_price, 2) }}
+                                                <?php echo e(number_format($product->selling_price, 2)); ?>
+
                                             </td>
                                             <td>
                                                 <div class="d-flex">
-                                                    <form action="{{ route('pos.addCartItem', $product) }}" method="POST">
-                                                        @csrf
-                                                        <input type="hidden" name="id" value="{{ $product->id }}">
-                                                        <input type="hidden" name="name" value="{{ $product->name }}">
-                                                        <input type="hidden" name="selling_price" value="{{ $product->selling_price }}">
+                                                    <form action="<?php echo e(route('pos.addCartItem', $product)); ?>" method="POST">
+                                                        <?php echo csrf_field(); ?>
+                                                        <input type="hidden" name="id" value="<?php echo e($product->id); ?>">
+                                                        <input type="hidden" name="name" value="<?php echo e($product->name); ?>">
+                                                        <input type="hidden" name="selling_price" value="<?php echo e($product->selling_price); ?>">
 
                                                         <button type="submit" class="btn btn-icon btn-outline-primary">
-                                                            <x-icon.cart/>
+                                                            <?php if (isset($component)) { $__componentOriginalc07988cb09c611e8f891a1cea7c75c66 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginalc07988cb09c611e8f891a1cea7c75c66 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.icon.cart','data' => []] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component->withName('icon.cart'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(Illuminate\View\AnonymousComponent::class))->getConstructor()): ?>
+<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
+<?php endif; ?>
+<?php $component->withAttributes([]); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginalc07988cb09c611e8f891a1cea7c75c66)): ?>
+<?php $attributes = $__attributesOriginalc07988cb09c611e8f891a1cea7c75c66; ?>
+<?php unset($__attributesOriginalc07988cb09c611e8f891a1cea7c75c66); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalc07988cb09c611e8f891a1cea7c75c66)): ?>
+<?php $component = $__componentOriginalc07988cb09c611e8f891a1cea7c75c66; ?>
+<?php unset($__componentOriginalc07988cb09c611e8f891a1cea7c75c66); ?>
+<?php endif; ?>
                                                         </button>
                                                     </form>
                                                 </div>
                                             </td>
                                         </tr>
-                                        @empty
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                                         <tr>
                                             <th colspan="6" class="text-center" >
                                                 Data not found!
                                             </th>
                                         </tr>
-                                        @endforelse
+                                        <?php endif; ?>
                                     </tbody>
                                 </table>
                             </div>
@@ -429,8 +498,8 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="{{ route('pos.addCartItem') }}" method="POST">
-                    @csrf
+                <form action="<?php echo e(route('pos.addCartItem')); ?>" method="POST">
+                    <?php echo csrf_field(); ?>
                     <input type="hidden" name="is_custom_product" value="1"> <!-- Flag for custom product -->
                     <div class="mb-3">
                         <label for="productName" class="form-label">Product Name</label>
@@ -450,10 +519,11 @@
         </div>
     </div>
 </div>
-@endsection
+<?php $__env->stopSection(); ?>
 
-@pushonce('page-scripts')
-    <script src="{{ asset('assets/js/img-preview.js') }}"></script>
+<?php if (! $__env->hasRenderedOnce('9788df4c-1ded-46dc-b3aa-54f88d5187da')): $__env->markAsRenderedOnce('9788df4c-1ded-46dc-b3aa-54f88d5187da');
+$__env->startPush('page-scripts'); ?>
+    <script src="<?php echo e(asset('assets/js/img-preview.js')); ?>"></script>
     <script>
     document.querySelectorAll('.customer-switcher').forEach(button => {
         button.addEventListener('click', function () {
@@ -469,6 +539,8 @@
         });
     });
 </script>
-@endpushonce
+<?php $__env->stopPush(); endif; ?>
 
 
+
+<?php echo $__env->make('layouts.tabler', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\rstoresV1R\rsmstores\resources\views/orders/create.blade.php ENDPATH**/ ?>
