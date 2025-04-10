@@ -440,7 +440,7 @@
                                                          </lord-icon>
                                                           {{ __('Transfer/Damage') }}
                                                      </a>
-                                                     @role('Super Admin')
+                                                     
                                                      <a class="dropdown-item" href="{{ route('ads.generator') }}">
                                             <lord-icon
                                             src="https://cdn.lordicon.com/wsaaegar.json"
@@ -452,6 +452,7 @@
                                                          </lord-icon>
                                                           {{ __('Ads Generator') }}
                                                      </a>
+                                                     @role('Super Admin')
                                                      <a class="dropdown-item" href="{{ route('gamification.board') }}">
                                             <lord-icon
                                             src="https://cdn.lordicon.com/jyjslctx.json"

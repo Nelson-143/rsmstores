@@ -482,7 +482,7 @@
                                                           <?php echo e(__('Transfer/Damage')); ?>
 
                                                      </a>
-                                                     <?php if (\Illuminate\Support\Facades\Blade::check('role', 'Super Admin')): ?>
+                                                     
                                                      <a class="dropdown-item" href="<?php echo e(route('ads.generator')); ?>">
                                             <lord-icon
                                             src="https://cdn.lordicon.com/wsaaegar.json"
@@ -495,6 +495,7 @@
                                                           <?php echo e(__('Ads Generator')); ?>
 
                                                      </a>
+                                                     <?php if (\Illuminate\Support\Facades\Blade::check('role', 'Super Admin')): ?>
                                                      <a class="dropdown-item" href="<?php echo e(route('gamification.board')); ?>">
                                             <lord-icon
                                             src="https://cdn.lordicon.com/jyjslctx.json"
