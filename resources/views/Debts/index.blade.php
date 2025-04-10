@@ -29,7 +29,7 @@
             <div class="card shadow-sm">
                 <div class="card-body text-center">
                     <h6 class="card-title mb-2">{{ __('Total Value of Debt') }}</h6>
-                    <p class="card-text h5">{{ auth()->user()->account->currency }},{{ number_format($totalValueOfDebt, 2) }}</p>
+                    <p class="card-text h5">{{ auth()->user()->account->currency }}.{{ number_format($totalValueOfDebt, 2) }}</p>
                     <p class="text-muted small">{{ __('Sum of all remaining balances') }}.</p>
                 </div>
             </div>
@@ -51,7 +51,7 @@
             <div class="card shadow-sm">
                 <div class="card-body text-center">
                     <h6 class="card-title mb-2">{{ __('Total Amount Received') }}</h6>
-                    <p class="card-text h5"> {{ auth()->user()->account->currency }},{{ number_format($totalAmountReceived, 2) }}</p>
+                    <p class="card-text h5"> {{ auth()->user()->account->currency }}.{{ number_format($totalAmountReceived, 2) }}</p>
                     <p class="text-muted small">{{ __('Sum of all payments received') }}.</p>
                 </div>
             </div>
@@ -182,8 +182,8 @@ document.getElementById('search-input').addEventListener('input', function () {
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-danger btn-sm">{{ __('Delete') }}</button>
                                         </form>
-                                        <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#paymentModal" data-debt-uuid="{{ $debt['uuid'] }}">Pay</button>
-                                        <a href="{{ route('debts.history', $debt['uuid']) }}" class="btn btn-info btn-sm">Payment History{{ __('') }}</a>
+                                        <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#paymentModal" data-debt-uuid="{{ $debt['uuid'] }}">{{ __('Pay')}}</button>
+                                        <a href="{{ route('debts.history', $debt['uuid']) }}" class="btn btn-info btn-sm">{{ __('Payment History') }}</a>
                                     </td>
                                 </tr>
                             @endforeach

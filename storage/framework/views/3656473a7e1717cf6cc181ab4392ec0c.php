@@ -28,7 +28,7 @@
             <div class="card shadow-sm">
                 <div class="card-body text-center">
                     <h6 class="card-title mb-2"><?php echo e(__('Total Value of Debt')); ?></h6>
-                    <p class="card-text h5"><?php echo e(auth()->user()->account->currency); ?>,<?php echo e(number_format($totalValueOfDebt, 2)); ?></p>
+                    <p class="card-text h5"><?php echo e(auth()->user()->account->currency); ?>.<?php echo e(number_format($totalValueOfDebt, 2)); ?></p>
                     <p class="text-muted small"><?php echo e(__('Sum of all remaining balances')); ?>.</p>
                 </div>
             </div>
@@ -50,7 +50,7 @@
             <div class="card shadow-sm">
                 <div class="card-body text-center">
                     <h6 class="card-title mb-2"><?php echo e(__('Total Amount Received')); ?></h6>
-                    <p class="card-text h5"> <?php echo e(auth()->user()->account->currency); ?>,<?php echo e(number_format($totalAmountReceived, 2)); ?></p>
+                    <p class="card-text h5"> <?php echo e(auth()->user()->account->currency); ?>.<?php echo e(number_format($totalAmountReceived, 2)); ?></p>
                     <p class="text-muted small"><?php echo e(__('Sum of all payments received')); ?>.</p>
                 </div>
             </div>
@@ -184,8 +184,8 @@ document.getElementById('search-input').addEventListener('input', function () {
                                             <?php echo method_field('DELETE'); ?>
                                             <button type="submit" class="btn btn-danger btn-sm"><?php echo e(__('Delete')); ?></button>
                                         </form>
-                                        <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#paymentModal" data-debt-uuid="<?php echo e($debt['uuid']); ?>">Pay</button>
-                                        <a href="<?php echo e(route('debts.history', $debt['uuid'])); ?>" class="btn btn-info btn-sm">Payment History<?php echo e(__('')); ?></a>
+                                        <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#paymentModal" data-debt-uuid="<?php echo e($debt['uuid']); ?>"><?php echo e(__('Pay')); ?></button>
+                                        <a href="<?php echo e(route('debts.history', $debt['uuid'])); ?>" class="btn btn-info btn-sm"><?php echo e(__('Payment History')); ?></a>
                                     </td>
                                 </tr>
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>

@@ -150,11 +150,12 @@
                                                 </span>
                                             </td>
                                         </tr>
-
+                                        @role('Super Admin')
                                         <tr>
                                             <td>{{ __('Buying Price') }}</td>
                                             <td>{{ $product->buying_price }}</td>
                                         </tr>
+                                        @endrole
                                         <tr>
                                             <td>{{ __('Selling Price') }}</td>
                                             <td>{{ $product->selling_price }}</td>
@@ -198,6 +199,7 @@
                                     </svg>
                                     {{ __('Back') }}
                                 </a>
+                                @role('Super Admin')
                                 <a class="btn btn-warning" href="{{ route('products.edit', $product->uuid) }}">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-pencil"
                                         width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
@@ -208,6 +210,7 @@
                                     </svg>
                                     {{ __('Edit') }}
                                 </a>
+                                @endrole
                             </div>
                         </div>
                     </div>

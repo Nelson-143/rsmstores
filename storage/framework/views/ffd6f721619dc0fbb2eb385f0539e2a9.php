@@ -6,14 +6,14 @@
         <?php if(!$orders): ?>
             <?php if (isset($component)) { $__componentOriginal4f22a152e0729cd34293e65bd200d933 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal4f22a152e0729cd34293e65bd200d933 = $attributes; } ?>
-<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.empty','data' => ['title' => 'No orders found','message' => 'Try adjusting your search or filter to find what you\'re looking for.','buttonLabel' => ''.e(__('Add your first Order')).'','buttonRoute' => ''.e(route('orders.create')).'']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.empty','data' => ['title' => 'No orders found','message' => 'Try adjusting your search or filter to find what you\'re looking for.','buttonLabel' => ''.e(__('Add your first Order')).'','buttonRoute' => ''.e(route('pos.index')).'']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
 <?php $component->withName('empty'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
 <?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(Illuminate\View\AnonymousComponent::class))->getConstructor()): ?>
 <?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
 <?php endif; ?>
-<?php $component->withAttributes(['title' => 'No orders found','message' => 'Try adjusting your search or filter to find what you\'re looking for.','button_label' => ''.e(__('Add your first Order')).'','button_route' => ''.e(route('orders.create')).'']); ?>
+<?php $component->withAttributes(['title' => 'No orders found','message' => 'Try adjusting your search or filter to find what you\'re looking for.','button_label' => ''.e(__('Add your first Order')).'','button_route' => ''.e(route('pos.index')).'']); ?>
 <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__attributesOriginal4f22a152e0729cd34293e65bd200d933)): ?>

@@ -128,7 +128,7 @@ unset($__errorArgs, $__bag); ?>
         <input type="text" class="form-control" id="customer-search" placeholder="Search for customers...">
         <div class="custom-dropdown" id="customer-dropdown">
             <div class="custom-option" data-value="pass_by" selected>PASS BY</div>
-            <div class="custom-option" data-value="" disabled>Select a customer:</div>
+            
             <?php $__currentLoopData = $customers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <div class="custom-option" data-value="<?php echo e($customer->id); ?>">
                     <?php echo e($customer->name); ?>
@@ -521,7 +521,7 @@ unset($__errorArgs, $__bag); ?>
 </div>
 <?php $__env->stopSection(); ?>
 
-<?php if (! $__env->hasRenderedOnce('9788df4c-1ded-46dc-b3aa-54f88d5187da')): $__env->markAsRenderedOnce('9788df4c-1ded-46dc-b3aa-54f88d5187da');
+<?php if (! $__env->hasRenderedOnce('b3e4aeb1-25ed-4ce2-8ce9-1943817b9e21')): $__env->markAsRenderedOnce('b3e4aeb1-25ed-4ce2-8ce9-1943817b9e21');
 $__env->startPush('page-scripts'); ?>
     <script src="<?php echo e(asset('assets/js/img-preview.js')); ?>"></script>
     <script>
@@ -540,6 +540,7 @@ $__env->startPush('page-scripts'); ?>
     });
 </script>
 <?php $__env->stopPush(); endif; ?>
+
 
 
 

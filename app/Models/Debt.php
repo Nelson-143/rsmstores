@@ -23,7 +23,8 @@ class Debt extends Model
         'amount_paid', // The amount paid so far (defaults to 0)
         'due_date',
         'customer_set',    // The due date for the debt
-        'paid_at',     // The date when the debt was fully paid (nullable)
+        'paid_at', 
+        'account_id'    // The date when the debt was fully paid (nullable)
     ];
     // Debt.php
       // Apply the global scope

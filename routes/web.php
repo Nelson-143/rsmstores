@@ -38,6 +38,7 @@ use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\AdsGeneratorController;
 use App\Http\Controllers\ProfileCurrencyController;
 use App\Http\Controllers\LiabilityController;
+use App\Livewire\CreateOrder;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -90,24 +91,15 @@ Route::middleware(['auth', 'account.access'])->group(function () {
 });
     // Route POS
 
+        Route::get('/pos', CreateOrder::class)->middleware('auth')->name('pos.index');
 
-    Route::get('/pos', [PosController::class, 'index'])->name('pos.index');
-    Route::post('/pos/add-cart-item/{productId}', [PosController::class, 'addCartItem'])->name('pos.addCartItem');
-    Route::post('/pos/update-cart-item/{rowId}', [PosController::class, 'updateCartItem'])->name('pos.updateCartItem');
-    Route::delete('/pos/delete-cart-item/{rowId}', [PosController::class, 'deleteCartItem'])->name('pos.deleteCartItem');
-    Route::get('/pos/get-customer-cart/{customerId}', [PosController::class, 'getCustomerCart'])->name('pos.getCustomerCart');
-    Route::post('/invoice/create', [PosController::class, 'createInvoice'])->name('invoice.create');
-    Route::post('/pos/store-debt', [PosController::class, 'storeDebt'])->name('pos.storeDebt');
-
-//Route::get('/pos', [PosController::class, 'index'])->name('pos.index');
-Route::post('/pos/add-cart-item', [PosController::class, 'addCartItem'])->name('pos.addCartItem');
-Route::post('/pos/update-cart-item/{rowId}', [PosController::class, 'updateCartItem'])->name('pos.updateCartItem');
-Route::post('/pos/delete-cart-item/{rowId}', [PosController::class, 'deleteCartItem'])->name('pos.deleteCartItem');
-Route::post('/pos/store-debt', [PosController::class, 'storeDebt'])->name('pos.storeDebt');
-
+        Route::get('/invoices/create', [InvoiceController::class, 'create'])->middleware('auth')->name('invoices.create');
+        Route::post('/orders', [OrderController::class, 'store'])->middleware('auth')->name('orders.store');
+        Route::post('/pos/store-debt', [OrderController::class, 'storeDebt'])->middleware('auth')->name('pos.storeDebt');
+        Route::get('/orders', [OrderController::class, 'index'])->middleware('auth')->name('orders.index');
 
     //Route::post('/pos/invoice', [PosController::class, 'createInvoice'])->name('pos.createInvoice');
-    Route::post('/invoice/create', [InvoiceController::class, 'create'])->name('invoice.create');
+    //Route::post('/invoice/create', [InvoiceController::class, 'create'])->name('invoice.create');
     ;
 
 Route::resource('orders', OrderController::class);
@@ -309,7 +301,8 @@ Route::middleware(['auth'])->group(function () {
 });
 
 
-Route::post('/profile/currency/update', [ProfileCurrencyController::class, 'update'])->name('profile.currency.update');
+//Route::post('/profile/currency/update', [ProfileCurrencyController::class, 'update'])->name('profile.currency.update');
+Route::post('/profile/currency/update', [ProfileController::class, 'currencyUpdate'])->middleware('auth')->name('profile.currency.update');
 
 // Route to manage liabilities
 

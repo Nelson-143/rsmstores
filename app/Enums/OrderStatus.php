@@ -6,14 +6,13 @@ enum OrderStatus: int
 {
     case PENDING = 0;
     case COMPLETE = 1;
-    case CANCEL = 2;
-
+    case CANCELLED = 2; // Adjust as per your needs
     public function label(): string
     {
         return match ($this) {
-            self::PENDING => __('Pending'),
-            self::COMPLETE => __('Complete'),
-            self::CANCEL => __('Cancel'),
+            self::PENDING => 'Pending',
+            self::COMPLETE => 'Complete',
+            self::CANCELLED => 'Cancelled',
         };
     }
 }

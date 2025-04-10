@@ -19,6 +19,7 @@ class OrderDetails extends Model
         'order_id',
         'product_id',
         'quantity',
+        'account_id',
         'unitcost',
         'total',
     ];

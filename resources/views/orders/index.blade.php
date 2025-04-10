@@ -6,7 +6,7 @@
     <div class="page-body">
         @if (!$orders)
             <x-empty title="No orders found" message="Try adjusting your search or filter to find what you're looking for."
-                button_label="{{ __('Add your first Order') }}" button_route="{{ route('orders.create') }}" />
+                button_label="{{ __('Add your first Order') }}" button_route="{{ route('pos.index') }}" />
         @else
             <div class="container-xl">
 

@@ -2,31 +2,29 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\Order;
-use App\Models\Debt;
 use App\Models\Customer;
-use Gloudemans\Shoppingcart\Facades\Cart;
-use App\Http\Requests\Invoice\StoreInvoiceRequest;
+use Illuminate\Http\Request;
 
 class InvoiceController extends Controller
 {
-    public function create(StoreInvoiceRequest $request, Customer $customer)
+    public function create()
     {
-        $customer = Customer::where('id', $request->get('customer_id'))
-            ->first();
+        $pendingOrder = session('pending_order');
+        if (!$pendingOrder || empty($pendingOrder['cart'])) {
+            return redirect()->route('pos.index')->with('error', 'No order data found. Please start over.');
+        }
 
-        $carts = Cart::content();
+        $customer = $pendingOrder['customer_id'] && $pendingOrder['customer_id'] !== 'pass_by' 
+            ? Customer::findOrFail($pendingOrder['customer_id']) 
+            : null;
 
         return view('invoices.create', [
+            'cart' => $pendingOrder['cart'],
             'customer' => $customer,
-            'carts' => $carts
+            'sub_total' => $pendingOrder['sub_total'],
+            'vat' => $pendingOrder['vat'],
+            'total' => $pendingOrder['total'],
+            'active_tab' => $pendingOrder['active_tab'],
         ]);
     }
-
-  
 }
-
-
-

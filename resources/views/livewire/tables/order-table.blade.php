@@ -7,7 +7,7 @@
         </div>
 
         <div class="card-actions">
-            <x-action.create route="{{ route('orders.create') }}" />
+            <x-action.create route="{{ route('pos.index') }}" />
         </div>
     </div>
 
@@ -107,12 +107,12 @@
                         {{ auth()->user()->account->currency }}{{ ($order->total) }}
                         </td>
                         <td class="align-middle text-center">
-                            <x-status dot
-                                color="{{ $order->order_status === \App\Enums\OrderStatus::COMPLETE ? 'green' : ($order->order_status === \App\Enums\OrderStatus::PENDING ? 'orange' : '') }}"
-                                class="text-uppercase">
-                                {{ $order->order_status->label() }}
-                            </x-status>
-                        </td>
+    <x-status dot
+        color="{{ $order->order_status === \App\Enums\OrderStatus::COMPLETE ? 'green' : ($order->order_status === \App\Enums\OrderStatus::PENDING ? 'orange' : 'gray') }}"
+        class="text-uppercase">
+        {{ $order->order_status->label() }}
+    </x-status>
+</td>
                         <td class="align-middle text-center">
                             <x-button.show class="btn-icon" route="{{ route('orders.show', $order->uuid) }}" />
                             <x-button.print class="btn-icon" route="{{ route('order.downloadInvoice', $order->uuid) }}" />

@@ -11,7 +11,7 @@ class Account extends Model
   
     use HasFactory;
 
-    protected $fillable = ['name'];
+    protected $fillable = ['name','tax_rate','currency'];
 
    
 

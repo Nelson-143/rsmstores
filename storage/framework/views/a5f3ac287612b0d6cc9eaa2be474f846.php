@@ -23,7 +23,7 @@
                 <!-- Page title actions -->
                 <div class="col-auto ms-auto d-print-none">
                     <div class="btn-list">
-                        <a href="<?php echo e(route('orders.create')); ?>" class="btn btn-primary d-none d-sm-inline-block">
+                        <a href="<?php echo e(route('pos.index')); ?>" class="btn btn-primary d-none d-sm-inline-block">
                             <?php if (isset($component)) { $__componentOriginal6315a526d124ee5b3ba861082d11f72e = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal6315a526d124ee5b3ba861082d11f72e = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.icon.plus','data' => []] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
@@ -47,7 +47,7 @@
                             <?php echo e(__('Create new order')); ?>
 
                         </a>
-                        <a href="<?php echo e(route('orders.create')); ?>" class="btn btn-primary d-sm-none btn-icon"
+                        <a href="<?php echo e(route('pos.index')); ?>" class="btn btn-primary d-sm-none btn-icon"
                             aria-label="Create new report">
                             <?php if (isset($component)) { $__componentOriginal6315a526d124ee5b3ba861082d11f72e = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal6315a526d124ee5b3ba861082d11f72e = $attributes; } ?>
@@ -469,7 +469,7 @@
     <script src="<?php echo e(asset('dist/libs/jsvectormap/dist/maps/world-merc.js')); ?>" defer></script>
 <?php $__env->stopPush(); ?>
 
-<?php if (! $__env->hasRenderedOnce('30eba7f7-2e0a-409a-b71f-0174b90210cf')): $__env->markAsRenderedOnce('30eba7f7-2e0a-409a-b71f-0174b90210cf');
+<?php if (! $__env->hasRenderedOnce('9ce40d56-5d22-4abf-8d11-6bd9b703e2ee')): $__env->markAsRenderedOnce('9ce40d56-5d22-4abf-8d11-6bd9b703e2ee');
 $__env->startPush('page-scripts'); ?>
     <script>
         // @formatter:off

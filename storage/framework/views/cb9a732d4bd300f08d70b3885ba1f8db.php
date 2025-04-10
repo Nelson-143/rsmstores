@@ -156,11 +156,12 @@
                                                 </span>
                                             </td>
                                         </tr>
-
+                                        <?php if (\Illuminate\Support\Facades\Blade::check('role', 'Super Admin')): ?>
                                         <tr>
                                             <td><?php echo e(__('Buying Price')); ?></td>
                                             <td><?php echo e($product->buying_price); ?></td>
                                         </tr>
+                                        <?php endif; ?>
                                         <tr>
                                             <td><?php echo e(__('Selling Price')); ?></td>
                                             <td><?php echo e($product->selling_price); ?></td>

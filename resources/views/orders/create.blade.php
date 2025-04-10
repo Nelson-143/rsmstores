@@ -110,7 +110,7 @@
         <input type="text" class="form-control" id="customer-search" placeholder="Search for customers...">
         <div class="custom-dropdown" id="customer-dropdown">
             <div class="custom-option" data-value="pass_by" selected>PASS BY</div>
-            <div class="custom-option" data-value="" disabled>Select a customer:</div>
+            
             @foreach ($customers as $customer)
                 <div class="custom-option" data-value="{{ $customer->id }}">
                     {{ $customer->name }}
@@ -470,5 +470,6 @@
     });
 </script>
 @endpushonce
+
 
 

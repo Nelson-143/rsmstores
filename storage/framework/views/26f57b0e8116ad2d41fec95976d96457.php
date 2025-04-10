@@ -1,18 +1,18 @@
-@extends('layouts.tabler')
-@section('title' , 'Show Customer')
+<?php $__env->startSection('title' , 'Show Customer'); ?>
 
-@section('content')
+<?php $__env->startSection('content'); ?>
     <div class="page-header d-print-none">
         <div class="container-xl">
             <div class="row g-2 align-items-center mb-3">
                 <div class="col">
                     <h2 class="page-title">
-                        {{ $customer->name }}
+                        <?php echo e($customer->name); ?>
+
                     </h2>
                 </div>
             </div>
 
-            @include('partials._breadcrumbs', ['model' => $customer])
+            <?php echo $__env->make('partials._breadcrumbs', ['model' => $customer], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
         </div>
     </div>
 
@@ -24,12 +24,13 @@
                 <div class="card">
                     <div class="card-body">
                                         <h3 class="card-title">
-                                            {{ __('Profile Image') }}
+                                            <?php echo e(__('Profile Image')); ?>
+
                                         </h3>
 
                                         <img id="image-preview"
                                             class="img-account-profile mb-2"
-                                            src="{{ $customer->photo ? asset($customer->photo) : asset('assets/img/demo/user-placeholder.svg') }}"
+                                            src="<?php echo e($customer->photo ? asset($customer->photo) : asset('assets/img/demo/user-placeholder.svg')); ?>"
                                             alt=""
                                         >
                                     </div>
@@ -39,7 +40,8 @@
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">
-                {{ __('Customer Details') }}
+                <?php echo e(__('Customer Details')); ?>
+
             </h3>
         </div>
         <div class="table-responsive">
@@ -47,55 +49,57 @@
                 <tbody>
                     <tr>
                         <td>Name</td>
-                        <td>{{ $customer->name }}</td>
+                        <td><?php echo e($customer->name); ?></td>
                     </tr>
                     <tr>
                         <td>Email address</td>
-                        <td>{{ $customer->email }}</td>
+                        <td><?php echo e($customer->email); ?></td>
                     </tr>
                     <tr>
                         <td>Phone number</td>
-                        <td>{{ $customer->phone }}</td>
+                        <td><?php echo e($customer->phone); ?></td>
                     </tr>
                     <tr>
                         <td>Address</td>
-                        <td>{{ $customer->address }}</td>
+                        <td><?php echo e($customer->address); ?></td>
                     </tr>
                     <tr>
                         <td>Account holder</td>
-                        <td>{{ $customer->account_holder }}</td>
+                        <td><?php echo e($customer->account_holder); ?></td>
                     </tr>
                     <tr>
                         <td>Account number</td>
-                        <td>{{ $customer->account_number }}</td>
+                        <td><?php echo e($customer->account_number); ?></td>
                     </tr>
                     <tr>
                         <td>Bank name</td>
-                        <td>{{ $customer->bank_name }}</td>
+                        <td><?php echo e($customer->bank_name); ?></td>
                     </tr>
-                    @role('Super Admin')
+                    <?php if (\Illuminate\Support\Facades\Blade::check('role', 'Super Admin')): ?>
                     <tr>
                         <td>Number of Orders</td>
-                        <td>{{ $orderCount }}</td>
+                        <td><?php echo e($orderCount); ?></td>
                     </tr>
                     <tr>
                         <td>Total Contributed</td>
-                        <td>{{ number_format($totalContributed, 2) }} {{ '/=' }}</td> <!-- Replace 'Currency' with the actual currency symbol -->
+                        <td><?php echo e(number_format($totalContributed, 2)); ?> <?php echo e('/='); ?></td> <!-- Replace 'Currency' with the actual currency symbol -->
                     </tr>
-                    @endrole
+                    <?php endif; ?>
                 </tbody>
             </table>
         </div>
 
         <div class="card-footer text-end">
-            <a class="btn btn-info" href="{{ route('customers.index') }}">
+            <a class="btn btn-info" href="<?php echo e(route('customers.index')); ?>">
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l14 0" /><path d="M5 12l6 6" /><path d="M5 12l6 -6" /></svg>
-                {{ __('Back') }}
+                <?php echo e(__('Back')); ?>
+
             </a>
 
-            <a class="btn btn-warning" href="{{ route('customers.edit', $customer->uuid) }}">
+            <a class="btn btn-warning" href="<?php echo e(route('customers.edit', $customer->uuid)); ?>">
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-pencil" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" /><path d="M13.5 6.5l4 4" /></svg>
-                {{ __('Edit') }}
+                <?php echo e(__('Edit')); ?>
+
             </a>
         </div>
     </div>
@@ -105,4 +109,6 @@
         </div>
         </div>
     </div>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.tabler', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\rstoresV1R\rsmstores\resources\views/customers/show.blade.php ENDPATH**/ ?>

@@ -36,27 +36,32 @@
                         </div>
                     </div>
                     <div class="card-body">
-                    <form action="{{ route('profile.currency.update') }}" method="POST">
-                        @csrf
-                        <div class="mb-3">
-                            <label for="currency" class="form-label">{{ __('Select Currency') }}</label>
-                            <select class="form-select" id="currency" name="currency" required>
-                                <option value="TZS" {{ auth()->user()->account->currency === 'TZS' ? 'selected' : '' }}>Tanzanian Shilling (TZS)</option>
-                                <option value="KES" {{ auth()->user()->account->currency === 'KES' ? 'selected' : '' }}>Kenyan Shillings (KES)</option>
-                                <option value="UGX" {{ auth()->user()->account->currency === 'UGX' ? 'selected' : '' }}>Ugandan Shillings (UGX)</option>
-                                <option value="USD" {{ auth()->user()->account->currency === 'USD' ? 'selected' : '' }}>US Dollar (USD)</option>
-                                <option value="EUR" {{ auth()->user()->account->currency === 'EUR' ? 'selected' : '' }}>Euro (EUR)</option>
-                                <!-- Add more currencies as needed -->
-                            </select>
-                        </div>
-                        <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" id="activateCurrency" name="activate_currency" {{ auth()->user()->account->is_currency_active ? 'checked' : '' }}>
-                            <label class="form-check-label" for="activateCurrency">{{ __('Activate Currency') }}</label>
-                        </div>
-                        <div class="mt-3">
-                            <button type="submit" class="btn btn-primary">{{ __('Save Changes') }}</button>
-                        </div>
-                    </form>
+                        <form action="{{ route('profile.currency.update') }}" method="POST">
+                            @csrf
+                            <div class="mb-3">
+                                <label for="currency" class="form-label">{{ __('Select Currency') }}</label>
+                                <select class="form-select" id="currency" name="currency" required>
+                                    <option value="TZS" {{ auth()->user()->account->currency === 'TZS' ? 'selected' : '' }}>Tanzanian Shilling (TZS)</option>
+                                    <option value="KES" {{ auth()->user()->account->currency === 'KES' ? 'selected' : '' }}>Kenyan Shillings (KES)</option>
+                                    <option value="UGX" {{ auth()->user()->account->currency === 'UGX' ? 'selected' : '' }}>Ugandan Shillings (UGX)</option>
+                                    <option value="USD" {{ auth()->user()->account->currency === 'USD' ? 'selected' : '' }}>US Dollar (USD)</option>
+                                    <option value="EUR" {{ auth()->user()->account->currency === 'EUR' ? 'selected' : '' }}>Euro (EUR)</option>
+                                </select>
+                            </div>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="activateCurrency" name="activate_currency" {{ auth()->user()->account->is_currency_active ? 'checked' : '' }}>
+                                <label class="form-check-label" for="activateCurrency">{{ __('Activate Currency') }}</label>
+                            </div>
+                            <!-- Tax Rate Slider -->
+                            <div class="mb-3 mt-3">
+                                <label for="tax_rate" class="form-label">{{ __('Tax Rate (%)') }}</label>
+                                <input type="range" class="form-range" id="tax_rate" name="tax_rate" min="0" max="100" step="1" value="{{ auth()->user()->account->tax_rate ?? 0 }}" oninput="this.nextElementSibling.value = this.value">
+                                <output class="mt-2 d-block">{{ auth()->user()->account->tax_rate ?? 0 }}%</output>
+                            </div>
+                            <div class="mt-3">
+                                <button type="submit" class="btn btn-primary">{{ __('Save Changes') }}</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
 
@@ -90,9 +95,7 @@
                     </div>
                     <div class="card-body">
                         <p>
-                           {{ __(' Add another level of security to your account by enabling two-factor authentication.
-                            We will send you a text message to verify your login attempts on unrecognized devices and
-                            browsers.') }}
+                           {{ __(' Add another level of security to your account by enabling two-factor authentication.') }}
                         </p>
                         <form>
                             <div class="form-check">
@@ -104,7 +107,7 @@
                                 <label class="form-check-label" for="twoFactorOff">{{ __('Off') }}</label>
                             </div>
                         </form>
-                    </div>
+                    </div> 
                 </div>
 
                 <!-- Delete Account -->
@@ -114,8 +117,7 @@
                     </div>
                     <div class="card-body">
                         <p>
-                            {{ __('Deleting your account is a permanent action and cannot be undone. If you are sure you want to
-                            delete your account, select the button below.') }}
+                            {{ __('Deleting your account is a permanent action and cannot be undone.') }}
                         </p>
                         <button type="button" class="btn btn-danger-soft text-danger">
                             {{ __('I understand, delete my account') }}
