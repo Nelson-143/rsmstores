@@ -1,12 +1,12 @@
 <?php
-namespace app\Http\Controllers;
+namespace app\Http\Controllers\Auth;
 
 use app\Models\Role;
 use app\Models\Permission;
 use app\Models\User;
 use Illuminate\Http\Request;
 
-class RoleController extends Controller
+class RoleController 
 {
     public function assignRole(Request $request, User $user)
     {
