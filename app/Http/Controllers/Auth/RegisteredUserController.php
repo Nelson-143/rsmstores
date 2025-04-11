@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use App\Models\EmailVerification;
 use Illuminate\Support\Facades\Mail;
-use app\Mail\Auth\VerifyEmail;
+use App\Mail\Auth\VerifyEmail;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
