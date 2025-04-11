@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Profile;
+namespace app\Http\Controllers\Profile;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\Profile\ProfileUpdateRequest;
-use App\Models\User;
+use app\Http\Controllers\Controller;
+use app\Http\Requests\Profile\ProfileUpdateRequest;
+use app\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;

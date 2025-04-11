@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Livewire\Tables;
+namespace app\Livewire\Tables;
 
-use App\Models\Customer;
+use app\Models\Customer;
 use Livewire\Component;
 use Livewire\WithPagination;
 

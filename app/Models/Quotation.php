@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Models;
+namespace app\Models;
 
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
-use App\Enums\QuotationStatus;
-use Attribute;
+use app\Enums\QuotationStatus;
+use attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use App\Scopes\AccountScope;
+use app\Scopes\AccountScope;
 /**
  * @method static max(string $string)
  * @method static whereDate(string $string, string $format)

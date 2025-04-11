@@ -112,7 +112,7 @@ return [
     // The classes for the middleware to check if the visitor is an admin
     // Can be a single class or an array of classes
     'middleware_class' => [
-        App\Http\Middleware\AdminMiddleware::class,
+        app\Http\Middleware\AdminMiddleware::class,
        // \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
         //\Backpack\CRUD\app\Http\Middleware\AuthenticateSession::class,
         //\App\Http\Middleware\EnsureUserIsDeveloper::class, // Create this middleware

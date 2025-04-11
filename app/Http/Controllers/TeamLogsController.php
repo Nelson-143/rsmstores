@@ -1,9 +1,9 @@
 <?php
-namespace App\Http\Controllers;
+namespace app\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Spatie\Activitylog\Models\Activity;
-use App\Models\User; // Import the User model
+use app\Models\User; // Import the User model
 
 class TeamLogsController extends Controller
 {

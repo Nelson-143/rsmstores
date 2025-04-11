@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Livewire;
+namespace app\Livewire;
 
-use App\Models\Product;
-use App\Models\Supplier;
+use app\Models\Product;
+use app\Models\Supplier;
 use Livewire\Component;
 use Livewire\Attributes\Rule;
 use Illuminate\Support\Collection;

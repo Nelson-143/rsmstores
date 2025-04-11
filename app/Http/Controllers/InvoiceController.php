@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace app\Http\Controllers;
 
-use App\Models\Customer;
+use app\Models\Customer;
 use Illuminate\Http\Request;
 
 class InvoiceController extends Controller

@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Http\Controllers\Purchase;
+namespace app\Http\Controllers\Purchase;
 
-use App\Enums\PurchaseStatus;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\Purchase\StorePurchaseRequest;
-use App\Models\Category;
-use App\Models\Product;
-use App\Models\Purchase;
-use App\Models\PurchaseDetails;
-use App\Models\Supplier;
+use app\Enums\PurchaseStatus;
+use app\Http\Controllers\Controller;
+use app\Http\Requests\Purchase\StorePurchaseRequest;
+use app\Models\Category;
+use app\Models\Product;
+use app\Models\Purchase;
+use app\Models\PurchaseDetails;
+use app\Models\Supplier;
 use Carbon\Carbon;
 use Exception;
 use Haruncpi\LaravelIdGenerator\IdGenerator;

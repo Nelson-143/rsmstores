@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Livewire\Tables;
+namespace app\Livewire\Tables;
 
 use Livewire\Component;
-use App\Models\Product;
+use app\Models\Product;
 use Livewire\WithPagination;
 
 class ProductTable extends Component

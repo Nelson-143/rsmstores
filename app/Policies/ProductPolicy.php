@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Policies;
+namespace app\Policies;
 
-use App\Models\Product;
-use App\Models\User;
+use app\Models\Product;
+use app\Models\User;
 use Illuminate\Auth\Access\Response;
 
 class ProductPolicy

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\View\PowerGridThemes;
+namespace app\View\PowerGridThemes;
 
 use PowerComponents\LivewirePowerGrid\Themes\Theme;
 use PowerComponents\LivewirePowerGrid\Themes\Bootstrap5;

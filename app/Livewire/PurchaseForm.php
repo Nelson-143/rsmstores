@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Livewire;
+namespace app\Livewire;
 
-use App\Models\Product;
+use app\Models\Product;
 use Livewire\Component;
 use Livewire\Attributes\Validate;
 use Illuminate\Support\Collection;

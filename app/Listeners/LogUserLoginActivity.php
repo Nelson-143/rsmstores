@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Listeners;
+namespace app\Listeners;
 
 use Illuminate\Auth\Events\Login;
 use Spatie\Activitylog\Models\Activity;

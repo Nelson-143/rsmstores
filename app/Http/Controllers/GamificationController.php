@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace app\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Achievement;
-use App\Models\Mission;
-use App\Models\Reward;
-use App\Models\Leaderboard;
+use app\Models\Achievement;
+use app\Models\Mission;
+use app\Models\Reward;
+use app\Models\Leaderboard;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 

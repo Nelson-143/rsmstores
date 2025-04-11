@@ -1,6 +1,6 @@
 <?php
 
-namespace Database\Factories;
+namespace database\factories;
 
 use Haruncpi\LaravelIdGenerator\IdGenerator;
 use Illuminate\Database\Eloquent\Factories\Factory;

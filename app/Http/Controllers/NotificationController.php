@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace app\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
-use App\Models\Notification;
+use app\Models\Notification;
 
 class NotificationController extends Controller
 {

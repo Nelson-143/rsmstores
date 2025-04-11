@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Product;
+namespace app\Http\Controllers\Product;
 
-use App\Http\Controllers\Controller;
-use App\Models\Product;
+use app\Http\Controllers\Controller;
+use app\Models\Product;
 use Exception;
 use Illuminate\Http\Request;
 use PhpOffice\PhpSpreadsheet\IOFactory;

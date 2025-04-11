@@ -1,9 +1,9 @@
 <?php
-namespace App\Http\Controllers;
+namespace app\Http\Controllers;
 
-use App\Models\Product;
-use App\Models\StockTransfer;
-use App\Models\DamagedProduct;
+use app\Models\Product;
+use app\Models\StockTransfer;
+use app\Models\DamagedProduct;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;

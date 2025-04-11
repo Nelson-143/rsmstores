@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Dashboards;
+namespace app\Http\Controllers\Dashboards;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\Category\StoreCategoryRequest;
-use App\Http\Requests\Category\UpdateCategoryRequest;
-use App\Models\Category;
+use app\Http\Controllers\Controller;
+use app\Http\Requests\Category\StoreCategoryRequest;
+use app\Http\Requests\Category\UpdateCategoryRequest;
+use app\Models\Category;
 use Illuminate\Support\Str;
 
 class CategoryController extends Controller

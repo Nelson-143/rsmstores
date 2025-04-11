@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace app\Http\Controllers;
 
-use App\Services\FinAssistService;
-use App\Models\AnalysisConversations;
-use App\Models\AnalysisMessages;
+use app\Services\FinAssistService;
+use app\Models\AnalysisConversations;
+use app\Models\AnalysisMessages;
 use Illuminate\Http\Request;
-use App\Models\User;
+use app\Models\User;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;

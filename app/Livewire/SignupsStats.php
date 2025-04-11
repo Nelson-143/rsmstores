@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire;
+namespace app\Livewire;
 
 use Filament\Widgets\Widget;
 

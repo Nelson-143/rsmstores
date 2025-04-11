@@ -1,9 +1,9 @@
 <?php
-namespace App\Http\Controllers;
+namespace app\Http\Controllers;
 
-use App\Models\Budget;
-use App\Models\BudgetCategory;
-use App\Models\Expense;
+use app\Models\Budget;
+use app\Models\BudgetCategory;
+use app\Models\Expense;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Log;

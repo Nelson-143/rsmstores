@@ -163,13 +163,13 @@ return [
         /*
          * Application Service Providers...
          */
-        App\Providers\AppServiceProvider::class,
-        App\Providers\AuthServiceProvider::class,
+        app\Providers\AppServiceProvider::class,
+        app\Providers\AuthServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
-        App\Providers\EventServiceProvider::class,
-        App\Providers\OpenAIServiceProvider::class,
-        App\Providers\RouteServiceProvider::class,
-        App\Providers\VoltServiceProvider::class,
+        app\Providers\EventServiceProvider::class,
+        app\Providers\OpenAIServiceProvider::class,
+        app\Providers\RouteServiceProvider::class,
+        app\Providers\VoltServiceProvider::class,
         RealRashid\SweetAlert\SweetAlertServiceProvider::class,
         /*
         * Third Party Service Providers...

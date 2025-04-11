@@ -1,10 +1,10 @@
 <?php
-namespace App\Http\Controllers;
+namespace app\Http\Controllers;
 
-use App\Models\Liability;
-use App\Models\LiabilityPayment;
-use App\Models\Order;
-use App\Models\Expense;
+use app\Models\Liability;
+use app\Models\LiabilityPayment;
+use app\Models\Order;
+use app\Models\Expense;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;

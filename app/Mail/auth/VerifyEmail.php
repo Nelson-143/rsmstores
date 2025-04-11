@@ -1,5 +1,5 @@
 <?php 
-namespace App\Mail\Auth;
+namespace app\Mail\Auth;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;

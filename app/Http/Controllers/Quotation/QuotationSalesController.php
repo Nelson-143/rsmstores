@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Quotation;
+namespace app\Http\Controllers\Quotation;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use app\Http\Controllers\Controller;
 
 class QuotationSalesController extends Controller
 {

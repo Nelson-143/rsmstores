@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\API\V1;
+namespace app\Http\Controllers\API\V1;
 
-use App\Models\Product;
+use app\Models\Product;
 use Illuminate\Http\Request;
 
 class ProductController

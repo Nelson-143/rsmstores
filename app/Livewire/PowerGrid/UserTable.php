@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Livewire\PowerGrid;
+namespace app\Livewire\PowerGrid;
 
-use App\Models\User;
+use app\Models\User;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use PowerComponents\LivewirePowerGrid\Button;

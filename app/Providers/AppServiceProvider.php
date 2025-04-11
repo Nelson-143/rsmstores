@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Providers;
+namespace app\Providers;
 
 use Illuminate\Http\Request;
-use App\Breadcrumbs\Breadcrumbs;
+use app\Breadcrumbs\Breadcrumbs;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Blade;

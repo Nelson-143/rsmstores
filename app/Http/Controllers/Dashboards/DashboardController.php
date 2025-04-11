@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Http\Controllers\Dashboards;
+namespace app\Http\Controllers\Dashboards;
 
-use App\Http\Controllers\Controller;
-use App\Models\Category;
-use App\Models\Order;
-use App\Models\Product;
-use App\Models\Purchase;
-use App\Models\Quotation;
-use App\Models\Customer;
-use App\Models\Debt;
-use App\Models\Branch;
+use app\Http\Controllers\Controller;
+use app\Models\Category;
+use app\Models\Order;
+use app\Models\Product;
+use app\Models\Purchase;
+use app\Models\Quotation;
+use app\Models\Customer;
+use app\Models\Debt;
+use app\Models\Branch;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;

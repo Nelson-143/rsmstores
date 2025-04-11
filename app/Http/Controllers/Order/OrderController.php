@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Http\Controllers\Order;
+namespace app\Http\Controllers\Order;
 
-use App\Enums\OrderStatus;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\Order\OrderStoreRequest;
-use App\Models\Customer;
-use App\Models\Order;
-use App\Models\OrderDetails;
-use App\Models\Product;
-use App\Models\User;
-use App\Models\Debt;
-use App\Mail\StockAlert;
+use app\Enums\OrderStatus;
+use app\Http\Controllers\Controller;
+use app\Http\Requests\Order\OrderStoreRequest;
+use app\Models\Customer;
+use app\Models\Order;
+use app\Models\OrderDetails;
+use app\Models\Product;
+use app\Models\User;
+use app\Models\Debt;
+use app\Mail\StockAlert;
 use Carbon\Carbon;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Haruncpi\LaravelIdGenerator\IdGenerator;

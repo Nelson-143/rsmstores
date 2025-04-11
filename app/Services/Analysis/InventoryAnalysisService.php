@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Services\Analysis;
+namespace app\Services\Analysis;
 
-use App\Services\OpenAIService;
+use app\Services\OpenAIService;
 
 class InventoryAnalysisService extends OpenAIService
 {

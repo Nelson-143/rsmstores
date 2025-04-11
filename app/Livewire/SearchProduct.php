@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Livewire;
+namespace app\Livewire;
 
 use Livewire\Component;
-use App\Models\Product;
+use app\Models\Product;
 use Illuminate\Support\Collection;
 
 class SearchProduct extends Component

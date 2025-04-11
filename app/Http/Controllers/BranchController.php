@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace app\Http\Controllers;
 
-use App\Models\Branch;
+use app\Models\Branch;
 use Illuminate\Http\Request;
 
 class BranchController extends Controller

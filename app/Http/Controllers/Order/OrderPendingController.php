@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Order;
+namespace app\Http\Controllers\Order;
 
-use App\Enums\OrderStatus;
-use App\Models\Order;
+use app\Enums\OrderStatus;
+use app\Models\Order;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use app\Http\Controllers\Controller;
 
 class OrderPendingController extends Controller
 {

@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Providers;
+namespace app\Providers;
 
 // use Illuminate\Support\Facades\Gate;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Notifications\Messages\MailMessage;
-use App\Models\Product;
-use App\Policies\ProductPolicy;
+use app\Models\Product;
+use app\Policies\ProductPolicy;
 class AuthServiceProvider extends ServiceProvider
 {
     /**

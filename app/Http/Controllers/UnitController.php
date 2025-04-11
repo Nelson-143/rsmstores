@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace app\Http\Controllers;
 
-use App\Models\Unit;
-use App\Http\Requests\Unit\StoreUnitRequest;
-use App\Http\Requests\Unit\UpdateUnitRequest;
+use app\Models\Unit;
+use app\Http\Requests\Unit\StoreUnitRequest;
+use app\Http\Requests\Unit\UpdateUnitRequest;
 use Illuminate\Support\Str;
 
 class UnitController extends Controller

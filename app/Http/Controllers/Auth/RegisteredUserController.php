@@ -1,20 +1,20 @@
 <?php
-namespace App\Http\Controllers\Auth;
+namespace app\Http\Controllers\Auth;
 
 use Illuminate\Support\Facades\Log;
-use App\Http\Controllers\Controller;
-use App\Models\User;
-use App\Models\Branch;
-use App\Models\Account;
+use app\Http\Controllers\Controller;
+use app\Models\User;
+use app\Models\Branch;
+use app\Models\Account;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
-use App\Models\EmailVerification;
+use app\Models\EmailVerification;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\Auth\VerifyEmail;
+use app\Mail\Auth\VerifyEmail;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;

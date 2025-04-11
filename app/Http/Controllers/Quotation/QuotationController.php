@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Http\Controllers\Quotation;
+namespace app\Http\Controllers\Quotation;
 
-use App\Enums\QuotationStatus;
-use App\Models\Product;
-use App\Models\Customer;
-use App\Models\Quotation;
-use App\Models\QuotationDetails;
+use app\Enums\QuotationStatus;
+use app\Models\Product;
+use app\Models\Customer;
+use app\Models\Quotation;
+use app\Models\QuotationDetails;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Gloudemans\Shoppingcart\Facades\Cart;
-use App\Http\Requests\Quotation\StoreQuotationRequest;
+use app\Http\Requests\Quotation\StoreQuotationRequest;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Str;
 

@@ -1,9 +1,9 @@
 <?Php
-namespace App\Http\Controllers\Admin;
+namespace app\Http\Controllers\Admin;
 
 use Backpack\CRUD\app\Http\Controllers\AdminController;
-use App\Models\User;
-use App\Models\Admin;
+use app\Models\User;
+use app\Models\Admin;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;

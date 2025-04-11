@@ -8,7 +8,7 @@ use App\Models\Unit;
 use App\Models\User;
 use App\Models\Product;
 use App\Models\Category;
-use App\Models\Customer;
+use app\Models\Customer;
 use App\Models\Supplier;
 use Database\Seeders\RolesAndPermissionsSeeder as SeedersRolesAndPermissionsSeeder;
 use Illuminate\Database\Seeder;
@@ -31,7 +31,7 @@ class DatabaseSeeder extends Seeder
             UnitSeeder::class,
             SupplierSeeder::class,
             ProductSeeder::class,
-            AdminUserSeeder::class,
+            AdminSeeder::class,
            
         ]);
 

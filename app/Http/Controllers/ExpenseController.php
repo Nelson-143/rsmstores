@@ -1,8 +1,8 @@
 <?php
-namespace App\Http\Controllers;
+namespace app\Http\Controllers;
 
-use App\Models\Expense;
-use App\Models\ExpenseCategory;
+use app\Models\Expense;
+use app\Models\ExpenseCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 

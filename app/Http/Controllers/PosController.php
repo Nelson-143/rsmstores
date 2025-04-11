@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace app\Http\Controllers;
 
-use App\Models\Product;
-use App\Models\Customer;
-use App\Models\Debt;
-use App\Models\Order;
+use app\Models\Product;
+use app\Models\Customer;
+use app\Models\Debt;
+use app\Models\Order;
 use Illuminate\Http\Request;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Support\Facades\Log;

@@ -68,7 +68,7 @@ return [
             'api_url' => env('DEEPL_API_URL', 'https://api-free.deepl.com/v2/translate'),
         ],
         'my_custom_driver' => [
-            'class' => App\Drivers\MyCustomDriver::class,
+            'class' => app\Drivers\MyCustomDriver::class,
             'api_key' => env('MY_CUSTOM_API_KEY'),
             // ...
         ],

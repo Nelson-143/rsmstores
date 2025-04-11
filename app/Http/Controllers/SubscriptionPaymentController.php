@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace app\Http\Controllers;
 
 use app\Models\SubscriptionPayment;
 use Illuminate\Support\Str;

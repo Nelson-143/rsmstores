@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Models;
+namespace app\Models;
 
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
-use App\Enums\SupplierType;
+use app\Enums\SupplierType;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Builder;
-use App\Scopes\AccountScope;
+use app\Scopes\AccountScope;
 
 class Supplier extends Model
 {

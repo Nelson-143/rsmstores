@@ -1,10 +1,10 @@
 <?php
-namespace App\Http\Controllers;
+namespace app\Http\Controllers;
 
-use App\Models\User;
+use app\Models\User;
 use Spatie\Permission\Models\Role;
 use Illuminate\Http\Request;
-use App\Models\EmailVerification;
+use app\Models\EmailVerification;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\Auth\VerifyEmail;

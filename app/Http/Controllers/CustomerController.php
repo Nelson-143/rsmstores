@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace app\Http\Controllers;
 
-use App\Http\Requests\Customer\StoreCustomerRequest;
-use App\Http\Requests\Customer\UpdateCustomerRequest;
-use App\Models\Order;
-use App\Models\{Customer, User};
+use app\Http\Requests\Customer\StoreCustomerRequest;
+use app\Http\Requests\Customer\UpdateCustomerRequest;
+use app\Models\Order;
+use app\Models\{Customer, User};
 use Illuminate\Support\Str;
 
 class CustomerController extends Controller

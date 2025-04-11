@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Models;
+namespace app\Models;
 
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Scopes\AccountScope;
+use app\Scopes\AccountScope;
 
 class BudgetCategory extends Model
 {

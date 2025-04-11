@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Livewire\Tables;
+namespace app\Livewire\Tables;
 
 use Livewire\Component;
-use App\Models\Purchase;
+use app\Models\Purchase;
 use Livewire\WithPagination;
 
 class PurchaseTable extends Component

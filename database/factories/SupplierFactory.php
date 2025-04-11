@@ -1,6 +1,6 @@
 <?php
 
-namespace Database\Factories;
+namespace database\factories;
 
 use App\Enums\SupplierType;
 use Illuminate\Database\Eloquent\Factories\Factory;

@@ -1,10 +1,10 @@
 <?php
-namespace App\Console\Commands;
+namespace app\Console\Commands;
 
 use Illuminate\Console\Command;
-use App\Models\Order;
-use App\Models\Expense;
-use App\Models\Report;
+use app\Models\Order;
+use app\Models\Expense;
+use app\Models\Report;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 

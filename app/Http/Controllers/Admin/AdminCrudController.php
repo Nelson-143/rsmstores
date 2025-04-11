@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace app\Http\Controllers\Admin;
 
-use App\Http\Requests\AdminRequest;
+use app\Http\Requests\AdminRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
-use App\Models\Admin;
+use app\Models\Admin;
 class AdminCrudController extends CrudController
 {
     public function setup()

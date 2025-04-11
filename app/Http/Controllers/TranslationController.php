@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace app\Http\Controllers;
 
-use App\Services\TranslationService;
+use app\Services\TranslationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 class TranslationController extends Controller

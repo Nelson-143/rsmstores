@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Models;
+namespace app\Models;
 
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Notifications\DatabaseNotification as NotificationBase;
-use App\Scopes\AccountScope;
+use app\Scopes\AccountScope;
 class Notification extends NotificationBase
 {
   

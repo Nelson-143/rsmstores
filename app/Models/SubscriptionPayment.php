@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Models;
+namespace app\Models;
 
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Scopes\AccountScope;
+use app\Scopes\AccountScope;
 class SubscriptionPayment extends Model
 {
     use CrudTrait;

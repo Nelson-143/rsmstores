@@ -1,7 +1,7 @@
 <?php
 // app/Http/Controllers/MaintenanceController.php
 
-namespace App\Http\Controllers;
+namespace app\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;

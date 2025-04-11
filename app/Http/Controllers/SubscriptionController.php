@@ -1,9 +1,9 @@
 <?php
-namespace App\Http\Controllers;
+namespace app\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
-use App\Models\UserSubscription;
-use App\Models\Subscription;
+use app\Models\UserSubscription;
+use app\Models\Subscription;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 

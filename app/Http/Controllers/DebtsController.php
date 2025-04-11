@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace app\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Debt;
-use App\Models\Customer;
-use App\Models\Payment; // Ensure you import the Payment model
+use app\Models\Debt;
+use app\Models\Customer;
+use app\Models\Payment; // Ensure you import the Payment model
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 

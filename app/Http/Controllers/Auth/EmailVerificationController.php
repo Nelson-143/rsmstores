@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace app\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
-use App\Models\EmailVerification;
-use App\Models\User;
+use app\Http\Controllers\Controller;
+use app\Models\EmailVerification;
+use app\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\Auth\VerifyEmail;
+use app\Mail\Auth\VerifyEmail;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
 

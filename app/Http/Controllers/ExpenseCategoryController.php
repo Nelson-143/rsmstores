@@ -1,7 +1,7 @@
 <?php
-namespace App\Http\Controllers;
+namespace app\Http\Controllers;
 
-use App\Models\ExpenseCategory;
+use app\Models\ExpenseCategory;
 use Illuminate\Http\Request;
 
 class ExpenseCategoryController extends Controller

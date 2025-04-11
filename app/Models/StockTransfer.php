@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Models;
+namespace app\Models;
 
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Product;
-use App\Scopes\AccountScope;
+use app\Models\Product;
+use app\Scopes\AccountScope;
 class StockTransfer extends Model
 {
    

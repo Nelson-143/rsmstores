@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Breadcrumbs;
+namespace app\Breadcrumbs;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;

@@ -56,7 +56,7 @@ return [
 
     'middleware' => [
     'web',
-    \App\Http\Middleware\RestrictFilamentAccess::class,
+    \app\Http\Middleware\RestrictFilamentAccess::class,
 ],
 
 ];

@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\Order;
+namespace app\Http\Controllers\Order;
 
-use App\Models\Customer;
-use App\Models\Order;
-use App\Models\OrderDetails;
-use App\Models\Product;
-use App\Models\User;
-use App\Http\Controllers\Controller;
-use App\Mail\StockAlert;
+use app\Models\Customer;
+use app\Models\Order;
+use app\Models\OrderDetails;
+use app\Models\Product;
+use app\Models\User;
+use app\Http\Controllers\Controller;
+use app\Mail\StockAlert;
 use Illuminate\Http\Request;
 
 class DueOrderController extends Controller

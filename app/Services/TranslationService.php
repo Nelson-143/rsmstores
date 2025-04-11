@@ -1,5 +1,5 @@
 <?php
-namespace App\Services;
+namespace app\Services;
 
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Log;

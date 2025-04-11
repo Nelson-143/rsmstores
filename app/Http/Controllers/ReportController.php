@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace app\Http\Controllers;
 
-use App\Models\Report;
-use App\Models\Recommendation;
-use App\Models\IncomeStatement;
-use App\Models\BalanceSheet;
-use App\Models\CashFlow;
-use App\Models\Purchase;
-use App\Models\TaxReport;
-use App\Models\Product;
-use App\Models\Order;
-use App\Models\OrderDetails;
-use App\Models\Budget;
-use App\Models\Expense;
+use app\Models\Report;
+use app\Models\Recommendation;
+use app\Models\IncomeStatement;
+use app\Models\BalanceSheet;
+use app\Models\CashFlow;
+use app\Models\Purchase;
+use app\Models\TaxReport;
+use app\Models\Product;
+use app\Models\Order;
+use app\Models\OrderDetails;
+use app\Models\Budget;
+use app\Models\Expense;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use illuminate\Support\Facades\log;

@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\Product;
+namespace app\Http\Controllers\Product;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\Product\StoreProductRequest;
-use App\Http\Requests\Product\UpdateProductRequest;
-use App\Models\Category;
-use App\Models\Product;
-use App\Models\Unit;
-use App\Models\Supplier;
+use app\Http\Controllers\Controller;
+use app\Http\Requests\Product\StoreProductRequest;
+use app\Http\Requests\Product\UpdateProductRequest;
+use app\Models\Category;
+use app\Models\Product;
+use app\Models\Unit;
+use app\Models\Supplier;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
 use Illuminate\Http\Request;
 use Picqer\Barcode\BarcodeGeneratorHTML;

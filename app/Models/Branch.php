@@ -1,9 +1,9 @@
 <?php
-namespace App\Models;
+namespace app\Models;
 
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
-use App\Scopes\AccountScope;
+use app\Scopes\AccountScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Branch extends Model

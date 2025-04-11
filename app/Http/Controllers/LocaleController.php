@@ -1,10 +1,10 @@
 <?php
-namespace App\Http\Controllers;
+namespace app\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Session;
-use App\Services\TranslationService;
+use app\Services\TranslationService;
 use Illuminate\Support\Facades\Log;
 
 class LocaleController extends Controller

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Livewire;
+namespace app\Livewire;
 
 use Livewire\Component;
-use App\Models\Product;
-use App\Models\Customer;
+use app\Models\Product;
+use app\Models\Customer;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;

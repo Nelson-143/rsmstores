@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace app\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;

@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Models;
+namespace app\Models;
 
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
-use App\Enums\OrderStatus;
+use app\Enums\OrderStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use App\Scopes\AccountScope;
+use app\Scopes\AccountScope;
 /**
  * @method static where(string $string, int|string|null $id)
  * @method static whereDate(string $string, string $format)
