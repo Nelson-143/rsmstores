@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use app\Models\EmailVerification;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\Auth\VerifyEmail;
+use app\Mail\Auth\VerifyEmail;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 
