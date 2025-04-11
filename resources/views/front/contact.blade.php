@@ -71,7 +71,7 @@ Contact Us|Roman Stock Manager
                             <a href="tel:+255 738-020-528" class="bringer-grid-item-link"></a>
                             <div>
                                 <h5>Instant Champion Support 📞<span class="bringer-accent">.</span></h5>
-                                <h6>+255 738-020-528</h6>
+                                <h6>+255 7151 4962</h6>
                             </div>
                             <p>Get immediate answers! Our victory specialists are ready to guide you to business success. One call could change your business forever! ⚡</p>
                         </div>
@@ -191,23 +191,7 @@ Contact Us|Roman Stock Manager
                                     </div>
                                 </div>
                             </div>
-                            <div class="bringer-cta-counters bringer-grid-3cols bringer-m-grid-3cols" data-stagger-appear="fade-up" data-stagger-delay="100">
-                                <!-- Counter Item -->
-                                <div class="bringer-counter bringer-small-counter" data-delay="3000">
-                                    <div class="bringer-counter-number">420</div>
-                                    <div class="bringer-counter-label">Projects Done</div>
-                                </div><!-- .bringer-counter -->
-                                <!-- Counter Item -->
-                                <div class="bringer-counter bringer-small-counter" data-delay="3000">
-                                    <div class="bringer-counter-number" data-suffix="K+">8</div>
-                                    <div class="bringer-counter-label">Happy Clients</div>
-                                </div><!-- .bringer-counter -->
-                                <!-- Counter Item -->
-                                <div class="bringer-counter bringer-small-counter" data-delay="3000">
-                                    <div class="bringer-counter-number" data-suffix="+">12</div>
-                                    <div class="bringer-counter-label">Years in Work</div>
-                                </div><!-- .bringer-counter -->
-                            </div>
+                       
                         </div>
                     </div>
                 </div>

@@ -291,7 +291,7 @@
                             </li>
 
 
-                            <li class="nav-item dropdown <?php echo e(request()->is('orders*') ? 'active' : null); ?>">
+                            <li class="nav-item dropdown <?php echo e(request()->is('orders*','pos*') ? 'active' : null); ?>">
                                 <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown"
                                     data-bs-auto-close="outside" role="button" aria-expanded="false">
                                     <span class="nav-link-icon d-md-none d-lg-inline-block">

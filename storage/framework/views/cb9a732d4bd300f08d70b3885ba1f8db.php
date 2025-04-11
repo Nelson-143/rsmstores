@@ -207,6 +207,7 @@
                                     <?php echo e(__('Back')); ?>
 
                                 </a>
+                                <?php if (\Illuminate\Support\Facades\Blade::check('role', 'Super Admin')): ?>
                                 <a class="btn btn-warning" href="<?php echo e(route('products.edit', $product->uuid)); ?>">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-pencil"
                                         width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
@@ -218,6 +219,7 @@
                                     <?php echo e(__('Edit')); ?>
 
                                 </a>
+                                <?php endif; ?>
                             </div>
                         </div>
                     </div>

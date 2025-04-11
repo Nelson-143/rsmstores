@@ -42,6 +42,14 @@ class CreateOrder extends Component
         Log::info('CreateOrder mounted', ['user_id' => auth()->id(), 'tax_rate' => $this->taxRate]);
     }
 
+    public function switchTab($tab)
+    {
+        Log::info('Switching tab', ['from' => $this->activeTab, 'to' => $tab]);
+        $this->activeTab = $tab;
+        // Optionally reset search or other tab-specific state
+        $this->searchProduct = '';
+        $this->searchCustomer = '';
+    }
     public function render()
     {
         $filteredProducts = $this->products->filter(function ($product) {

@@ -305,23 +305,7 @@ Pricing|Roman Stock Manager
                                     </div>
                                 </div>
                             </div>
-                            <div class="bringer-cta-counters bringer-grid-3cols bringer-m-grid-3cols" data-stagger-appear="fade-up" data-stagger-delay="100">
-                                <!-- Counter Item -->
-                                <div class="bringer-counter bringer-small-counter" data-delay="3000">
-                                    <div class="bringer-counter-number">10</div>
-                                    <div class="bringer-counter-label">software in one</div>
-                                </div><!-- .bringer-counter -->
-                                <!-- Counter Item -->
-                                <div class="bringer-counter bringer-small-counter" data-delay="3000">
-                                    <div class="bringer-counter-number" data-suffix="K+">8</div>
-                                    <div class="bringer-counter-label">Happy Clients</div>
-                                </div><!-- .bringer-counter -->
-                                <!-- Counter Item -->
-                                <div class="bringer-counter bringer-small-counter" data-delay="3000">
-                                    <div class="bringer-counter-number" data-suffix="+">1</div>
-                                    <div class="bringer-counter-label">Years in the Game</div>
-                                </div><!-- .bringer-counter -->
-                            </div>
+                        
                         </div>
                     </div>
                 </div>

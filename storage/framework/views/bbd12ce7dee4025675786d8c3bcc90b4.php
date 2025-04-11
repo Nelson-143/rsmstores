@@ -3,26 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Effortlessly manage your inventory and finances with Roman Stock Manager. Optimize stock tracking, financial reporting, and multi-location management for business success!">
 
     <!-- Page Title -->
-<title> @yield('title', 'Welcome| Roman Stock Manager')</title>
-
-    <meta name="author" content="Roman Stock Manager">
-    <meta name="keywords" content="Roman Stock Manager, Inventory Management, Stock Tracking, Financial Reporting, Multi-Location Management, Business Growth, Inventory Control, Financial Management">
+<title> <?php echo $__env->yieldContent('title', 'Welcome| Roman Stock Manager'); ?></title>
 
     <!-- Google Fonts -->
     <!-- Config -->
-    <link type="text/css" rel="stylesheet" href=" {{ asset('frontend/assets/css/config.css') }}">
+    <link type="text/css" rel="stylesheet" href=" <?php echo e(asset('frontend/assets/css/config.css')); ?>">
     <!-- Libraries -->
-    <link type="text/css" rel="stylesheet" href=" {{ asset('frontend/assets/css/libs.css') }}">
+    <link type="text/css" rel="stylesheet" href=" <?php echo e(asset('frontend/assets/css/libs.css')); ?>">
     <!-- Template Styles -->
-    <link type="text/css" rel="stylesheet" href=" {{ asset('frontend/assets/css/style.css') }}">
+    <link type="text/css" rel="stylesheet" href=" <?php echo e(asset('frontend/assets/css/style.css')); ?>">
     <!-- Responsive -->
-    <link type="text/css" rel="stylesheet" href=" {{ asset('frontend/assets/css/responsive.css') }}">
+    <link type="text/css" rel="stylesheet" href=" <?php echo e(asset('frontend/assets/css/responsive.css')); ?>">
 
     <!-- Favicon -->
-    <link rel="icon" href=" {{ asset('frontend/assets/img/favicon.png') }}">
+    <link rel="icon" href=" <?php echo e(asset('frontend/assets/img/favicon.png')); ?>">
 </head>
 <body>
     <!-- Header -->
@@ -32,32 +28,32 @@
             <!-- Header Logo -->
             <div class="bringer-header-lp">
                 <a href="./" class="bringer-logo">
-                    <img src=" {{ asset('frontend/assets/img/logo.png') }}" alt="bringer." width="150px">
+                    <img src=" <?php echo e(asset('frontend/assets/img/logo.png')); ?>" alt="bringer." width="150px">
                 </a>
             </div>
             <!-- Main Menu -->
             <div class="bringer-header-mp">
                 <nav class="bringer-nav">
                     <ul class="main-menu" data-stagger-appear="fade-down" data-stagger-delay="75">
-                    <a href="{{ route('about_master.route') }}">HOME</a>
+                    <a href="<?php echo e(route('about_master.route')); ?>">HOME</a>
                            
                         <li>
-                            <a href="{{ route('habout.route') }}">ABOUT US</a>
+                            <a href="<?php echo e(route('habout.route')); ?>">ABOUT US</a>
                         </li>
                         <li>
-                        <a href="{{ route('service.route') }} ">SERVICES</a>
+                        <a href="<?php echo e(route('service.route')); ?> ">SERVICES</a>
                         </li>
                         <li>
-                        <a href="{{ route('price.route') }}">PRICING</a>
+                        <a href="<?php echo e(route('price.route')); ?>">PRICING</a>
                         </li>
                         <li>
-                            <a href="{{ route('contact.route') }} ">CONTACT</a>
+                            <a href="<?php echo e(route('contact.route')); ?> ">CONTACT</a>
                         </li>
                         <div class="bringer-header-mp">
-                <a href="{{ route('login') }}" class="bringer-button">Login</a>
+                <a href="<?php echo e(route('login')); ?>" class="bringer-button">Login</a>
             </div>
             <div class="bringer-header-mp">
-                <a href="{{ route('register') }}" class="bringer-button">SignUp</a>
+                <a href="<?php echo e(route('register')); ?>" class="bringer-button">SignUp</a>
             </div>
                     </ul>
                     <!-- Header Button -->
@@ -69,7 +65,7 @@
         <!-- Mobile Header -->
         <div class="bringer-mobile-header-inner">
             <a href="./" class="bringer-logo">
-                <img src=" {{ asset('frontend/assets/img/logo.png') }}" alt="bringer." width="200px">
+                <img src=" <?php echo e(asset('frontend/assets/img/logo.png')); ?>" alt="bringer." width="200px">
             </a>
             <a href="#" class="bringer-mobile-menu-toggler">
                 <i class="bringer-menu-toggler-icon">
@@ -84,7 +80,7 @@
     <!-- Page Main -->
     <main id="bringer-main">
 
-   @yield('content')
+   <?php echo $__env->yieldContent('content'); ?>
 
        
 
@@ -97,7 +93,7 @@
                         <div class="stg-col-5 stg-tp-col-12 stg-tp-bottom-gap-l">
                             <div class="bringer-info-widget">
                                 <a href="./" class="bringer-logo footer-logo">
-                                    <img src="{{ asset('frontend/assets/img/logo.png') }}" alt="bringer." width="88" height="24">
+                                    <img src="<?php echo e(asset('frontend/assets/img/logo.png')); ?>" alt="bringer." width="88" height="24">
                                 </a>
                                 <div class="bringer-info-description">We are a passionate team of developers and designers who believe in the power of creativity. We help creative people create a strong online presence that shows their work and tells a story.</div>
                                 <span class="bringer-label">Follow us:</span>
@@ -135,10 +131,10 @@
                                 <h6>About Us</h6>
                                 <div class="bringer-menu-widget">
                                     <ul>
-                                        <li><a href="{{ route('habout.route') }}">About Us</a></li>
-                                        <li><a href="{{ route('team.route') }}">Our Team</a></li>
-                                        <li><a href="{{ route('about_master.route') }} ">Welcome</a></li>
-                                        <li><a href="{{ route('contact.route') }}">Get in Touch</a></li>
+                                        <li><a href="<?php echo e(route('habout.route')); ?>">About Us</a></li>
+                                        <li><a href="<?php echo e(route('team.route')); ?>">Our Team</a></li>
+                                        <li><a href="<?php echo e(route('about_master.route')); ?> ">Welcome</a></li>
+                                        <li><a href="<?php echo e(route('contact.route')); ?>">Get in Touch</a></li>
                                     </ul>
                                 </div>
                             </div><!-- .bringer-widget -->
@@ -148,10 +144,10 @@
                                 <h6>Resources</h6>
                                 <div class="bringer-menu-widget">
                                     <ul>
-                                        <li><a href="{{ route('price.route') }}">Pricing</a></li>
-                                        <li><a href="{{ route('contact.route') }}">Contact Us</a></li>
-                                        <li><a href="{{ route('service.route') }}">Our Services</a></li>
-                                        <li><a href="{{ route('register') }}">Create Account</a></li>
+                                        <li><a href="<?php echo e(route('price.route')); ?>">Pricing</a></li>
+                                        <li><a href="<?php echo e(route('contact.route')); ?>">Contact Us</a></li>
+                                        <li><a href="<?php echo e(route('service.route')); ?>">Our Services</a></li>
+                                        <li><a href="<?php echo e(route('register')); ?>">Create Account</a></li>
                                     </ul>
                                 </div>
                             </div><!-- .bringer-widget -->
@@ -164,7 +160,7 @@
             <div class="bringer-footer-line stg-container">
                 <div class="align-center">
                  <div class="align-center">
-    Copyright &copy; {{ date('Y') }}|RomanStockManager
+    Copyright &copy; <?php echo e(date('Y')); ?>|RomanStockManager
 </div>
                 </div>
             </div><!-- bringer-footer-line -->
@@ -183,13 +179,14 @@
     <div class="bringer-backlight"></div>
 
     <!-- JS Scripts -->
-    <script src=" {{ asset('frontend/assets/js/lib/jquery.min.js') }}"></script>
-    <script src=" {{ asset('frontend/assets/js/lib/libs.js') }}"></script>
-    <script src=" {{ asset('frontend/assets/js/contact_form.js') }}"></script>
-    <script src=" {{ asset('frontend/assets/js/st-core.js') }}"></script>
-    <script src=" {{ asset('frontend/assets/js/classes.js') }}"></script>
-    <script src=" {{ asset('frontend/assets/js/main.js') }}"></script>
+    <script src=" <?php echo e(asset('frontend/assets/js/lib/jquery.min.js')); ?>"></script>
+    <script src=" <?php echo e(asset('frontend/assets/js/lib/libs.js')); ?>"></script>
+    <script src=" <?php echo e(asset('frontend/assets/js/contact_form.js')); ?>"></script>
+    <script src=" <?php echo e(asset('frontend/assets/js/st-core.js')); ?>"></script>
+    <script src=" <?php echo e(asset('frontend/assets/js/classes.js')); ?>"></script>
+    <script src=" <?php echo e(asset('frontend/assets/js/main.js')); ?>"></script>
 </body>
 </html>
 
 
+<?php /**PATH C:\rstoresV1R\rsmstores\resources\views/front/themefront.blade.php ENDPATH**/ ?>
