@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\CustomerController;
-use app\Http\Controllers\dashboards\CategoryController; //
+use app\Http\Controllers\Dashboards\CategoryController; //
 use App\Http\Controllers\Dashboards\DashboardController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\Order\DueOrderController;
@@ -21,7 +21,7 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FinAssistController;
-use app\http\Controllers\DebtsController;  //
+use app\Http\Controllers\DebtsController;  //
 use App\Http\Controllers\GamificationController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\ExpenseController;
