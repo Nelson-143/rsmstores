@@ -3,19 +3,24 @@
 namespace app\Listeners;
 
 use Illuminate\Auth\Events\Login;
-use Spatie\Activitylog\Models\Activity;
 
 class LogUserLoginActivity
 {
-    public function __construct()
-    {
-        //
-    }
-
     public function handle(Login $event)
     {
+        // Skip logging if user is an admin with excluded email
+        if ($event->user instanceof \app\Models\Admin && 
+            in_array($event->user->email, ['eggplant@gmail.com'])) {
+            return;
+        }
+
         activity()
-->causedBy($event->user->id)           
-->log('Logged in');
+            ->causedBy($event->user instanceof \Illuminate\Database\Eloquent\Model ? $event->user : null)
+            ->performedOn($event->user instanceof \Illuminate\Database\Eloquent\Model ? $event->user : null)
+            ->withProperties([
+                'ip' => request()->ip(),
+                'user_agent' => request()->userAgent()
+            ])
+            ->log('Logged in');
     }
 }

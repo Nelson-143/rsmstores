@@ -23,7 +23,7 @@ class FinAssistController extends Controller
 {
     // Fetch past conversations with messages
     $conversations = AnalysisConversations::with('messages')->latest()->get();
-    return view('finassist.finassist', compact('conversations'));
+    return view('finAssist.finassist', compact('conversations'));
 }
 
     public function handleQuery(Request $request)
