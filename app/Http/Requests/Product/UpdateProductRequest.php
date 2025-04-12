@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Product;
+namespace app\Http\Requests\Product;
 
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;

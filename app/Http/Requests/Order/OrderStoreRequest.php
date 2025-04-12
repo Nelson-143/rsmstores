@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Requests\Order;
+namespace app\Http\Requests\Order;
 
-use App\Enums\OrderStatus;
+use app\Enums\OrderStatus;
 use Illuminate\Support\Carbon;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Foundation\Http\FormRequest;

@@ -421,6 +421,7 @@
                                                          </lord-icon>
                                                           {{ __('Expences') }}
                                                      </a>
+                                                     @role('Super Admin')
                                                      <a class="dropdown-item" href="{{ route('budgets.index') }}">
                                                     <lord-icon
                                                     src="https://cdn.lordicon.com/ncitidvz.json"
@@ -430,6 +431,7 @@
                                                          </lord-icon>
                                                           {{ __('Budgets') }}
                                                      </a>
+                                                    @endrole
                                                      
                                                    <a class="dropdown-item" href="{{ route('stock.transfer') }}">
                                                   <lord-icon
@@ -469,9 +471,7 @@
                                 </div>
                             </li>
 
-                                            <!-- Reports -->
-                    <!--@canany(['superadmin', 'admin'], auth()->user())--->
-                    <!--@endcanany--->
+                    
                     @role('Super Admin')
                     <li class="nav-item {{ request()->is('reports*') ? 'active' : null }}">
                         <a class="nav-link" href="{{ route('reports.index') }}">

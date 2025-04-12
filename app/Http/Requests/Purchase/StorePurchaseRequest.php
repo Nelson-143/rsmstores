@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Requests\Purchase;
+namespace app\Http\Requests\Purchase;
 
-use App\Enums\PurchaseStatus;
+use app\Enums\PurchaseStatus;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
 use Illuminate\Foundation\Http\FormRequest;
 
