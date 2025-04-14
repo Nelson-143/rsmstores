@@ -138,7 +138,6 @@
                
                 <x-button.edit class="btn-icon" route="{{ route('products.edit', $product->uuid) }}" />
                
-                    <x-button.edit class="btn-icon" route="{{ route('products.edit', $product->uuid) }}" />
                     @role('Super Admin')
                 <x-button.delete class="btn-icon" route="{{ route('products.destroy', $product->uuid) }}"
                                  onclick="return confirm('Are you sure to delete product {{ $product->name }} ?')" />
