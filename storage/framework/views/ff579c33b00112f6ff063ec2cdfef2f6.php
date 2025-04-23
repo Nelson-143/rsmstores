@@ -115,14 +115,14 @@
 
 </head>
 <!-- for email verification -->
-<?php if(auth()->check() && !auth()->user()->hasVerifiedEmail()): ?>
+<!--[if BLOCK]><![endif]--><?php if(auth()->check() && !auth()->user()->hasVerifiedEmail()): ?>
     <div class="alert alert-warning">
         <p>
             Please verify your email address. We've sent a verification link to <strong><?php echo e(auth()->user()->email); ?></strong>.
             <a href="<?php echo e(route('verification.resend')); ?>">Resend Verification Email</a>
         </p>
     </div>
-<?php endif; ?>
+<?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 <!--the xxx-->
 <body>
     <script src="<?php echo e(asset('dist/js/demo-theme.min.js')); ?>"></script>
@@ -198,7 +198,7 @@
                                 <?php echo e(__('Account')); ?>
 
                             </a>
-                            <?php if (\Illuminate\Support\Facades\Blade::check('role', 'Super Admin')): ?>
+                            <!--[if BLOCK]><![endif]--><?php if (\Illuminate\Support\Facades\Blade::check('role', 'Super Admin')): ?>
                             <a href="<?php echo e(route('subscriptions.index')); ?>" class="dropdown-item">
                             <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  
                             class="icon icon-tabler icons-tabler-outline icon-tabler-shopping-cart-up"><path stroke="none" d="M0 0h24v24H0z" 
@@ -208,7 +208,7 @@
                                  <?php echo e(__('Subscriptions')); ?>
 
                             </a>
-                            <?php endif; ?>
+                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                             <form action="<?php echo e(route('logout')); ?>" method="post">
                                 <?php echo csrf_field(); ?>
                                 <button type="submit" class="dropdown-item">
@@ -261,12 +261,11 @@
                                 </a>
                             </li>
 
-
-                            <li class="nav-item <?php echo e(request()->is('products*') ? 'active' : null); ?>">
-                                <a class="nav-link" href="<?php echo e(route('products.index')); ?>">
-                                    <span
-                                        class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/home -->
-                                        <svg xmlns="http://www.w3.org/2000/svg"
+                            <li class="nav-item dropdown <?php echo e(request()->is('products*','shelf-products*') ? 'active' : null); ?>">
+                                <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown"
+                                    data-bs-auto-close="outside" role="button" aria-expanded="false">
+                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
                                             class="icon icon-tabler icon-tabler-packages" width="24"
                                             height="24" viewBox="0 0 24 24" stroke-width="2"
                                             stroke="currentColor" fill="none" stroke-linecap="round"
@@ -288,6 +287,20 @@
 
                                     </span>
                                 </a>
+                                <div class="dropdown-menu">
+                                    <div class="dropdown-menu-columns">
+                                        <div class="dropdown-menu-column">
+                                            <a class="dropdown-item" href="<?php echo e(route('products.index')); ?>">
+                                                <?php echo e(__('Products')); ?>
+
+                                            </a>
+                                            <a class="dropdown-item" href="<?php echo e(route('shelf-products.index')); ?>">
+                                                <?php echo e(__('Shelf-Products')); ?>
+
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
                             </li>
 
 
@@ -335,7 +348,7 @@
                                 </div>
                             </li>
 
-                            <?php if (\Illuminate\Support\Facades\Blade::check('role', 'Super Admin')): ?>
+                            <!--[if BLOCK]><![endif]--><?php if (\Illuminate\Support\Facades\Blade::check('role', 'Super Admin')): ?>
                             <li class="nav-item dropdown <?php echo e(request()->is('purchases*') ? 'active' : null); ?>">
                                 <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown"
                                     data-bs-auto-close="outside" role="button" aria-expanded="false">
@@ -380,7 +393,7 @@
                                     </div>
                                 </div>
                             </li>
-                            <?php endif; ?>
+                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
                             <li
                                 class="nav-item dropdown <?php echo e(request()->is('suppliers*', 'customers*','debts*','expenses*','stock*','budgets*','gamification*','quotations*','ads*') ? 'active' : null); ?>">
@@ -417,7 +430,7 @@
                                                           <?php echo e(__('Quotations')); ?>
 
                                                      </a>
-                                                     <?php if (\Illuminate\Support\Facades\Blade::check('role', 'Super Admin')): ?>
+                                                     <!--[if BLOCK]><![endif]--><?php if (\Illuminate\Support\Facades\Blade::check('role', 'Super Admin')): ?>
                                             <a class="dropdown-item" href="<?php echo e(route('suppliers.index')); ?>">
                                             <lord-icon
                                                       src="https://cdn.lordicon.com/pbrgppbb.json"
@@ -428,7 +441,7 @@
                                                           <?php echo e(__('Suppliers')); ?>
 
                                                      </a>
-                                                     <?php endif; ?>
+                                                     <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                                             <a class="dropdown-item" href="<?php echo e(route('customers.index')); ?>">
                                             <lord-icon
                                                       src="https://cdn.lordicon.com/iazmohzf.json"
@@ -461,6 +474,7 @@
                                                           <?php echo e(__('Expences')); ?>
 
                                                      </a>
+                                                     <!--[if BLOCK]><![endif]--><?php if (\Illuminate\Support\Facades\Blade::check('role', 'Super Admin')): ?>
                                                      <a class="dropdown-item" href="<?php echo e(route('budgets.index')); ?>">
                                                     <lord-icon
                                                     src="https://cdn.lordicon.com/ncitidvz.json"
@@ -471,6 +485,7 @@
                                                           <?php echo e(__('Budgets')); ?>
 
                                                      </a>
+                                                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                                                      
                                                    <a class="dropdown-item" href="<?php echo e(route('stock.transfer')); ?>">
                                                   <lord-icon
@@ -495,7 +510,7 @@
                                                           <?php echo e(__('Ads Generator')); ?>
 
                                                      </a>
-                                                     <?php if (\Illuminate\Support\Facades\Blade::check('role', 'Super Admin')): ?>
+                                                     <!--[if BLOCK]><![endif]--><?php if (\Illuminate\Support\Facades\Blade::check('role', 'Super Admin')): ?>
                                                      <a class="dropdown-item" href="<?php echo e(route('gamification.board')); ?>">
                                             <lord-icon
                                             src="https://cdn.lordicon.com/jyjslctx.json"
@@ -507,16 +522,14 @@
                                                           <?php echo e(__('RsmPlay')); ?>
 
                                                      </a>
-                                                     <?php endif; ?>
+                                                     <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                                         </div>
                                     </div>
                                 </div>
                             </li>
 
-                                            <!-- Reports -->
-                    <!--<?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->any(['superadmin', 'admin'], auth()->user())): ?>--->
-                    <!--<?php endif; ?>--->
-                    <?php if (\Illuminate\Support\Facades\Blade::check('role', 'Super Admin')): ?>
+                    
+                    <!--[if BLOCK]><![endif]--><?php if (\Illuminate\Support\Facades\Blade::check('role', 'Super Admin')): ?>
                     <li class="nav-item <?php echo e(request()->is('reports*') ? 'active' : null); ?>">
                         <a class="nav-link" href="<?php echo e(route('reports.index')); ?>">
                             <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -547,7 +560,7 @@
                                     </span>
                                 </a>
                             </li>
-                    <?php endif; ?>
+                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                         <!---settings--->
                             <li
                                 class="nav-item dropdown <?php echo e(request()->is('users*', 'categories*', 'units*' , 'team*','branches*') ? 'active' : null); ?>">
@@ -596,7 +609,7 @@
                                                           <?php echo e(__('Units')); ?>
 
                                                      </a>
-                                                     <?php if (\Illuminate\Support\Facades\Blade::check('role', 'Super Admin')): ?>      
+                                                     <!--[if BLOCK]><![endif]--><?php if (\Illuminate\Support\Facades\Blade::check('role', 'Super Admin')): ?>      
                                             <a class="dropdown-item" href="<?php echo e(route('admin.team.index')); ?>">
                                             <lord-icon
                                                       src="https://cdn.lordicon.com/hrjifpbq.json"
@@ -619,7 +632,7 @@
                                                           <?php echo e(__('Set Branch')); ?>
 
                                                      </a>
-                                                     <?php endif; ?>
+                                                     <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                                         </div>
                                     
                                     </div>

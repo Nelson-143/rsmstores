@@ -5,6 +5,8 @@ namespace app\Livewire;
 use Livewire\Component;
 use app\Models\Product;
 use app\Models\Customer;
+use app\Models\ShelfProduct;
+use app\Models\ShelfStockLog;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
@@ -12,6 +14,7 @@ use Illuminate\Support\Facades\Log;
 class CreateOrder extends Component
 {
     public $products;
+    public $shelfProducts;
     public $customers;
     public $activeTab = 1;
     public $purchaseDate;
@@ -23,12 +26,13 @@ class CreateOrder extends Component
     public $customProductQuantity;
     public $customProductPrice;
     public float $taxRate;
+    public $shelfQuantities = [];
+    public $productView = 'all'; // 'all' or 'shelf'
+    public $cartQty = [];
 
     public function mount()
     {
-        $this->products = Product::where('account_id', auth()->user()->account_id)
-            ->with(['category', 'unit'])
-            ->get();
+        $this->loadProducts();
         $this->customers = Customer::where('account_id', auth()->user()->account_id)
             ->get()
             ->sortBy('name');
@@ -39,54 +43,131 @@ class CreateOrder extends Component
             $this->selectedCustomers[$i] = 'pass_by';
             Cart::instance('customer' . $i);
         }
+        foreach ($this->shelfProducts as $shelfProduct) {
+            $this->shelfQuantities[$shelfProduct->product_id] = $shelfProduct->quantity;
+        }
         Log::info('CreateOrder mounted', ['user_id' => auth()->id(), 'tax_rate' => $this->taxRate]);
     }
 
     public function switchTab($tab)
     {
-        Log::info('Switching tab', ['from' => $this->activeTab, 'to' => $tab]);
         $this->activeTab = $tab;
-        // Optionally reset search or other tab-specific state
         $this->searchProduct = '';
         $this->searchCustomer = '';
     }
-    public function render()
+
+    public function toggleProductView($view)
     {
-        $filteredProducts = $this->products->filter(function ($product) {
-            return empty($this->searchProduct) || Str::contains(Str::lower($product->name), Str::lower($this->searchProduct));
-        });
-    
-        $filteredCustomers = $this->customers->filter(function ($customer) {
-            return empty($this->searchCustomer) || Str::contains(Str::lower($customer->name), Str::lower($this->searchCustomer));
-        });
-    
-        $currentCart = Cart::instance('customer' . $this->activeTab)->content();
-    
-        return view('livewire.create-order', [
-            'filteredProducts' => $filteredProducts,
-            'filteredCustomers' => $filteredCustomers,
-            'currentCart' => $currentCart,
-            'taxRate' => $this->taxRate,
-        ])->extends('layouts/tabler')->section('content');
+        $this->productView = $view;
+        $this->searchProduct = '';
+        $this->loadProducts();
     }
 
-    public function addToCart($productId)
+    public function updatedSearchProduct()
+    {
+        $this->loadProducts();
+    }
+
+    public function updateShelfStock($productId, $quantity)
+    {
+        if ($quantity < 0) {
+            session()->flash('error', 'Shelf stock cannot be negative.');
+            return;
+        }
+        $shelfProduct = ShelfProduct::where('product_id', $productId)
+            ->where('account_id', auth()->user()->account_id)
+            ->first();
+        if ($shelfProduct) {
+            $oldQuantity = $shelfProduct->quantity;
+            $shelfProduct->update(['quantity' => $quantity]);
+            $this->shelfQuantities[$productId] = $quantity;
+            ShelfStockLog::create([
+                'shelf_product_id' => $shelfProduct->id,
+                'quantity_change' => $quantity - $oldQuantity,
+                'action' => 'update',
+                'user_id' => auth()->id(),
+                'account_id' => auth()->user()->account_id,
+                'notes' => 'Updated shelf stock in POS',
+            ]);
+            session()->flash('success', 'Shelf stock updated for ' . $shelfProduct->product->name);
+            $this->loadProducts();
+        }
+    }
+
+    public function addToShelf($productId)
     {
         $product = Product::find($productId);
         if ($product) {
-            $tax = $product->selling_price * ($this->taxRate / 100);
-            Cart::instance('customer' . $this->activeTab)->add([
-                'id' => $product->id,
-                'name' => $product->name,
-                'qty' => 1,
-                'price' => $product->selling_price,
-                'weight' => 1,
-                'options' => ['tax' => $tax],
+            $shelfProduct = ShelfProduct::firstOrCreate(
+                [
+                    'product_id' => $productId,
+                    'account_id' => auth()->user()->account_id,
+                ],
+                [
+                    'unit_name' => 'Piece',
+                    'unit_price' => $product->selling_price,
+                    'conversion_factor' => 1,
+                    'quantity' => 0,
+                ]
+            );
+            ShelfStockLog::create([
+                'shelf_product_id' => $shelfProduct->id,
+                'quantity_change' => 0,
+                'action' => 'add',
+                'user_id' => auth()->id(),
+                'account_id' => auth()->user()->account_id,
+                'notes' => 'Added to shelf in POS',
             ]);
-            session()->flash('success', 'Product added to cart!');
-        } else {
-            session()->flash('error', 'Product not found.');
+            session()->flash('success', $product->name . ' added to shelf.');
+            $this->loadProducts();
         }
+    }
+
+    public function addToCart($productId, $shelfProductId = null)
+    {
+        $product = Product::find($productId);
+        if (!$product) {
+            session()->flash('error', 'Product not found.');
+            return;
+        }
+
+        if ($this->productView === 'shelf' && $shelfProductId) {
+            $shelfProduct = ShelfProduct::find($shelfProductId);
+            if (!$shelfProduct) {
+                session()->flash('error', 'Shelf product not found.');
+                return;
+            }
+            if ($shelfProduct->quantity < 1) {
+                session()->flash('error', 'Not enough shelf stock for ' . $product->name);
+                return;
+            }
+            $unitPrice = $shelfProduct->unit_price;
+            $unitName = $shelfProduct->unit_name;
+            $conversionFactor = $shelfProduct->conversion_factor;
+        } else {
+            $unitPrice = $product->selling_price;
+            $unitName = $product->unit ? $product->unit->name : 'Piece';
+            $conversionFactor = 1;
+            if ($product->quantity < 1) {
+                session()->flash('error', 'Not enough store stock for ' . $product->name);
+                return;
+            }
+        }
+
+        $tax = $unitPrice * ($this->taxRate / 100);
+        Cart::instance('customer' . $this->activeTab)->add([
+            'id' => $product->id,
+            'name' => $product->name . ' (' . $unitName . ')',
+            'qty' => 1,
+            'price' => $unitPrice,
+            'weight' => 1,
+            'options' => [
+                'tax' => $tax,
+                'shelf_product_id' => $shelfProductId,
+                'conversion_factor' => $conversionFactor,
+            ],
+        ]);
+        session()->flash('success', 'Product added to cart!');
     }
 
     public function updateCart($rowId, $qty)
@@ -94,15 +175,29 @@ class CreateOrder extends Component
         $cartItem = Cart::instance('customer' . $this->activeTab)->get($rowId);
         if ($cartItem) {
             $product = Product::find($cartItem->id);
-            if ($product && $qty > $product->quantity) {
-                session()->flash('error', 'Requested quantity for ' . $product->name . ' exceeds stock.');
-                return;
+            $requiredStock = $qty * ($cartItem->options['conversion_factor'] ?? 1);
+            if ($cartItem->options['shelf_product_id']) {
+                $shelfProduct = ShelfProduct::find($cartItem->options['shelf_product_id']);
+                if ($shelfProduct && $shelfProduct->quantity < $requiredStock) {
+                    session()->flash('error', 'Not enough shelf stock for ' . $product->name);
+                    return;
+                }
+            } else {
+                if ($product->quantity < $requiredStock) {
+                    session()->flash('error', 'Not enough store stock for ' . $product->name);
+                    return;
+                }
             }
-            $tax = $product->selling_price * ($this->taxRate / 100);
+            $tax = $cartItem->price * ($this->taxRate / 100);
             Cart::instance('customer' . $this->activeTab)->update($rowId, [
                 'qty' => $qty,
-                'options' => ['tax' => $tax],
+                'options' => [
+                    'tax' => $tax,
+                    'shelf_product_id' => $cartItem->options['shelf_product_id'],
+                    'conversion_factor' => $cartItem->options['conversion_factor'],
+                ],
             ]);
+            $this->cartQty[$rowId] = $qty;
             session()->flash('success', 'Cart updated!');
         }
     }
@@ -128,7 +223,7 @@ class CreateOrder extends Component
             'qty' => $this->customProductQuantity,
             'price' => $this->customProductPrice,
             'weight' => 1,
-            'options' => ['tax' => $tax],
+            'options' => ['tax' => $tax, 'shelf_product_id' => null, 'conversion_factor' => 1],
         ]);
 
         $this->reset(['customProductName', 'customProductQuantity', 'customProductPrice', 'showModal']);
@@ -137,23 +232,29 @@ class CreateOrder extends Component
 
     public function createOrder()
     {
-        Log::info('createOrder method started', ['activeTab' => $this->activeTab]);
-
         $currentCart = Cart::instance('customer' . $this->activeTab)->content();
-        Log::info('Cart contents', ['cart' => $currentCart->toArray()]);
-
         if ($currentCart->isEmpty()) {
-            session()->flash('error', 'Cart is empty. Cannot proceed to invoice.');
-            Log::warning('Cart is empty');
+            session()->flash('error', 'Cart is empty.');
             return;
         }
 
         foreach ($currentCart as $item) {
             $product = Product::find($item->id);
-            if ($product && $item->qty > $product->quantity) {
-                session()->flash('error', 'Product "' . $product->name . '" is out of stock!');
-                Log::warning('Stock check failed', ['product_id' => $item->id]);
-                return;
+            if (!$product) {
+                continue;
+            }
+            $requiredStock = $item->qty * ($item->options['conversion_factor'] ?? 1);
+            if ($item->options['shelf_product_id']) {
+                $shelfProduct = ShelfProduct::find($item->options['shelf_product_id']);
+                if ($shelfProduct && $shelfProduct->quantity < $requiredStock) {
+                    session()->flash('error', 'Not enough shelf stock for ' . $item->name);
+                    return;
+                }
+            } else {
+                if ($product->quantity < $requiredStock) {
+                    session()->flash('error', 'Not enough store stock for ' . $item->name);
+                    return;
+                }
             }
         }
 
@@ -163,6 +264,29 @@ class CreateOrder extends Component
             $vat += $item->options->tax * $item->qty;
         }
         $total = $subTotal + $vat;
+
+        // Update stock and log movements
+        foreach ($currentCart as $item) {
+            $product = Product::find($item->id);
+            if ($product) {
+                $requiredStock = $item->qty * ($item->options['conversion_factor'] ?? 1);
+                if ($item->options['shelf_product_id']) {
+                    $shelfProduct = ShelfProduct::find($item->options['shelf_product_id']);
+                    if ($shelfProduct) {
+                        $shelfProduct->decrement('quantity', $item->qty);
+                        ShelfStockLog::create([
+                            'shelf_product_id' => $shelfProduct->id,
+                            'quantity_change' => -$item->qty,
+                            'action' => 'deduct',
+                            'user_id' => auth()->id(),
+                            'account_id' => auth()->user()->account_id,
+                            'notes' => 'Deducted for order in POS',
+                        ]);
+                    }
+                }
+                $product->decrement('quantity', $requiredStock);
+            }
+        }
 
         session()->put('pending_order', [
             'cart' => $currentCart->toArray(),
@@ -174,11 +298,53 @@ class CreateOrder extends Component
             'tax_rate' => $this->taxRate,
         ]);
 
-        Log::info('Redirecting to invoices.create without order creation', [
+        Log::info('Redirecting to invoices.create', [
             'sub_total' => $subTotal,
             'vat' => $vat,
             'total' => $total,
         ]);
         return redirect()->route('invoices.create');
+    }
+
+    public function loadProducts()
+    {
+        if ($this->productView === 'shelf') {
+            $query = ShelfProduct::where('account_id', auth()->user()->account_id)
+                ->with('product')
+                ->whereHas('product');
+            if (!empty($this->searchProduct)) {
+                $query->whereHas('product', function ($q) {
+                    $q->where('name', 'like', '%' . $this->searchProduct . '%');
+                });
+            }
+            $this->shelfProducts = $query->get();
+            $this->products = $this->shelfProducts->pluck('product');
+        } else {
+            $query = Product::where('account_id', auth()->user()->account_id)
+                ->with(['category', 'unit']);
+            if (!empty($this->searchProduct)) {
+                $query->where('name', 'like', '%' . $this->searchProduct . '%');
+            }
+            $this->products = $query->get();
+            $this->shelfProducts = collect([]);
+        }
+    }
+
+    public function render()
+    {
+        $filteredProducts = $this->products;
+        $filteredCustomers = $this->customers->filter(function ($customer) {
+            return empty($this->searchCustomer) || Str::contains(Str::lower($customer->name), Str::lower($this->searchCustomer));
+        })->values();
+    
+        $currentCart = Cart::instance('customer' . $this->activeTab)->content();
+    
+        return view('livewire.create-order', [
+            'filteredProducts' => $filteredProducts,
+            'shelfProducts' => $this->shelfProducts,
+            'filteredCustomers' => $filteredCustomers,
+            'currentCart' => $currentCart,
+            'taxRate' => $this->taxRate,
+        ])->extends('layouts.tabler')->section('content');
     }
 }

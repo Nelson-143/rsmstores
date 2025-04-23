@@ -39,6 +39,7 @@ use App\Http\Controllers\AdsGeneratorController;
 use App\Http\Controllers\ProfileCurrencyController;
 use App\Http\Controllers\LiabilityController;
 use App\Livewire\CreateOrder;
+use App\Livewire\ShelfProducts;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -62,7 +63,7 @@ Route::get('/', function () {
 
 Route::middleware(['auth','verified'])->group(function () {
 
-    Route::get('dashboard/', [DashboardController::class, 'index'])->name('dashboard');
+   Route::get('dashboard/', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/sales-data', [DashboardController::class, 'getSalesData']);
 
     // User Management
@@ -90,7 +91,9 @@ Route::middleware(['auth', 'account.access'])->group(function () {
     Route::resource('/products', ProductController::class);
 });
     // Route POS
-
+        //for theshelf products
+        Route::get('shelf-products', ShelfProducts::class)->name('shelf-products.index');
+        //pos
         Route::get('/pos', CreateOrder::class)->middleware('auth')->name('pos.index');
 
         Route::get('/invoices/create', [InvoiceController::class, 'create'])->middleware('auth')->name('invoices.create');
@@ -115,7 +118,7 @@ Route::resource('debts', DebtsController::class);
     Route::post('/set-active-customer', [OrderController::class, 'setActiveCustomer'])->name('setActiveCustomer');
 
     Route::get('/orders/create', [OrderController::class, 'create'])->name('orders.create');
-    Route::post('/orders/store', [OrderController::class, 'store'])->name('orders.store');
+    //Route::post('/orders/store', [OrderController::class, 'store'])->name('orders.store');
 
     // SHOW ORDERRoute::get('/orders/pending', OrderPendingController::class)->name('orders.pending');
     Route::get('/orders/complete', OrderCompleteController::class)->name('orders.complete');

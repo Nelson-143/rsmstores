@@ -3,9 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Effortlessly manage your inventory and finances with Roman Stock Manager. Optimize stock tracking, financial reporting, and multi-location management for business success!">
 
     <!-- Page Title -->
 <title> <?php echo $__env->yieldContent('title', 'Welcome| Roman Stock Manager'); ?></title>
+
+    <meta name="author" content="Roman Stock Manager">
+    <meta name="keywords" content="Roman Stock Manager, Inventory Management, Stock Tracking, Financial Reporting, Multi-Location Management, Business Growth, Inventory Control, Financial Management">
 
     <!-- Google Fonts -->
     <!-- Config -->
