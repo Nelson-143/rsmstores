@@ -267,7 +267,7 @@
 <?php $component = $__componentOriginala791c6284c2f598d6edc351a2663ce40; ?>
 <?php unset($__componentOriginala791c6284c2f598d6edc351a2663ce40); ?>
 <?php endif; ?>
-                <!--[if BLOCK]><![endif]--><?php if (\Illuminate\Support\Facades\Blade::check('role', 'Super Admin')): ?>
+               
                 <?php if (isset($component)) { $__componentOriginal33da6640cbe7d6c3a4010c7f4798eed7 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal33da6640cbe7d6c3a4010c7f4798eed7 = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.button.edit','data' => ['class' => 'btn-icon','route' => ''.e(route('products.edit', $product->uuid)).'']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
@@ -288,6 +288,8 @@
 <?php $component = $__componentOriginal33da6640cbe7d6c3a4010c7f4798eed7; ?>
 <?php unset($__componentOriginal33da6640cbe7d6c3a4010c7f4798eed7); ?>
 <?php endif; ?>
+               
+                    <!--[if BLOCK]><![endif]--><?php if (\Illuminate\Support\Facades\Blade::check('role', 'Super Admin')): ?>
                 <?php if (isset($component)) { $__componentOriginalc9f266a4795c6091a36d539e9ac3ca65 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginalc9f266a4795c6091a36d539e9ac3ca65 = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.button.delete','data' => ['class' => 'btn-icon','route' => ''.e(route('products.destroy', $product->uuid)).'','onclick' => 'return confirm(\'Are you sure to delete product '.e($product->name).' ?\')']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
@@ -309,6 +311,7 @@
 <?php unset($__componentOriginalc9f266a4795c6091a36d539e9ac3ca65); ?>
 <?php endif; ?>
                                  <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                                
             </td>
         </tr>
     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
