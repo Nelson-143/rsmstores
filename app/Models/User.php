@@ -113,7 +113,7 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->belongsTo(Branch::class);
     }
 
-    // Add the relationship with the Account model
+    // the relationship with the Account model
     public function account()
     {
         return $this->belongsTo(Account::class);

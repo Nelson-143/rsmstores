@@ -2,8 +2,6 @@
 
 use app\Http\Controllers\Auth\AuthenticatedSessionController;
 use app\Http\Controllers\Auth\ConfirmablePasswordController;
-
-
 use app\Http\Controllers\Auth\NewPasswordController;
 use app\Http\Controllers\Auth\PasswordController;
 use app\Http\Controllers\Auth\PasswordResetLinkController;

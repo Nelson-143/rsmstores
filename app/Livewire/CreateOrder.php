@@ -1,7 +1,6 @@
 <?php
 
 namespace app\Livewire;
-
 use Livewire\Component;
 use app\Models\Product;
 use app\Models\Customer;
@@ -10,7 +9,7 @@ use app\Models\ShelfStockLog;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
-
+//oder POS
 class CreateOrder extends Component
 {
     public $products;

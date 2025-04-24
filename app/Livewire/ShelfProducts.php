@@ -1,13 +1,12 @@
 <?php
 
 namespace app\Livewire;
-
 use Livewire\Component;
 use app\Models\Product;
 use app\Models\ShelfProduct;
 use app\Models\ShelfStockLog;
 use Illuminate\Support\Facades\Log;
-
+//shelfs
 class ShelfProducts extends Component
 {
     public $products;

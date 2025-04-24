@@ -1,4 +1,5 @@
 @section('title', 'Orders Create')
+<!--POS view-->
 <div>
     <div class="page-body">
         <div class="container-xl">

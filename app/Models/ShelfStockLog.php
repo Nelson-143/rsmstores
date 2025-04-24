@@ -4,7 +4,7 @@ namespace app\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use app\Scopes\AccountScope;
-
+//log
 class ShelfStockLog extends Model
 {
     protected $fillable = [

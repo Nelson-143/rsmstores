@@ -273,7 +273,7 @@ Route::post('/expense-categories', [ExpenseCategoryController::class, 'store'])-
 //for expence cartegories
 Route::post('/budget-categories', [BudgetCategoryController::class, 'store'])->name('budget-categories.store');
 
-//
+//translate
 
 
 Route::post('/translate', [TranslationController::class, 'translate'])->name('translate');
