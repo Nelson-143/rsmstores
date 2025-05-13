@@ -137,10 +137,22 @@
                                                 </a>
                                             </td>
                                         </tr>
-
-                                        <tr>
+                                        <!-- the product Quantity based  locations --> 
+                                       <tr>
                                             <td>{{ __('Quantity') }}</td>
-                                            <td>{{ $product->quantity }}</td>
+                                            <td>
+                                                {{ $product->quantity }}
+                                                @if($product->productLocations->count() > 0)
+                                                    <button type="button" class="btn btn-sm btn-secondary ms-2" data-bs-toggle="collapse" data-bs-target="#locationBreakdown-{{ $product->id }}">Details</button>
+                                                    <div id="locationBreakdown-{{ $product->id }}" class="collapse">
+                                                        <ul class="list-unstyled mt-2">
+                                                            @foreach($product->productLocations as $location)
+                                                                <li>{{ $location->location->name }}: {{ $location->quantity }} units</li>
+                                                            @endforeach
+                                                        </ul>
+                                                    </div>
+                                                @endif
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td>{{ __('Quantity Alert') }}</td>

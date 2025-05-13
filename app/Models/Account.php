@@ -11,9 +11,12 @@ class Account extends Model
   
     use HasFactory;
 
-    protected $fillable = ['name','tax_rate','currency'];
+    protected $fillable = ['name','tax_rate','currency','is_currency_active'];
 
-   
+    protected $casts = [
+        'is_currency_active' => 'boolean',
+        'tax_rate' => 'float',
+    ];
 
     // Define the relationship with the User model
     public function users()

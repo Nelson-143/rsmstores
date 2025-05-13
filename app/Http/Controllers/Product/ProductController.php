@@ -9,6 +9,7 @@ use app\Models\Category;
 use app\Models\Product;
 use app\Models\Unit;
 use app\Models\Supplier;
+use App\Models\ProductLocation;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
 use Illuminate\Http\Request;
 use Picqer\Barcode\BarcodeGeneratorHTML;
@@ -46,37 +47,56 @@ class ProductController extends Controller
         return view('products.create', compact('categories', 'units', 'suppliers'));
     }
 
-    public function store(StoreProductRequest $request)
-    {
-        $data = $request->validated();
-        $data['uuid'] = Str::uuid();
-        $data['user_id'] = auth()->id();
-        $data['account_id'] = auth()->user()->account_id; // Set the account_id
-        $data['slug'] = Str::slug($data['name']);
-    
-        // Handle image upload
-        if ($request->hasFile('product_image')) {
-            $file = $request->file('product_image');
-            $destinationPath = public_path('assets/img/products/');
-            if (!file_exists($destinationPath)) {
-                mkdir($destinationPath, 0755, true);
-            }
-            $fileName = time() . '_' . $file->getClientOriginalName();
-            $file->move($destinationPath, $fileName);
-            $data['product_image'] = 'assets/img/products/' . $fileName;
+   public function store(Request $request)
+{
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'category_id' => 'required|exists:categories,id',
+        'unit_id' => 'required|exists:units,id',
+        'buying_price' => 'required|numeric|min:0',
+        'selling_price' => 'required|numeric|min:0',
+        'location_ids' => 'required|array',
+        'quantities' => 'required|array',
+        'location_ids.*' => 'exists:locations,id',
+        'quantities.*' => 'required|integer|min:0',
+    ]);
+
+    $product = Product::create([
+        'name' => $request->name,
+        'slug' => Str::slug($request->name),
+        'category_id' => $request->category_id,
+        'unit_id' => $request->unit_id,
+        'supplier_id' => $request->supplier_id,
+        'buying_price' => $request->buying_price,
+        'selling_price' => $request->selling_price,
+        'tax' => $request->tax ?? 0,
+        'tax_type' => $request->tax_type ?? 'fixed',
+        'quantity_alert' => $request->quantity_alert ?? 0,
+        'expire_date' => $request->expire_date,
+        'notes' => $request->notes,
+        'product_image' => $request->product_image ?? null,
+        'account_id' => auth()->user()->account_id,
+    ]);
+
+    $locationIds = $request->input('location_ids', []);
+    $quantities = $request->input('quantities', []);
+    $totalQuantity = 0;
+    foreach ($locationIds as $index => $locationId) {
+        $quantity = $quantities[$index] ?? 0;
+        if ($quantity > 0) {
+            ProductLocation::create([
+                'product_id' => $product->id,
+                'location_id' => $locationId,
+                'quantity' => $quantity,
+                'account_id' => auth()->user()->account_id,
+            ]);
+            $totalQuantity += $quantity;
         }
-    
-        // Handle expire date
-        if ($request->has('expire_date_toggle') && $request->expire_date_toggle == 'on') {
-            $data['expire_date'] = $request->expire_date;
-        } else {
-            $data['expire_date'] = null;
-        }
-    
-        Product::create($data);
-    
-        return redirect()->route('products.index')->with('success', 'Product created successfully.');
     }
+    // No need to set $product->quantity manually; it’s computed
+
+    return redirect()->route('products.index')->with('success', 'Product created successfully.');
+}
 
     public function show($uuid)
 {
@@ -108,41 +128,53 @@ class ProductController extends Controller
         return view('products.edit', compact('product', 'categories', 'units', 'suppliers'));
     }
 
-    public function update(UpdateProductRequest $request, $uuid)
+   public function update(Request $request, $uuid)
 {
-    $accountId = auth()->user()->account_id;
-    $product = Product::where('uuid', $uuid)
-                        ->where('account_id', $accountId)
-                        ->firstOrFail();
+    $product = Product::where('uuid', $uuid)->first();
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'category_id' => 'required|exists:categories,id',
+        'unit_id' => 'required|exists:units,id',
+        'buying_price' => 'required|numeric|min:0',
+        'selling_price' => 'required|numeric|min:0',
+        'location_ids' => 'required|array',
+        'quantities' => 'required|array',
+        'location_ids.*' => 'exists:locations,id',
+        'quantities.*' => 'required|integer|min:0',
+    ]);
 
-    $data = $request->validated();
-    $data['slug'] = Str::slug($data['name']);
-    $data['account_id'] = auth()->user()->account_id;
+    $product->update([
+        'name' => $request->name,
+        'category_id' => $request->category_id,
+        'unit_id' => $request->unit_id,
+        'supplier_id' => $request->supplier_id,
+        'buying_price' => $request->buying_price,
+        'selling_price' => $request->selling_price,
+        'tax' => $request->tax ?? 0,
+        'tax_type' => $request->tax_type ?? 'fixed',
+        'quantity_alert' => $request->quantity_alert ?? 0,
+        'expire_date' => $request->expire_date,
+        'notes' => $request->notes,
+        'product_image' => $request->product_image ?? $product->product_image,
+        'account_id' => auth()->user()->account_id,
+    ]);
 
-    // Handle image upload
-    if ($request->hasFile('product_image')) {
-        $file = $request->file('product_image');
-        $fileName = time() . '_' . $file->getClientOriginalName();
-        $destinationPath = public_path('assets/img/products');
-        if (!file_exists($destinationPath)) {
-            mkdir($destinationPath, 0755, true);
+    ProductLocation::where('product_id', $product->id)->where('account_id', auth()->user()->account_id)->delete();
+    $locationIds = $request->input('location_ids', []);
+    $quantities = $request->input('quantities', []);
+    foreach ($locationIds as $index => $locationId) {
+        $quantity = $quantities[$index] ?? 0;
+        if ($quantity > 0) {
+            ProductLocation::create([
+                'product_id' => $product->id,
+                'location_id' => $locationId,
+                'quantity' => $quantity,
+                'account_id' => auth()->user()->account_id,
+            ]);
         }
-        $file->move($destinationPath, $fileName);
-        $data['product_image'] = 'assets/img/products/' . $fileName;
-    } else {
-        $data['product_image'] = $product->product_image;
     }
 
-    // Handle expire date
-    if ($request->has('expire_date_toggle') && $request->expire_date_toggle == 'on') {
-        $data['expire_date'] = $request->expire_date;
-    } else {
-        $data['expire_date'] = null;
-    }
-
-    $product->update($data);
-
-    return redirect()->route('products.index')->with('success', 'Product updated successfully.');
+    return redirect()->route('products.show', $product->uuid)->with('success', 'Product updated successfully.');
 }
 
 public function destroy($uuid)

@@ -97,15 +97,22 @@
 </div>
 
 
-
-            <div class="col-md-3">
-                <label for="from_location" class="form-label">{{ __('From Location') }}</label>
-                <input type="text" name="from_location" class="form-control" required>
-            </div>
-            <div class="col-md-3">
-                <label for="to_location" class="form-label">{{ __('To Location') }}</label>
-                <input type="text" name="to_location" class="form-control" required>
-            </div>
+<div class="col-md-3">
+    <label for="from_location_id" class="form-label">{{ __('From Location') }}</label>
+    <select name="from_location_id" class="form-select" required>
+        @foreach(\App\Models\Location::where('account_id', auth()->user()->account_id)->get() as $location)
+            <option value="{{ $location->id }}">{{ $location->name }}</option>
+        @endforeach
+    </select>
+</div>
+<div class="col-md-3">
+    <label for="to_location_id" class="form-label">{{ __('To Location') }}</label>
+    <select name="to_location_id" class="form-select" required>
+        @foreach(\App\Models\Location::where('account_id', auth()->user()->account_id)->get() as $location)
+            <option value="{{ $location->id }}">{{ $location->name }}</option>
+        @endforeach
+    </select>
+</div>
             <div class="col-md-2">
                 <label for="quantity" class="form-label">{{ __('Quantity') }}</label>
                 <input type="number" name="quantity" class="form-control" min="1" required>

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use app\Scopes\AccountScope;
+use App\Models\CustomOrderDetail;
 /**
  * @method static where(string $string, int|string|null $id)
  * @method static whereDate(string $string, string $format)
@@ -79,6 +80,11 @@ class Order extends Model
     protected static function booted()
     {
         static::addGlobalScope(new AccountScope);
+    }
+
+    public function customOrderDetails()
+    {
+        return $this->hasMany(CustomOrderDetail::class);
     }
  
 }

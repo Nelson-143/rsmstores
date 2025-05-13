@@ -1,14 +1,17 @@
 <?php $attributes ??= new \Illuminate\View\ComponentAttributeBag; ?>
 <?php foreach($attributes->onlyProps([
-    'route'
+    'action',
+    'method'
 ]) as $__key => $__value) {
     $$__key = $$__key ?? $__value;
 } ?>
 <?php $attributes = $attributes->exceptProps([
-    'route'
+    'action',
+    'method'
 ]); ?>
 <?php foreach (array_filter(([
-    'route'
+    'action',
+    'method'
 ]), 'is_string', ARRAY_FILTER_USE_KEY) as $__key => $__value) {
     $$__key = $$__key ?? $__value;
 } ?>
@@ -18,7 +21,11 @@
 } ?>
 <?php unset($__defined_vars); ?>
 
-<a href="<?php echo e($route); ?>" class="btn-action">
-    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M18 6l-12 12"></path><path d="M6 6l12 12"></path></svg>
-</a>
-<?php /**PATH C:\rstoresV1R\rsmstores\resources\views/components/action/close.blade.php ENDPATH**/ ?>
+<form action="<?php echo e($action); ?>" method="POST">
+    <?php echo csrf_field(); ?>
+    <?php echo method_field($method); ?>
+
+    <?php echo e($slot); ?>
+
+</form>
+<?php /**PATH C:\rstoresV1R\rsmstores\resources\views/components/form/index.blade.php ENDPATH**/ ?>

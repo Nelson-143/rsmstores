@@ -211,15 +211,49 @@
                                         />
                                     </div>
 
-                                    <div class="col-sm-6 col-md-6">
-                                        <x-input type="number"
-                                                 label="Quantity"
-                                                 name="quantity"
-                                                 id="quantity"
-                                                 placeholder="0"
-                                                 value="{{ old('quantity') }}"
-                                        />
+                            <div class="col-sm-6 col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">{{ __('Locations') }}</label>
+                                    <div id="locationFields">
+                                        <div class="row mb-2 align-items-end">
+                                            <div class="col-md-6">
+                                                <select name="location_ids[]" class="form-select" required>
+                                                    @foreach(\App\Models\Location::where('account_id', auth()->user()->account_id)->get() as $location)
+                                                        <option value="{{ $location->id }}">{{ $location->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <input type="number" name="quantities[]" class="form-control" min="0" required>
+                                            </div>
+                                            <div class="col-md-1">
+                                                <button type="button" class="btn btn-danger btn-sm remove-location">-</button>
+                                            </div>
+                                        </div>
                                     </div>
+                                    <button type="button" class="btn btn-secondary mt-2" id="addLocation">Add Location</button>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">{{ __('Total Quantity') }}</label>
+                                    <input type="text" name="total_quantity" class="form-control" value="{{ old('total_quantity', 0) }}" readonly>
+                                </div>
+                            </div>
+
+                            <script>
+                                document.getElementById('addLocation').addEventListener('click', function() {
+                                    const locationFields = document.getElementById('locationFields');
+                                    const newField = locationFields.children[0].cloneNode(true);
+                                    newField.querySelector('input[name="quantities[]"]').value = '';
+                                    locationFields.appendChild(newField);
+                                });
+                                document.querySelectorAll('.remove-location').forEach(button => {
+                                    button.addEventListener('click', function() {
+                                        this.parentElement.parentElement.remove();
+                                    });
+                                });
+                            </script>
                                     <div class="col-sm-6 col-md-6">
                                         <x-input type="number"
                                                  label="Code"

@@ -132,7 +132,9 @@
 <div id="chart-branches" class="chart-sm"></div>
 </div>
 </div>
+
 </div>
+@endrole
 <!-- Total Sales -->
 <div class="col-sm-6 col-lg-3">
     <div class="card">
@@ -140,33 +142,96 @@
             <div class="d-flex align-items-center">
                 <div class="subheader">{{ __('Total Sales')}}</div>
                 <div class="ms-auto lh-1">
-                 
-      <form method="GET" action="{{ route('dashboard') }}" class="d-flex align-items-center">
-    <div class="ms-auto lh-1">
-        <select name="period" class="form-select" onchange="this.form.submit()">
-            <option value="daily" {{ request('period') == 'daily' ? 'selected' : '' }}>{{ __('Daily Sales')}}</option>
-            <option value="weekly" {{ request('period') == 'weekly' ? 'selected' : '' }}>{{ __('Weekly Sales')}}</option>
-            <option value="monthly" {{ request('period') == 'monthly' ? 'selected' : '' }}>{{ __('Monthly Sales')}}</option>
-            <option value="yearly" {{ request('period') == 'yearly' ? 'selected' : '' }}>{{ __('Yearly Sales')}}</option>
-        </select>
-    </div>
-</form>
-                    </div>
-                
+                    @if(request('period') == 'daily' || !request('period'))
+                    <form method="GET" action="{{ route('dashboard') }}" id="date-select-form" class="d-flex align-items-center">
+                        <input type="hidden" name="period" value="daily">
+                        <div class="input-icon">
+                            <span class="input-icon-addon">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                    <path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z" />
+                                    <path d="M16 3v4" />
+                                    <path d="M8 3v4" />
+                                    <path d="M4 11h16" />
+                                    <path d="M11 15h1" />
+                                    <path d="M12 15v3" />
+                                </svg>
+                            </span>
+                            <input class="form-control form-control-sm" placeholder="Select date" id="selected_date" name="selected_date" value="{{ $selectedDate ?? now()->format('Y-m-d') }}" type="date" onchange="this.form.submit()">
+                        </div>
+                    </form>
+                    @else
+                    <form method="GET" action="{{ route('dashboard') }}" class="d-flex align-items-center">
+                        <div class="ms-auto lh-1">
+                            <select name="period" class="form-select form-select-sm" onchange="this.form.submit()">
+                                <option value="daily" {{ request('period') == 'daily' ? 'selected' : '' }}>{{ __('Daily Sales')}}</option>
+                                <option value="weekly" {{ request('period') == 'weekly' ? 'selected' : '' }}>{{ __('Weekly Sales')}}</option>
+                                <option value="monthly" {{ request('period') == 'monthly' ? 'selected' : '' }}>{{ __('Monthly Sales')}}</option>
+                                <option value="yearly" {{ request('period') == 'yearly' ? 'selected' : '' }}>{{ __('Yearly Sales')}}</option>
+                            </select>
+                        </div>
+                    </form>
+                    @endif
+                </div>
             </div>
             <div class="d-flex align-items-baseline">
-                <div class="h1 mb-3 me-2"> {{ auth()->user()->account->currency }} {{ isset($carts) ? number_format($carts, 2) : '0.00' }}</div>
+                <div class="h1 mb-0 me-2">
+                    @if(isset($isFutureDate) && $isFutureDate)
+                        <div class="text-warning">{{ $dailySalesMessage }}</div>
+                    @elseif(isset($hasNoSales) && $hasNoSales)
+                        <div class="text-muted">{{ $dailySalesMessage }}</div>
+                    @else
+                        {{ auth()->user()->account->currency }} {{ isset($carts) ? number_format($carts, 2) : '0.00' }}
+                    @endif
+                </div>
                 <div class="me-auto">
                     <span class="text-green d-inline-flex align-items-center lh-1">
-                       
-                    <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-coins"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 14c0 1.657 2.686 3 6 3s6 -1.343 6 -3s-2.686 -3 -6 -3s-6 1.343 -6 3z" /><path d="M9 14v4c0 1.656 2.686 3 6 3s6 -1.344 6 -3v-4" /><path d="M3 6c0 1.072 1.144 2.062 3 2.598s4.144 .536 6 0c1.856 -.536 3 -1.526 3 -2.598c0 -1.072 -1.144 -2.062 -3 -2.598s-4.144 -.536 -6 0c-1.856 .536 -3 1.526 -3 2.598z" /><path d="M3 6v10c0 .888 .772 1.45 2 2" /><path d="M3 11c0 .888 .772 1.45 2 2" /></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-coins">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                            <path d="M9 14c0 1.657 2.686 3 6 3s6 -1.343 6 -3s-2.686 -3 -6 -3s-6 1.343 -6 3z" />
+                            <path d="M9 14v4c0 1.656 2.686 3 6 3s6 -1.344 6 -3v-4" />
+                            <path d="M3 6c0 1.072 1.144 2.062 3 2.598s4.144 .536 6 0c1.856 -.536 3 -1.526 3 -2.598c0 -1.072 -1.144 -2.062 -3 -2.598s-4.144 -.536 -6 0c-1.856 .536 -3 1.526 -3 2.598z" />
+                            <path d="M3 6v10c0 .888 .772 1.45 2 2" />
+                            <path d="M3 11c0 .888 .772 1.45 2 2" />
+                        </svg>
                     </span>
                 </div>
             </div>
+            @if(request('period') == 'daily' || !request('period'))
+                <div class="mt-2">
+                    <small class="text-muted">
+                        @if(isset($selectedDate))
+                            Sales for: {{ \Carbon\Carbon::parse($selectedDate)->format('M d, Y') }}
+                        @else
+                            Today's sales
+                        @endif
+                    </small>
+                </div>
+            @endif
         </div>
         <div id="chart-sales" class="chart-sm"></div>
     </div>
 </div>
+
+<!-- JavaScript to enhance the date picker experience -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Add logic here if needed for date picker enhancements
+    
+    // Example: Auto-submit when clicking on the daily sales option
+    const periodSelector = document.querySelector('select[name="period"]');
+    if (periodSelector) {
+        periodSelector.addEventListener('change', function() {
+            if (this.value === 'daily') {
+                // Show date picker when daily is selected
+                setTimeout(() => {
+                    document.getElementById('selected_date').click();
+                }, 100);
+            }
+        });
+    }
+});
+</script>
 <script>
     function updateSalesChart(period) {
         // Make an AJAX request to fetch data based on the selected period
@@ -180,7 +245,7 @@
             .catch(error => console.error('Error fetching sales data:', error));
     }
 </script>
-@endrole
+
   
 <!--- STATIC DASH ---->
                 <div class="col-12">
@@ -322,18 +387,17 @@
 </div>
                 <div class="row">
                 @role('Super Admin')
-    <!-- Line Chart: Business Growth Rate -->
-    <div class="col-md-6">
-        <div class="card">
-            <div class="card-header">
-                <h3 class="card-title">{{ __('Business Growth Rate') }}</h3>
-            </div>
-            <div class="card-body">
-                <canvas id="growthLineChart" width="400" height="400"></canvas>
-            </div>
+   <!-- Line Chart: Business Growth Rate -->
+<div class="col-md-6">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">{{ __('Daily Business Growth Rate') }}</h3>
+        </div>
+        <div class="card-body">
+            <canvas id="growthLineChart" width="400" height="400"></canvas>
         </div>
     </div>
-    
+</div>
 
     <!-- Pie Chart: Out of Stock Products -->
 
@@ -353,57 +417,122 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-  // Data for the growth line chart
+  // Data for the daily growth line chart
   const growthData = {
-        labels: {!! json_encode($months) !!}, // Months (e.g., ["Jan 2023", "Feb 2023", ...])
-        datasets: [{
-            label: 'Sales Growth Rate (%)',
-            data: {!! json_encode($growthRate) !!}, // Growth rates (e.g., [12.34, -5.67, ...])
-            borderColor: 'rgba(75, 192, 192, 1)',
-            backgroundColor: 'rgba(75, 192, 192, 0.2)',
-            fill: true,
-            yAxisID: 'y',
-        }]
-    };
+    labels: {!! json_encode($days) !!}, // Last 14 days (e.g., ["May 01", "May 02", ...])
+    datasets: [
+      {
+        label: 'Daily Sales ({{ auth()->user()->account->currency }})',
+        data: {!! json_encode($salesValues) !!}, // Daily sales values
+        borderColor: 'rgba(54, 162, 235, 1)',
+        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+        yAxisID: 'y',
+        fill: false,
+        tension: 0.1
+      },
+      {
+        label: 'Growth Rate (%)',
+        data: {!! json_encode($dailyGrowthRates) !!}, // Daily growth rates
+        borderColor: 'rgba(75, 192, 192, 1)',
+        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+        yAxisID: 'y1',
+        fill: false,
+        borderDash: [5, 5],
+        tension: 0.1
+      }
+    ]
+  };
 
-    // Create the growth line chart
-    const ctx1 = document.getElementById('growthLineChart').getContext('2d');
-    new Chart(ctx1, {
-        type: 'line',
-        data: growthData,
-        options: {
-            responsive: true,
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    max: 100, // Set the maximum value of the y-axis to 100%
-                    ticks: {
-                        callback: function(value) {
-                            return value + '%'; // Display values as percentages
-                        }
-                    }
-                }
+  // Create the growth line chart
+  const ctx1 = document.getElementById('growthLineChart').getContext('2d');
+  new Chart(ctx1, {
+    type: 'line',
+    data: growthData,
+    options: {
+      responsive: true,
+      interaction: {
+        mode: 'index',
+        intersect: false,
+      },
+      stacked: false,
+      plugins: {
+        title: {
+          display: true,
+          text: 'Daily Sales and Growth Rate (Last 14 Days)'
+        },
+        tooltip: {
+          callbacks: {
+            label: function(context) {
+              let label = context.dataset.label || '';
+              if (label) {
+                label += ': ';
+              }
+              if (context.datasetIndex === 0) {
+                label += new Intl.NumberFormat('en-US', { 
+                  style: 'currency',
+                  currency: '{{ auth()->user()->account->currency }}' 
+                }).format(context.parsed.y);
+              } else {
+                label += context.parsed.y + '%';
+              }
+              return label;
             }
+          }
         }
-    });
-      // Data for the pie chart
-      const pieData = {
-        labels: {!! json_encode($pieChartData['labels']) !!},
-        datasets: [{
-            data: {!! json_encode($pieChartData['data']) !!},
-            backgroundColor: ['#36A2EB', '#FF6384'],
-        }]
-    };
+      },
+      scales: {
+        y: {
+          type: 'linear',
+          display: true,
+          position: 'left',
+          title: {
+            display: true,
+            text: 'Sales Amount ({{ auth()->user()->account->currency }})'
+          },
+          beginAtZero: true
+        },
+        y1: {
+          type: 'linear',
+          display: true,
+          position: 'right',
+          title: {
+            display: true,
+            text: 'Growth Rate (%)'
+          },
+          // Grid line settings
+          grid: {
+            drawOnChartArea: false, // Only draw grid lines for the primary y-axis
+          },
+          min: -100,
+          max: 100,
+          ticks: {
+            callback: function(value) {
+              return value + '%';
+            }
+          }
+        }
+      }
+    }
+  });
 
-    // Create the pie chart
-    const ctx2 = document.getElementById('supplierPieChart').getContext('2d');
-    new Chart(ctx2, {
-        type: 'pie',
-        data: pieData,
-        options: {
-            responsive: true,
-        }
-    });
+  // Data for the pie chart
+  const pieData = {
+    labels: {!! json_encode($pieChartData['labels']) !!},
+    datasets: [{
+      data: {!! json_encode($pieChartData['data']) !!},
+      backgroundColor: ['#36A2EB', '#FF6384'],
+    }]
+  };
+
+  // Create the pie chart
+  const ctx2 = document.getElementById('supplierPieChart').getContext('2d');
+  new Chart(ctx2, {
+    type: 'pie',
+    data: pieData,
+    options: {
+      responsive: true,
+    }
+  });
 </script>
 
             </div>

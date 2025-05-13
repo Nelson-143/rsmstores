@@ -40,6 +40,8 @@ use App\Http\Controllers\ProfileCurrencyController;
 use App\Http\Controllers\LiabilityController;
 use App\Livewire\CreateOrder;
 use App\Livewire\ShelfProducts;
+use App\Livewire\LocationSetup;
+use App\Livewire\Locations;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -104,6 +106,11 @@ Route::middleware(['auth', 'account.access'])->group(function () {
     //Route::post('/pos/invoice', [PosController::class, 'createInvoice'])->name('pos.createInvoice');
     //Route::post('/invoice/create', [InvoiceController::class, 'create'])->name('invoice.create');
     ;
+
+    // for the product locations know how many products in the location
+    Route::get('/location-setup', LocationSetup::class)->name('location-setup');
+    // for the setting the product locations
+    Route::get('/locations', Locations::class)->name('locations.index');
 
 Route::resource('orders', OrderController::class);
 Route::resource('debts', DebtsController::class);
@@ -304,9 +311,11 @@ Route::middleware(['auth'])->group(function () {
 });
 
 
-//Route::post('/profile/currency/update', [ProfileCurrencyController::class, 'update'])->name('profile.currency.update');
-Route::post('/profile/currency/update', [ProfileController::class, 'currencyUpdate'])->middleware('auth')->name('profile.currency.update');
 
+ // Profile currency update route - fix the route to point to the correct controller
+ Route::post('/profile/currency/update', [ProfileCurrencyController::class, 'currencyUpdate'])
+ ->name('profile.currency.update');
+ 
 // Route to manage liabilities
 
 Route::middleware('auth')->group(function () {

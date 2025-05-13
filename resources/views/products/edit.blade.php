@@ -202,21 +202,93 @@
                                                 @enderror
                                             </div>
                                         </div>
+<!-- Update this part of your HTML to include a template -->
+<div class="col-sm-6 col-md-6">
+    <div class="mb-3">
+        <label class="form-label">{{ __('Quantity') }}</label>
+        <input class="form-control" name="quantity" type="text" readonly value="{{ old('quantity', $product->quantity) }}" style="color: var(--tblr-secondary); background-color: var(--tblr-bg-surface-secondary); opacity: 1;">
+    </div>
+</div>
+<div class="col-sm-6 col-md-6">
+    <div class="mb-3">
+        <label class="form-label">{{ __('Locations') }}</label>
+        <div id="locationFields">
+            @foreach($product->productLocations as $index => $location)
+                <div class="row mb-2 align-items-end location-row">
+                    <div class="col-md-6">
+                        <select name="location_ids[]" class="form-select" required>
+                            @foreach(\App\Models\Location::where('account_id', auth()->user()->account_id)->get() as $loc)
+                                <option value="{{ $loc->id }}" {{ $location->location_id == $loc->id ? 'selected' : '' }}>{{ $loc->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-5">
+                        <input type="number" name="quantities[]" value="{{ $location->quantity }}" class="form-control" min="0" required>
+                    </div>
+                    <div class="col-md-1" @if($index == 0) style="display: none;" @endif>
+                        <button type="button" class="btn btn-danger btn-sm remove-location">-</button>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+        
+        <!-- Template for new rows (hidden) -->
+        <template id="location-row-template">
+            <div class="row mb-2 align-items-end location-row">
+                <div class="col-md-6">
+                    <select name="location_ids[]" class="form-select" required>
+                        @foreach(\App\Models\Location::where('account_id', auth()->user()->account_id)->get() as $loc)
+                            <option value="{{ $loc->id }}">{{ $loc->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-md-5">
+                    <input type="number" name="quantities[]" value="" class="form-control" min="0" required>
+                </div>
+                <div class="col-md-1">
+                    <button type="button" class="btn btn-danger btn-sm remove-location">-</button>
+                </div>
+            </div>
+        </template>
+        
+        <button type="button" class="btn btn-secondary mt-2" id="addLocation">Add Location</button>
+    </div>
+</div>
 
-                                        <div class="col-sm-6 col-md-6">
-                                            <div class="mb-3">
-                                                <label for="quantity" class="form-label">
-                                                    {{ __('Quantity') }}
-                                                </label>
-
-                                                <input class="form-control" name="quantity" type="text" readonly value="{{ old('quantity', $product->quantity) }}"  required="true" aria-required="true" style="color: var(--tblr-secondary);background-color: var(--tblr-bg-surface-secondary); opacity: 1;"/>
-
-
-                                                {{-- <input type="text" id="quantity" name="quantity"
-                                                    class="form-control"
-                                                    min="0" value="{{ old('quantity', $product->quantity) }}"
-                                                    placeholder="0" disabled > --}}
-                                            </div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Handle Add Location button click
+    document.getElementById('addLocation').addEventListener('click', function() {
+        // Get the template content
+        const template = document.getElementById('location-row-template');
+        if (!template) {
+            console.error('Template not found');
+            return;
+        }
+        
+        // Create a new row from the template
+        const newRow = template.content.cloneNode(true);
+        
+        // Add event listener to the remove button
+        const removeBtn = newRow.querySelector('.remove-location');
+        if (removeBtn) {
+            removeBtn.addEventListener('click', function() {
+                this.closest('.location-row').remove();
+            });
+        }
+        
+        // Add the new row to the locations container
+        document.getElementById('locationFields').appendChild(newRow);
+    });
+    
+    // Set up event listeners for existing remove buttons
+    document.querySelectorAll('.remove-location').forEach(button => {
+        button.addEventListener('click', function() {
+            this.closest('.location-row').remove();
+        });
+    });
+});
+</script>
                                         </div>
 
                                         <div class="col-sm-6 col-md-6">
@@ -341,6 +413,10 @@
                                 </div>
                             </div>
                         </div>
+
+
+
+                        
                     </div>
                 </form>
             </div>

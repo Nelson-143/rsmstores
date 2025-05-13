@@ -57,63 +57,84 @@
                                     <input type="text" class="form-control" value="ORD" readonly>
                                 </div>
                             </div>
-
-                            <h3>Cart (Tab {{ $activeTab }})</h3>
-                            <table class="table table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th>Product</th>
-                                        <th>Price</th>
-                                        <th>Quantity</th>
-                                        <th>Subtotal</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($currentCart as $item)
-                                        <tr>
-                                            <td>{{ $item->name }}</td>
-                                            <td>{{ number_format($item->price, 2) }}</td>
-                                            <td>
-                                                <input type="number" wire:model.debounce.500ms="cartQty.{{ $item->rowId }}"
-                                                       value="{{ $item->qty }}" min="1" class="form-control w-25 d-inline"
-                                                       wire:change="updateCart('{{ $item->rowId }}', $event.target.value)">
-                                            </td>
-                                            <td>{{ number_format($item->subtotal, 2) }}</td>
-                                            <td>
-                                                <button wire:click="removeFromCart('{{ $item->rowId }}')" class="btn btn-icon btn-danger btn-sm">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-trash">
-                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                                                        <path d="M4 7l16 0" />
-                                                        <path d="M10 11l0 6" />
-                                                        <path d="M14 11l0 6" />
-                                                        <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
-                                                        <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
-                                                    </svg>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                                <tfoot>
-                                    <tr>
-                                        <td colspan="3" class="text-end">Subtotal</td>
-                                        <td class="text-center">{{ number_format(Cart::instance('customer' . $activeTab)->subtotalFloat(), 2) }}</td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="3" class="text-end">Tax ({{ $taxRate }}%)</td>
-                                        <td class="text-center">{{ number_format($currentCart->sum(fn($item) => $item->options->tax * $item->qty), 2) }}</td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="3" class="text-end">Total</td>
-                                        <td class="text-center">{{ number_format(Cart::instance('customer' . $activeTab)->subtotalFloat() + $currentCart->sum(fn($item) => $item->options->tax * $item->qty), 2) }}</td>
-                                        <td></td>
-                                    </tr>
-                                </tfoot>
-                            </table>
-
+<h3>Cart (Tab {{ $activeTab }})</h3>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Product</th>
+            <th>Location</th>
+            <th>Original Price</th>
+            <th>Discounted Price</th>
+            <th>Quantity</th>
+            <th>Subtotal</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach ($currentCart as $item)
+            <tr>
+                <td>{{ $item->name }}</td>
+                <td>
+                    @if($item->options['shelf_product_id'])
+                        Shelf
+                    @else
+                        @php
+                            $locationId = $item->options['location_id'] ?? $this->locationSelections[$item->options['row_id']] ?? null;
+                            $productLocation = \App\Models\ProductLocation::where('product_id', $item->id)
+                                ->where('location_id', $locationId)
+                                ->where('account_id', auth()->user()->account_id)
+                                ->first();
+                        @endphp
+                        {{ $productLocation ? optional($productLocation->location)->name : 'N/A' }}
+                    @endif
+                </td>
+                <td>{{ number_format($item->price, 2) }}</td>
+                <td>
+                    <input type="number" wire:model.debounce.500ms="cartDiscounts.{{ $item->rowId }}" 
+                           min="0" step="0.01" class="form-control w-75" 
+                           wire:change="updateDiscount('{{ $item->rowId }}', $event.target.value)">
+                </td>
+                <td>
+                    <input type="number" wire:model.debounce.500ms="cartQty.{{ $item->rowId }}"
+                           :value="old($cartQty[$item->rowId] ?? $item->qty, $item->qty)"
+                           min="1" class="form-control w-75" 
+                           wire:change="updateCart('{{ $item->rowId }}', $event.target.value)">
+                </td>
+                <td>{{ number_format($item->subtotal, 2) }}</td>
+                <td>
+                    <button wire:click="removeFromCart('{{ $item->rowId }}')" class="btn btn-icon btn-danger btn-sm">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-trash">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                            <path d="M4 7l16 0" />
+                            <path d="M10 11l0 6" />
+                            <path d="M14 11l0 6" />
+                            <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
+                            <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
+                        </svg>
+                    </button>
+                </td>
+            </tr>
+        @endforeach
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="4" class="text-end">Subtotal</td>
+            <td class="text-center">{{ number_format(Cart::instance('customer' . $activeTab)->subtotalFloat(), 2) }}</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td colspan="4" class="text-end">Tax ({{ $taxRate }}%)</td>
+            <td class="text-center">{{ number_format($currentCart->sum(fn($item) => $item->options->tax * $item->qty), 2) }}</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td colspan="4" class="text-end">Total</td>
+            <td class="text-center">{{ number_format(Cart::instance('customer' . $activeTab)->subtotalFloat() + $currentCart->sum(fn($item) => $item->options->tax * $item->qty), 2) }}</td>
+            <td></td>
+        </tr>
+    </tfoot>
+</table>
+                            
                             <div class="card-footer text-end">
                                 <button type="button" class="btn btn-outline-secondary mx-1" data-bs-toggle="modal" data-bs-target="#addProductModal">
                                     Add Custom Product
@@ -224,32 +245,69 @@
             </div>
         </div>
     </div>
-
-    <div class="modal modal-blur fade" id="addProductModal" tabindex="-1" aria-labelledby="addProductModalLabel" aria-hidden="true">
+    <!-- Modal for selecting location -->
+@if($showLocationModal)
+    <div class="modal" style="display: block;">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="addProductModalLabel">Add Custom Product</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h5 class="modal-title">Select Location for {{ Product::find($currentProductId)->name }}</h5>
+                    <button type="button" class="btn-close" wire:click="$set('showLocationModal', false)"></button>
                 </div>
                 <div class="modal-body">
-                    <form wire:submit.prevent="addCustomProduct">
-                        <div class="mb-3">
-                            <label for="customProductName" class="form-label">Product Name</label>
-                            <input wire:model="customProductName" type="text" class="form-control" id="customProductName" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="customProductQuantity" class="form-label">Quantity</label>
-                            <input wire:model="customProductQuantity" type="number" class="form-control" id="customProductQuantity" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="customProductPrice" class="form-label">Price</label>
-                            <input wire:model="customProductPrice" type="number" class="form-control" id="customProductPrice" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Add to Cart</button>
-                    </form>
+                    <label for="location_id">Location:</label>
+                    <select wire:model.defer="locationSelections.{{ $currentProductId }}" class="form-select" id="location_id">
+                        @foreach(Product::find($currentProductId)->productLocations as $location)
+                            <option value="{{ $location->location_id }}">{{ $location->location->name }} ({{ $location->quantity }} units)</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" wire:click="$set('showLocationModal', false)">Cancel</button>
+                    <button type="button" class="btn btn-primary" wire:click="selectLocation({{ $currentProductId }})">Confirm</button>
                 </div>
             </div>
         </div>
     </div>
+@endif
+  <div class="modal modal-blur fade" id="addProductModal" tabindex="-1" aria-labelledby="addProductModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addProductModalLabel">Add Custom Product</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form wire:submit.prevent="addCustomProduct">
+                    <div class="mb-3">
+                        <label for="customProductName" class="form-label">Product Name</label>
+                        <input wire:model="customProductName" type="text" class="form-control" id="customProductName" required>
+                        @error('customProductName') <span class="text-danger">{{ $message }}</span> @enderror
+                    </div>
+                    <div class="mb-3">
+                        <label for="customProductQuantity" class="form-label">Quantity</label>
+                        <input wire:model="customProductQuantity" type="number" class="form-control" id="customProductQuantity" min="1" required>
+                        @error('customProductQuantity') <span class="text-danger">{{ $message }}</span> @enderror
+                    </div>
+                    <div class="mb-3">
+                        <label for="customProductPrice" class="form-label">Price</label>
+                        <input wire:model="customProductPrice" type="number" class="form-control" id="customProductPrice" min="0" step="0.01" required>
+                        @error('customProductPrice') <span class="text-danger">{{ $message }}</span> @enderror
+                    </div>
+                    <div class="mb-3">
+                        <label for="customLocationId" class="form-label">Location</label>
+                        <select wire:model="customLocationId" class="form-select" id="customLocationId" required>
+                            <option value="">Select Location</option>
+                            @foreach(\App\Models\Location::where('account_id', auth()->user()->account_id)->get() as $location)
+                                <option value="{{ $location->id }}">{{ $location->name }}</option>
+                            @endforeach
+                        </select>
+                        @error('customLocationId') <span class="text-danger">{{ $message }}</span> @enderror
+                    </div>
+                    <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Add to Cart</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 </div>

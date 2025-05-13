@@ -39,7 +39,7 @@
                                 <input type="text" class="form-control"
                                        id="reference"
                                        name="reference"
-                                       value="{{ $order->reference }}"
+                                       value="{{ $order->reference ?? 'N/A' }}"
                                        readonly>
                             </div>
                         </div>
@@ -50,20 +50,56 @@
                                 <thead>
                                     <tr>
                                         <th>{{ __('Product') }}</th>
+                                        <th>{{ __('Location') }}</th>
                                         <th class="text-center">{{ __('Quantity') }}</th>
                                         <th class="text-center">{{ __('Price') }}</th>
                                         <th class="text-center">{{ __('SubTotal') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($order->items as $item)
+                                    <!-- Regular Order Details -->
+                                    @foreach ($order->details as $detail)
                                         <tr>
-                                            <td>{{ $item->product->name ?? 'N/A' }}</td>
-                                            <td class="text-center">{{ $item->quantity ?? '0' }}</td>
-                                            <td class="text-center">{{ number_format($item->unitcost, 2) }}</td>
-                                            <td class="text-center">{{ number_format($item->total, 2) }}</td>
+                                            <td>{{ $detail->product->name ?? $detail->name ?? 'N/A' }}</td>
+                                            <td>{{ optional($detail->product->productLocations->where('location_id', $detail->location_id)->first())->location->name ?? 'N/A' }}</td>
+                                            <td class="text-center">{{ $detail->quantity ?? '0' }}</td>
+                                            <td class="text-center">{{ number_format($detail->unitcost, 2) }}</td>
+                                            <td class="text-center">{{ number_format($detail->total, 2) }}</td>
                                         </tr>
                                     @endforeach
+                                    <!-- Custom Order Details -->
+                                    @foreach ($order->customOrderDetails as $customDetail)
+                                        <tr>
+                                            <td>{{ $customDetail->name }} (Custom)</td>
+                                            <td>{{ optional($customDetail->location)->name ?? 'N/A' }}</td>
+                                            <td class="text-center">{{ $customDetail->quantity }}</td>
+                                            <td class="text-center">{{ number_format($customDetail->unitcost, 2) }}</td>
+                                            <td class="text-center">{{ number_format($customDetail->total, 2) }}</td>
+                                        </tr>
+                                    @endforeach
+                                    <!-- Summary rows -->
+                                    <tr class="bg-light">
+                                        <td colspan="4" class="text-end fw-bold">{{ __('Subtotal') }}</td>
+                                        <td class="text-center">
+                                            {{ number_format($order->details->sum('total') + $order->customOrderDetails->sum('total'), 2) }}
+                                        </td>
+                                    </tr>
+                                    @if($order->discount_amount > 0)
+                                        <tr class="bg-light">
+                                            <td colspan="4" class="text-end fw-bold">{{ __('Discount') }}</td>
+                                            <td class="text-center">-{{ number_format($order->discount_amount, 2) }}</td>
+                                        </tr>
+                                    @endif
+                                    @if($order->vat > 0)
+                                        <tr class="bg-light">
+                                            <td colspan="4" class="text-end fw-bold">{{ __('Tax') }}</td>
+                                            <td class="text-center">{{ number_format($order->vat, 2) }}</td>
+                                        </tr>
+                                    @endif
+                                    <tr class="table-active">
+                                        <td colspan="4" class="text-end fw-bold h5">{{ __('Total') }}</td>
+                                        <td class="text-center fw-bold h5">{{ number_format($order->total, 2) }}</td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>

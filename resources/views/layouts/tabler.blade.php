@@ -270,6 +270,9 @@
                                             <a class="dropdown-item" href="{{ route('shelf-products.index') }}">
                                                 {{ __('Shelf-Products') }}
                                             </a>
+                                            <a class="dropdown-item" href="{{ route('location-setup') }}">
+                                                {{ __('Products Locations') }}
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
@@ -580,6 +583,15 @@
                                                           {{ __('Set Branch') }}
                                                      </a>
                                                      @endrole
+                                                     <a class="dropdown-item" href="{{ route('locations.index') }}">
+                                            <lord-icon
+                                                      src="https://cdn.lordicon.com/bpmglzll.json"
+                                                        trigger="hover"
+                                                        colors="primary:black"
+                                                      style="width:20px;height:20px">
+                                                         </lord-icon>
+                                                          {{ __('Set Location') }}
+                                                     </a>
                                         </div>
                                     
                                     </div>

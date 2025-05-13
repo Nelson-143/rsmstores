@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Builder;
 use app\Scopes\AccountScope;
-
+use App\Models\ProductLocation;
 class Product extends Model
 {
    
@@ -93,5 +93,25 @@ class Product extends Model
       public function account()
 {
     return $this->belongsTo(Account::class, 'account_id');
+}
+
+
+
+public function productLocations()
+{
+    return $this->hasMany(ProductLocation::class);
+}
+
+public function productTransferLogs()
+{
+    return $this->hasMany(ProductTransferLog::class);
+}
+
+public function getQuantityAttribute()
+{
+    if (auth()->check() && auth()->user()->account->is_location_setup) {
+        return $this->productLocations()->sum('quantity');
+    }
+    return $this->attributes['quantity'] ?? 0;
 }
 }

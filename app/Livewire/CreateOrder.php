@@ -4,6 +4,7 @@ namespace app\Livewire;
 use Livewire\Component;
 use app\Models\Product;
 use app\Models\Customer;
+use app\Models\ProductLocation;
 use app\Models\ShelfProduct;
 use app\Models\ShelfStockLog;
 use Gloudemans\Shoppingcart\Facades\Cart;
@@ -28,25 +29,34 @@ class CreateOrder extends Component
     public $shelfQuantities = [];
     public $productView = 'all'; // 'all' or 'shelf'
     public $cartQty = [];
+    public $locationSelections = []; // Store location selections for cart items
+    public $showLocationModal = false;
+    public $currentProductId;
+    public $cartDiscounts = []; // Store discounted prices per cart item
+    public $customLocationId; // Location for custom products
+    public $customProducts = [];
+    public $currentShelfProductId;
 
-    public function mount()
-    {
-        $this->loadProducts();
-        $this->customers = Customer::where('account_id', auth()->user()->account_id)
-            ->get()
-            ->sortBy('name');
-        
-        $this->purchaseDate = now()->format('Y-m-d');
-        $this->taxRate = auth()->user()->account->tax_rate ?? 0;
-        for ($i = 1; $i <= 5; $i++) {
-            $this->selectedCustomers[$i] = 'pass_by';
-            Cart::instance('customer' . $i);
-        }
-        foreach ($this->shelfProducts as $shelfProduct) {
-            $this->shelfQuantities[$shelfProduct->product_id] = $shelfProduct->quantity;
-        }
-        Log::info('CreateOrder mounted', ['user_id' => auth()->id(), 'tax_rate' => $this->taxRate]);
+ public function mount()
+{
+    $this->loadProducts();
+    $this->customers = Customer::where('account_id', auth()->user()->account_id)->get()->sortBy('name');
+    $this->purchaseDate = now()->format('Y-m-d');
+    $this->taxRate = auth()->user()->account->tax_rate ?? 0;
+    for ($i = 1; $i <= 5; $i++) {
+        $this->selectedCustomers[$i] = 'pass_by';
+        Cart::instance('customer' . $i);
     }
+    foreach ($this->shelfProducts as $shelfProduct) {
+        $this->shelfQuantities[$shelfProduct->product_id] = $shelfProduct->quantity;
+    }
+    // Initialize cartQty with current cart quantities
+    foreach (Cart::instance('customer' . $this->activeTab)->content() as $item) {
+        $this->cartQty[$item->rowId] = $item->qty;
+        $this->cartDiscounts[$item->rowId] = $item->price;
+    }
+    Log::info('CreateOrder mounted', ['user_id' => auth()->id(), 'tax_rate' => $this->taxRate]);
+}
 
     public function switchTab($tab)
     {
@@ -122,188 +132,328 @@ class CreateOrder extends Component
         }
     }
 
-    public function addToCart($productId, $shelfProductId = null)
-    {
-        $product = Product::find($productId);
-        if (!$product) {
-            session()->flash('error', 'Product not found.');
+ public function addToCart($productId, $shelfProductId = null)
+{
+    $product = Product::with('productLocations')->find($productId);
+    if (!$product) {
+        session()->flash('error', 'Product not found.');
+        return;
+    }
+
+    if ($this->productView === 'shelf' && $shelfProductId) {
+        $shelfProduct = ShelfProduct::find($shelfProductId);
+        if (!$shelfProduct) {
+            session()->flash('error', 'Shelf product not found.');
             return;
         }
+        if ($shelfProduct->quantity < 1) {
+            session()->flash('error', 'Not enough shelf stock for ' . $product->name);
+            return;
+        }
+        $unitPrice = $shelfProduct->unit_price;
+        $unitName = $shelfProduct->unit_name;
+        $conversionFactor = $shelfProduct->conversion_factor;
+    } else {
+        $unitPrice = $product->selling_price;
+        $unitName = $product->unit ? $product->unit->name : 'Piece';
+        $conversionFactor = 1;
+        if ($product->quantity < 1) {
+            session()->flash('error', 'Not enough store stock for ' . $product->name);
+            return;
+        }
+        // Check if product is in multiple locations
+        if ($product->productLocations->count() > 1) {
+            $this->currentProductId = $productId;
+            $this->currentShelfProductId = null;
+            $this->showLocationModal = true;
+            return;
+        }
+        $defaultLocation = $product->productLocations->first();
+        if (!$defaultLocation) {
+            session()->flash('error', 'No location assigned for ' . $product->name);
+            return;
+        }
+    }
 
-        if ($this->productView === 'shelf' && $shelfProductId) {
-            $shelfProduct = ShelfProduct::find($shelfProductId);
-            if (!$shelfProduct) {
-                session()->flash('error', 'Shelf product not found.');
-                return;
-            }
-            if ($shelfProduct->quantity < 1) {
+    $tax = $unitPrice * ($this->taxRate / 100);
+    $rowId = uniqid();
+    $locationId = $shelfProductId ? null : ($defaultLocation->location_id ?? null);
+    Cart::instance('customer' . $this->activeTab)->add([
+        'id' => $product->id,
+        'name' => $product->name . ' (' . $unitName . ')',
+        'qty' => 1,
+        'price' => $unitPrice,
+        'weight' => 1,
+        'options' => [
+            'tax' => $tax,
+            'shelf_product_id' => $shelfProductId,
+            'conversion_factor' => $conversionFactor,
+            'location_id' => $locationId,
+            'row_id' => $rowId,
+        ],
+    ]);
+    $this->locationSelections[$rowId] = $locationId;
+    $this->cartDiscounts[$rowId] = $unitPrice;
+    session()->flash('success', 'Product added to cart!');
+}
+
+public function selectLocation($productId)
+{
+    $product = Product::with('productLocations')->find($productId);
+    if (!$product) {
+        session()->flash('error', 'Product not found.');
+        return;
+    }
+
+    $selectedLocationId = $this->locationSelections[$productId] ?? null;
+    if (!$selectedLocationId || !$product->productLocations->where('location_id', $selectedLocationId)->first()) {
+        session()->flash('error', 'Selected location not valid for this product.');
+        return;
+    }
+
+    $unitPrice = $product->selling_price;
+    $unitName = $product->unit ? $product->unit->name : 'Piece';
+    $conversionFactor = 1;
+    $tax = $unitPrice * ($this->taxRate / 100);
+    $rowId = uniqid();
+    Cart::instance('customer' . $this->activeTab)->add([
+        'id' => $product->id,
+        'name' => $product->name . ' (' . $unitName . ')',
+        'qty' => 1,
+        'price' => $unitPrice,
+        'weight' => 1,
+        'options' => [
+            'tax' => $tax,
+            'shelf_product_id' => $this->currentShelfProductId,
+            'conversion_factor' => $conversionFactor,
+            'location_id' => $selectedLocationId,
+            'row_id' => $rowId,
+        ],
+    ]);
+    $this->locationSelections[$rowId] = $selectedLocationId;
+    $this->cartDiscounts[$rowId] = $unitPrice;
+    $this->showLocationModal = false;
+    $this->currentProductId = null;
+    $this->currentShelfProductId = null;
+    session()->flash('success', 'Product added to cart!');
+}
+public function updateCart($rowId, $qty)
+{
+    $cartItem = Cart::instance('customer' . $this->activeTab)->get($rowId);
+    if ($cartItem) {
+        $product = Product::with('productLocations')->find($cartItem->id);
+        $requiredStock = $qty * ((float) ($cartItem->options['conversion_factor'] ?? 1));
+        if ($cartItem->options['shelf_product_id']) {
+            $shelfProduct = ShelfProduct::find($cartItem->options['shelf_product_id']);
+            if ($shelfProduct && $shelfProduct->quantity < $requiredStock) {
                 session()->flash('error', 'Not enough shelf stock for ' . $product->name);
+                $this->cartQty[$rowId] = $cartItem->qty; // Revert on error
                 return;
             }
-            $unitPrice = $shelfProduct->unit_price;
-            $unitName = $shelfProduct->unit_name;
-            $conversionFactor = $shelfProduct->conversion_factor;
         } else {
-            $unitPrice = $product->selling_price;
-            $unitName = $product->unit ? $product->unit->name : 'Piece';
-            $conversionFactor = 1;
-            if ($product->quantity < 1) {
-                session()->flash('error', 'Not enough store stock for ' . $product->name);
+            $locationId = $this->locationSelections[$cartItem->options['row_id']] ?? $cartItem->options['location_id'];
+            $productLocation = $product->productLocations->where('location_id', $locationId)->first();
+            if (!$productLocation || $productLocation->quantity < $requiredStock) {
+                session()->flash('error', 'Not enough stock in selected location for ' . $product->name);
+                $this->cartQty[$rowId] = $cartItem->qty; // Revert on error
                 return;
             }
         }
-
-        $tax = $unitPrice * ($this->taxRate / 100);
-        Cart::instance('customer' . $this->activeTab)->add([
-            'id' => $product->id,
-            'name' => $product->name . ' (' . $unitName . ')',
-            'qty' => 1,
-            'price' => $unitPrice,
-            'weight' => 1,
+        $tax = $cartItem->price * ($this->taxRate / 100);
+        Cart::instance('customer' . $this->activeTab)->update($rowId, [
+            'qty' => $qty,
             'options' => [
                 'tax' => $tax,
-                'shelf_product_id' => $shelfProductId,
-                'conversion_factor' => $conversionFactor,
+                'shelf_product_id' => $cartItem->options['shelf_product_id'],
+                'conversion_factor' => $cartItem->options['conversion_factor'],
+                'location_id' => $cartItem->options['location_id'],
+                'row_id' => $cartItem->options['row_id'],
             ],
         ]);
-        session()->flash('success', 'Product added to cart!');
+        $this->cartQty[$rowId] = $qty; // Sync the component state
+        session()->flash('success', 'Cart updated!');
     }
-
-    public function updateCart($rowId, $qty)
-    {
-        $cartItem = Cart::instance('customer' . $this->activeTab)->get($rowId);
-        if ($cartItem) {
-            $product = Product::find($cartItem->id);
-            $requiredStock = $qty * ($cartItem->options['conversion_factor'] ?? 1);
-            if ($cartItem->options['shelf_product_id']) {
-                $shelfProduct = ShelfProduct::find($cartItem->options['shelf_product_id']);
-                if ($shelfProduct && $shelfProduct->quantity < $requiredStock) {
-                    session()->flash('error', 'Not enough shelf stock for ' . $product->name);
-                    return;
-                }
-            } else {
-                if ($product->quantity < $requiredStock) {
-                    session()->flash('error', 'Not enough store stock for ' . $product->name);
-                    return;
-                }
-            }
-            $tax = $cartItem->price * ($this->taxRate / 100);
-            Cart::instance('customer' . $this->activeTab)->update($rowId, [
-                'qty' => $qty,
-                'options' => [
-                    'tax' => $tax,
-                    'shelf_product_id' => $cartItem->options['shelf_product_id'],
-                    'conversion_factor' => $cartItem->options['conversion_factor'],
-                ],
-            ]);
-            $this->cartQty[$rowId] = $qty;
-            session()->flash('success', 'Cart updated!');
-        }
-    }
-
+}
     public function removeFromCart($rowId)
     {
         Cart::instance('customer' . $this->activeTab)->remove($rowId);
         session()->flash('success', 'Product removed from cart!');
     }
 
-    public function addCustomProduct()
-    {
-        $this->validate([
-            'customProductName' => 'required|string',
-            'customProductQuantity' => 'required|numeric|min:1',
-            'customProductPrice' => 'required|numeric|min:0',
-        ]);
+ public function addCustomProduct()
+{
+    $this->validate([
+        'customProductName' => 'required|string|max:255',
+        'customProductQuantity' => 'required|numeric|min:1',
+        'customProductPrice' => 'required|numeric|min:0',
+        'customLocationId' => 'required|exists:locations,id',
+    ]);
 
-        $tax = $this->customProductPrice * ($this->taxRate / 100);
-        Cart::instance('customer' . $this->activeTab)->add([
-            'id' => uniqid(),
-            'name' => $this->customProductName,
-            'qty' => $this->customProductQuantity,
-            'price' => $this->customProductPrice,
-            'weight' => 1,
-            'options' => ['tax' => $tax, 'shelf_product_id' => null, 'conversion_factor' => 1],
-        ]);
+    $tax = $this->customProductPrice * ($this->taxRate / 100);
+    $rowId = uniqid();
 
-        $this->reset(['customProductName', 'customProductQuantity', 'customProductPrice', 'showModal']);
-        session()->flash('success', 'Custom product added to cart!');
+    // Add the custom product to the cart
+    Cart::instance('customer' . $this->activeTab)->add([
+        'id' => $rowId,
+        'name' => $this->customProductName,
+        'qty' => $this->customProductQuantity,
+        'price' => $this->customProductPrice,
+        'weight' => 1,
+        'options' => [
+            'tax' => $tax,
+            'shelf_product_id' => null,
+            'conversion_factor' => 1,
+            'location_id' => $this->customLocationId,
+            'row_id' => $rowId,
+            'is_custom' => true,
+        ],
+    ]);
+
+    // Initialize cartQty and cartDiscounts for the new item
+    $this->cartQty[$rowId] = $this->customProductQuantity;
+    $this->cartDiscounts[$rowId] = $this->customProductPrice;
+
+    // Save custom product details for order processing
+    $this->customProducts[$rowId] = [
+        'name' => $this->customProductName,
+        'quantity' => $this->customProductQuantity,
+        'price' => $this->customProductPrice,
+        'location_id' => $this->customLocationId,
+        'account_id' => auth()->user()->account_id,
+    ];
+
+    // Reset form fields
+    $this->reset(['customProductName', 'customProductQuantity', 'customProductPrice', 'customLocationId']);
+
+    session()->flash('success', 'Custom product added to cart!');
+}
+  public function createOrder()
+{
+    $currentCart = Cart::instance('customer' . $this->activeTab)->content();
+    if ($currentCart->isEmpty()) {
+        session()->flash('error', 'Cart is empty.');
+        return;
     }
 
-    public function createOrder()
-    {
-        $currentCart = Cart::instance('customer' . $this->activeTab)->content();
-        if ($currentCart->isEmpty()) {
-            session()->flash('error', 'Cart is empty.');
-            return;
+    foreach ($currentCart as $item) {
+        if (isset($item->options['is_custom']) && $item->options['is_custom']) {
+            // Skip inventory checks for custom products
+            continue;
         }
 
-        foreach ($currentCart as $item) {
-            $product = Product::find($item->id);
-            if (!$product) {
-                continue;
+        $product = Product::with('productLocations')->find($item->id);
+        $requiredStock = $item->qty * ($item->options['conversion_factor'] ?? 1);
+        if ($item->options['shelf_product_id']) {
+            $shelfProduct = ShelfProduct::find($item->options['shelf_product_id']);
+            if ($shelfProduct && $shelfProduct->quantity < $requiredStock) {
+                session()->flash('error', 'Not enough shelf stock for ' . $item->name);
+                return;
             }
+        } else {
+            $locationId = $this->locationSelections[$item->options['row_id']] ?? $item->options['location_id'];
+            $productLocation = $product->productLocations->where('location_id', $locationId)->first();
+            if (!$productLocation || $productLocation->quantity < $requiredStock) {
+                session()->flash('error', 'Not enough stock in selected location for ' . $item->name);
+                return;
+            }
+            Log::info('Pre-decrement stock check', [
+                'product_id' => $product->id,
+                'location_id' => $locationId,
+                'current_quantity' => $productLocation->quantity,
+                'required_stock' => $requiredStock,
+            ]);
+        }
+    }
+
+    $subTotal = Cart::instance('customer' . $this->activeTab)->subtotalFloat();
+    $vat = 0;
+    $discountAmount = 0;
+    foreach ($currentCart as $item) {
+        $vat += $item->options['tax'] * $item->qty;
+        $originalPrice = $this->cartDiscounts[$item->rowId] ?? $item->price;
+        $discountAmount += ($originalPrice - $item->price) * $item->qty;
+    }
+    $total = $subTotal + $vat;
+
+    // Update stock for non-custom products
+    foreach ($currentCart as $item) {
+        if (isset($item->options['is_custom']) && $item->options['is_custom']) {
+            continue; // Skip inventory deduction for custom products
+        }
+
+        $product = Product::with('productLocations')->find($item->id);
+        if ($product) {
             $requiredStock = $item->qty * ($item->options['conversion_factor'] ?? 1);
             if ($item->options['shelf_product_id']) {
                 $shelfProduct = ShelfProduct::find($item->options['shelf_product_id']);
-                if ($shelfProduct && $shelfProduct->quantity < $requiredStock) {
-                    session()->flash('error', 'Not enough shelf stock for ' . $item->name);
-                    return;
+                if ($shelfProduct) {
+                    $shelfProduct->decrement('quantity', $item->qty);
+                    ShelfStockLog::create([
+                        'shelf_product_id' => $shelfProduct->id,
+                        'quantity_change' => -$item->qty,
+                        'action' => 'deduct',
+                        'user_id' => auth()->id(),
+                        'account_id' => auth()->user()->account_id,
+                        'notes' => 'Deducted for order in POS',
+                    ]);
                 }
             } else {
-                if ($product->quantity < $requiredStock) {
-                    session()->flash('error', 'Not enough store stock for ' . $item->name);
-                    return;
+                $locationId = $this->locationSelections[$item->options['row_id']] ?? $item->options['location_id'];
+                $productLocation = ProductLocation::where('product_id', $product->id)
+                    ->where('location_id', $locationId)
+                    ->where('account_id', auth()->user()->account_id)
+                    ->first();
+                if ($productLocation) {
+                    $productLocation->decrement('quantity', $requiredStock);
+                    Log::info('Post-decrement stock update', [
+                        'product_id' => $product->id,
+                        'location_id' => $locationId,
+                        'new_quantity' => $productLocation->quantity,
+                    ]);
                 }
             }
         }
-
-        $subTotal = Cart::instance('customer' . $this->activeTab)->subtotalFloat();
-        $vat = 0;
-        foreach ($currentCart as $item) {
-            $vat += $item->options->tax * $item->qty;
-        }
-        $total = $subTotal + $vat;
-
-        // Update stock and log movements
-        foreach ($currentCart as $item) {
-            $product = Product::find($item->id);
-            if ($product) {
-                $requiredStock = $item->qty * ($item->options['conversion_factor'] ?? 1);
-                if ($item->options['shelf_product_id']) {
-                    $shelfProduct = ShelfProduct::find($item->options['shelf_product_id']);
-                    if ($shelfProduct) {
-                        $shelfProduct->decrement('quantity', $item->qty);
-                        ShelfStockLog::create([
-                            'shelf_product_id' => $shelfProduct->id,
-                            'quantity_change' => -$item->qty,
-                            'action' => 'deduct',
-                            'user_id' => auth()->id(),
-                            'account_id' => auth()->user()->account_id,
-                            'notes' => 'Deducted for order in POS',
-                        ]);
-                    }
-                }
-                $product->decrement('quantity', $requiredStock);
-            }
-        }
-
-        session()->put('pending_order', [
-            'cart' => $currentCart->toArray(),
-            'customer_id' => $this->selectedCustomers[$this->activeTab],
-            'sub_total' => $subTotal,
-            'vat' => $vat,
-            'total' => $total,
-            'active_tab' => $this->activeTab,
-            'tax_rate' => $this->taxRate,
-        ]);
-
-        Log::info('Redirecting to invoices.create', [
-            'sub_total' => $subTotal,
-            'vat' => $vat,
-            'total' => $total,
-        ]);
-        return redirect()->route('invoices.create');
     }
+
+    session()->put('pending_order', [
+        'cart' => $currentCart->toArray(),
+        'customer_id' => $this->selectedCustomers[$this->activeTab],
+        'sub_total' => $subTotal,
+        'vat' => $vat,
+        'discount_amount' => $discountAmount,
+        'total' => $total,
+        'active_tab' => $this->activeTab,
+        'tax_rate' => $this->taxRate,
+        'custom_products' => $this->customProducts,
+    ]);
+
+    Log::info('Redirecting to invoices.create', [
+        'sub_total' => $subTotal,
+        'vat' => $vat,
+        'discount_amount' => $discountAmount,
+        'total' => $total,
+    ]);
+    return redirect()->route('invoices.create');
+}
+    public function updateDiscount($rowId, $discountPrice)
+{
+    $cartItem = Cart::instance("customer{$this->activeTab}")->get($rowId);
+    if ($cartItem) {
+        $tax = (float) $discountPrice * ($this->taxRate / 100);
+        Cart::instance("customer{$this->activeTab}")->update($rowId, [
+            'price' => $discountPrice,
+            'options' => [
+                'tax' => $tax,
+                'shelf_product_id' => $cartItem->options['shelf_product_id'],
+                'conversion_factor' => $cartItem->options['conversion_factor'],
+                'location_id' => $cartItem->options['location_id'],
+                'row_id' => $cartItem->options['row_id'],
+            ],
+        ]);
+        $this->cartDiscounts[$rowId] = $discountPrice;
+        session()->flash('success', 'Discount updated!');
+    }
+}
 
     public function loadProducts()
     {
@@ -329,21 +479,24 @@ class CreateOrder extends Component
         }
     }
 
-    public function render()
-    {
-        $filteredProducts = $this->products;
-        $filteredCustomers = $this->customers->filter(function ($customer) {
-            return empty($this->searchCustomer) || Str::contains(Str::lower($customer->name), Str::lower($this->searchCustomer));
-        })->values();
+   public function render()
+{
+    $filteredProducts = $this->products;
+    $filteredCustomers = $this->customers->filter(function ($customer) {
+        return empty($this->searchCustomer) || Str::contains(Str::lower($customer->name), Str::lower($this->searchCustomer));
+    })->values();
+
+    $currentCart = Cart::instance('customer' . $this->activeTab)->content();
+
+    return view('livewire.create-order', [
+        'filteredProducts' => $filteredProducts,
+        'shelfProducts' => $this->shelfProducts,
+        'filteredCustomers' => $filteredCustomers,
+        'currentCart' => $currentCart,
+        'taxRate' => $this->taxRate,
+        'cartDiscounts' => $this->cartDiscounts,
+    ])->extends('layouts.tabler')->section('content');
+}
+
     
-        $currentCart = Cart::instance('customer' . $this->activeTab)->content();
-    
-        return view('livewire.create-order', [
-            'filteredProducts' => $filteredProducts,
-            'shelfProducts' => $this->shelfProducts,
-            'filteredCustomers' => $filteredCustomers,
-            'currentCart' => $currentCart,
-            'taxRate' => $this->taxRate,
-        ])->extends('layouts.tabler')->section('content');
-    }
 }

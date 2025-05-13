@@ -8,6 +8,7 @@ use app\Http\Requests\Order\OrderStoreRequest;
 use app\Models\Customer;
 use app\Models\Order;
 use app\Models\OrderDetails;
+use App\Models\CustomOrderDetail;
 use app\Models\Product;
 use app\Models\User;
 use app\Models\Debt;
@@ -60,82 +61,100 @@ class OrderController extends Controller
         ]);
     }
 
-    public function store(Request $request)
-    {
-        Log::info('OrderController@store started', ['request' => $request->all()]);
+   public function store(Request $request)
+{
+    Log::info('OrderController@store started', ['request' => $request->all()]);
 
-        $request->validate([
-            'customer_id' => 'nullable|exists:customers,id',
-            'payment_type' => 'required|in:HandCash,Cheque,Due',
-            'pay' => 'required|numeric|min:0',
-            'active_tab' => 'required|integer|between:1,5',
+    $request->validate([
+        'customer_id' => 'nullable|exists:customers,id',
+        'payment_type' => 'required|in:HandCash,Cheque,Due',
+        'pay' => 'required|numeric|min:0',
+        'active_tab' => 'required|integer|between:1,5',
+    ]);
+
+    $pendingOrder = session('pending_order');
+    Log::info('Pending order from session', ['pending_order' => $pendingOrder]);
+
+    if (!$pendingOrder || empty($pendingOrder['cart'])) {
+        Log::warning('No pending order data found in session');
+        return redirect()->route('pos.index')->with('error', 'No order data found. Please start over.');
+    }
+
+    $cartInstance = 'customer' . $pendingOrder['active_tab'];
+    Cart::instance($cartInstance)->destroy();
+    foreach ($pendingOrder['cart'] as $item) {
+        Cart::instance($cartInstance)->add($item);
+    }
+    Log::info('Cart re-populated', ['cart_content' => Cart::instance($cartInstance)->content()->toArray()]);
+
+    // Validate stock for non-custom products
+    foreach (Cart::instance($cartInstance)->content() as $item) {
+        if (isset($item->options['is_custom']) && $item->options['is_custom']) {
+            continue; // Skip stock check for custom products
+        }
+        $product = Product::find($item->id);
+        if ($product && $item->qty > $product->quantity) {
+            Cart::instance($cartInstance)->destroy();
+            Log::warning('Stock check failed', ['product_id' => $item->id, 'name' => $product->name]);
+            return redirect()->route('pos.index')->with('error', 'Product "' . $product->name . '" is out of stock!');
+        }
+    }
+
+    DB::beginTransaction();
+    try {
+        $userId = auth()->id();
+        $accountId = auth()->user()->account_id;
+
+        $subTotal = $pendingOrder['sub_total'];
+        $vat = $pendingOrder['vat'];
+        $total = $pendingOrder['total'];
+
+        Log::info('Order totals', [
+            'sub_total' => $subTotal,
+            'vat' => $vat,
+            'total' => $total,
         ]);
 
-        $pendingOrder = session('pending_order');
-        Log::info('Pending order from session', ['pending_order' => $pendingOrder]);
+        $order = Order::create([
+            'customer_id' => $request->customer_id ?: null,
+            'payment_type' => $request->payment_type,
+            'pay' => $request->pay,
+            'order_date' => Carbon::now()->format('Y-m-d'),
+            'order_status' => $request->payment_type === 'Due' ? OrderStatus::PENDING->value : OrderStatus::COMPLETE->value,
+            'total_products' => Cart::instance($cartInstance)->count(),
+            'sub_total' => $subTotal,
+            'vat' => $vat,
+            'total' => $total,
+            'invoice_no' => IdGenerator::generate([
+                'table' => 'orders',
+                'field' => 'invoice_no',
+                'length' => 10,
+                'prefix' => 'INV-'
+            ]),
+            'due' => $total - $request->pay,
+            'user_id' => $userId,
+            'account_id' => $accountId,
+            'uuid' => Str::uuid(),
+        ]);
 
-        if (!$pendingOrder || empty($pendingOrder['cart'])) {
-            Log::warning('No pending order data found in session');
-            return redirect()->route('pos.index')->with('error', 'No order data found. Please start over.');
-        }
-
-        $cartInstance = 'customer' . $pendingOrder['active_tab'];
-        Cart::instance($cartInstance)->destroy();
-        foreach ($pendingOrder['cart'] as $item) {
-            Cart::instance($cartInstance)->add($item);
-        }
-        Log::info('Cart re-populated', ['cart_content' => Cart::instance($cartInstance)->content()->toArray()]);
+        Log::info('Order created', ['order_id' => $order->id]);
 
         foreach (Cart::instance($cartInstance)->content() as $item) {
-            $product = Product::find($item->id);
-            if ($product && $item->qty > $product->quantity) {
-                Cart::instance($cartInstance)->destroy();
-                Log::warning('Stock check failed', ['product_id' => $item->id, 'name' => $product->name]);
-                return redirect()->route('pos.index')->with('error', 'Product "' . $product->name . '" is out of stock!');
-            }
-        }
-
-        DB::beginTransaction();
-        try {
-            $userId = auth()->id();
-            $accountId = auth()->user()->account_id;
-
-            // Use VAT from session (calculated in CreateOrder)
-            $subTotal = $pendingOrder['sub_total'];
-            $vat = $pendingOrder['vat']; // 2,880, not Cart::tax()
-            $total = $pendingOrder['total'];
-
-            Log::info('Order totals', [
-                'sub_total' => $subTotal,
-                'vat' => $vat,
-                'total' => $total,
-            ]);
-
-            $order = Order::create([
-                'customer_id' => $request->customer_id ?: null,
-                'payment_type' => $request->payment_type,
-                'pay' => $request->pay,
-                'order_date' => Carbon::now()->format('Y-m-d'),
-                'order_status' => $request->payment_type === 'Due' ? OrderStatus::PENDING->value : OrderStatus::COMPLETE->value,
-                'total_products' => Cart::instance($cartInstance)->count(),
-                'sub_total' => $subTotal,
-                'vat' => $vat,
-                'total' => $total,
-                'invoice_no' => IdGenerator::generate([
-                    'table' => 'orders',
-                    'field' => 'invoice_no',
-                    'length' => 10,
-                    'prefix' => 'INV-'
-                ]),
-                'due' => $total - $request->pay,
-                'user_id' => $userId,
-                'account_id' => $accountId,
-                'uuid' => Str::uuid(),
-            ]);
-
-            Log::info('Order created', ['order_id' => $order->id]);
-
-            foreach (Cart::instance($cartInstance)->content() as $item) {
+            if (isset($item->options['is_custom']) && $item->options['is_custom']) {
+                // Handle custom product
+                CustomOrderDetail::create([
+                    'order_id' => $order->id,
+                    'name' => $item->name,
+                    'quantity' => $item->qty,
+                    'unitcost' => $item->price,
+                    'total' => $item->subtotal,
+                    'location_id' => $item->options['location_id'],
+                    'account_id' => $accountId,
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now(),
+                ]);
+            } else {
+                // Handle regular product
                 $product = Product::find($item->id);
                 if ($product) {
                     $product->quantity -= $item->qty;
@@ -154,77 +173,93 @@ class OrderController extends Controller
                     'updated_at' => Carbon::now(),
                 ]);
             }
-
-            Cart::instance($cartInstance)->destroy();
-            session()->forget('pending_order');
-            Log::info('Cart and session cleared');
-
-            DB::commit();
-            Log::info('Transaction committed');
-
-            return redirect()
-                ->route('orders.index')
-                ->with('success', 'Order has been created successfully!');
-        } catch (\Exception $e) {
-            DB::rollBack();
-            Log::error('Error creating order', ['message' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
-            return redirect()->route('pos.index')->with('error', 'Error creating order: ' . $e->getMessage());
         }
+
+        Cart::instance($cartInstance)->destroy();
+        session()->forget('pending_order');
+        Log::info('Cart and session cleared');
+
+        DB::commit();
+        Log::info('Transaction committed');
+
+        return redirect()
+            ->route('orders.index')
+            ->with('success', 'Order has been created successfully!');
+    } catch (\Exception $e) {
+        DB::rollBack();
+        Log::error('Error creating order', ['message' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
+        return redirect()->route('pos.index')->with('error', 'Error creating order: ' . $e->getMessage());
     }
+}
     // Update storeDebt similarly
     public function storeDebt(Request $request)
-    {
-        Log::info('OrderController@storeDebt started', ['request' => $request->all()]);
+{
+    Log::info('OrderController@storeDebt started', ['request' => $request->all()]);
 
-        $request->validate([
-            'customer_id' => 'nullable|exists:customers,id',
-            'active_tab' => 'required|integer|between:1,5',
-            'payment_type' => 'required|in:Due',
-            'customer_set' => 'required|string',
-            'due_date' => 'required|date',
-            'amount' => 'required|numeric|min:0',
+    $request->validate([
+        'customer_id' => 'nullable|exists:customers,id',
+        'active_tab' => 'required|integer|between:1,5',
+        'payment_type' => 'required|in:Due',
+        'customer_set' => 'required|string',
+        'due_date' => 'required|date',
+        'amount' => 'required|numeric|min:0',
+    ]);
+
+    $pendingOrder = session('pending_order');
+    if (!$pendingOrder || empty($pendingOrder['cart'])) {
+        Log::warning('No pending order data found in session');
+        return redirect()->route('pos.index')->with('error', 'No order data found.');
+    }
+
+    $cartInstance = 'customer' . $pendingOrder['active_tab'];
+    Cart::instance($cartInstance)->destroy();
+    foreach ($pendingOrder['cart'] as $item) {
+        Cart::instance($cartInstance)->add($item);
+    }
+
+    DB::beginTransaction();
+    try {
+        $userId = auth()->id();
+        $accountId = auth()->user()->account_id;
+
+        $order = Order::create([
+            'customer_id' => $request->customer_id ?: null,
+            'payment_type' => $request->payment_type,
+            'pay' => 0,
+            'order_date' => Carbon::now()->format('Y-m-d'),
+            'order_status' => OrderStatus::PENDING->value,
+            'total_products' => Cart::instance($cartInstance)->count(),
+            'sub_total' => $pendingOrder['sub_total'],
+            'vat' => $pendingOrder['vat'],
+            'total' => $pendingOrder['total'],
+            'invoice_no' => IdGenerator::generate([
+                'table' => 'orders',
+                'field' => 'invoice_no',
+                'length' => 10,
+                'prefix' => 'INV-'
+            ]),
+            'due' => $request->amount,
+            'user_id' => $userId,
+            'account_id' => $accountId,
+            'uuid' => Str::uuid(),
         ]);
 
-        $pendingOrder = session('pending_order');
-        if (!$pendingOrder || empty($pendingOrder['cart'])) {
-            Log::warning('No pending order data found in session');
-            return redirect()->route('pos.index')->with('error', 'No order data found.');
-        }
-
-        $cartInstance = 'customer' . $pendingOrder['active_tab'];
-        Cart::instance($cartInstance)->destroy();
-        foreach ($pendingOrder['cart'] as $item) {
-            Cart::instance($cartInstance)->add($item);
-        }
-
-        DB::beginTransaction();
-        try {
-            $userId = auth()->id();
-            $accountId = auth()->user()->account_id;
-
-            $order = Order::create([
-                'customer_id' => $request->customer_id ?: null,
-                'payment_type' => $request->payment_type,
-                'pay' => 0,
-                'order_date' => Carbon::now()->format('Y-m-d'),
-                'order_status' => OrderStatus::PENDING->value,
-                'total_products' => Cart::instance($cartInstance)->count(),
-                'sub_total' => Cart::instance($cartInstance)->subtotalFloat(),
-                'vat' => Cart::instance($cartInstance)->taxFloat(),
-                'total' => Cart::instance($cartInstance)->totalFloat(),
-                'invoice_no' => IdGenerator::generate([
-                    'table' => 'orders',
-                    'field' => 'invoice_no',
-                    'length' => 10,
-                    'prefix' => 'INV-'
-                ]),
-                'due' => $request->amount,
-                'user_id' => $userId,
-                'account_id' => $accountId,
-                'uuid' => Str::uuid(),
-            ]);
-
-            foreach (Cart::instance($cartInstance)->content() as $item) {
+        foreach (Cart::instance($cartInstance)->content() as $item) {
+            if (isset($item->options['is_custom']) && $item->options['is_custom']) {
+                // Handle custom product
+                CustomOrderDetail::create([
+                    'order_id' => $order->id,
+                    'name' => $item->name,
+                    'quantity' => $item->qty,
+                    'unitcost' => $item->price,
+                    'total' => $item->subtotal,
+                    'location_id' => $item->options['location_id'],
+                    'account_id' => $accountId,
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now(),
+                ]);
+            } else {
+                // Handle regular product
                 $product = Product::find($item->id);
                 if ($product) {
                     $product->quantity -= $item->qty;
@@ -238,50 +273,49 @@ class OrderController extends Controller
                     'quantity' => $item->qty,
                     'unitcost' => $item->price,
                     'total' => $item->subtotal,
-                    'account_id' => $accountId, // Add account_id here
+                    'account_id' => $accountId,
                     'created_at' => Carbon::now(),
                     'updated_at' => Carbon::now(),
                 ]);
             }
-
-                Debt::create([
-                'customer_id' => $request->customer_id,
-                'order_id' => $order->id,
-                'customer_set' => $request->customer_set,
-                'amount' => $request->amount,
-                'due_date' => $request->due_date,
-                'account_id' => $accountId,
-            ]);
-
-            Cart::instance($cartInstance)->destroy();
-            session()->forget('pending_order');
-
-            DB::commit();
-
-            return redirect()->route('orders.index')->with('success', 'Debt created successfully!');
-        } catch (\Exception $e) {
-            DB::rollBack();
-            Cart::instance($cartInstance)->destroy();
-            Log::error('Error creating debt', ['message' => $e->getMessage()]);
-            return redirect()->route('pos.index')->with('error', 'Error creating debt: ' . $e->getMessage());
         }
-    }
-    public function show($uuid)
-    {
-       
-        $accountId = auth()->user()->account_id; // Get the account_id of the logged-in user
 
-        $order = Order::where('uuid', $uuid)
-           
-            ->where('account_id', $accountId) // Filter by account_id
-            ->firstOrFail();
-
-        $order->loadMissing(['customer', 'details']);
-
-        return view('orders.show', [
-            'order' => $order
+        Debt::create([
+            'customer_id' => $request->customer_id,
+            'order_id' => $order->id,
+            'customer_set' => $request->customer_set,
+            'amount' => $request->amount,
+            'due_date' => $request->due_date,
+            'account_id' => $accountId,
         ]);
+
+        Cart::instance($cartInstance)->destroy();
+        session()->forget('pending_order');
+
+        DB::commit();
+
+        return redirect()->route('orders.index')->with('success', 'Debt created successfully!');
+    } catch (\Exception $e) {
+        DB::rollBack();
+        Cart::instance($cartInstance)->destroy();
+        Log::error('Error creating debt', ['message' => $e->getMessage()]);
+        return redirect()->route('pos.index')->with('error', 'Error creating debt: ' . $e->getMessage());
     }
+}
+   public function show($uuid)
+{
+    $accountId = auth()->user()->account_id;
+
+    $order = Order::where('uuid', $uuid)
+        ->where('account_id', $accountId)
+        ->firstOrFail();
+
+    $order->loadMissing(['customer', 'details', 'customOrderDetails']); // Load custom order details
+
+    return view('orders.show', [
+        'order' => $order
+    ]);
+}
 
     public function update($uuid, Request $request)
     {
@@ -334,20 +368,18 @@ class OrderController extends Controller
     }
 
     public function downloadInvoice($uuid)
-    {
-        
-        $accountId = auth()->user()->account_id; // Get the account_id of the logged-in user
+{
+    $accountId = auth()->user()->account_id;
 
-        $order = Order::with(['customer', 'details'])
-            ->where('uuid', $uuid)
-            
-            ->where('account_id', $accountId) // Filter by account_id
-            ->firstOrFail();
+    $order = Order::with(['customer', 'details', 'customOrderDetails']) // Load custom order details
+        ->where('uuid', $uuid)
+        ->where('account_id', $accountId)
+        ->firstOrFail();
 
-        return view('orders.print-invoice', [
-            'order' => $order,
-        ]);
-    }
+    return view('orders.print-invoice', [
+        'order' => $order,
+    ]);
+}
 
     public function cancel(Order $order)
     {
@@ -408,21 +440,22 @@ class OrderController extends Controller
 
 public function approve($uuid)
 {
-    // Find the order by UUID
     $order = Order::where('uuid', $uuid)->firstOrFail();
 
-    // Update the order status to COMPLETE
     $order->update([
         'order_status' => OrderStatus::COMPLETE,
     ]);
 
-    // Optionally, reduce the product stock here (if not already handled elsewhere)
     foreach ($order->details as $detail) {
         $product = Product::find($detail->product_id);
-        $product->update([
-            'quantity' => $product->quantity - $detail->quantity,
-        ]);
+        if ($product) {
+            $product->update([
+                'quantity' => $product->quantity - $detail->quantity,
+            ]);
+        }
     }
+
+    // Custom order details don't affect stock, so no action needed
 
     return redirect()
         ->route('orders.index')

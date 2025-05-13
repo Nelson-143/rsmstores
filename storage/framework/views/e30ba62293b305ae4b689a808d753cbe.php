@@ -1,5 +1,6 @@
 <?php $__env->startSection('title', 'Manage Shelf Products'); ?>
 <div>
+    <!--Shelf view-->
     <div class="page-body">
         <div class="container-xl">
             <div class="card">

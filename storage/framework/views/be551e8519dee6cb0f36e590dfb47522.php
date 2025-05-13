@@ -358,28 +358,49 @@ unset($__errorArgs, $__bag); ?>
 <?php endif; ?>
                                     </div>
 
-                                    <div class="col-sm-6 col-md-6">
-                                        <?php if (isset($component)) { $__componentOriginalc2fcfa88dc54fee60e0757a7e0572df1 = $component; } ?>
-<?php if (isset($attributes)) { $__attributesOriginalc2fcfa88dc54fee60e0757a7e0572df1 = $attributes; } ?>
-<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.input.index','data' => ['type' => 'number','label' => 'Quantity','name' => 'quantity','id' => 'quantity','placeholder' => '0','value' => ''.e(old('quantity')).'']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
-<?php $component->withName('input'); ?>
-<?php if ($component->shouldRender()): ?>
-<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
-<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(Illuminate\View\AnonymousComponent::class))->getConstructor()): ?>
-<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
-<?php endif; ?>
-<?php $component->withAttributes(['type' => 'number','label' => 'Quantity','name' => 'quantity','id' => 'quantity','placeholder' => '0','value' => ''.e(old('quantity')).'']); ?>
-<?php echo $__env->renderComponent(); ?>
-<?php endif; ?>
-<?php if (isset($__attributesOriginalc2fcfa88dc54fee60e0757a7e0572df1)): ?>
-<?php $attributes = $__attributesOriginalc2fcfa88dc54fee60e0757a7e0572df1; ?>
-<?php unset($__attributesOriginalc2fcfa88dc54fee60e0757a7e0572df1); ?>
-<?php endif; ?>
-<?php if (isset($__componentOriginalc2fcfa88dc54fee60e0757a7e0572df1)): ?>
-<?php $component = $__componentOriginalc2fcfa88dc54fee60e0757a7e0572df1; ?>
-<?php unset($__componentOriginalc2fcfa88dc54fee60e0757a7e0572df1); ?>
-<?php endif; ?>
+                            <div class="col-sm-6 col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label"><?php echo e(__('Locations')); ?></label>
+                                    <div id="locationFields">
+                                        <div class="row mb-2 align-items-end">
+                                            <div class="col-md-6">
+                                                <select name="location_ids[]" class="form-select" required>
+                                                    <?php $__currentLoopData = \App\Models\Location::where('account_id', auth()->user()->account_id)->get(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $location): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                        <option value="<?php echo e($location->id); ?>"><?php echo e($location->name); ?></option>
+                                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <input type="number" name="quantities[]" class="form-control" min="0" required>
+                                            </div>
+                                            <div class="col-md-1">
+                                                <button type="button" class="btn btn-danger btn-sm remove-location">-</button>
+                                            </div>
+                                        </div>
                                     </div>
+                                    <button type="button" class="btn btn-secondary mt-2" id="addLocation">Add Location</button>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label"><?php echo e(__('Total Quantity')); ?></label>
+                                    <input type="text" name="total_quantity" class="form-control" value="<?php echo e(old('total_quantity', 0)); ?>" readonly>
+                                </div>
+                            </div>
+
+                            <script>
+                                document.getElementById('addLocation').addEventListener('click', function() {
+                                    const locationFields = document.getElementById('locationFields');
+                                    const newField = locationFields.children[0].cloneNode(true);
+                                    newField.querySelector('input[name="quantities[]"]').value = '';
+                                    locationFields.appendChild(newField);
+                                });
+                                document.querySelectorAll('.remove-location').forEach(button => {
+                                    button.addEventListener('click', function() {
+                                        this.parentElement.parentElement.remove();
+                                    });
+                                });
+                            </script>
                                     <div class="col-sm-6 col-md-6">
                                         <?php if (isset($component)) { $__componentOriginalc2fcfa88dc54fee60e0757a7e0572df1 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginalc2fcfa88dc54fee60e0757a7e0572df1 = $attributes; } ?>
@@ -612,7 +633,7 @@ unset($__errorArgs, $__bag); ?>
 </div>
 <?php $__env->stopSection(); ?>
 
-<?php if (! $__env->hasRenderedOnce('747532cb-e10b-4abe-a518-6acde714ebfb')): $__env->markAsRenderedOnce('747532cb-e10b-4abe-a518-6acde714ebfb');
+<?php if (! $__env->hasRenderedOnce('6690df40-cda4-4221-bac0-216165b85d4b')): $__env->markAsRenderedOnce('6690df40-cda4-4221-bac0-216165b85d4b');
 $__env->startPush('page-scripts'); ?>
     <script src="<?php echo e(asset('assets/js/img-preview.js')); ?>"></script>
 <?php $__env->stopPush(); endif; ?>
