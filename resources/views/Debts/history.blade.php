@@ -6,7 +6,7 @@
 <div class="container">
     <h1>{{ __('Payment History for') }} {{ $debt->customer->name ?? 'Personal Debt' }}</h1>
     @if($payments->isEmpty())
-        <p>No payment history found.</p>
+        <p>No payment history found...</p>
     @else
         <table class="table">
             <thead>
