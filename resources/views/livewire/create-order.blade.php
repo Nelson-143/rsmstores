@@ -1,3 +1,6 @@
+@php
+use app\Models\Product;
+@endphp
 @section('title', 'Orders Create')
 <!--POS view-->
 <div>
@@ -247,24 +250,27 @@
     </div>
     <!-- Modal for selecting location -->
 @if($showLocationModal)
-    <div class="modal" style="display: block;">
+    <div class="modal modal-blur fade show" tabindex="-1" style="display: block;">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Select Location for {{ Product::find($currentProductId)->name }}</h5>
+                    <h5 class="modal-title">Select Location for {{ $products->find($currentProductId)->name }}</h5>
                     <button type="button" class="btn-close" wire:click="$set('showLocationModal', false)"></button>
                 </div>
                 <div class="modal-body">
-                    <label for="location_id">Location:</label>
-                    <select wire:model.defer="locationSelections.{{ $currentProductId }}" class="form-select" id="location_id">
-                        @foreach(Product::find($currentProductId)->productLocations as $location)
-                            <option value="{{ $location->location_id }}">{{ $location->location->name }} ({{ $location->quantity }} units)</option>
-                        @endforeach
-                    </select>
+                    @foreach($products->find($currentProductId)->productLocations as $productLocation)
+                        <div class="form-check">
+                            <input type="radio" class="form-check-input" 
+                                   wire:model="locationSelections.{{ $currentProductId }}" 
+                                   value="{{ $productLocation->location_id }}">
+                            <label class="form-check-label">
+                                {{ $productLocation->location->name }} (Stock: {{ $productLocation->quantity }})
+                            </label>
+                        </div>
+                    @endforeach
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" wire:click="$set('showLocationModal', false)">Cancel</button>
-                    <button type="button" class="btn btn-primary" wire:click="selectLocation({{ $currentProductId }})">Confirm</button>
+                    <button class="btn btn-primary" wire:click="selectLocation({{ $currentProductId }})">Confirm</button>
                 </div>
             </div>
         </div>

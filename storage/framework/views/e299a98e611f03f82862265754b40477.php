@@ -1,3 +1,6 @@
+<?php
+use app\Models\Product;
+?>
 <?php $__env->startSection('title', 'Orders Create'); ?>
 <!--POS view-->
 <div>
@@ -294,24 +297,27 @@
     </div>
     <!-- Modal for selecting location -->
 <!--[if BLOCK]><![endif]--><?php if($showLocationModal): ?>
-    <div class="modal" style="display: block;">
+    <div class="modal modal-blur fade show" tabindex="-1" style="display: block;">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Select Location for <?php echo e(Product::find($currentProductId)->name); ?></h5>
+                    <h5 class="modal-title">Select Location for <?php echo e($products->find($currentProductId)->name); ?></h5>
                     <button type="button" class="btn-close" wire:click="$set('showLocationModal', false)"></button>
                 </div>
                 <div class="modal-body">
-                    <label for="location_id">Location:</label>
-                    <select wire:model.defer="locationSelections.<?php echo e($currentProductId); ?>" class="form-select" id="location_id">
-                        <!--[if BLOCK]><![endif]--><?php $__currentLoopData = Product::find($currentProductId)->productLocations; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $location): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                            <option value="<?php echo e($location->location_id); ?>"><?php echo e($location->location->name); ?> (<?php echo e($location->quantity); ?> units)</option>
-                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
-                    </select>
+                    <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $products->find($currentProductId)->productLocations; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $productLocation): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <div class="form-check">
+                            <input type="radio" class="form-check-input" 
+                                   wire:model="locationSelections.<?php echo e($currentProductId); ?>" 
+                                   value="<?php echo e($productLocation->location_id); ?>">
+                            <label class="form-check-label">
+                                <?php echo e($productLocation->location->name); ?> (Stock: <?php echo e($productLocation->quantity); ?>)
+                            </label>
+                        </div>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" wire:click="$set('showLocationModal', false)">Cancel</button>
-                    <button type="button" class="btn btn-primary" wire:click="selectLocation(<?php echo e($currentProductId); ?>)">Confirm</button>
+                    <button class="btn btn-primary" wire:click="selectLocation(<?php echo e($currentProductId); ?>)">Confirm</button>
                 </div>
             </div>
         </div>

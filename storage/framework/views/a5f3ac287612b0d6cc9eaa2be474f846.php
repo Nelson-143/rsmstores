@@ -600,7 +600,7 @@ document.addEventListener('DOMContentLoaded', function() {
     <script src="<?php echo e(asset('dist/libs/jsvectormap/dist/maps/world-merc.js')); ?>" defer></script>
 <?php $__env->stopPush(); ?>
 
-<?php if (! $__env->hasRenderedOnce('3e1bffd7-1fdb-41d6-9b20-a908fdbcf14d')): $__env->markAsRenderedOnce('3e1bffd7-1fdb-41d6-9b20-a908fdbcf14d');
+<?php if (! $__env->hasRenderedOnce('e8710104-a658-48d4-8e53-3e7c6097e806')): $__env->markAsRenderedOnce('e8710104-a658-48d4-8e53-3e7c6097e806');
 $__env->startPush('page-scripts'); ?>
     <script>
         // @formatter:off

@@ -20,3 +20,4 @@ yarn-error.log
 /reports
 "/public/assets/img/*" 
 "/storage/framework/*" 
+storage/framework/*
