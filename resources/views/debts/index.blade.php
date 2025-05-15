@@ -82,8 +82,13 @@
     font-size: 0.85rem; /* Slightly smaller muted text */
 }
 </style>
+<<<<<<< HEAD:resources/views/debts/index.blade.php
 @endrole
 
+=======
+<?php endif; ?>
+<!-- Debts Table -->
+>>>>>>> fbcbde9 (new and fixed):storage/framework/views/3656473a7e1717cf6cc181ab4392ec0c.php
 <div class="container mt-4">
     <div class="card shadow-sm">
         <div class="card-header bg-white d-flex justify-content-between align-items-center">

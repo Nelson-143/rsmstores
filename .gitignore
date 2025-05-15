@@ -18,7 +18,13 @@ yarn-error.log
 /.idea
 /.vscode
 /reports
+<<<<<<< HEAD
 /storage/framework/*
 /public/C:
 /public/assets/img/*
 /storage/app/public/*
+=======
+"/public/assets/img/*" 
+"/storage/framework/*" 
+storage/framework/*
+>>>>>>> fbcbde9 (new and fixed)

@@ -1,665 +1,801 @@
 @extends('layouts.tabler')
 
-@section('title', 'Business Reports 🚀')
+@section('title', 'Business Intelligence Dashboard')
 
-@section('me')
-    @parent
-@endsection
-
-@section('report')
-<div class="container-xl">
-    <!-- Business Overview Section -->
-    <div class="row row-cards mb-4">
-        <div class="col-md-12">
-            <div class="card shadow-sm">
-                <div class="card-header text-center bg-light">
-                    <h2>{{ __('Business Overview') }}</h2>
-                    <p class="text-muted">{{ __('A glance summary of your business') }}🚀.</p>
-                </div>
-                <div class="card-body d-flex justify-content-around align-items-center">
-                    <div class="text-center">
-                        <h5>{{ __('Total Sales') }}</h5>
-                        <p class="h3 text-success">{{ isset($carts) ? number_format($carts, 2) : 'Tsh 0.00' }}</p>
-                    </div>
-                    <div class="text-center">
-                        <h5>{{ __('Total Expenses') }}</h5>
-                        <p class="h3 text-danger">{{ isset($totalExpenses) ? number_format($totalExpenses, 2) : 'Tsh 0.00' }}</p>
-                    </div>
-                    <div class="text-center">
-                        <h5>{{ __('Profit') }}</h5>
-                        <p class="h3 text-primary">{{ isset($profit) ? number_format($profit, 2) : 'Tsh 0.00' }}</p>
-                    </div>
-
-                  
-                </div>
-                <!-- display -->
-                <div class="card-body d-flex justify-content-around align-items-center">
-                <div class="text-center">
-                    <h5>{{ __('Total Available Stock') }}</h5>
-                    <p class="h3 text-success">{{ isset($totalAvailableStock) ? number_format($totalAvailableStock, 2) : '0' }}</p>
-                    <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-packages"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M7 16.5l-5 -3l5 -3l5 3v5.5l-5 3z" /><path d="M2 13.5v5.5l5 3" /><path d="M7 16.545l5 -3.03" /><path d="M17 16.5l-5 -3l5 -3l5 3v5.5l-5 3z" /><path d="M12 19l5 3" /><path d="M17 16.5l5 -3" /><path d="M12 13.5v-5.5l-5 -3l5 -3l5 3v5.5" /><path d="M7 5.03v5.455" /><path d="M12 8l5 -3" /></svg>
-
-                </div>
-                <div class="text-center">
-                    <h5>{{ __('Low Stock Items') }}</h5>
-                    <p class="h3 text-warning">{{ isset($lowStockItems) ? number_format($lowStockItems, 2) : '0' }}</p>
-                    <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-shopping-bag-exclamation"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 21h-6.426a3 3 0 0 1 -2.965 -2.544l-1.255 -8.152a2 2 0 0 1 1.977 -2.304h11.339a2 2 0 0 1 1.977 2.304l-.258 1.678" /><path d="M9 11v-5a3 3 0 0 1 6 0v5" /><path d="M19 16v3" /><path d="M19 22v.01" /></svg>
-                </div>
-                <div class="text-center">
-                    <h5>{{ __('Out of Stock Items') }}</h5>
-                    <p class="h3 text-danger">{{ isset($outOfStockItems) ? number_format($outOfStockItems, 2) : '0' }}</p>
-                    <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-shopping-bag-x"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M13 21h-4.426a3 3 0 0 1 -2.965 -2.544l-1.255 -8.152a2 2 0 0 1 1.977 -2.304h11.339a2 2 0 0 1 1.977 2.304l-.506 3.287" /><path d="M9 11v-5a3 3 0 0 1 6 0v5" /><path d="M22 22l-5 -5" /><path d="M17 22l5 -5" /></svg>
-                </div>
-                <div class="text-center">
-                    <h5>{{ __('Total Stock Value') }}</h5>
-                    <p class="h3 text-primary">{{ isset($totalStockValue) ? number_format($totalStockValue, 2) : 'Tsh 0.00' }}</p>
-                    <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-businessplan"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M16 6m-5 0a5 3 0 1 0 10 0a5 3 0 1 0 -10 0" /><path d="M11 6v4c0 1.657 2.239 3 5 3s5 -1.343 5 -3v-4" /><path d="M11 10v4c0 1.657 2.239 3 5 3s5 -1.343 5 -3v-4" /><path d="M11 14v4c0 1.657 2.239 3 5 3s5 -1.343 5 -3v-4" /><path d="M7 9h-2.5a1.5 1.5 0 0 0 0 3h1a1.5 1.5 0 0 1 0 3h-2.5" /><path d="M5 15v1m0 -8v1" /></svg>
-                </div>
-            </div>
-            </div>
-        </div>
-        
-    </div>
-
-    <!-- Date Range Selector -->
-    <!-- <div class="row mb-4">
-        <div class="col-md-12">
-            <label for="dateRange" class="form-label">Select Date Range:</label>
-            <input type="text" id="dateRange" class="form-control" placeholder="Select date range">
-        </div>
-    </div> -->
-
-    <!-- Visual Trends Section -->
-    <div class="row mb-4">
-    <div class="col-md-12">
-        <div class="card shadow-sm">
-            <div class="card-header d-flex justify-content-between align-items-center bg-light">
-                <h3 class="card-title">{{ __('Trends and Insights') }}</h3>
-                <div class="card-actions">
-                    <form id="report-type-form">
-                        <select class="form-select form-select-sm" id="report-type-select" name="report_type">
-                            <option value="daily" {{ $reportType === 'daily' ? 'selected' : '' }}>{{ __('Daily') }}</option>
-                            <option value="weekly" {{ $reportType === 'weekly' ? 'selected' : '' }}>{{ __('Weekly') }}</option>
-                            <option value="monthly" {{ $reportType === 'monthly' ? 'selected' : '' }}>{{ __('Monthly') }}</option>
-                            <option value="yearly" {{ $reportType === 'yearly' ? 'selected' : '' }}>{{ __('Yearly') }}</option>
-                        </select>
-                    </form>
-                </div>
-            </div>
-            <div class="card-body text-center">
-                <canvas id="reportChart" height="100"></canvas>
-                @if (!isset($chartData) || empty($chartData))
-                    <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icon-tabler-chart-pie-2 text-muted mx-auto">
-                        <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
-                        <path d="M22 11.73V9a4 4 0 0 0-4-4H8.82a4 4 0 0 0-4 4v11a4 4 0 0 0 4 4H14a4 4 0 0 0 4-4V7.39a2 2 0 0 1 2-2"></path>
-                        <path d="M16 17v4a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2v-4"></path>
-                        <path d="M14 3a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v4"></path>
-                    </svg>
-                    <p class="text-muted mt-3">No data available yet. Start generating reports to see trends here.</p>
-                @endif
-            </div>
-        </div>
-    </div>
-</div>
-
-    <!-- Key Performance Indicators Section -->
-    <div class="row mb-4">
-        <div class="col-md-12">
-            <div class="card shadow-sm">
-                <div class="card-header bg-light">
-                    <h3 class="card-title">{{ __('Key Performance Indicators ') }}(KPIs)</h3>
-                </div>
-                <div class="card-body d-flex justify-content-around">
-                    <div class="text-center">
-                        <h5>{{ __('Gross Margin') }}</h5>
-                        <p class="h3 text-success">{{ isset($grossMargin) ? number_format($grossMargin, 2) . '%' : '0%' }}</p>
-                    </div>
-                    <div class="text-center">
-                        <h5>{{ __('Expense Ratio') }}</h5>
-                        <p class="h3 text-danger">{{ isset($expenseRatio) ? number_format($expenseRatio, 2) . '%' : '0%' }}</p>
-                    </div>
-                    <div class="text-center">
-                        <h5>{{ __('Year-to-Date Performance') }}</h5>
-                        <p class="h3 text-primary">{{ isset($ytdPerformance) ? number_format($ytdPerformance, 2) : 'Tsh 0.00' }}</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    
-    <!-- Accounting Reports Section -->
-<div class="row mb-4">
-    <div class="col-md-12">
-        <div class="card shadow-sm">
-            <div class="card-header bg-light">
-                <h3 class="card-title">{{ __('Accounting Reports') }}</h3>
-            </div>
-            <div class="card-body">
-                <div class="accordion" id="accounting-reports">
-                    <!-- Income Statement -->
-                    <div class="accordion-item">
-                        <h2 class="accordion-header">
-                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#income-statement">
-                                {{ __('Income Statement') }}
-                            </button>
-                        </h2>
-                        <div id="income-statement" class="accordion-collapse collapse show">
-                            <div class="accordion-body">
-                                <table class="table table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th>{{ __('Description') }}</th>
-                                            <th> {{ __('Amount') }}( {{ auth()->user()->account->currency }})</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td><span data-bs-toggle="tooltip" title="Total income from sales.">{{ __('Revenue') }}</span></td>
-                                            <td>{{ number_format($incomeStatement['revenue'], 2) }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td><span data-bs-toggle="tooltip" title="Cost of goods sold.">{{ __('COGS') }}</span></td>
-                                            <td>{{ number_format($incomeStatement['cogs'], 2) }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td><span data-bs-toggle="tooltip" title="Revenue minus COGS.">{{ __('Gross Profit') }}</span></td>
-                                            <td>{{ number_format($incomeStatement['grossProfit'], 2) }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td><span data-bs-toggle="tooltip" title="Operating expenses like salaries, rent, etc.">{{ __('Operating Expenses') }}</span></td>
-                                            <td>{{ number_format($incomeStatement['expenses'], 2) }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td><span data-bs-toggle="tooltip" title="Gross profit minus operating expenses.">{{ __('Net Income') }}</span></td>
-                                            <td>{{ number_format($incomeStatement['netIncome'], 2) }}</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+@section('content')
+<div class="page-body">
+    <div class="container-xl">
+        <!-- Dashboard Header -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="page-header d-print-none">
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <h2 class="page-title">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-report-analytics" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <path d="M9 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2h-2"></path>
+                                    <path d="M9 3m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v0a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z"></path>
+                                    <path d="M9 17v-5"></path>
+                                    <path d="M12 17v-1"></path>
+                                    <path d="M15 17v-3"></path>
+                                </svg>
+                                Business Intelligence Dashboard
+                            </h2>
+                            <div class="text-muted mt-1">
+                                {{ now()->format('l, F j, Y') }} • Last updated: {{ now()->diffForHumans() }}
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <div class="btn-group">
+                                <button class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M4 20h4l10.5 -10.5a1.5 1.5 0 0 0 -4 -4l-10.5 10.5v4"></path>
+                                        <path d="M13.5 6.5l4 4"></path>
+                                    </svg>
+                                    Export Reports
+                                </button>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="#">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon me-2" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                            <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
+                                            <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"></path>
+                                            <path d="M9 9l1 0"></path>
+                                            <path d="M9 13l6 0"></path>
+                                            <path d="M9 17l6 0"></path>
+                                        </svg>
+                                        PDF Report
+                                    </a>
+                                    <a class="dropdown-item" href="#">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon me-2" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                            <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
+                                            <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"></path>
+                                            <path d="M8 11h8v7h-8z"></path>
+                                            <path d="M8 15h8"></path>
+                                            <path d="M11 11v7"></path>
+                                        </svg>
+                                        Excel Export
+                                    </a>
+                                    <a class="dropdown-item" href="#">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon me-2" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                            <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
+                                            <path d="M5 12v-7a2 2 0 0 1 2 -2h7l5 5v4"></path>
+                                            <path d="M4.5 15h3"></path>
+                                            <path d="M6 15v6"></path>
+                                            <path d="M18 15v6"></path>
+                                            <path d="M17.5 15h3"></path>
+                                        </svg>
+                                        Print Report
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
-                      <!-- Cash Flow -->
-                      <div class="accordion-item">
-                        <h2 class="accordion-header">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#cash-flow">
-                                {{ __('Cash Flow') }}
-                            </button>
-                        </h2>
-                        <div id="cash-flow" class="accordion-collapse collapse">
-                            <div class="accordion-body">
-                                <table class="table table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th>{{ __('Category') }}</th>
-                                            <th>{{ __('Amount') }} ( {{ auth()->user()->account->currency }})</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td><strong>{{ __('Inflows') }}</strong></td>
-                                            <td></td>
-                                        </tr>
-                                        @foreach($cashFlow['inflows'] as $inflow => $amount)
-                                            <tr>
-                                                <td>{{ ucfirst($inflow) }}</td>
-                                                <td>{{ number_format($amount, 2) }}</td>
-                                            </tr>
-                                        @endforeach
-                                        <tr>
-                                            <td><strong>{{ __('Total Inflows') }}</strong></td>
-                                            <td>{{ number_format(array_sum($cashFlow['inflows']), 2) }}</td>
-                                        </tr>
+                </div>
+            </div>
+        </div>
 
-                                        <tr>
-                                            <td><strong>{{ __('Outflows') }}</strong></td>
-                                            <td></td>
-                                        </tr>
-                                        @foreach($cashFlow['outflows'] as $outflow => $amount)
-                                            <tr>
-                                                <td>{{ ucfirst($outflow) }}</td>
-                                                <td>{{ number_format($amount, 2) }}</td>
-                                            </tr>
-                                        @endforeach
-                                        <tr>
-                                            <td><strong>{{ __('Total Outflows') }}</strong></td>
-                                            <td>{{ number_format(array_sum($cashFlow['outflows']), 2) }}</td>
-                                        </tr>
+        <!-- Date Range Selector -->
+        <div class="row mb-4">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <form action="{{ route('reports.index') }}" method="GET" class="row g-3">
+                            <div class="col-md-3">
+                                <label class="form-label">Report Period</label>
+                                <select name="report_type" class="form-select" onchange="this.form.submit()">
+                                    <option value="daily" {{ $reportType === 'daily' ? 'selected' : '' }}>Daily</option>
+                                    <option value="weekly" {{ $reportType === 'weekly' ? 'selected' : '' }}>Weekly</option>
+                                    <option value="monthly" {{ $reportType === 'monthly' ? 'selected' : '' }}>Monthly</option>
+                                    <option value="yearly" {{ $reportType === 'yearly' ? 'selected' : '' }}>Yearly</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Custom Date Range</label>
+                                <div class="input-group">
+                                    <input type="date" class="form-control" name="start_date" value="{{ request('start_date') }}">
+                                    <span class="input-group-text">to</span>
+                                    <input type="date" class="form-control" name="end_date" value="{{ request('end_date') }}">
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label">&nbsp;</label>
+                                <button type="submit" class="btn btn-primary w-100">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"></path>
+                                        <path d="M21 21l-6 -6"></path>
+                                    </svg>
+                                    Apply
+                                </button>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Quick Actions</label>
+                                <div class="btn-group w-100">
+                                    <button type="button" class="btn btn-outline-primary" onclick="setDateRange('today')">Today</button>
+                                    <button type="button" class="btn btn-outline-primary" onclick="setDateRange('week')">This Week</button>
+                                    <button type="button" class="btn btn-outline-primary" onclick="setDateRange('month')">This Month</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-                                        <tr>
-                                            <td><strong>{{ __('Net Cash Flow') }}</strong></td>
-                                            <td>{{ number_format(array_sum($cashFlow['inflows']) - array_sum($cashFlow['outflows']), 2) }}</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+        <!-- Key Metrics Cards -->
+        <div class="row mb-4">
+            <!-- Total Sales -->
+            <div class="col-sm-6 col-lg-3">
+                <div class="card card-sm">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-auto">
+                                <span class="bg-primary text-white avatar">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M16.7 8a3 3 0 0 0 -2.7 -2h-4a3 3 0 0 0 0 6h4a3 3 0 0 1 0 6h-4a3 3 0 0 1 -2.7 -2"></path>
+                                        <path d="M12 3v3m0 12v3"></path>
+                                    </svg>
+                                </span>
+                            </div>
+                            <div class="col">
+                                <div class="font-weight-medium">
+                                    Gross Sales
+                                </div>
+                                <div class="text-muted">
+                                    {{ number_format($incomeStatement['revenue'], 2) }} {{ auth()->user()->account->currency }}
+                                </div>
                             </div>
                         </div>
                     </div>
-
-                    <!-- Balance Sheet -->
-                    <div class="accordion-item">
-                        <h2 class="accordion-header">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#balance-sheet">
-                                {{ __('Balance Sheet') }}
-                            </button>
-                        </h2>
-                        <div id="balance-sheet" class="accordion-collapse collapse">
-                           <!-- Balance Sheet Section -->
-<div class="accordion-item">
-    <h2 class="accordion-header">
-        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#balance-sheet">
-            {{ __('Balance Sheet Calculator') }}
-        </button>
-    </h2>
-    <div id="balance-sheet" class="accordion-collapse collapse">
-        <div class="accordion-body">
-            <!-- Form for Adding Assets and Liabilities -->
-            <form id="balanceSheetForm" method="POST" action="{{ route('reports.calculateBalanceSheet') }}">
-    @csrf
-    <!-- Form fields for assets and liabilities -->
-    <div class="mb-3">
-        <h5>{{ __('Assets') }}</h5>
-        <div id="assets-container">
-            @if (isset($balanceSheet['assets']) && count($balanceSheet['assets']) > 0)
-                @foreach ($balanceSheet['assets'] as $name => $amount)
-                    <div class="asset-item mb-2">
-                        <input type="text" class="form-control mb-2" name="assets[{{ $loop->index }}][name]" placeholder="Asset Name" value="{{ $name }}" required>
-                        <input type="number" class="form-control" name="assets[{{ $loop->index }}][amount]" placeholder="Amount (Tsh)" value="{{ $amount }}" required>
-                    </div>
-                @endforeach
-            @else
-                <div class="asset-item mb-2">
-                    <input type="text" class="form-control mb-2" name="assets[0][name]" placeholder="Asset Name" required>
-                    <input type="number" class="form-control" name="assets[0][amount]" placeholder="Amount (Tsh)" required>
-                </div>
-            @endif
-        </div>
-        <button type="button" class="btn btn-sm btn-success" onclick="addAssetField()">+ {{ __('Add Asset') }}</button>
-    </div>
-
-    <div class="mb-3">
-        <h5>{{ __('Liabilities') }}</h5>
-        <div id="liabilities-container">
-            @if (isset($balanceSheet['liabilities']) && count($balanceSheet['liabilities']) > 0)
-                @foreach ($balanceSheet['liabilities'] as $name => $amount)
-                    <div class="liability-item mb-2">
-                        <input type="text" class="form-control mb-2" name="liabilities[{{ $loop->index }}][name]" placeholder="Liability Name" value="{{ $name }}" required>
-                        <input type="number" class="form-control" name="liabilities[{{ $loop->index }}][amount]" placeholder="Amount (Tsh)" value="{{ $amount }}" required>
-                    </div>
-                @endforeach
-            @else
-                <div class="liability-item mb-2">
-                    <input type="text" class="form-control mb-2" name="liabilities[0][name]" placeholder="Liability Name" required>
-                    <input type="number" class="form-control" name="liabilities[0][amount]" placeholder="Amount (Tsh)" required>
-                </div>
-            @endif
-        </div>
-        <button type="button" class="btn btn-sm btn-success" onclick="addLiabilityField()">+ {{ __('Add Liability') }}</button>
-    </div>
-
-    <button type="submit" class="btn btn-primary">{{ __('Calculate') }}</button>
-</form>
-
-            <!-- Balance Sheet Table -->
-            <table class="table table-striped mt-4">
-                <thead>
-                    <tr>
-                        <th>{{ __('Category') }}</th>
-                        <th> {{ __('Amount') }}( {{ auth()->user()->account->currency }})</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>{{ __('Assets') }}</strong></td>
-                        <td></td>
-                    </tr>
-                    @if (isset($balanceSheet['assets']) && count($balanceSheet['assets']) > 0)
-                        @foreach ($balanceSheet['assets'] as $asset => $amount)
-                            <tr>
-                                <td>{{ ucfirst($asset) }}</td>
-                                <td>{{ number_format($amount, 2) }}</td>
-                            </tr>
-                        @endforeach
-                    @endif
-                    <tr>
-                        <td><strong>{{ __('Total Assets') }}</strong></td>
-                        <td>{{ isset($balanceSheet['totalAssets']) ? number_format($balanceSheet['totalAssets'], 2) : '0.00' }}</td>
-                    </tr>
-
-                    <tr>
-                        <td><strong>{{ __('Liabilities') }}</strong></td>
-                        <td></td>
-                    </tr>
-                    @if (isset($balanceSheet['liabilities']) && count($balanceSheet['liabilities']) > 0)
-                        @foreach ($balanceSheet['liabilities'] as $liability => $amount)
-                            <tr>
-                                <td>{{ ucfirst($liability) }}</td>
-                                <td>{{ number_format($amount, 2) }}</td>
-                            </tr>
-                        @endforeach
-                    @endif
-                    <tr>
-                        <td><strong>{{ __('Total Liabilities') }}</strong></td>
-                        <td>{{ isset($balanceSheet['totalLiabilities']) ? number_format($balanceSheet['totalLiabilities'], 2) : '0.00' }}</td>
-                    </tr>
-
-                    <tr>
-                        <td><strong>{{ __('Equity') }}</strong></td>
-                        <td>{{ isset($balanceSheet['equity']) ? number_format($balanceSheet['equity'], 2) : '0.00' }}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
-
-                  
                 </div>
             </div>
-        </div>
-    </div>
-</div>
 
-
-    <!-- Recommendations Section -->
-<div class="row mb-4">
-    <div class="col-md-12">
-        <div class="card shadow-sm">
-            <div class="card-header bg-light">
-                <h3 class="card-title">{{ __('AI-Driven Recommendations') }}</h3>
-            </div>
-            <div class="card-body">
-                @forelse($recommendations as $recommendation)
-                    <div class="alert alert-info d-flex justify-content-between align-items-center">
-                        <span>{{ $recommendation->recommendation }}</span>
-                       
-                    </div>
-                @empty
-                    <div class="alert alert-secondary text-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icon-tabler-lightbulb text-muted mx-auto">
-                            <path d="M12 3v4"></path>
-                            <path d="M12 13v8"></path>
-                            <path d="M12 7.5a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"></path>
-                        </svg>
-                        <p class="mt-2">No recommendations available at this time. Generate more data for insights!</p>
-                    </div>
-                @endforelse
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Actionable Insights Section -->
-<div class="row mb-4">
-    <div class="col-md-12">
-        <div class="card shadow-sm">
-            <div class="card-header bg-light">
-                <h3 class="card-title">{{ __('Actionable Insights') }}</h3>
-            </div>
-            <div class="card-body">
-                @forelse($actionableInsights as $insight)
-                <div class="alert alert-{{ $insight['status'] }}">
-    <div class="d-flex justify-content-between align-items-center">
-        <span><strong>{{ $insight['message'] }}</strong></span>
-    </div>
-    <div class="mt-2">
-        <p class="mb-0">{{ $insight['details'] }}</p>
-    </div>
-</div>
-        
-                @empty
-                    <div class="alert alert-secondary text-center">
-                        <p>No actionable insights available at this time.</p>
-                    </div>
-                @endforelse
-            </div>
-        </div>
-    </div>
-</div>
-   
-
-   
-
-    <!-- Detailed Reports Section -->
-    <div class="row">
-    <div class="col-md-12">
-        <div class="card shadow-sm">
-            <div class="card-header bg-light">
-                <h3 class="card-title">{{ __('Last 5 Days Detailed Reports') }}</h3>
-            </div>
-            <div class="card-body">
-                <!-- Last 5 Days' Reports Table -->
-                <div class="table-responsive">
-                    <table class="table table-striped table-bordered">
-                        <thead>
-                            <tr>
-                                <th>{{ __('Date') }}</th>
-                                <th> {{ __('Sales') }}( {{ auth()->user()->account->currency }})</th>
-                                <th> {{ __('Expenses') }}( {{ auth()->user()->account->currency }})</th>
-                                <th> {{ __('Profit') }}( {{ auth()->user()->account->currency }})</th>
-                                <th>{{ __('Products Sold') }}d</th>
-                                <th>{{ __('Type') }}</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @forelse($reports as $report)
-                                <tr>
-                                    <td>{{ $report->created_at->format('Y-m-d') }}</td>
-                                    <td>{{ isset($report->data['sales']) ? number_format($report->data['sales'], 2) : 'Tsh 0.00' }}</td>
-                                    <td>{{ isset($report->data['expenses']) ? number_format($report->data['expenses'], 2) : 'Tsh 0.00' }}</td>
-                                    <td>{{ isset($report->data['profit']) ? number_format($report->data['profit'], 2) : 'Tsh 0.00' }}</td>
-                                    <td>{{ isset($report->data['products_sold']) ? $report->data['products_sold'] : 0 }}</td>
-                                    <td>{{ ucfirst($report->type) }}</td>
-                                </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="6" class="text-center text-muted">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icon-tabler-file-text text-muted mx-auto">
-                                            <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
-                                            <path d="M17 21h-10a2 2 0 0 1-2-2V8c0-1.1.9-2 2-2h7.41"></path>
-                                            <path d="M9 14L12 17l3-3"></path>
-                                        </svg>
-                                        <p class="mt-2">No detailed reports available for the last 5 days.</p>
-                                    </td>
-                                </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Date Search Form and Reports Table (Existing Code) -->
-<div class="row mt-4">
-    <div class="col-md-12">
-        <div class="card shadow-sm">
-            <div class="card-header bg-light">
-                <h3 class="card-title">{{ __('Search Reports by Date') }}</h3>
-            </div>
-            <div class="card-body">
-                <!-- Date Search Form -->
-                <form action="{{ route('reports.index') }}" method="GET" class="mb-4">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <label for="date" class="form-label">{{ __('Select Date') }}</label>
-                            <input type="date" class="form-control" id="date" name="date" value="{{ request('date') }}">
-                        </div>
-                        <div class="col-md-2 align-self-end">
-                            <button type="submit" class="btn btn-primary">{{ __('Search') }}</button>
+            <!-- Net Sales (after discounts) -->
+            <div class="col-sm-6 col-lg-3">
+                <div class="card card-sm">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-auto">
+                                <span class="bg-green text-white avatar">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M9 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2h-2"></path>
+                                        <path d="M9 3m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v0a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z"></path>
+                                        <path d="M14 11h-2.5a1.5 1.5 0 0 0 0 3h1a1.5 1.5 0 0 1 0 3h-2.5"></path>
+                                        <path d="M12 17v1m0 -8v1"></path>
+                                    </svg>
+                                </span>
+                            </div>
+                            <div class="col">
+                                <div class="font-weight-medium">
+                                    Net Sales
+                                </div>
+                                <div class="text-muted">
+                                    {{-- {{ number_format($incomeStatement['revenue'] - $incomeStatement['discounts'], 2) }} {{ auth()->user()->account->currency }} --}}
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </form>
+                </div>
+            </div>
 
-                <!-- Reports Table -->
-                <div class="table-responsive">
-                    <table class="table table-striped table-bordered">
-                        <thead>
-                            <tr>
-                                <th>{{ __('Date') }}</th>
-                                <th> {{ __('Sales') }}( {{ auth()->user()->account->currency }})</th>
-                                <th> {{ __('Expenses') }}( {{ auth()->user()->account->currency }})</th>
-                                <th> {{ __('Profit') }}( {{ auth()->user()->account->currency }})</th>
-                                <th>{{ __('Products Sold') }}</th>
-                                <th>{{ __('Type') }}</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @forelse($reports as $report)
-                                <tr>
-                                    <td>{{ $report->created_at->format('Y-m-d') }}</td>
-                                    <td>{{ isset($report->data['sales']) ? number_format($report->data['sales'], 2) : 'Tsh 0.00' }}</td>
-                                    <td>{{ isset($report->data['expenses']) ? number_format($report->data['expenses'], 2) : 'Tsh 0.00' }}</td>
-                                    <td>{{ isset($report->data['profit']) ? number_format($report->data['profit'], 2) : 'Tsh 0.00' }}</td>
-                                    <td>{{ isset($report->data['products_sold']) ? $report->data['products_sold'] : 0 }}</td>
-                                    <td>{{ ucfirst($report->type) }}</td>
-                                </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="6" class="text-center text-muted">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icon-tabler-file-text text-muted mx-auto">
-                                            <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
-                                            <path d="M17 21h-10a2 2 0 0 1-2-2V8c0-1.1.9-2 2-2h7.41"></path>
-                                            <path d="M9 14L12 17l3-3"></path>
-                                        </svg>
-                                        <p class="mt-2">No detailed reports available for the selected date.</p>
-                                    </td>
-                                </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
+            <!-- Total Tax Collected -->
+            <div class="col-sm-6 col-lg-3">
+                <div class="card card-sm">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-auto">
+                                <span class="bg-yellow text-white avatar">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M6 5h12a3 3 0 0 1 3 3v8a3 3 0 0 1 -3 3h-12a3 3 0 0 1 -3 -3v-8a3 3 0 0 1 3 -3z"></path>
+                                        <path d="M8 8h8"></path>
+                                        <path d="M8 12h8"></path>
+                                        <path d="M8 16h8"></path>
+                                    </svg>
+                                </span>
+                            </div>
+                            <div class="col">
+                                <div class="font-weight-medium">
+                                    vat Collected
+                                </div>
+                                <div class="text-muted">
+                                    {{ number_format($incomeStatement['vat'], 2) }} {{ auth()->user()->account->currency }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Net Profit -->
+            <div class="col-sm-6 col-lg-3">
+                <div class="card card-sm">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-auto">
+                                <span class="bg-twitter text-white avatar">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M10 14l11 -11"></path>
+                                        <path d="M21 3l-6.5 18a.55 .55 0 0 1 -1 0l-3.5 -7l-7 -3.5a.55 .55 0 0 1 0 -1l18 -6.5"></path>
+                                    </svg>
+                                </span>
+                            </div>
+                            <div class="col">
+                                <div class="font-weight-medium">
+                                    Net Profit
+                                </div>
+                                <div class="text-muted">
+                                    {{ number_format($incomeStatement['netIncome'], 2) }} {{ auth()->user()->account->currency }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Dashboard Content -->
+        <div class="row row-deck row-cards">
+            <!-- Sales Trends Chart -->
+            <div class="col-lg-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Sales Performance</h3>
+                        <div class="card-actions">
+                            <div class="dropdown">
+                                <a href="#" class="btn-action dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0"></path>
+                                        <path d="M12 7v5l3 3"></path>
+                                    </svg>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-end">
+                                    <a class="dropdown-item" href="#">Last 7 days</a>
+                                    <a class="dropdown-item" href="#">Last 30 days</a>
+                                    <a class="dropdown-item" href="#">This quarter</a>
+                                    <a class="dropdown-item" href="#">Custom range</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="chart-lg" id="sales-trend-chart"></div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="text-muted">Avg. Daily Sales</div>
+                                <div class="h3">{{ number_format($incomeStatement['revenue']/30, 2) }} {{ auth()->user()->account->currency }}</div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="text-muted">Best Day</div>
+                                <div class="h3">{{ number_format(max($chartData['data'] ?? [0]), 2) }} {{ auth()->user()->account->currency }}</div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="text-muted">Avg. Order Value</div>
+                                <div class="h3">{{ number_format($incomeStatement['revenue']/($totalOrders ?? 1), 2) }} {{ auth()->user()->account->currency }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Financial Summary -->
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Financial Summary</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-4">
+                            <div class="d-flex align-items-center justify-content-between mb-2">
+                                <div>Gross Profit Margin</div>
+                                <div class="fw-bold">{{ number_format($grossMargin, 2) }}%</div>
+                            </div>
+                            <div class="progress progress-sm">
+                                <div class="progress-bar bg-{{ $grossMargin > 30 ? 'success' : ($grossMargin > 20 ? 'warning' : 'danger') }}" style="width: {{ $grossMargin }}%" role="progressbar" aria-valuenow="{{ $grossMargin }}" aria-valuemin="0" aria-valuemax="100">
+                                    <span class="visually-hidden">{{ $grossMargin }}% Complete</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <div class="d-flex align-items-center justify-content-between mb-2">
+                                <div>Expense Ratio</div>
+                                <div class="fw-bold">{{ number_format($expenseRatio, 2) }}%</div>
+                            </div>
+                            <div class="progress progress-sm">
+                                <div class="progress-bar bg-{{ $expenseRatio < 30 ? 'success' : ($expenseRatio < 50 ? 'warning' : 'danger') }}" style="width: {{ $expenseRatio }}%" role="progressbar" aria-valuenow="{{ $expenseRatio }}" aria-valuemin="0" aria-valuemax="100">
+                                    <span class="visually-hidden">{{ $expenseRatio }}% Complete</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <div class="d-flex align-items-center justify-content-between mb-2">
+                                <div>Net Profit Margin</div>
+                                <div class="fw-bold">{{ number_format(($incomeStatement['netIncome']/$incomeStatement['revenue'])*100, 2) }}%</div>
+                            </div>
+                            <div class="progress progress-sm">
+                                <div class="progress-bar bg-{{ ($incomeStatement['netIncome']/$incomeStatement['revenue'])*100 > 15 ? 'success' : (($incomeStatement['netIncome']/$incomeStatement['revenue'])*100 > 5 ? 'warning' : 'danger') }}" style="width: {{ ($incomeStatement['netIncome']/$incomeStatement['revenue'])*100 }}%" role="progressbar" aria-valuenow="{{ ($incomeStatement['netIncome']/$incomeStatement['revenue'])*100 }}" aria-valuemin="0" aria-valuemax="100">
+                                    <span class="visually-hidden">{{ ($incomeStatement['netIncome']/$incomeStatement['revenue'])*100 }}% Complete</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="divide-y">
+                            <div class="py-2">
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <div>Total Revenue</div>
+                                    <div class="fw-bold">{{ number_format($incomeStatement['revenue'], 2) }} {{ auth()->user()->account->currency }}</div>
+                                </div>
+                            </div>
+                            <div class="py-2">
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <div>Cost of Goods Sold</div>
+                                    <div class="fw-bold">{{ number_format($incomeStatement['cogs'], 2) }} {{ auth()->user()->account->currency }}</div>
+                                </div>
+                            </div>
+                            <div class="py-2">
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <div>Operating Expenses</div>
+                                    <div class="fw-bold">{{ number_format($incomeStatement['expenses'], 2) }} {{ auth()->user()->account->currency }}</div>
+                                </div>
+                            </div>
+                            <div class="py-2">
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <div>Net Income</div>
+                                    <div class="fw-bold text-{{ $incomeStatement['netIncome'] >= 0 ? 'success' : 'danger' }}">{{ number_format($incomeStatement['netIncome'], 2) }} {{ auth()->user()->account->currency }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Inventory Health -->
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Inventory Health</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card mb-3">
+                                    <div class="card-body text-center">
+                                        <div class="h1">{{ $totalAvailableStock }}</div>
+                                        <div class="text-muted">Total Products in Stock</div>
+                                        <div class="text-muted small">Valued at {{ number_format($totalStockValue, 2) }} {{ auth()->user()->account->currency }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card mb-3">
+                                    <div class="card-body text-center">
+                                        <div class="h1">{{ $lowStockItems }}</div>
+                                        <div class="text-muted">Low Stock Items</div>
+                                        <div class="text-muted small">Below reorder level</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card mb-3">
+                                    <div class="card-body text-center">
+                                        <div class="h1">{{ $outOfStockItems }}</div>
+                                        <div class="text-muted">Out of Stock</div>
+                                        <div class="text-muted small">Urgent restock needed</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card mb-3">
+                                    <div class="card-body text-center">
+                                        <div class="h1">{{ $fastMovingItems ?? 0 }}</div>
+                                        <div class="text-muted">Fast Moving</div>
+                                        <div class="text-muted small">Top selling products</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <canvas id="inventory-chart" height="200"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cash Flow Overview -->
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Cash Flow Overview</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="chart-lg" id="cash-flow-chart"></div>
+                        <div class="mt-4">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="card mb-3">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-center">
+                                                <div class="subheader">Cash Inflows</div>
+                                                <div class="ms-auto lh-1">
+                                                    <span class="text-green d-inline-flex align-items-center lh-1">
+                                                        {{ number_format(array_sum($cashFlow['inflows']), 2) }} {{ auth()->user()->account->currency }}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="progress progress-sm mt-3">
+                                                <div class="progress-bar bg-success" style="width: 100%" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                                                    <span class="visually-hidden">100% Complete</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card mb-3">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-center">
+                                                <div class="subheader">Cash Outflows</div>
+                                                <div class="ms-auto lh-1">
+                                                    <span class="text-red d-inline-flex align-items-center lh-1">
+                                                        {{ number_format(array_sum($cashFlow['outflows']), 2) }} {{ auth()->user()->account->currency }}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="progress progress-sm mt-3">
+                                                <div class="progress-bar bg-danger" style="width: 100%" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                                                    <span class="visually-hidden">100% Complete</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-body text-center">
+                                    <div class="h1 text-{{ (array_sum($cashFlow['inflows']) - array_sum($cashFlow['outflows'])) >= 0 ? 'success' : 'danger' }}">
+                                        {{ number_format(array_sum($cashFlow['inflows']) - array_sum($cashFlow['outflows']), 2) }} {{ auth()->user()->account->currency }}
+                                    </div>
+                                    <div class="text-muted">Net Cash Flow</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Business Insights & Recommendations -->
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <ul class="nav nav-tabs card-header-tabs" data-bs-toggle="tabs">
+                            <li class="nav-item">
+                                <a href="#tab-insights" class="nav-link active" data-bs-toggle="tab">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon me-2" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0"></path>
+                                        <path d="M12 8l-2 4l-2 4l4 2l4 -2l-2 -4z"></path>
+                                    </svg>
+                                    Business Insights
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#tab-recommendations" class="nav-link" data-bs-toggle="tab">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon me-2" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z"></path>
+                                    </svg>
+                                    Recommendations
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#tab-tax" class="nav-link" data-bs-toggle="tab">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon me-2" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M9 14l6 -6"></path>
+                                        <path d="M11 6l.463 -.536a5 5 0 0 1 7.071 7.072l-.534 .464"></path>
+                                        <path d="M13 18l-.397 .534a5.068 5.068 0 0 1 -7.127 0a4.972 4.972 0 0 1 0 -7.071l.524 -.463"></path>
+                                    </svg>
+                                    Tax Summary
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="card-body">
+                        <div class="tab-content">
+                            <div class="tab-pane active show" id="tab-insights">
+                                @forelse($actionableInsights as $insight)
+                                <div class="alert alert-{{ $insight['status'] }} alert-dismissible fade show" role="alert">
+                                    <h4 class="alert-heading">{{ $insight['message'] }}</h4>
+                                    
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                                @empty
+                                <div class="alert alert-secondary">
+                                    <div class="empty">
+                                        <div class="empty-icon">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"></path>
+                                                <path d="M12 8l0 4"></path>
+                                                <path d="M12 16l.01 0"></path>
+                                            </svg>
+                                        </div>
+                                        <p class="empty-title">No insights available</p>
+                                        <p class="empty-subtitle text-muted">
+                                            As you generate more sales and expense data, actionable insights will appear here.
+                                        </p>
+                                    </div>
+                                </div>
+                                @endforelse
+                            </div>
+                            <div class="tab-pane" id="tab-recommendations">
+                                @forelse($recommendations as $recommendation)
+                                <div class="mb-3">
+                                    <div class="card card-active">
+                                        <div class="card-body">
+                                            <div class="row align-items-center">
+                                                <div class="col-auto">
+                                                    <span class="bg-{{ $recommendation->priority === 'high' ? 'danger' : ($recommendation->priority === 'medium' ? 'warning' : 'info') }} text-white avatar">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                            <path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z"></path>
+                                                        </svg>
+                                                    </span>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="font-weight-medium">
+                                                        {{ $recommendation->title }}
+                                                    </div>
+                                                    <div class="text-muted">
+                                                        {{ $recommendation->recommendation }}
+                                                    </div>
+                                                </div>
+                                                <div class="col-auto">
+                                                   
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                @empty
+                                <div class="alert alert-secondary">
+                                    <div class="empty">
+                                        <div class="empty-icon">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                <path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z"></path>
+                                            </svg>
+                                        </div>
+                                        <p class="empty-title">No recommendations available</p>
+                                        <p class="empty-subtitle text-muted">
+                                            Our system will analyze your data and provide personalized recommendations.
+                                        </p>
+                                    </div>
+                                </div>
+                                @endforelse
+                            </div>
+                           
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Transactions -->
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Recent Transactions</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-vcenter">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Transaction</th>
+                                        <th>Customer</th>
+                                        <th>Gross Amount</th>
+                                        <th>Tax</th>
+                                        <th>Discount</th>
+                                        <th>Net Amount</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @forelse($recentTransactions as $transaction)
+                                    <tr>
+                                        <td>{{ $transaction->created_at->format('M j, Y') }}</td>
+                                        <td>#{{ $transaction->id }}</td>
+                                        <td>{{ $transaction->customer->name ?? 'Walk-in' }}</td>
+                                        <td>{{ number_format($transaction->subtotal, 2) }}</td>
+                                        <td>{{ number_format($transaction->tax, 2) }}</td>
+                                        <td>{{ number_format($transaction->discount, 2) }}</td>
+                                        <td>{{ number_format($transaction->total, 2) }}</td>
+                                        <td>
+                                            <span class="badge bg-{{ $transaction->status === 'completed' ? 'success' : 'warning' }}">
+                                                {{ ucfirst($transaction->status) }}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    @empty
+                                    <tr>
+                                        <td colspan="8" class="text-center py-4">
+                                            <div class="empty">
+                                                <div class="empty-icon">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                        <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
+                                                        <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"></path>
+                                                        <path d="M9 9l1 0"></path>
+                                                        <path d="M9 13l6 0"></path>
+                                                        <path d="M9 17l6 0"></path>
+                                                    </svg>
+                                                </div>
+                                                <p class="empty-title">No transactions found</p>
+                                                <p class="empty-subtitle text-muted">
+                                                    Your recent transactions will appear here
+                                                </p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    @endforelse
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-
-<!-- Chart.js Initialization -->
+<!-- JavaScript for Charts and Interactivity -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 <script>
+    // Sales Trend Chart
     document.addEventListener('DOMContentLoaded', function () {
-        const ctx = document.getElementById('reportChart').getContext('2d');
-        const reportChart = new Chart(ctx, {
-            type: 'line',
+        const salesChart = new ApexCharts(document.querySelector("#sales-trend-chart"), {
+            series: [{
+                name: "Sales",
+                data: @json($chartData['data'] ?? [])
+            }],
+            chart: {
+                type: 'area',
+                height: 350,
+                zoom: {
+                    enabled: true
+                },
+                toolbar: {
+                    show: true
+                }
+            },
+            dataLabels: {
+                enabled: false
+            },
+            stroke: {
+                curve: 'smooth',
+                width: 2
+            },
+            colors: ['#206bc4'],
+            xaxis: {
+                categories: @json($chartData['labels'] ?? []),
+                type: 'datetime'
+            },
+            tooltip: {
+                x: {
+                    format: 'dd MMM yyyy'
+                }
+            },
+            fill: {
+                opacity: 0.1,
+                type: 'solid'
+            },
+            markers: {
+                size: 5,
+                hover: {
+                    size: 7
+                }
+            }
+        });
+        salesChart.render();
+
+        // Cash Flow Chart
+        const cashFlowChart = new ApexCharts(document.querySelector("#cash-flow-chart"), {
+            series: [{
+                name: 'Inflows',
+                data: [@json(array_sum($cashFlow['inflows']))]
+            }, {
+                name: 'Outflows',
+                data: [@json(array_sum($cashFlow['outflows']))]
+            }],
+            chart: {
+                type: 'bar',
+                height: 350,
+                stacked: true,
+                toolbar: {
+                    show: true
+                }
+            },
+            plotOptions: {
+                bar: {
+                    horizontal: true,
+                },
+            },
+            colors: ['#2fb344', '#d63939'],
+            xaxis: {
+                categories: ['Cash Flow']
+            },
+            legend: {
+                position: 'top'
+            },
+            fill: {
+                opacity: 1
+            }
+        });
+        cashFlowChart.render();
+
+        // Inventory Chart
+        const inventoryCtx = document.getElementById('inventory-chart').getContext('2d');
+        const inventoryChart = new Chart(inventoryCtx, {
+            type: 'doughnut',
             data: {
-                labels: @json($chartLabels ?? []),
+                labels: ['In Stock', 'Low Stock', 'Out of Stock'],
                 datasets: [{
-                    label: 'Sales',
-                    data: @json($chartData ?? []),
-                    borderColor: 'rgba(75, 192, 192, 1)',
-                    borderWidth: 2,
-                    fill: false
+                    data: [
+                        @json($totalAvailableStock - $lowStockItems - $outOfStockItems),
+                        @json($lowStockItems),
+                        @json($outOfStockItems)
+                    ],
+                    backgroundColor: [
+                        '#2fb344',
+                        '#f59f00',
+                        '#d63939'
+                    ]
                 }]
             },
             options: {
                 responsive: true,
                 plugins: {
                     legend: {
-                        display: true
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true
+                        position: 'bottom'
                     }
                 }
             }
         });
 
-        // Handle report type change
-        const reportTypeSelect = document.getElementById('report-type-select');
-        reportTypeSelect.addEventListener('change', function () {
-            const form = document.getElementById('report-type-form');
-            form.submit();
-        });
-    });
-
-    
-    document.addEventListener('DOMContentLoaded', function () {
-        const ctx = document.getElementById('yearlyComparisonChart').getContext('2d');
-        const yearlyComparisonChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: @json($yearlyLabels ?? []),
-                datasets: [{
-                    label: 'Sales',
-                    data: @json($yearlySales ?? []),
-                    backgroundColor: 'rgba(75, 192, 192, 0.5)',
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        display: true
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
+        // Date range quick actions
+        window.setDateRange = function(range) {
+            const now = new Date();
+            let startDate, endDate = now.toISOString().split('T')[0];
+            
+            switch(range) {
+                case 'today':
+                    startDate = endDate;
+                    break;
+                case 'week':
+                    const day = now.getDay();
+                    const diff = now.getDate() - day + (day === 0 ? -6 : 1); // adjust when day is Sunday
+                    startDate = new Date(now.setDate(diff)).toISOString().split('T')[0];
+                    break;
+                case 'month':
+                    startDate = new Date(now.getFullYear(), now.getMonth(), 1).toISOString().split('T')[0];
+                    break;
             }
-        });
+            
+            document.querySelector('input[name="start_date"]').value = startDate;
+            document.querySelector('input[name="end_date"]').value = endDate;
+        }
     });
-
-    function addBalanceSheetItem() {
-        const assetName = document.getElementById('assetName').value;
-        const assetAmount = parseFloat(document.getElementById('assetAmount').value);
-        const liabilityName = document.getElementById('liabilityName').value;
-        const liabilityAmount = parseFloat(document.getElementById('liabilityAmount').value);
-
-        // Add logic to save the data (e.g., send to server via AJAX)
-        console.log('Asset:', assetName, assetAmount);
-        console.log('Liability:', liabilityName, liabilityAmount);
-
-        // Close the modal
-        const modal = bootstrap.Modal.getInstance(document.getElementById('balanceSheetModal'));
-        modal.hide();
-    }
-
-    function addBalanceSheetItem() {
-        const assetName = document.getElementById('assetName').value;
-        const assetAmount = parseFloat(document.getElementById('assetAmount').value);
-        const liabilityName = document.getElementById('liabilityName').value;
-        const liabilityAmount = parseFloat(document.getElementById('liabilityAmount').value);
-
-        // Add logic to save the data (e.g., send to server via AJAX)
-        console.log('Asset:', assetName, assetAmount);
-        console.log('Liability:', liabilityName, liabilityAmount);
-
-        // Close the modal
-        const modal = bootstrap.Modal.getInstance(document.getElementById('balanceSheetModal'));
-        modal.hide();
-    }
-
-    let assetIndex = {{ isset($balanceSheet['assets']) ? count($balanceSheet['assets']) : 1 }};
-    let liabilityIndex = {{ isset($balanceSheet['liabilities']) ? count($balanceSheet['liabilities']) : 1 }};
-
-    function addAssetField() {
-        const container = document.getElementById('assets-container');
-        const newField = `
-            <div class="asset-item mb-2">
-                <input type="text" class="form-control mb-2" name="assets[${assetIndex}][name]" placeholder="Asset Name" required>
-                <input type="number" class="form-control" name="assets[${assetIndex}][amount]" placeholder="Amount (Tsh)" required>
-            </div>
-        `;
-        container.insertAdjacentHTML('beforeend', newField);
-        assetIndex++;
-    }
-
-    function addLiabilityField() {
-        const container = document.getElementById('liabilities-container');
-        const newField = `
-            <div class="liability-item mb-2">
-                <input type="text" class="form-control mb-2" name="liabilities[${liabilityIndex}][name]" placeholder="Liability Name" required>
-                <input type="number" class="form-control" name="liabilities[${liabilityIndex}][amount]" placeholder="Amount (Tsh)" required>
-            </div>
-        `;
-        container.insertAdjacentHTML('beforeend', newField);
-        liabilityIndex++;
-    }
 </script>
 @endsection
