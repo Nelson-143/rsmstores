@@ -284,17 +284,18 @@
                                 <div class="text-muted">Avg. Order Value</div>
                                 <div class="h3">
                                    @if(!empty($totalOrders) && $totalOrders > 0)
-    {{ number_format($incomeStatement['revenue'] / max($totalOrders, 1), 2) }} {{ auth()->user()->account->currency }}
-@else
-    0.00 {{ auth()->user()->account->currency }}
-@endif
-
+                                        {{ number_format($incomeStatement['revenue'] / max($totalOrders, 1), 2) }} {{ auth()->user()->account->currency }}
+                                    @else
+                                        0.00 {{ auth()->user()->account->currency }}
+                                    @endif
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <!-- Top Selling Products -->
+
 
             <!-- Financial Summary -->
             <div class="col-lg-4">
