@@ -10,6 +10,7 @@ use app\Models\Order;
 use app\Models\OrderDetails;
 use App\Models\CustomOrderDetail;
 use app\Models\Product;
+use App\Models\ProductLocation;
 use app\Models\User;
 use app\Models\Debt;
 use app\Mail\StockAlert;
@@ -60,8 +61,7 @@ class OrderController extends Controller
             'carts' => $carts,
         ]);
     }
-
-   public function store(Request $request)
+public function store(Request $request)
 {
     Log::info('OrderController@store started', ['request' => $request->all()]);
 
@@ -87,16 +87,20 @@ class OrderController extends Controller
     }
     Log::info('Cart re-populated', ['cart_content' => Cart::instance($cartInstance)->content()->toArray()]);
 
-    // Validate stock for non-custom products
     foreach (Cart::instance($cartInstance)->content() as $item) {
         if (isset($item->options['is_custom']) && $item->options['is_custom']) {
-            continue; // Skip stock check for custom products
+            continue;
         }
         $product = Product::find($item->id);
-        if ($product && $item->qty > $product->quantity) {
+        $locationId = $item->options['location_id'];
+        $productLocation = ProductLocation::where('product_id', $item->id)
+            ->where('location_id', $locationId)
+            ->where('account_id', auth()->user()->account_id)
+            ->first();
+        if ($productLocation && $productLocation->quantity < $item->qty) {
             Cart::instance($cartInstance)->destroy();
-            Log::warning('Stock check failed', ['product_id' => $item->id, 'name' => $product->name]);
-            return redirect()->route('pos.index')->with('error', 'Product "' . $product->name . '" is out of stock!');
+            Log::warning('Stock check failed', ['product_id' => $item->id, 'name' => $product->name, 'location' => $locationId]);
+            return redirect()->route('pos.index')->with('error', 'Product "' . $product->name . '" is out of stock in selected location!');
         }
     }
 
@@ -141,7 +145,6 @@ class OrderController extends Controller
 
         foreach (Cart::instance($cartInstance)->content() as $item) {
             if (isset($item->options['is_custom']) && $item->options['is_custom']) {
-                // Handle custom product
                 CustomOrderDetail::create([
                     'order_id' => $order->id,
                     'name' => $item->name,
@@ -154,10 +157,19 @@ class OrderController extends Controller
                     'updated_at' => Carbon::now(),
                 ]);
             } else {
-                // Handle regular product
                 $product = Product::find($item->id);
-                if ($product) {
-                    $product->quantity -= $item->qty;
+                $locationId = $item->options['location_id'];
+                $productLocation = ProductLocation::where('product_id', $product->id)
+                    ->where('location_id', $locationId)
+                    ->where('account_id', $accountId)
+                    ->first();
+                $preDecrementQty = $productLocation ? $productLocation->quantity : 0;
+
+                if ($productLocation) {
+                    $productLocation->decrement('quantity', $item->qty);
+                    // Refresh product locations and update total quantity
+                    $product->load('productLocations');
+                    $product->quantity = $product->productLocations->sum('quantity');
                     $product->save();
                 }
 
@@ -169,6 +181,8 @@ class OrderController extends Controller
                     'unitcost' => $item->price,
                     'total' => $item->subtotal,
                     'account_id' => $accountId,
+                    'location_id' => $locationId,
+                    'pre_decrement_location_qty' => $preDecrementQty,
                     'created_at' => Carbon::now(),
                     'updated_at' => Carbon::now(),
                 ]);
@@ -190,9 +204,9 @@ class OrderController extends Controller
         Log::error('Error creating order', ['message' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
         return redirect()->route('pos.index')->with('error', 'Error creating order: ' . $e->getMessage());
     }
-}
-    // Update storeDebt similarly
-    public function storeDebt(Request $request)
+}  
+// Update storeDebt similarly
+public function storeDebt(Request $request)
 {
     Log::info('OrderController@storeDebt started', ['request' => $request->all()]);
 
@@ -246,7 +260,6 @@ class OrderController extends Controller
 
         foreach (Cart::instance($cartInstance)->content() as $item) {
             if (isset($item->options['is_custom']) && $item->options['is_custom']) {
-                // Handle custom product
                 CustomOrderDetail::create([
                     'order_id' => $order->id,
                     'name' => $item->name,
@@ -259,10 +272,17 @@ class OrderController extends Controller
                     'updated_at' => Carbon::now(),
                 ]);
             } else {
-                // Handle regular product
                 $product = Product::find($item->id);
-                if ($product) {
-                    $product->quantity -= $item->qty;
+                $locationId = $item->options['location_id'];
+                $productLocation = ProductLocation::where('product_id', $product->id)
+                    ->where('location_id', $locationId)
+                    ->where('account_id', $accountId)
+                    ->first();
+
+                if ($productLocation) {
+                    $productLocation->decrement('quantity', $item->qty);
+                    $product->load('productLocations');
+                    $product->quantity = $product->productLocations->sum('quantity');
                     $product->save();
                 }
 
@@ -274,6 +294,7 @@ class OrderController extends Controller
                     'unitcost' => $item->price,
                     'total' => $item->subtotal,
                     'account_id' => $accountId,
+                    'location_id' => $locationId,
                     'created_at' => Carbon::now(),
                     'updated_at' => Carbon::now(),
                 ]);
@@ -318,41 +339,57 @@ class OrderController extends Controller
 }
 
     public function update($uuid, Request $request)
-    {
-        $accountId = auth()->user()->account_id;
-    
-        $order = Order::where('uuid', $uuid)
-            ->where('account_id', $accountId)
-            ->firstOrFail();
-    
-        $request->validate([
-            'payment_type' => 'required|in:HandCash,Cheque,Due',
-            'pay' => 'required|numeric|min:0',
-        ]);
-    
-        // Update order with payment details
+{
+    $accountId = auth()->user()->account_id;
+
+    $order = Order::where('uuid', $uuid)
+        ->where('account_id', $accountId)
+        ->firstOrFail();
+
+    $request->validate([
+        'payment_type' => 'required|in:HandCash,Cheque,Due',
+        'pay' => 'required|numeric|min:0',
+    ]);
+
+    DB::beginTransaction();
+    try {
         $order->update([
             'order_status' => $request->payment_type === 'Due' ? OrderStatus::PENDING->value : OrderStatus::COMPLETE->value,
             'payment_type' => $request->payment_type,
             'pay' => $request->pay,
             'due' => $order->total - $request->pay,
         ]);
-    
-        if ($request->payment_type !== 'Due') {
-            // Reduce stock only on payment completion (if not already done in createOrder)
+
+        if ($request->payment_type !== 'Due' && $order->order_status !== OrderStatus::COMPLETE->value) {
             foreach ($order->details as $detail) {
                 $product = Product::find($detail->product_id);
                 if ($product) {
-                    $newQty = $product->quantity - $detail->quantity;
-                    $product->update(['quantity' => $newQty]);
+                    $productLocation = ProductLocation::where('product_id', $detail->product_id)
+                        ->where('location_id', $detail->location_id)
+                        ->where('account_id', $accountId)
+                        ->first();
+                    if ($productLocation) {
+                        $productLocation->decrement('quantity', $detail->quantity);
+                        $product->load('productLocations');
+                        $product->quantity = $product->productLocations->sum('quantity');
+                        $product->save();
+                    }
                 }
             }
         }
-    
+
+        DB::commit();
+
         return redirect()
             ->route('orders.index')
             ->with('success', 'Order has been updated successfully!');
+    } catch (\Exception $e) {
+        DB::rollBack();
+        Log::error('Error updating order', ['message' => $e->getMessage()]);
+        return redirect()->route('orders.index')->with('error', 'Error updating order: ' . $e->getMessage());
     }
+}
+
 
     public function destroy($uuid)
     {
@@ -438,28 +475,44 @@ class OrderController extends Controller
  
 
 
+
 public function approve($uuid)
 {
     $order = Order::where('uuid', $uuid)->firstOrFail();
 
-    $order->update([
-        'order_status' => OrderStatus::COMPLETE,
-    ]);
+    DB::beginTransaction();
+    try {
+        $order->update([
+            'order_status' => OrderStatus::COMPLETE,
+        ]);
 
-    foreach ($order->details as $detail) {
-        $product = Product::find($detail->product_id);
-        if ($product) {
-            $product->update([
-                'quantity' => $product->quantity - $detail->quantity,
-            ]);
+        $accountId = auth()->user()->account_id;
+        foreach ($order->details as $detail) {
+            $product = Product::find($detail->product_id);
+            if ($product) {
+                $productLocation = ProductLocation::where('product_id', $detail->product_id)
+                    ->where('location_id', $detail->location_id)
+                    ->where('account_id', $accountId)
+                    ->first();
+                if ($productLocation) {
+                    $productLocation->decrement('quantity', $detail->quantity);
+                    $product->load('productLocations');
+                    $product->quantity = $product->productLocations->sum('quantity');
+                    $product->save();
+                }
+            }
         }
+
+        DB::commit();
+
+        return redirect()
+            ->route('orders.index')
+            ->with('success', 'Order approved successfully!');
+    } catch (\Exception $e) {
+        DB::rollBack();
+        Log::error('Error approving order', ['message' => $e->getMessage()]);
+        return redirect()->route('orders.index')->with('error', 'Error approving order: ' . $e->getMessage());
     }
-
-    // Custom order details don't affect stock, so no action needed
-
-    return redirect()
-        ->route('orders.index')
-        ->with('success', 'Order approved successfully!');
 }
 
 

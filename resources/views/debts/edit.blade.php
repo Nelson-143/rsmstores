@@ -28,7 +28,7 @@
                             <input type="number" name="amount" id="amount" class="form-control" value="{{ $debt->amount }}" required>
                         </div>
                         <div class="mb-3">
-                            <label for="due_date" class="form-label">Due Date</label>
+                            <label for="due_date" class="form-label">Due Date`s</label>
                         <input type="date" name="due_date" id="due_date" class="form-control" value="{{ $debt->due_date }}" required>
                         <button type="submit" class="btn btn-primary">Update Debt</button>
                     </form>
