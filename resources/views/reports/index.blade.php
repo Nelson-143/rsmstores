@@ -260,8 +260,7 @@
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-end">
                                     <a class="dropdown-item" href="#">Last 7 days</a>
-                                    <a class="dropdown-item" href="#">Last 30 days</a>
-                                    <a class="dropdown-item" href="#">This quarter</a>
+                                    <a class="dropdown-item" href="#">Last 30 days</a                                    <a class="dropdown-item" href="#">This quarter</a>
                                     <a class="dropdown-item" href="#">Custom range</a>
                                 </div>
                             </div>
@@ -282,8 +281,8 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="text-muted">Avg. Order Value</div>
-                                <div class="h3">{{ number_format($incomeStatement['revenue']/($totalOrders ?? 1), 2) }} {{ auth()->user()->account->currency }}</div>
-                            </div>
+                                <div class="h3">
+
                         </div>
                     </div>
                 </div>
