@@ -312,10 +312,56 @@ public function updateCart($rowId, $qty)
     }
 }
     public function removeFromCart($rowId)
-    {
+{
+    $cartItem = Cart::instance('customer' . $this->activeTab)->get($rowId);
+    if ($cartItem) {
+        if (!isset($cartItem->options['is_custom']) || !$cartItem->options['is_custom']) {
+            $product = Product::find($cartItem->id);
+            if ($product) {
+                $quantityToRestore = $cartItem->qty * ($cartItem->options['conversion_factor'] ?? 1);
+                if ($cartItem->options['shelf_product_id']) {
+                    $shelfProduct = ShelfProduct::find($cartItem->options['shelf_product_id']);
+                    if ($shelfProduct) {
+                        $shelfProduct->increment('quantity', $cartItem->qty);
+                        ShelfStockLog::create([
+                            'shelf_product_id' => $shelfProduct->id,
+                            'quantity_change' => $cartItem->qty,
+                            'action' => 'restore',
+                            'user_id' => auth()->id(),
+                            'account_id' => auth()->user()->account_id,
+                            'notes' => 'Restored shelf stock after cart removal in POS',
+                        ]);
+                    }
+                } else {
+                    $locationId = $this->locationSelections[$cartItem->options['row_id']] ?? $cartItem->options['location_id'];
+                    $productLocation = ProductLocation::where('product_id', $product->id)
+                        ->where('location_id', $locationId)
+                        ->where('account_id', auth()->user()->account_id)
+                        ->first();
+                    if ($productLocation) {
+                        $productLocation->increment('quantity', $quantityToRestore);
+                        // Refresh product locations and update total quantity
+                        $product->load('productLocations');
+                        $product->quantity = $product->productLocations->sum('quantity');
+                        $product->save();
+                        Log::info('Stock restored', [
+                            'product_id' => $product->id,
+                            'location_id' => $locationId,
+                            'restored_quantity' => $quantityToRestore,
+                            'new_total_quantity' => $product->quantity,
+                        ]);
+                    }
+                }
+            }
+        }
+
         Cart::instance('customer' . $this->activeTab)->remove($rowId);
+        unset($this->cartQty[$rowId]);
+        unset($this->cartDiscounts[$rowId]);
+        unset($this->locationSelections[$rowId]);
         session()->flash('success', 'Product removed from cart!');
     }
+}
 
  public function addCustomProduct()
 {
@@ -510,6 +556,8 @@ public function createOrder()
             $this->shelfProducts = collect([]);
         }
     }
+
+    
 
    public function render()
 {
