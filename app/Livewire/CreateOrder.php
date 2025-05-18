@@ -569,11 +569,8 @@ public function updateDiscount($rowId, $discountPrice)
     }
 
     
-    public function updated($propertyName)
-    {
-        
-    }
-
+   
+ 
    public function render()
 {
     $filteredProducts = $this->products;
