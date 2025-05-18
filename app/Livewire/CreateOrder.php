@@ -169,6 +169,10 @@ class CreateOrder extends Component
             $this->currentProductId = $productId;
             $this->currentShelfProductId = null;
             $this->showLocationModal = true;
+<<<<<<< HEAD
+=======
+            // Reset location selection for this product to ensure fresh selection
+>>>>>>> 7f8822cbc5d1f06e6dd71b2bd19c46aff0228fbb
             $this->locationSelections[$productId] = null;
             Log::info('Showing location modal for product', [
                 'product_id' => $productId,
@@ -212,7 +216,6 @@ class CreateOrder extends Component
     $this->cartDiscounts[$rowId] = $unitPrice;
     session()->flash('success', 'Product added to cart!');
 }
-
 public function selectLocation($productId)
 {
     Log::info('selectLocation called', [
@@ -226,6 +229,7 @@ public function selectLocation($productId)
         return;
     }
 
+    // Ensure the selected location ID is set correctly
     $selectedLocationId = $this->locationSelections[$productId] ?? null;
     if (!$selectedLocationId) {
         session()->flash('error', 'Please select a location.');
@@ -453,7 +457,53 @@ public function createOrder()
     }
     $total = $subTotal + $vat;
 
+<<<<<<< HEAD
     // Store the cart in session without deducting stock
+=======
+    // Update stock for non-custom products
+    foreach ($currentCart as $item) {
+        if (isset($item->options['is_custom']) && $item->options['is_custom']) {
+            continue;
+        }
+
+        $product = Product::find($item->id); // Fresh load to avoid stale data
+        $requiredStock = $item->qty * ($item->options['conversion_factor'] ?? 1);
+        if ($item->options['shelf_product_id']) {
+            $shelfProduct = ShelfProduct::find($item->options['shelf_product_id']);
+            if ($shelfProduct) {
+                $shelfProduct->decrement('quantity', $item->qty);
+                ShelfStockLog::create([
+                    'shelf_product_id' => $shelfProduct->id,
+                    'quantity_change' => -$item->qty,
+                    'action' => 'deduct',
+                    'user_id' => auth()->id(),
+                    'account_id' => auth()->user()->account_id,
+                    'notes' => 'Deducted for order in POS',
+                ]);
+            }
+        } else {
+            $locationId = $this->locationSelections[$item->options['row_id']] ?? $item->options['location_id'];
+            $productLocation = ProductLocation::where('product_id', $product->id)
+                ->where('location_id', $locationId)
+                ->where('account_id', auth()->user()->account_id)
+                ->first();
+            if ($productLocation) {
+                $productLocation->decrement('quantity', $requiredStock);
+                // Refresh product locations and update total quantity
+                $product->load('productLocations');
+                $product->quantity = $product->productLocations->sum('quantity');
+                $product->save();
+                Log::info('Stock updated', [
+                    'product_id' => $product->id,
+                    'location_id' => $locationId,
+                    'new_quantity' => $productLocation->quantity,
+                    'total_quantity' => $product->quantity,
+                ]);
+            }
+        }
+    }
+
+>>>>>>> 7f8822cbc5d1f06e6dd71b2bd19c46aff0228fbb
     session()->put('pending_order', [
         'cart' => $currentCart->toArray(),
         'customer_id' => $this->selectedCustomers[$this->activeTab],
@@ -473,10 +523,14 @@ public function createOrder()
         'total' => $total,
     ]);
     return redirect()->route('invoices.create');
+<<<<<<< HEAD
 }
 
 
 public function updateDiscount($rowId, $discountPrice)
+=======
+}    public function updateDiscount($rowId, $discountPrice)
+>>>>>>> 7f8822cbc5d1f06e6dd71b2bd19c46aff0228fbb
 {
     $cartItem = Cart::instance("customer{$this->activeTab}")->get($rowId);
     if ($cartItem) {

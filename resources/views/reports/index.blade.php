@@ -153,6 +153,7 @@
                             </div>
                         </div>
                     </div>
+<<<<<<< HEAD
                 </div>
             </div>
 
@@ -738,12 +739,447 @@
                                     </div>
                                 </div>
                                 @endif
+=======
+                </div>
+            </div>
+
+            <!-- Net Sales (after discounts) -->
+            <div class="col-sm-6 col-lg-3">
+                <div class="card card-sm">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-auto">
+                                <span class="bg-green text-white avatar">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M9 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2h-2"></path>
+                                        <path d="M9 3m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v0a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z"></path>
+                                        <path d="M14 11h-2.5a1.5 1.5 0 0 0 0 3h1a1.5 1.5 0 0 1 0 3h-2.5"></path>
+                                        <path d="M12 17v1m0 -8v1"></path>
+                                    </svg>
+                                </span>
+                            </div>
+                            <div class="col">
+                                <div class="font-weight-medium">
+                                    Net Sales
+                                </div>
+                                <div class="text-muted">
+                                    {{-- {{ number_format($incomeStatement['revenue'] - $incomeStatement['discounts'], 2) }} {{ auth()->user()->account->currency }} --}}
+                                </div>
+>>>>>>> 7f8822cbc5d1f06e6dd71b2bd19c46aff0228fbb
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
+<<<<<<< HEAD
+=======
+            <!-- Total Tax Collected -->
+            <div class="col-sm-6 col-lg-3">
+                <div class="card card-sm">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-auto">
+                                <span class="bg-yellow text-white avatar">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M6 5h12a3 3 0 0 1 3 3v8a3 3 0 0 1 -3 3h-12a3 3 0 0 1 -3 -3v-8a3 3 0 0 1 3 -3z"></path>
+                                        <path d="M8 8h8"></path>
+                                        <path d="M8 12h8"></path>
+                                        <path d="M8 16h8"></path>
+                                    </svg>
+                                </span>
+                            </div>
+                            <div class="col">
+                                <div class="font-weight-medium">
+                                    vat Collected
+                                </div>
+                                <div class="text-muted">
+                                    {{ number_format($incomeStatement['vat'], 2) }} {{ auth()->user()->account->currency }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Net Profit -->
+            <div class="col-sm-6 col-lg-3">
+                <div class="card card-sm">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-auto">
+                                <span class="bg-twitter text-white avatar">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M10 14l11 -11"></path>
+                                        <path d="M21 3l-6.5 18a.55 .55 0 0 1 -1 0l-3.5 -7l-7 -3.5a.55 .55 0 0 1 0 -1l18 -6.5"></path>
+                                    </svg>
+                                </span>
+                            </div>
+                            <div class="col">
+                                <div class="font-weight-medium">
+                                    Net Profit
+                                </div>
+                                <div class="text-muted">
+                                    {{ number_format($incomeStatement['netIncome'], 2) }} {{ auth()->user()->account->currency }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Dashboard Content -->
+        <div class="row row-deck row-cards">
+            <!-- Sales Trends Chart -->
+            <div class="col-lg-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Sales Performance</h3>
+                        <div class="card-actions">
+                            <div class="dropdown">
+                                <a href="#" class="btn-action dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0"></path>
+                                        <path d="M12 7v5l3 3"></path>
+                                    </svg>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-end">
+                                    <a class="dropdown-item" href="#">Last 7 days</a>
+                                    <a class="dropdown-item" href="#">Last 30 days</a                                    <a class="dropdown-item" href="#">This quarter</a>
+                                    <a class="dropdown-item" href="#">Custom range</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="chart-lg" id="sales-trend-chart"></div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="text-muted">Avg. Daily Sales</div>
+                                <div class="h3">{{ number_format($incomeStatement['revenue']/30, 2) }} {{ auth()->user()->account->currency }}</div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="text-muted">Best Day</div>
+                                <div class="h3">{{ number_format(max($chartData['data'] ?? [0]), 2) }} {{ auth()->user()->account->currency }}</div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="text-muted">Avg. Order Value</div>
+                                <div class="h3">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Financial Summary -->
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Financial Summary</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-4">
+                            <div class="d-flex align-items-center justify-content-between mb-2">
+                                <div>Gross Profit Margin</div>
+                                <div class="fw-bold">{{ number_format($grossMargin, 2) }}%</div>
+                            </div>
+                            <div class="progress progress-sm">
+                                <div class="progress-bar bg-{{ $grossMargin > 30 ? 'success' : ($grossMargin > 20 ? 'warning' : 'danger') }}" style="width: {{ $grossMargin }}%" role="progressbar" aria-valuenow="{{ $grossMargin }}" aria-valuemin="0" aria-valuemax="100">
+                                    <span class="visually-hidden">{{ $grossMargin }}% Complete</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <div class="d-flex align-items-center justify-content-between mb-2">
+                                <div>Expense Ratio</div>
+                                <div class="fw-bold">{{ number_format($expenseRatio, 2) }}%</div>
+                            </div>
+                            <div class="progress progress-sm">
+                                <div class="progress-bar bg-{{ $expenseRatio < 30 ? 'success' : ($expenseRatio < 50 ? 'warning' : 'danger') }}" style="width: {{ $expenseRatio }}%" role="progressbar" aria-valuenow="{{ $expenseRatio }}" aria-valuemin="0" aria-valuemax="100">
+                                    <span class="visually-hidden">{{ $expenseRatio }}% Complete</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <div class="d-flex align-items-center justify-content-between mb-2">
+                                <div>Net Profit Margin</div>
+                                <div class="fw-bold">{{ number_format(($incomeStatement['netIncome']/$incomeStatement['revenue'])*100, 2) }}%</div>
+                            </div>
+                            <div class="progress progress-sm">
+                                <div class="progress-bar bg-{{ ($incomeStatement['netIncome']/$incomeStatement['revenue'])*100 > 15 ? 'success' : (($incomeStatement['netIncome']/$incomeStatement['revenue'])*100 > 5 ? 'warning' : 'danger') }}" style="width: {{ ($incomeStatement['netIncome']/$incomeStatement['revenue'])*100 }}%" role="progressbar" aria-valuenow="{{ ($incomeStatement['netIncome']/$incomeStatement['revenue'])*100 }}" aria-valuemin="0" aria-valuemax="100">
+                                    <span class="visually-hidden">{{ ($incomeStatement['netIncome']/$incomeStatement['revenue'])*100 }}% Complete</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="divide-y">
+                            <div class="py-2">
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <div>Total Revenue</div>
+                                    <div class="fw-bold">{{ number_format($incomeStatement['revenue'], 2) }} {{ auth()->user()->account->currency }}</div>
+                                </div>
+                            </div>
+                            <div class="py-2">
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <div>Cost of Goods Sold</div>
+                                    <div class="fw-bold">{{ number_format($incomeStatement['cogs'], 2) }} {{ auth()->user()->account->currency }}</div>
+                                </div>
+                            </div>
+                            <div class="py-2">
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <div>Operating Expenses</div>
+                                    <div class="fw-bold">{{ number_format($incomeStatement['expenses'], 2) }} {{ auth()->user()->account->currency }}</div>
+                                </div>
+                            </div>
+                            <div class="py-2">
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <div>Net Income</div>
+                                    <div class="fw-bold text-{{ $incomeStatement['netIncome'] >= 0 ? 'success' : 'danger' }}">{{ number_format($incomeStatement['netIncome'], 2) }} {{ auth()->user()->account->currency }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Inventory Health -->
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Inventory Health</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card mb-3">
+                                    <div class="card-body text-center">
+                                        <div class="h1">{{ $totalAvailableStock }}</div>
+                                        <div class="text-muted">Total Products in Stock</div>
+                                        <div class="text-muted small">Valued at {{ number_format($totalStockValue, 2) }} {{ auth()->user()->account->currency }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card mb-3">
+                                    <div class="card-body text-center">
+                                        <div class="h1">{{ $lowStockItems }}</div>
+                                        <div class="text-muted">Low Stock Items</div>
+                                        <div class="text-muted small">Below reorder level</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card mb-3">
+                                    <div class="card-body text-center">
+                                        <div class="h1">{{ $outOfStockItems }}</div>
+                                        <div class="text-muted">Out of Stock</div>
+                                        <div class="text-muted small">Urgent restock needed</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card mb-3">
+                                    <div class="card-body text-center">
+                                        <div class="h1">{{ $fastMovingItems ?? 0 }}</div>
+                                        <div class="text-muted">Fast Moving</div>
+                                        <div class="text-muted small">Top selling products</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <canvas id="inventory-chart" height="200"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cash Flow Overview -->
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Cash Flow Overview</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="chart-lg" id="cash-flow-chart"></div>
+                        <div class="mt-4">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="card mb-3">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-center">
+                                                <div class="subheader">Cash Inflows</div>
+                                                <div class="ms-auto lh-1">
+                                                    <span class="text-green d-inline-flex align-items-center lh-1">
+                                                        {{ number_format(array_sum($cashFlow['inflows']), 2) }} {{ auth()->user()->account->currency }}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="progress progress-sm mt-3">
+                                                <div class="progress-bar bg-success" style="width: 100%" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                                                    <span class="visually-hidden">100% Complete</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card mb-3">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-center">
+                                                <div class="subheader">Cash Outflows</div>
+                                                <div class="ms-auto lh-1">
+                                                    <span class="text-red d-inline-flex align-items-center lh-1">
+                                                        {{ number_format(array_sum($cashFlow['outflows']), 2) }} {{ auth()->user()->account->currency }}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="progress progress-sm mt-3">
+                                                <div class="progress-bar bg-danger" style="width: 100%" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                                                    <span class="visually-hidden">100% Complete</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-body text-center">
+                                    <div class="h1 text-{{ (array_sum($cashFlow['inflows']) - array_sum($cashFlow['outflows'])) >= 0 ? 'success' : 'danger' }}">
+                                        {{ number_format(array_sum($cashFlow['inflows']) - array_sum($cashFlow['outflows']), 2) }} {{ auth()->user()->account->currency }}
+                                    </div>
+                                    <div class="text-muted">Net Cash Flow</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Business Insights & Recommendations -->
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <ul class="nav nav-tabs card-header-tabs" data-bs-toggle="tabs">
+                            <li class="nav-item">
+                                <a href="#tab-insights" class="nav-link active" data-bs-toggle="tab">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon me-2" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0"></path>
+                                        <path d="M12 8l-2 4l-2 4l4 2l4 -2l-2 -4z"></path>
+                                    </svg>
+                                    Business Insights
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#tab-recommendations" class="nav-link" data-bs-toggle="tab">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon me-2" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z"></path>
+                                    </svg>
+                                    Recommendations
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#tab-tax" class="nav-link" data-bs-toggle="tab">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon me-2" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M9 14l6 -6"></path>
+                                        <path d="M11 6l.463 -.536a5 5 0 0 1 7.071 7.072l-.534 .464"></path>
+                                        <path d="M13 18l-.397 .534a5.068 5.068 0 0 1 -7.127 0a4.972 4.972 0 0 1 0 -7.071l.524 -.463"></path>
+                                    </svg>
+                                    Tax Summary
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="card-body">
+                        <div class="tab-content">
+                            <div class="tab-pane active show" id="tab-insights">
+                                @forelse($actionableInsights as $insight)
+                                <div class="alert alert-{{ $insight['status'] }} alert-dismissible fade show" role="alert">
+                                    <h4 class="alert-heading">{{ $insight['message'] }}</h4>
+                                    
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                                @empty
+                                <div class="alert alert-secondary">
+                                    <div class="empty">
+                                        <div class="empty-icon">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"></path>
+                                                <path d="M12 8l0 4"></path>
+                                                <path d="M12 16l.01 0"></path>
+                                            </svg>
+                                        </div>
+                                        <p class="empty-title">No insights available</p>
+                                        <p class="empty-subtitle text-muted">
+                                            As you generate more sales and expense data, actionable insights will appear here.
+                                        </p>
+                                    </div>
+                                </div>
+                                @endforelse
+                            </div>
+                            <div class="tab-pane" id="tab-recommendations">
+                                @forelse($recommendations as $recommendation)
+                                <div class="mb-3">
+                                    <div class="card card-active">
+                                        <div class="card-body">
+                                            <div class="row align-items-center">
+                                                <div class="col-auto">
+                                                    <span class="bg-{{ $recommendation->priority === 'high' ? 'danger' : ($recommendation->priority === 'medium' ? 'warning' : 'info') }} text-white avatar">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                            <path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z"></path>
+                                                        </svg>
+                                                    </span>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="font-weight-medium">
+                                                        {{ $recommendation->title }}
+                                                    </div>
+                                                    <div class="text-muted">
+                                                        {{ $recommendation->recommendation }}
+                                                    </div>
+                                                </div>
+                                                <div class="col-auto">
+                                                   
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                @empty
+                                <div class="alert alert-secondary">
+                                    <div class="empty">
+                                        <div class="empty-icon">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                <path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z"></path>
+                                            </svg>
+                                        </div>
+                                        <p class="empty-title">No recommendations available</p>
+                                        <p class="empty-subtitle text-muted">
+                                            Our system will analyze your data and provide personalized recommendations.
+                                        </p>
+                                    </div>
+                                </div>
+                                @endforelse
+                            </div>
+                           
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+>>>>>>> 7f8822cbc5d1f06e6dd71b2bd19c46aff0228fbb
             <!-- Recent Transactions -->
             <div class="col-lg-12">
                 <div class="card">

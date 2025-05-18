@@ -27,4 +27,8 @@ yarn-error.log
 "/public/assets/img/*" 
 "/storage/framework/*" 
 storage/framework/*
+<<<<<<< HEAD
 >>>>>>> fbcbde9 (new and fixed)
+=======
+>>>>>>> fbcbde9e83fc1844c8eeb5ab5fc7bb700a29c373
+>>>>>>> 7f8822cbc5d1f06e6dd71b2bd19c46aff0228fbb

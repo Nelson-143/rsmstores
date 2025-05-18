@@ -87,7 +87,10 @@ public function store(Request $request)
     }
     Log::info('Cart re-populated', ['cart_content' => Cart::instance($cartInstance)->content()->toArray()]);
 
+<<<<<<< HEAD
     // Validate stock one last time before deduction
+=======
+>>>>>>> 7f8822cbc5d1f06e6dd71b2bd19c46aff0228fbb
     foreach (Cart::instance($cartInstance)->content() as $item) {
         if (isset($item->options['is_custom']) && $item->options['is_custom']) {
             continue;
@@ -168,8 +171,13 @@ public function store(Request $request)
                 $preDecrementQty = $productLocation ? $productLocation->quantity : 0;
 
                 if ($productLocation) {
+<<<<<<< HEAD
                     $requiredStock = $item->qty * ($item->options['conversion_factor'] ?? 1);
                     $productLocation->decrement('quantity', $requiredStock);
+=======
+                    $productLocation->decrement('quantity', $item->qty);
+                    // Refresh product locations and update total quantity
+>>>>>>> 7f8822cbc5d1f06e6dd71b2bd19c46aff0228fbb
                     $product->load('productLocations');
                     $product->quantity = $product->productLocations->sum('quantity');
                     $product->save();
@@ -212,7 +220,11 @@ public function store(Request $request)
         Log::error('Error creating order', ['message' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
         return redirect()->route('pos.index')->with('error', 'Error creating order: ' . $e->getMessage());
     }
+<<<<<<< HEAD
 }
+=======
+}  
+>>>>>>> 7f8822cbc5d1f06e6dd71b2bd19c46aff0228fbb
 // Update storeDebt similarly
 public function storeDebt(Request $request)
 {
