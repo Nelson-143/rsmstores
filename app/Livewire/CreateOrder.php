@@ -169,10 +169,7 @@ class CreateOrder extends Component
             $this->currentProductId = $productId;
             $this->currentShelfProductId = null;
             $this->showLocationModal = true;
-<<<<<<< HEAD
-=======
-            // Reset location selection for this product to ensure fresh selection
->>>>>>> 7f8822cbc5d1f06e6dd71b2bd19c46aff0228fbb
+
             $this->locationSelections[$productId] = null;
             Log::info('Showing location modal for product', [
                 'product_id' => $productId,
@@ -457,9 +454,8 @@ public function createOrder()
     }
     $total = $subTotal + $vat;
 
-<<<<<<< HEAD
+
     // Store the cart in session without deducting stock
-=======
     // Update stock for non-custom products
     foreach ($currentCart as $item) {
         if (isset($item->options['is_custom']) && $item->options['is_custom']) {
@@ -503,7 +499,7 @@ public function createOrder()
         }
     }
 
->>>>>>> 7f8822cbc5d1f06e6dd71b2bd19c46aff0228fbb
+
     session()->put('pending_order', [
         'cart' => $currentCart->toArray(),
         'customer_id' => $this->selectedCustomers[$this->activeTab],
@@ -523,14 +519,12 @@ public function createOrder()
         'total' => $total,
     ]);
     return redirect()->route('invoices.create');
-<<<<<<< HEAD
+
 }
 
 
 public function updateDiscount($rowId, $discountPrice)
-=======
-}    public function updateDiscount($rowId, $discountPrice)
->>>>>>> 7f8822cbc5d1f06e6dd71b2bd19c46aff0228fbb
+
 {
     $cartItem = Cart::instance("customer{$this->activeTab}")->get($rowId);
     if ($cartItem) {
