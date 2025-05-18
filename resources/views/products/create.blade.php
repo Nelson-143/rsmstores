@@ -242,24 +242,59 @@
                             </div>
 
                             <script>
-                                document.getElementById('addLocation').addEventListener('click', function() {
-                                    const locationFields = document.getElementById('locationFields');
-                                    const newField = locationFields.children[0].cloneNode(true);
-                                    newField.querySelector('input[name="quantities[]"]').value = '';
-                                    locationFields.appendChild(newField);
-                                });
-                                document.querySelectorAll('.remove-location').forEach(button => {
-                                    button.addEventListener('click', function() {
-                                        this.parentElement.parentElement.remove();
-                                    });
-                                });
+                               document.addEventListener('DOMContentLoaded', function() {
+    // Handle Add Location button click
+    document.getElementById('addLocation').addEventListener('click', function() {
+        const locationFields = document.getElementById('locationFields');
+        const newField = locationFields.children[0].cloneNode(true);
+        
+        // Clear the quantity input
+        newField.querySelector('input[name="quantities[]"]').value = '';
+        
+        // Show the remove button for cloned fields
+        newField.querySelector('.col-md-1').style.display = 'block';
+        
+        // Add event listener to the remove button
+        newField.querySelector('.remove-location').addEventListener('click', function() {
+            this.closest('.row').remove();
+            updateTotalQuantity();
+        });
+        
+        // Add event listener to quantity input
+        newField.querySelector('input[name="quantities[]"]').addEventListener('input', updateTotalQuantity);
+        
+        locationFields.appendChild(newField);
+    });
+
+    // Set up event listeners for existing remove buttons and quantity inputs
+    document.querySelectorAll('.remove-location').forEach(button => {
+        button.addEventListener('click', function() {
+            this.closest('.row').remove();
+            updateTotalQuantity();
+        });
+    });
+
+    document.querySelectorAll('input[name="quantities[]"]').forEach(input => {
+        input.addEventListener('input', updateTotalQuantity);
+    });
+
+    // Function to update total quantity
+    function updateTotalQuantity() {
+        let total = 0;
+        document.querySelectorAll('input[name="quantities[]"]').forEach(input => {
+            const value = parseInt(input.value) || 0;
+            total += value;
+        });
+        document.querySelector('input[name="total_quantity"]').value = total;
+    }
+});
                             </script>
                                     <div class="col-sm-6 col-md-6">
                                         <x-input type="number"
                                                  label="Code"
                                                  name="code"
                                                  id="code"
-                                                 placeholder=""
+                                                 placeholder="Enter unique product code"
                                                  value="{{ old('code') }}"
                                         />
                                     </div>

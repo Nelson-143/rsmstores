@@ -8,15 +8,50 @@ use App\Models\Order;
 use App\Models\OrderDetails;
 use App\Models\Product;
 use App\Models\Expense;
-use app\Models\ExpenseCategory;
+use App\Models\Debt; // Add Debt model
 use App\Models\TaxReport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\CustomOrderDetail; // Assuming this is the model for custom orders
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Carbon;
 
 class ReportController extends Controller
 {
+    /**
+     * Get the date range based on report type and request.
+     */
+    protected function getDateRange($reportType, Request $request)
+    {
+        $now = now();
+        switch ($reportType) {
+            case 'daily':
+                $start = $request->get('start_date') ? Carbon::parse($request->get('start_date')) : $now->copy()->startOfDay();
+                $end = $request->get('end_date') ? Carbon::parse($request->get('end_date')) : $now->copy()->endOfDay();
+                break;
+            case 'weekly':
+                $start = $request->get('start_date') ? Carbon::parse($request->get('start_date')) : $now->copy()->startOfWeek();
+                $end = $request->get('end_date') ? Carbon::parse($request->get('end_date')) : $now->copy()->endOfWeek();
+                break;
+            case 'monthly':
+                $start = $request->get('start_date') ? Carbon::parse($request->get('start_date')) : $now->copy()->startOfMonth();
+                $end = $request->get('end_date') ? Carbon::parse($request->get('end_date')) : $now->copy()->endOfMonth();
+                break;
+            case 'yearly':
+                $start = $request->get('start_date') ? Carbon::parse($request->get('start_date')) : $now->copy()->startOfYear();
+                $end = $request->get('end_date') ? Carbon::parse($request->get('end_date')) : $now->copy()->endOfYear();
+                break;
+            default:
+                $start = $now->copy()->startOfMonth();
+                $end = $now->copy()->endOfMonth();
+                break;
+        }
+        return [
+            'start' => $start,
+            'end' => $end,
+        ];
+    }
+
     public function index(Request $request)
     {
         $userId = auth()->id();
@@ -28,46 +63,58 @@ class ReportController extends Controller
         // Date range handling
         $dateRange = $this->getDateRange($reportType, $request);
         
-        // 1. Sales Data (now with VAT instead of tax)
+        // 1. Sales Data with VAT
         $salesData = $this->getSalesData($userId, $accountId, $dateRange);
         
         // 2. Expense Data
         $expenseData = $this->getExpenseData($userId, $accountId, $dateRange);
         
-        // 3. Inventory Data
+        // 3. Debt Data (new)
+        $debtData = $this->getDebtData($userId, $accountId, $dateRange);
+        
+        // 4. Inventory Data
         $inventoryData = $this->getInventoryData($accountId);
+
+        // 4.5. Custom Orders Data
+        $customOrdersData = $this->getCustomOrdersData($userId, $accountId, $dateRange);
+
+        // Assign lowStockItems and outOfStockItems from inventoryData
+        $lowStockItems = $inventoryData['products']->where('quantity', '>', 0)->where('quantity', '<=', 5)->count();
+        $outOfStockItems = $inventoryData['outOfStockItems'] ?? 0;
         
-        // 4. Financial Statements (updated for VAT)
-        $incomeStatement = $this->getIncomeStatement($salesData, $expenseData);
-        $balanceSheet = $this->getBalanceSheet($userId, $accountId, $request);
-        $cashFlow = $this->getCashFlow($salesData, $expenseData);
+        // 5. Financial Statements (updated with debts)
+        $incomeStatement = $this->getIncomeStatement($salesData, $expenseData, $debtData, $customOrdersData);
+        $balanceSheet = $this->getBalanceSheet($userId, $accountId, $debtData);
+        $cashFlow = $this->getCashFlow($salesData, $expenseData, $debtData);
         
-        // 5. VAT Report (instead of generic tax report)
+        // 6. VAT Report
         $vatReport = $this->getVatReport($userId, $accountId, $dateRange);
         
-        // 6. Recent Transactions
+        // 7. Recent Transactions
         $recentTransactions = $this->getRecentTransactions($userId, $accountId);
         
-        // 7. Key Metrics (updated calculations)
+        // 8. Key Metrics (with safe calculations)
         $keyMetrics = $this->calculateKeyMetrics($incomeStatement);
         
-        // 8. Recommendations and Insights
+        // 9. Recommendations and Insights
         $recommendations = $this->getRecommendations($userId);
-        $actionableInsights = $this->generateActionableInsights($incomeStatement, $inventoryData);
+        $actionableInsights = $this->generateActionableInsights($incomeStatement, $inventoryData, $debtData);
         
-        // 9. Chart Data
+        // 10. Chart Data
         $chartData = $this->getChartData($reportType, $userId, $accountId);
         
         return view('reports.index', array_merge(
             $salesData,
             $expenseData,
+            $debtData,
+            $customOrdersData,
             $inventoryData,
             [
                 'reportType' => $reportType,
                 'incomeStatement' => $incomeStatement,
                 'balanceSheet' => $balanceSheet,
                 'cashFlow' => $cashFlow,
-                'vatReport' => $vatReport, // Changed from taxReport to vatReport
+                'vatReport' => $vatReport,
                 'recentTransactions' => $recentTransactions,
                 'chartLabels' => $chartData['labels'],
                 'chartData' => $chartData['data'],
@@ -75,154 +122,76 @@ class ReportController extends Controller
                 'actionableInsights' => $actionableInsights,
                 'startDate' => $dateRange['start']->format('Y-m-d'),
                 'endDate' => $dateRange['end']->format('Y-m-d'),
+                'totalAvailableStock' => $totalAvailableStock ?? 0, // Ensure variable is defined
+                'lowStockItems' => $lowStockItems,
+                'outOfStockItems' => $outOfStockItems,
+                'totalStockValue' => $totalStockValue ?? 0,
             ],
             $keyMetrics
         ));
     }
 
-    protected function getDateRange($reportType, $request)
-    {
-        $now = now();
-        
-        if ($request->has('start_date') && $request->has('end_date')) {
-            return [
-                'start' => Carbon::parse($request->start_date),
-                'end' => Carbon::parse($request->end_date)
-            ];
-        }
-        
-        switch ($reportType) {
-            case 'daily':
-                return [
-                    'start' => $now->copy()->startOfDay(),
-                    'end' => $now->copy()->endOfDay()
-                ];
-            case 'weekly':
-                return [
-                    'start' => $now->copy()->startOfWeek(),
-                    'end' => $now->copy()->endOfWeek()
-                ];
-            case 'monthly':
-                return [
-                    'start' => $now->copy()->startOfMonth(),
-                    'end' => $now->copy()->endOfMonth()
-                ];
-            case 'yearly':
-                return [
-                    'start' => $now->copy()->startOfYear(),
-                    'end' => $now->copy()->endOfYear()
-                ];
-            default:
-                return [
-                    'start' => $now->copy()->subMonth(),
-                    'end' => $now->copy()
-                ];
-        }
-    }
-
+    /**
+     * Get sales data including VAT, subtotal, and total sales for the given user, account, and date range.
+     */
     protected function getSalesData($userId, $accountId, $dateRange)
     {
-        $query = Order::where('user_id', $userId)
+        $orders = Order::where('user_id', $userId)
             ->where('account_id', $accountId)
-            ->whereBetween('created_at', [$dateRange['start'], $dateRange['end']]);
-            
-        $totalSales = (clone $query)->sum('total');
-        $totalVat = (clone $query)->sum('vat');
-        $subTotal = (clone $query)->sum('sub_total');
-        
-        // Get detailed sales data for the period
-        $salesBreakdown = (clone $query)
-            ->select(
-                DB::raw('DATE(created_at) as date'),
-                DB::raw('SUM(total) as total_sales'),
-                DB::raw('SUM(vat) as total_vat'),
-                DB::raw('SUM(sub_total) as sub_total'),
-                DB::raw('COUNT(*) as transaction_count')
-            )
-            ->groupBy('date')
-            ->orderBy('date')
+            ->whereBetween('created_at', [$dateRange['start'], $dateRange['end']])
             ->get();
-            
-        // Get product sales mix from order details
-        $productSales = OrderDetails::whereHas('order', function($q) use ($userId, $accountId, $dateRange) {
-                $q->where('user_id', $userId)
-                  ->where('account_id', $accountId)
-                  ->whereBetween('created_at', [$dateRange['start'], $dateRange['end']]);
-            })
-            ->select(
-                'product_id',
-                DB::raw('SUM(quantity) as total_quantity'),
-                DB::raw('SUM(total) as total_value')
-            )
-            ->groupBy('product_id')
-            ->orderByDesc('total_value')
-            ->with('product')
-            ->get();
-            
+
+        $totalSales = $orders->sum('total');
+        $totalVat = $orders->sum('vat');
+        $subTotal = $orders->sum('subtotal');
+
         return [
             'totalSales' => $totalSales,
             'totalVat' => $totalVat,
             'subTotal' => $subTotal,
-            'salesBreakdown' => $salesBreakdown,
-            'productSales' => $productSales,
-            'totalOrders' => $query->count(),
-            'startDate' => $dateRange['start'],
-            'endDate' => $dateRange['end'],
+            'startDate' => $dateRange['start']->format('Y-m-d'),
+            'endDate' => $dateRange['end']->format('Y-m-d'),
         ];
     }
 
-protected function getExpenseData($userId, $accountId, $dateRange)
-{
-    $totalExpenses = Expense::where('user_id', $userId)
-        ->where('account_id', $accountId)
-        ->whereBetween('created_at', [$dateRange['start'], $dateRange['end']])
-        ->sum('amount');
-            
-    return [
-        'totalExpenses' => $totalExpenses,
-        'expenseByCategory' => [], // Return empty array for categories
-    ];
-}
-
-    protected function getInventoryData($accountId)
+    // Add new method for expense data
+    protected function getExpenseData($userId, $accountId, $dateRange)
     {
-        $totalAvailableStock = Product::where('account_id', $accountId)->sum('quantity');
-        $totalStockValue = Product::where('account_id', $accountId)
-            ->sum(DB::raw('quantity * selling_price'));
-            
-        $lowStockItems = Product::where('account_id', $accountId)
-            ->whereColumn('quantity', '<=', 'quantity_alert')
-            ->count();
-            
-        $outOfStockItems = Product::where('account_id', $accountId)
-            ->where('quantity', 0)
-            ->count();
-            
-        $fastMovingItems = OrderDetails::whereHas('order', function($q) use ($accountId) {
-                $q->where('account_id', $accountId)
-                  ->where('created_at', '>=', now()->subDays(30));
-            })
-            ->select(
-                'product_id',
-                DB::raw('SUM(quantity) as total_sold')
-            )
-            ->groupBy('product_id')
-            ->orderByDesc('total_sold')
-            ->limit(5)
-            ->with('product')
+        $expenses = Expense::where('user_id', $userId)
+            ->where('account_id', $accountId)
+            ->whereBetween('created_at', [$dateRange['start'], $dateRange['end']])
             ->get();
-            
+
+        $totalExpenses = $expenses->sum('amount');
+
         return [
-            'totalAvailableStock' => $totalAvailableStock,
-            'totalStockValue' => $totalStockValue,
-            'lowStockItems' => $lowStockItems,
-            'outOfStockItems' => $outOfStockItems,
-            'fastMovingItems' => $fastMovingItems->count(),
-            'topSellingProducts' => $fastMovingItems,
+            'totalExpenses' => $totalExpenses,
+            'expenses' => $expenses,
         ];
     }
 
-    protected function getIncomeStatement($salesData, $expenseData)
+    // Add new method for debt data
+    protected function getDebtData($userId, $accountId, $dateRange)
+    {
+        $totalDebts = Debt::where('account_id', $accountId)
+            ->whereBetween('created_at', [$dateRange['start'], $dateRange['end']])
+            ->sum('amount');
+            
+        $totalPaid = Debt::where('account_id', $accountId)
+            ->whereBetween('created_at', [$dateRange['start'], $dateRange['end']])
+            ->sum('amount_paid');
+            
+        $outstandingDebts = $totalDebts - $totalPaid;
+        
+        return [
+            'totalDebts' => $totalDebts,
+            'totalPaid' => $totalPaid,
+            'outstandingDebts' => $outstandingDebts,
+        ];
+    }
+
+    // Update income statement to include debts
+    protected function getIncomeStatement($salesData, $expenseData, $debtData, $customOrdersData = [])
     {
         // Calculate COGS (Cost of Goods Sold) from order details
         $cogs = OrderDetails::whereHas('order', function($q) use ($salesData) {
@@ -233,29 +202,35 @@ protected function getExpenseData($userId, $accountId, $dateRange)
             ->sum(function($detail) {
                 return $detail->quantity * $detail->product->buying_price;
             });
-            
+
+        // Include custom orders in revenue
+        $totalRevenue = ($salesData['subTotal'] ?? 0) + ($customOrdersData['totalCustomSales'] ?? 0);
+
         return [
-            'revenue' => $salesData['subTotal'], // Before VAT
-            'gross_sales' => $salesData['totalSales'], // Including VAT
-            'vat' => $salesData['totalVat'],
+            'revenue' => $totalRevenue,
+            'regular_sales' => $salesData['subTotal'] ?? 0,
+            'custom_sales' => $customOrdersData['totalCustomSales'] ?? 0,
+            'gross_sales' => $salesData['totalSales'] ?? 0,
+            'vat' => $salesData['totalVat'] ?? 0,
             'cogs' => $cogs,
-            'grossProfit' => $salesData['subTotal'] - $cogs, // Profit before expenses
-            'expenses' => $expenseData['totalExpenses'],
-            'netIncome' => ($salesData['subTotal'] - $cogs) - $expenseData['totalExpenses'],
+            'grossProfit' => $totalRevenue - $cogs,
+            'expenses' => $expenseData['totalExpenses'] ?? 0,
+            'debt_payments' => $debtData['totalPaid'] ?? 0,
+            'netIncome' => $totalRevenue - $cogs - ($expenseData['totalExpenses'] ?? 0) - ($debtData['totalPaid'] ?? 0),
             'startDate' => $salesData['startDate'],
             'endDate' => $salesData['endDate'],
         ];
     }
 
-    protected function getBalanceSheet($userId, $accountId, Request $request)
+    // Update balance sheet to include debts
+    protected function getBalanceSheet($userId, $accountId, $debtData)
     {
-        // Initialize with default values
         $balanceSheet = [
             'assets' => [
-                'Cash' => 0, // This would come from your cash records
-                'Accounts Receivable' => Order::where('user_id', $userId)
+                'Cash' => 0,
+                'Accounts Receivable' => Order::with('customer')
+                    ->where('user_id', $userId)
                     ->where('account_id', $accountId)
-                    //->where('payment_status', '!=', 'paid')
                     ->sum('total'),
                 'Inventory' => Product::where('account_id', $accountId)
                     ->sum(DB::raw('quantity * buying_price')),
@@ -263,15 +238,15 @@ protected function getExpenseData($userId, $accountId, $dateRange)
             'liabilities' => [
                 'Accounts Payable' => Expense::where('user_id', $userId)
                     ->where('account_id', $accountId)
-                    //->where('paid', false)
                     ->sum('amount'),
-                'VAT Payable' => Order::where('user_id', $userId)
+                'VAT Payable' => Order::with('customer')
+                    ->where('user_id', $userId)
                     ->where('account_id', $accountId)
-                    ->sum('vat'), // Total VAT collected
+                    ->sum('vat'),
+                'Outstanding Debts' => $debtData['outstandingDebts'] ?? 0,
             ],
         ];
         
-        // Calculate totals
         $balanceSheet['totalAssets'] = array_sum($balanceSheet['assets']);
         $balanceSheet['totalLiabilities'] = array_sum($balanceSheet['liabilities']);
         $balanceSheet['equity'] = $balanceSheet['totalAssets'] - $balanceSheet['totalLiabilities'];
@@ -279,83 +254,47 @@ protected function getExpenseData($userId, $accountId, $dateRange)
         return $balanceSheet;
     }
 
-    protected function getCashFlow($salesData, $expenseData)
+    // Update cash flow to include debt payments
+    protected function getCashFlow($salesData, $expenseData, $debtData)
     {
         return [
             'inflows' => [
-                'sales' => $salesData['subTotal'], // Before VAT
-                'vat_collected' => $salesData['totalVat'], // VAT collected from customers
+                'sales' => $salesData['subTotal'] ?? 0,
+                'vat_collected' => $salesData['totalVat'] ?? 0,
+                'debt_collections' => $debtData['totalPaid'] ?? 0,
             ],
             'outflows' => [
                 'cogs' => $salesData['cogs'] ?? 0,
-                'operating_expenses' => $expenseData['totalExpenses'],
-                'vat_paid' => 0, // This would be VAT paid to suppliers (if tracked)
+                'operating_expenses' => $expenseData['totalExpenses'] ?? 0,
+                'vat_paid' => 0,
+                'debt_payments' => $debtData['totalPaid'] ?? 0,
             ],
         ];
     }
 
-    protected function getVatReport($userId, $accountId, $dateRange)
-    {
-        // Calculate VAT collected from sales
-        $vatCollected = Order::where('user_id', $userId)
-            ->where('account_id', $accountId)
-            ->whereBetween('created_at', [$dateRange['start'], $dateRange['end']])
-            ->sum('vat');
-            
-        // VAT paid would come from your expense records (if you track VAT on purchases)
-        $vatPaid = 0; // Placeholder - implement based on your system
-        
-        return [
-            'vat_collected' => $vatCollected,
-            'vat_paid' => $vatPaid,
-            'vat_liability' => $vatCollected - $vatPaid,
-            'period_start' => $dateRange['start']->format('Y-m-d'),
-            'period_end' => $dateRange['end']->format('Y-m-d'),
-        ];
-    }
-
-    protected function getRecentTransactions($userId, $accountId, $limit = 10)
-    {
-        return Order::where('user_id', $userId)
-            ->where('account_id', $accountId)
-            ->with('customer')
-            ->latest()
-            ->take($limit)
-            ->get();
-    }
-
+    // Update key metrics with safe division
     protected function calculateKeyMetrics($incomeStatement)
     {
-        $grossMargin = $incomeStatement['revenue'] > 0 
-            ? ($incomeStatement['grossProfit'] / $incomeStatement['revenue']) * 100 
-            : 0;
-            
-        $expenseRatio = $incomeStatement['revenue'] > 0 
-            ? ($incomeStatement['expenses'] / $incomeStatement['revenue']) * 100 
-            : 0;
-            
-        $netMargin = $incomeStatement['revenue'] > 0 
-            ? ($incomeStatement['netIncome'] / $incomeStatement['revenue']) * 100 
-            : 0;
+        $revenue = $incomeStatement['revenue'] ?? 0;
+        $grossProfit = $incomeStatement['grossProfit'] ?? 0;
+        $expenses = $incomeStatement['expenses'] ?? 0;
+        $netIncome = $incomeStatement['netIncome'] ?? 0;
+        
+        // Safe division to prevent divide by zero errors
+        $grossMargin = $revenue > 0 ? ($grossProfit / $revenue) * 100 : 0;
+        $expenseRatio = $revenue > 0 ? ($expenses / $revenue) * 100 : 0;
+        $netMargin = $revenue > 0 ? ($netIncome / $revenue) * 100 : 0;
             
         return [
             'grossMargin' => $grossMargin,
             'expenseRatio' => $expenseRatio,
             'netMargin' => $netMargin,
-            'ytdPerformance' => $incomeStatement['netIncome'],
+            'ytdPerformance' => $netIncome,
         ];
     }
 
-    protected function getRecommendations($userId, $limit = 5)
-    {
-        return Recommendation::where('user_id', $userId)
-            ->where('is_read', false)
-            ->orderBy('priority', 'desc')
-            ->take($limit)
-            ->get();
-    }
-
-    protected function generateActionableInsights($incomeStatement, $inventoryData)
+    // Update insights to include debt-related insights
+    protected function generateActionableInsights($incomeStatement, $inventoryData, $debtData)
     {
         $insights = [];
         
@@ -366,42 +305,19 @@ protected function getExpenseData($userId, $accountId, $dateRange)
                 'Your business is currently operating at a loss. Immediate action is required to reduce costs or increase sales.',
                 'danger'
             );
-        } elseif ($incomeStatement['netIncome'] < 5) {
+        }
+        
+        // 2. Debt Insights
+        if (($debtData['outstandingDebts'] ?? 0) > 0) {
             $insights[] = $this->createInsight(
-                'Low Profit Margin', 
-                'Your profit margin is very low ('.number_format($incomeStatement['netMargin'], 2).'%). Consider reviewing pricing or reducing operational costs.',
+                'Outstanding Debts', 
+                'You have '.number_format($debtData['outstandingDebts'], 2).' in outstanding debts. Consider following up with customers.',
                 'warning'
             );
         }
         
-        // 2. Expense Insights
-        // if ($incomeStatement['expenseRatio'] > 60) {
-        //     $insights[] = $this->createInsight(
-        //         'High Expense Ratio', 
-        //         'Your expenses are '.number_format($incomeStatement['expenseRatio'], 2).'% of revenue, which is very high. Review expense categories for cost-saving opportunities.',
-        //         'danger'
-        //     );
-        // }
-        
-        // 3. Inventory Insights
-        if ($inventoryData['outOfStockItems'] > 0) {
-            $insights[] = $this->createInsight(
-                'Out of Stock Items', 
-                'You have '.$inventoryData['outOfStockItems'].' products out of stock. This is causing lost sales opportunities.',
-                'danger'
-            );
-        }
-        
-        if ($inventoryData['lowStockItems'] > 0) {
-            $insights[] = $this->createInsight(
-                'Low Stock Items', 
-                'You have '.$inventoryData['lowStockItems'].' products below reorder level. Consider restocking soon to avoid shortages.',
-                'warning'
-            );
-        }
-        
-        // 4. VAT Insights
-        if ($incomeStatement['vat'] > 0 && !$this->hasVatPaymentRecords($incomeStatement['vat'])) {
+        // 3. VAT Insights
+        if (($incomeStatement['vat'] ?? 0) > 0) {
             $insights[] = $this->createInsight(
                 'VAT Liability', 
                 'You have collected '.number_format($incomeStatement['vat'], 2).' in VAT that needs to be remitted to tax authorities.',
@@ -409,14 +325,14 @@ protected function getExpenseData($userId, $accountId, $dateRange)
             );
         }
         
-        // // 5. Positive Insights
-        // if ($incomeStatement['netMargin'] > 20) {
-        //     $insights[] = $this->createInsight(
-        //         'Healthy Profit Margin', 
-        //         'Great job! Your profit margin is '.number_format($incomeStatement['netMargin'], 2).'%, which is excellent.',
-        //         'success'
-        //     );
-        // }
+        // 4. Inventory Insights
+        if (($inventoryData['outOfStockItems'] ?? 0) > 0) {
+            $insights[] = $this->createInsight(
+                'Out of Stock Items', 
+                'You have '.$inventoryData['outOfStockItems'].' products out of stock. This is causing lost sales opportunities.',
+                'danger'
+            );
+        }
         
         return $insights;
     }
@@ -438,21 +354,48 @@ protected function getExpenseData($userId, $accountId, $dateRange)
         ];
     }
 
+
+    protected function getCustomOrdersData($userId, $accountId, $dateRange)
+{
+    $customOrders = CustomOrderDetail::whereHas('order', function($q) use ($userId, $accountId, $dateRange) {
+            $q->where('user_id', $userId)
+              ->where('account_id', $accountId)
+              ->whereBetween('created_at', [$dateRange['start'], $dateRange['end']]);
+        })
+        ->get();
+
+    return [
+        'totalCustomSales' => $customOrders->sum('total'),
+        'customOrderCount' => $customOrders->count(),
+        'customOrders' => $customOrders
+    ];
+}
     protected function getChartData($reportType, $userId, $accountId)
     {
         $now = now();
         $labels = [];
         $data = [];
+        $customData = []; // For custom orders
 
         switch ($reportType) {
             case 'daily':
                 for ($i = 6; $i >= 0; $i--) {
                     $date = $now->copy()->subDays($i);
                     $labels[] = $date->format('D, M j');
-                    $data[] = Order::where('user_id', $userId)
+
+                    // Regular orders
+                    $data[] = Order::with('customer')
+                        ->where('user_id', $userId)
                         ->where('account_id', $accountId)
                         ->whereDate('created_at', $date)
                         ->sum('total');
+
+                    // Custom orders
+                    $customData[] = class_exists('App\\Models\\CustomOrderDetail') ? \App\Models\CustomOrderDetail::whereHas('order', function($q) use ($userId, $accountId, $date) {
+                            $q->where('user_id', $userId)
+                              ->where('account_id', $accountId)
+                              ->whereDate('created_at', $date);
+                        })->sum('total') : 0;
                 }
                 break;
 
@@ -461,10 +404,18 @@ protected function getExpenseData($userId, $accountId, $dateRange)
                     $start = $now->copy()->subWeeks($i)->startOfWeek();
                     $end = $now->copy()->subWeeks($i)->endOfWeek();
                     $labels[] = 'Week '.($i + 1).' ('.$start->format('M j').')';
-                    $data[] = Order::where('user_id', $userId)
+
+                    $data[] = Order::with('customer')
+                        ->where('user_id', $userId)
                         ->where('account_id', $accountId)
                         ->whereBetween('created_at', [$start, $end])
                         ->sum('total');
+
+                    $customData[] = class_exists('App\\Models\\CustomOrderDetail') ? \App\Models\CustomOrderDetail::whereHas('order', function($q) use ($userId, $accountId, $start, $end) {
+                            $q->where('user_id', $userId)
+                              ->where('account_id', $accountId)
+                              ->whereBetween('created_at', [$start, $end]);
+                        })->sum('total') : 0;
                 }
                 break;
 
@@ -472,11 +423,20 @@ protected function getExpenseData($userId, $accountId, $dateRange)
                 for ($i = 11; $i >= 0; $i--) {
                     $month = $now->copy()->subMonths($i);
                     $labels[] = $month->format('M Y');
-                    $data[] = Order::where('user_id', $userId)
+
+                    $data[] = Order::with('customer')
+                        ->where('user_id', $userId)
                         ->where('account_id', $accountId)
                         ->whereYear('created_at', $month->year)
                         ->whereMonth('created_at', $month->month)
                         ->sum('total');
+
+                    $customData[] = class_exists('App\\Models\\CustomOrderDetail') ? \App\Models\CustomOrderDetail::whereHas('order', function($q) use ($userId, $accountId, $month) {
+                            $q->where('user_id', $userId)
+                              ->where('account_id', $accountId)
+                              ->whereYear('created_at', $month->year)
+                              ->whereMonth('created_at', $month->month);
+                        })->sum('total') : 0;
                 }
                 break;
 
@@ -484,10 +444,18 @@ protected function getExpenseData($userId, $accountId, $dateRange)
                 for ($i = 4; $i >= 0; $i--) {
                     $year = $now->copy()->subYears($i);
                     $labels[] = $year->format('Y');
-                    $data[] = Order::where('user_id', $userId)
+
+                    $data[] = Order::with('customer')
+                        ->where('user_id', $userId)
                         ->where('account_id', $accountId)
                         ->whereYear('created_at', $year->year)
                         ->sum('total');
+
+                    $customData[] = class_exists('App\\Models\\CustomOrderDetail') ? \App\Models\CustomOrderDetail::whereHas('order', function($q) use ($userId, $accountId, $year) {
+                            $q->where('user_id', $userId)
+                              ->where('account_id', $accountId)
+                              ->whereYear('created_at', $year->year);
+                        })->sum('total') : 0;
                 }
                 break;
         }
@@ -495,15 +463,93 @@ protected function getExpenseData($userId, $accountId, $dateRange)
         return [
             'labels' => $labels,
             'data' => $data,
+            'customData' => $customData,
         ];
     }
+
+/**
+ * Get inventory data for the given account.
+ */
+protected function getInventoryData($accountId)
+{
+    $products = Product::where('account_id', $accountId)->get();
+    $totalInventoryValue = $products->sum(function ($product) {
+        return $product->quantity * $product->buying_price;
+    });
+    $outOfStockItems = $products->where('quantity', '<=', 0)->count();
+
+    return [
+        'totalInventoryValue' => $totalInventoryValue,
+        'outOfStockItems' => $outOfStockItems,
+        'products' => $products,
+    ];
+}
+
+
+/**
+ * Get VAT report for the given user, account, and date range.
+ */
+protected function getVatReport($userId, $accountId, $dateRange)
+{
+    $orders = Order::with('customer')
+        ->where('user_id', $userId)
+        ->where('account_id', $accountId)
+        ->whereBetween('created_at', [$dateRange['start'], $dateRange['end']])
+        ->get();
+
+    $totalVatCollected = $orders->sum('vat');
+    $totalSales = $orders->sum('total');
+
+    return [
+        'totalVatCollected' => $totalVatCollected,
+        'totalSales' => $totalSales,
+        'startDate' => $dateRange['start']->format('Y-m-d'),
+        'endDate' => $dateRange['end']->format('Y-m-d'),
+    ];
+}
+
+/**
+ * Get recent transactions for the given user and account.
+ */
+protected function getRecentTransactions($userId, $accountId)
+{
+    return Order::with('customer')
+        ->where('user_id', $userId)
+        ->where('account_id', $accountId)
+        ->orderBy('created_at', 'desc')
+        ->take(10)
+        ->get();
+}
+
+/**
+ * Get recommendations for the given user.
+ */
+protected function getRecommendations($userId)
+{
+    $recommendations = Recommendation::where('user_id', $userId)
+        ->orderBy('created_at', 'desc')
+        ->take(5)
+        ->get()
+        ->map(function ($rec) {
+            return [
+                'title' => $rec->title,
+                'message' => $rec->message,
+                'status' => $rec->status ?? 'info',
+                'date' => $rec->created_at->format('M j, Y'),
+            ];
+        })
+        ->toArray();
+
+    return $recommendations;
+}
 
 public function generateDailyReport()
 {
     $date = now()->format('Y-m-d');
 
     // Fetch data from the orders table
-    $orders = Order::whereDate('order_date', $date)->get();
+    $orders = Order::with('customer')
+    ->whereDate('order_date', $date)->get();
     $totalSales = $orders->sum('total');
     $totalProductsSold = $orders->sum('total_products');
 

@@ -114,4 +114,11 @@ public function getQuantityAttribute()
     }
     return $this->attributes['quantity'] ?? 0;
 }
+
+    public function locations()
+    {
+        return $this->belongsToMany(Location::class, 'product_locations')
+                   ->withPivot('quantity')
+                   ->withTimestamps();
+    }
 }

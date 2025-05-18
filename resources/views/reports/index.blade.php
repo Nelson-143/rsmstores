@@ -177,7 +177,7 @@
                                     Net Sales
                                 </div>
                                 <div class="text-muted">
-                                    {{-- {{ number_format($incomeStatement['revenue'] - $incomeStatement['discounts'], 2) }} {{ auth()->user()->account->currency }} --}}
+                                    {{ number_format($incomeStatement['revenue'] - ($incomeStatement['discounts'] ?? 0), 2) }} {{ auth()->user()->account->currency }}
                                 </div>
                             </div>
                         </div>
@@ -203,7 +203,7 @@
                             </div>
                             <div class="col">
                                 <div class="font-weight-medium">
-                                    vat Collected
+                                    Vat Collected
                                 </div>
                                 <div class="text-muted">
                                     {{ number_format($incomeStatement['vat'], 2) }} {{ auth()->user()->account->currency }}
@@ -282,20 +282,12 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="text-muted">Avg. Order Value</div>
-                                <div class="h3">
-                                   @if(!empty($totalOrders) && $totalOrders > 0)
-                                        {{ number_format($incomeStatement['revenue'] / max($totalOrders, 1), 2) }} {{ auth()->user()->account->currency }}
-                                    @else
-                                        0.00 {{ auth()->user()->account->currency }}
-                                    @endif
-                                </div>
+                                <div class="h3">{{ number_format($incomeStatement['revenue']/($totalOrders ?? 1), 2) }} {{ auth()->user()->account->currency }}</div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- Top Selling Products -->
-
 
             <!-- Financial Summary -->
             <div class="col-lg-4">
@@ -329,11 +321,15 @@
                         <div class="mb-4">
                             <div class="d-flex align-items-center justify-content-between mb-2">
                                 <div>Net Profit Margin</div>
-                                <div class="fw-bold">{{ number_format(($incomeStatement['netIncome']/$incomeStatement['revenue'])*100, 2) }}%</div>
+                                <div class="fw-bold">
+                                    {{ $incomeStatement['revenue'] > 0 ? number_format(($incomeStatement['netIncome']/$incomeStatement['revenue'])*100, 2) : '0.00' }}%
+                                </div>
                             </div>
                             <div class="progress progress-sm">
-                                <div class="progress-bar bg-{{ ($incomeStatement['netIncome']/$incomeStatement['revenue'])*100 > 15 ? 'success' : (($incomeStatement['netIncome']/$incomeStatement['revenue'])*100 > 5 ? 'warning' : 'danger') }}" style="width: {{ ($incomeStatement['netIncome']/$incomeStatement['revenue'])*100 }}%" role="progressbar" aria-valuenow="{{ ($incomeStatement['netIncome']/$incomeStatement['revenue'])*100 }}" aria-valuemin="0" aria-valuemax="100">
-                                    <span class="visually-hidden">{{ ($incomeStatement['netIncome']/$incomeStatement['revenue'])*100 }}% Complete</span>
+                                <div class="progress-bar bg-{{ ($incomeStatement['revenue'] > 0 ? ($incomeStatement['netIncome']/$incomeStatement['revenue'])*100 : 0) > 15 ? 'success' : (($incomeStatement['revenue'] > 0 ? ($incomeStatement['netIncome']/$incomeStatement['revenue'])*100 : 0) > 5 ? 'warning' : 'danger') }}" style="width: {{ $incomeStatement['revenue'] > 0 ? ($incomeStatement['netIncome']/$incomeStatement['revenue'])*100 : 0 }}%" role="progressbar" aria-valuenow="{{ $incomeStatement['revenue'] > 0 ? ($incomeStatement['netIncome']/$incomeStatement['revenue'])*100 : 0 }}" aria-valuemin="0" aria-valuemax="100">
+                                    <span class="visually-hidden">
+                                        {{ $incomeStatement['revenue'] > 0 ? ($incomeStatement['netIncome']/$incomeStatement['revenue'])*100 : 0 }}% Complete
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -366,7 +362,52 @@
                     </div>
                 </div>
             </div>
-
+            <!--Depts summary-->
+          
+        <div class="col-lg-4">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Debt Overview</h3>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card mb-3">
+                        <div class="card-body text-center">
+                            <div class="h1">{{ number_format($totalDebts ?? 0, 2) }}</div>
+                            <div class="text-muted">Total Debts</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card mb-3">
+                        <div class="card-body text-center">
+                            <div class="h1 text-success">{{ number_format($totalPaid ?? 0, 2) }}</div>
+                            <div class="text-muted">Amount Paid</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="progress mb-3">
+                <div class="progress-bar bg-success" 
+                     style="width: {{ $totalDebts > 0 ? ($totalPaid/$totalDebts)*100 : 0 }}%" 
+                     role="progressbar">
+                    <span>{{ $totalDebts > 0 ? round(($totalPaid/$totalDebts)*100) : 0 }}% Paid</span>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-body text-center">
+                    <div class="h1 text-{{ $outstandingDebts > 0 ? 'danger' : 'success' }}">
+                        {{ number_format($outstandingDebts ?? 0, 2) }} {{ auth()->user()->account->currency }}
+                    </div>
+                    <div class="text-muted">Outstanding Balance</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
             <!-- Inventory Health -->
             <div class="col-lg-6">
                 <div class="card">
@@ -418,6 +459,64 @@
                     </div>
                 </div>
             </div>
+            <!--custom oders-->
+<!-- Custom Orders Card - Place it near the Inventory Health card -->
+<div class="col-lg-6">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Custom Orders</h3>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card mb-3">
+                        <div class="card-body text-center">
+                            <div class="h1">{{ $customOrderCount ?? 0 }}</div>
+                            <div class="text-muted">Total Orders</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card mb-3">
+                        <div class="card-body text-center">
+                            <div class="h1">{{ number_format($totalCustomSales ?? 0, 2) }} {{ auth()->user()->account->currency }}</div>
+                            <div class="text-muted">Total Value</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="table-responsive">
+                <table class="table table-sm table-vcenter">
+                    <thead>
+                        <tr>
+                            <th>Order</th>
+                            <th>Item</th>
+                            <th>Qty</th>
+                            <th>Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($customOrders as $order)
+                        <tr>
+                            <td>#{{ $order->order_id }}</td>
+                            <td>{{ $order->name }}</td>
+                            <td>{{ $order->quantity }}</td>
+                            <td>{{ number_format($order->total, 2) }}</td>
+                        </tr>
+                        @empty
+                        <tr>
+                            <td colspan="4" class="text-center py-4">
+                                No custom orders found
+                            </td>
+                        </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
 
             <!-- Cash Flow Overview -->
             <div class="col-lg-6">
@@ -553,7 +652,7 @@
                                         <div class="card-body">
                                             <div class="row align-items-center">
                                                 <div class="col-auto">
-                                                    <span class="bg-{{ $recommendation->priority === 'high' ? 'danger' : ($recommendation->priority === 'medium' ? 'warning' : 'info') }} text-white avatar">
+                                                    <span class="bg-{{ $recommendation === 'high' ? 'danger' : ($recommendation === 'medium' ? 'warning' : 'info') }} text-white avatar">
                                                         <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                                             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                                             <path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z"></path>
@@ -562,15 +661,11 @@
                                                 </div>
                                                 <div class="col">
                                                     <div class="font-weight-medium">
-                                                        {{ $recommendation->title }}
+                                                        {{ $recommendation['title'] }}
                                                     </div>
-                                                    <div class="text-muted">
-                                                        {{ $recommendation->recommendation }}
-                                                    </div>
-                                                </div>
-                                                <div class="col-auto">
                                                    
                                                 </div>
+                                            
                                             </div>
                                         </div>
                                     </div>
@@ -592,7 +687,58 @@
                                 </div>
                                 @endforelse
                             </div>
-                           
+                           <div class="tab-pane" id="tab-tax">
+    @if($vatReport)
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <div class="card-title">VAT Collected</div>
+                    <div class="h1 text-primary">{{ number_format($vatReport['vat_collected'] ?? 0, 2) }} {{ auth()->user()->account->currency }}</div>
+                    <div class="text-muted">From {{ $startDate }} to {{ $endDate }}</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <div class="card-title">VAT Paid</div>
+                    <div class="h1 text-success">{{ number_format($vatReport['vat_paid'] ?? 0, 2) }} {{ auth()->user()->account->currency }}</div>
+                    <div class="text-muted">Supplier VAT</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <div class="card-title">VAT Liability</div>
+                    <div class="h1 text-{{ ($vatReport['vat_liability'] ?? 0) > 0 ? 'danger' : 'success' }}">
+                        {{ number_format($vatReport['vat_liability'] ?? 0, 2) }} {{ auth()->user()->account->currency }}
+                    </div>
+                    <div class="text-muted">Net VAT to pay</div>
+                </div>
+            </div>
+        </div>
+    </div>
+                                @else
+                                <div class="alert alert-secondary">
+                                    <div class="empty">
+                                        <div class="empty-icon">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                <path d="M9 14l6 -6"></path>
+                                                <path d="M11 6l.463 -.536a5 5 0 0 1 7.071 7.072l-.534 .464"></path>
+                                                <path d="M13 18l-.397 .534a5.068 5.068 0 0 1 -7.127 0a4.972 4.972 0 0 1 0 -7.071l.524 -.463"></path>
+                                            </svg>
+                                        </div>
+                                        <p class="empty-title">No tax data available</p>
+                                        <p class="empty-subtitle text-muted">
+                                            Tax reports will be generated automatically based on your sales.
+                                        </p>
+                                    </div>
+                                </div>
+                                @endif
+                            </div>
                         </div>
                     </div>
                 </div>

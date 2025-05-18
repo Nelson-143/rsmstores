@@ -87,6 +87,7 @@ public function store(Request $request)
     }
     Log::info('Cart re-populated', ['cart_content' => Cart::instance($cartInstance)->content()->toArray()]);
 
+    // Validate stock one last time before deduction
     foreach (Cart::instance($cartInstance)->content() as $item) {
         if (isset($item->options['is_custom']) && $item->options['is_custom']) {
             continue;
@@ -143,6 +144,7 @@ public function store(Request $request)
 
         Log::info('Order created', ['order_id' => $order->id]);
 
+        // Deduct stock only here
         foreach (Cart::instance($cartInstance)->content() as $item) {
             if (isset($item->options['is_custom']) && $item->options['is_custom']) {
                 CustomOrderDetail::create([
@@ -166,11 +168,17 @@ public function store(Request $request)
                 $preDecrementQty = $productLocation ? $productLocation->quantity : 0;
 
                 if ($productLocation) {
-                    $productLocation->decrement('quantity', $item->qty);
-                    // Refresh product locations and update total quantity
+                    $requiredStock = $item->qty * ($item->options['conversion_factor'] ?? 1);
+                    $productLocation->decrement('quantity', $requiredStock);
                     $product->load('productLocations');
                     $product->quantity = $product->productLocations->sum('quantity');
                     $product->save();
+                    Log::info('Stock deducted in OrderController@store', [
+                        'product_id' => $product->id,
+                        'location_id' => $locationId,
+                        'deducted_quantity' => $requiredStock,
+                        'new_total_quantity' => $product->quantity,
+                    ]);
                 }
 
                 OrderDetails::create([
@@ -204,7 +212,7 @@ public function store(Request $request)
         Log::error('Error creating order', ['message' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
         return redirect()->route('pos.index')->with('error', 'Error creating order: ' . $e->getMessage());
     }
-}  
+}
 // Update storeDebt similarly
 public function storeDebt(Request $request)
 {

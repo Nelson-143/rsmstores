@@ -47,13 +47,14 @@ class ProductController extends Controller
         return view('products.create', compact('categories', 'units', 'suppliers'));
     }
 
-   public function store(Request $request)
+public function store(Request $request)
 {
     $request->validate([
         'name' => 'required|string|max:255',
         'category_id' => 'required|exists:categories,id',
         'unit_id' => 'required|exists:units,id',
         'buying_price' => 'required|numeric|min:0',
+        'code' => 'required|string|unique:products,code',
         'selling_price' => 'required|numeric|min:0',
         'location_ids' => 'required|array',
         'quantities' => 'required|array',
@@ -61,7 +62,12 @@ class ProductController extends Controller
         'quantities.*' => 'required|integer|min:0',
     ]);
 
+    $uuid = Str::uuid()->toString();
+
     $product = Product::create([
+        'uuid' => $uuid,
+        'user_id' => auth()->id(),
+        'code' => $request->code,
         'name' => $request->name,
         'slug' => Str::slug($request->name),
         'category_id' => $request->category_id,
@@ -76,11 +82,13 @@ class ProductController extends Controller
         'notes' => $request->notes,
         'product_image' => $request->product_image ?? null,
         'account_id' => auth()->user()->account_id,
+        'quantity' => 0, // Initialize to 0, will be updated below
     ]);
 
     $locationIds = $request->input('location_ids', []);
     $quantities = $request->input('quantities', []);
     $totalQuantity = 0;
+
     foreach ($locationIds as $index => $locationId) {
         $quantity = $quantities[$index] ?? 0;
         if ($quantity > 0) {
@@ -93,18 +101,19 @@ class ProductController extends Controller
             $totalQuantity += $quantity;
         }
     }
-    // No need to set $product->quantity manually; it’s computed
+
+    // Update the product's total quantity
+    $product->update(['quantity' => $totalQuantity]);
 
     return redirect()->route('products.index')->with('success', 'Product created successfully.');
 }
 
-    public function show($uuid)
+public function show($uuid)
 {
-    $product = Product::with(['category', 'unit', 'supplier', 'user'])
+    $product = Product::with(['category', 'unit', 'supplier', 'user', 'productLocations.location'])
                      ->where('uuid', $uuid)
                      ->firstOrFail();
 
-    // Verify account access in middleware instead
     $this->authorize('view', $product);
 
     $barcode = (new BarcodeGeneratorHTML())->getBarcode($product->code, 'C128');
@@ -159,7 +168,11 @@ class ProductController extends Controller
         'account_id' => auth()->user()->account_id,
     ]);
 
-    ProductLocation::where('product_id', $product->id)->where('account_id', auth()->user()->account_id)->delete();
+    ProductLocation::with('location')
+        ->where('product_id', $product->id)
+        ->where('account_id', auth()->user()->account_id)
+        ->delete()
+        ->where('product_id', $product->id)->where('account_id', auth()->user()->account_id)->delete();
     $locationIds = $request->input('location_ids', []);
     $quantities = $request->input('quantities', []);
     foreach ($locationIds as $index => $locationId) {

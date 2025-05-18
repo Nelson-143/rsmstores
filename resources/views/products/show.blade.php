@@ -143,13 +143,26 @@
                                             <td>
                                                 {{ $product->quantity }}
                                                 @if($product->productLocations->count() > 0)
-                                                    <button type="button" class="btn btn-sm btn-secondary ms-2" data-bs-toggle="collapse" data-bs-target="#locationBreakdown-{{ $product->id }}">Details</button>
-                                                    <div id="locationBreakdown-{{ $product->id }}" class="collapse">
-                                                        <ul class="list-unstyled mt-2">
-                                                            @foreach($product->productLocations as $location)
-                                                                <li>{{ $location->location->name }}: {{ $location->quantity }} units</li>
-                                                            @endforeach
-                                                        </ul>
+                                                    <button type="button" class="btn btn-sm btn-secondary ms-2" data-bs-toggle="collapse" data-bs-target="#locationBreakdown">
+                                                        Details
+                                                    </button>
+                                                    <div id="locationBreakdown" class="collapse mt-2">
+                                                        <table class="table table-sm">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Location</th>
+                                                                    <th>Quantity</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                @foreach($product->productLocations as $productLocation)
+                                                                    <tr>
+                                                                        <td>{{ $productLocation->location->name }}</td>
+                                                                        <td>{{ $productLocation->quantity }}</td>
+                                                                    </tr>
+                                                                @endforeach
+                                                            </tbody>
+                                                        </table>
                                                     </div>
                                                 @endif
                                             </td>

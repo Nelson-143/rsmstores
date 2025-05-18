@@ -71,7 +71,7 @@ Contact Us|Roman Stock Manager
                             <a href="tel:+255 738-020-528" class="bringer-grid-item-link"></a>
                             <div>
                                 <h5>Instant Champion Support 📞<span class="bringer-accent">.</span></h5>
-                                <h6>+255 7151 4962</h6>
+                                <h6>+255 71514 4962</h6>
                             </div>
                             <p>Get immediate answers! Our victory specialists are ready to guide you to business success. One call could change your business forever! ⚡</p>
                         </div>
@@ -113,11 +113,7 @@ Contact Us|Roman Stock Manager
                                             <i></i>
                                         </a>
                                     </li>
-                                    <li>
-                                        <a href="#" target="_blank" class="bringer-socials-patreon">
-                                            <i></i>
-                                        </a>
-                                    </li>
+                                   
                                 </ul>
                             </div>
                             <p>Connect with fellow business champions! See live success stories, get exclusive tips, and stay ahead of the game with our winning community! 🚀</p>

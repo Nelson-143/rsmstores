@@ -99,7 +99,7 @@
                                 <a href="./" class="bringer-logo footer-logo">
                                     <img src="{{ asset('frontend/assets/img/logo.png') }}" alt="bringer." width="88" height="24">
                                 </a>
-                                <div class="bringer-info-description">We are a passionate team of developers and designers who believe in the power of creativity. We help creative people create a strong online presence that shows their work and tells a story.</div>
+                                <div class="bringer-info-description">We are a passionate team of innovators and builders who believe in empowering businesses. We help shop owners and entrepreneurs take control of their stock, finances, and growth—turning everyday hustle into a champion story 😎.</div>
                                 <span class="bringer-label">Follow us:</span>
                                 <ul class="bringer-socials-list" data-stagger-appear="fade-up" data-stagger-delay="75">
                                     <li>
@@ -122,11 +122,7 @@
                                             <i></i>
                                         </a>
                                     </li>
-                                    <li>
-                                        <a href="#" target="_blank" class="bringer-socials-patreon">
-                                            <i></i>
-                                        </a>
-                                    </li>
+                                   
                                 </ul>
                             </div>
                         </div>

@@ -11,6 +11,7 @@ use app\Models\ShelfStockLog;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 //oder POS
 class CreateOrder extends Component
 {
@@ -46,12 +47,12 @@ class CreateOrder extends Component
     $this->taxRate = auth()->user()->account->tax_rate ?? 0;
     for ($i = 1; $i <= 5; $i++) {
         $this->selectedCustomers[$i] = 'pass_by';
-        Cart::instance('customer' . $i);
+        Cart::instance('customer' . $i)->destroy(); // Clear cart on mount
     }
+    session()->forget('pending_order'); // Clear pending order session
     foreach ($this->shelfProducts as $shelfProduct) {
         $this->shelfQuantities[$shelfProduct->product_id] = $shelfProduct->quantity;
     }
-    // Initialize cartQty with current cart quantities
     foreach (Cart::instance('customer' . $this->activeTab)->content() as $item) {
         $this->cartQty[$item->rowId] = $item->qty;
         $this->cartDiscounts[$item->rowId] = $item->price;
@@ -159,7 +160,8 @@ class CreateOrder extends Component
         $unitPrice = $product->selling_price;
         $unitName = $product->unit ? $product->unit->name : 'Piece';
         $conversionFactor = 1;
-        if ($product->quantity < 1) {
+        // Only check stock, do not deduct
+        if ($product->productLocations->sum('quantity') < 1) {
             session()->flash('error', 'Not enough store stock for ' . $product->name);
             return;
         }
@@ -167,7 +169,6 @@ class CreateOrder extends Component
             $this->currentProductId = $productId;
             $this->currentShelfProductId = null;
             $this->showLocationModal = true;
-            // Reset location selection for this product to ensure fresh selection
             $this->locationSelections[$productId] = null;
             Log::info('Showing location modal for product', [
                 'product_id' => $productId,
@@ -211,6 +212,7 @@ class CreateOrder extends Component
     $this->cartDiscounts[$rowId] = $unitPrice;
     session()->flash('success', 'Product added to cart!');
 }
+
 public function selectLocation($productId)
 {
     Log::info('selectLocation called', [
@@ -224,7 +226,6 @@ public function selectLocation($productId)
         return;
     }
 
-    // Ensure the selected location ID is set correctly
     $selectedLocationId = $this->locationSelections[$productId] ?? null;
     if (!$selectedLocationId) {
         session()->flash('error', 'Please select a location.');
@@ -320,7 +321,7 @@ public function updateCart($rowId, $qty)
             if ($product) {
                 $quantityToRestore = $cartItem->qty * ($cartItem->options['conversion_factor'] ?? 1);
                 if ($cartItem->options['shelf_product_id']) {
-                    $shelfProduct = ShelfProduct::find($cartItem->options['shelf_product_id']);
+                    $shelfProduct = ShelfProduct::find($cartItem->options['shel`f_product_id']);
                     if ($shelfProduct) {
                         $shelfProduct->increment('quantity', $cartItem->qty);
                         ShelfStockLog::create([
@@ -418,6 +419,7 @@ public function createOrder()
         return;
     }
 
+    // Validate stock availability without deducting
     foreach ($currentCart as $item) {
         if (isset($item->options['is_custom']) && $item->options['is_custom']) {
             continue;
@@ -451,49 +453,7 @@ public function createOrder()
     }
     $total = $subTotal + $vat;
 
-    // Update stock for non-custom products
-    foreach ($currentCart as $item) {
-        if (isset($item->options['is_custom']) && $item->options['is_custom']) {
-            continue;
-        }
-
-        $product = Product::find($item->id); // Fresh load to avoid stale data
-        $requiredStock = $item->qty * ($item->options['conversion_factor'] ?? 1);
-        if ($item->options['shelf_product_id']) {
-            $shelfProduct = ShelfProduct::find($item->options['shelf_product_id']);
-            if ($shelfProduct) {
-                $shelfProduct->decrement('quantity', $item->qty);
-                ShelfStockLog::create([
-                    'shelf_product_id' => $shelfProduct->id,
-                    'quantity_change' => -$item->qty,
-                    'action' => 'deduct',
-                    'user_id' => auth()->id(),
-                    'account_id' => auth()->user()->account_id,
-                    'notes' => 'Deducted for order in POS',
-                ]);
-            }
-        } else {
-            $locationId = $this->locationSelections[$item->options['row_id']] ?? $item->options['location_id'];
-            $productLocation = ProductLocation::where('product_id', $product->id)
-                ->where('location_id', $locationId)
-                ->where('account_id', auth()->user()->account_id)
-                ->first();
-            if ($productLocation) {
-                $productLocation->decrement('quantity', $requiredStock);
-                // Refresh product locations and update total quantity
-                $product->load('productLocations');
-                $product->quantity = $product->productLocations->sum('quantity');
-                $product->save();
-                Log::info('Stock updated', [
-                    'product_id' => $product->id,
-                    'location_id' => $locationId,
-                    'new_quantity' => $productLocation->quantity,
-                    'total_quantity' => $product->quantity,
-                ]);
-            }
-        }
-    }
-
+    // Store the cart in session without deducting stock
     session()->put('pending_order', [
         'cart' => $currentCart->toArray(),
         'customer_id' => $this->selectedCustomers[$this->activeTab],
@@ -513,7 +473,10 @@ public function createOrder()
         'total' => $total,
     ]);
     return redirect()->route('invoices.create');
-}    public function updateDiscount($rowId, $discountPrice)
+}
+
+
+public function updateDiscount($rowId, $discountPrice)
 {
     $cartItem = Cart::instance("customer{$this->activeTab}")->get($rowId);
     if ($cartItem) {
